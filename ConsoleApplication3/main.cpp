@@ -9,6 +9,10 @@
 #include <windows.h>
 #include <cmath>
 
+#include "namespace.h"
+#include "structs.h"
+#include "Textures.h"
+
 
 
 SDL_Window* window;
@@ -20,41 +24,7 @@ double timeScale = dt * speedMultiplier;
 int baseW = 1920;
 int baseH = 1080;
 
-struct POSITION {
-	double x;
-	double y;
-};
 
-struct CAMERA {
-	double x;
-	double y;
-	double zoom;
-};
-
-struct OBJRECT {
-	double x;
-	double y;
-	double w;
-	double h;
-	bool touch;
-};
-
-struct CAMERAROOM {
-	double x1;
-	double x2;
-	double y1;
-	double y2;
-	double x3;
-	double x4;
-	double y3;
-	double y4;
-};
-
-struct BLOCKROOM {
-	int x;
-	int y;
-	std::vector<std::vector<int>> terrain;
-};
 
 bool HitDetection(OBJRECT obj1, OBJRECT obj2) {
 	double x1 = obj1.x;
@@ -95,7 +65,7 @@ void DrawImage(SDL_Texture* texture, OBJRECT rect, CAMERA camera,  bool horizont
 	center.x = (int)(axisX * camera.zoom);
 	center.y = (int)(axisY * camera.zoom);
 
-	SDL_RenderCopyEx(renderer, texture, NULL, &dst, angle , &center, flip);
+	SDL_RenderCopyEx(settings::renderer, texture, NULL, &dst, angle , &center, flip);
 }
 
 void DrawTextU8(TTF_Font* font, const char8_t* textIn, SDL_Color color, double x, double y) {
@@ -181,7 +151,7 @@ public:
 };
 Player* Camera::playerP = nullptr;
 
-
+/*
 class Textures {
 private:
 	std::map<std::string, SDL_Texture*> map;
@@ -220,6 +190,7 @@ public:
 		}
 	}
 };
+*/
 
 class Level {
 private:
@@ -645,9 +616,12 @@ int main(int argc, char* argv[]) {
 	float scale = (scaleX < scaleY) ? scaleX : scaleY;
 	int winW = (int)(baseW * scale);
 	int winH = (int)(baseH * scale);
-	window = SDL_CreateWindow("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winW, winH, SDL_WINDOW_FULLSCREEN_DESKTOP);
+	settings::window = SDL_CreateWindow("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winW, winH, SDL_WINDOW_FULLSCREEN_DESKTOP);
+	settings::renderer = SDL_CreateRenderer(settings::window, -1, SDL_RENDERER_SOFTWARE);
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+    window = settings::window;
+    renderer = settings::renderer;
+
 	SDL_RenderSetLogicalSize(renderer, baseW, baseH);
 	SDL_RenderSetLogicalSize(renderer, 1600, 900);
 
@@ -779,7 +753,13 @@ int main(int argc, char* argv[]) {
 		DrawText(font100, std::to_string(camera.getCam().y), color, 200, 500);
 		DrawText(font100, std::to_string(camera.targetX), color, 400, 600);
 		DrawText(font100, std::to_string(camera.targetY), color, 400, 700);
-		SDL_RenderPresent(renderer);
+
+        //TTextures tt;
+        OBJRECT uon = { 100,100,100,100 };
+        //tt.DrawImage("assy", uon);
+
+		SDL_RenderPresent(settings::renderer);
+        std::cout << "a";
 	}
 
 	SDL_DestroyWindow(window);

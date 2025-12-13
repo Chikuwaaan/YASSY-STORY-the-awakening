@@ -133,12 +133,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameOObject.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="namespace.cpp" />
+    <ClCompile Include="Textures.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameOObject.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="namespace.h" />
+    <ClInclude Include="structs.h" />
+    <ClInclude Include="Textures.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ConsoleApplication3.rc" />
