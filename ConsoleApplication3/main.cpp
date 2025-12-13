@@ -12,6 +12,7 @@
 #include "namespace.h"
 #include "structs.h"
 #include "Textures.h"
+#include "Camera.h"
 
 
 
@@ -41,6 +42,7 @@ bool HitDetection(OBJRECT obj1, OBJRECT obj2) {
 		y1 + 0.5 * h1 > y2 - 0.5 * h2);
 }
 
+/*
 void DrawImage(SDL_Texture* texture, OBJRECT rect, CAMERA camera,  bool horizontalFlip, bool verticalFlip, double angle, double axisX, double axisY) {
 	SDL_Rect dst;
 	double pivotX = baseW / 2.0;
@@ -87,10 +89,12 @@ void DrawText(TTF_Font* font, std::string textIn, SDL_Color color, int x, int y)
 	SDL_DestroyTexture(texture);
 	SDL_FreeSurface(surface);
 }
+*/
 
 class GameObject;
 class Player;
 
+/*
 class Camera {
 private:
 	CAMERA camera;
@@ -150,6 +154,7 @@ public:
 	}
 };
 Player* Camera::playerP = nullptr;
+*/
 
 /*
 class Textures {
@@ -268,13 +273,12 @@ public:
 				for (int j = 0; j < column; j++) {
 					std::string texName = std::to_string(rooms[h].terrain[i][j]);
 					if (texName != "0") {
-						SDL_Texture* texture = texturesP->getTexture(texName);
 						OBJRECT rect;
 						rect.x = blockSize * (j + 0.5) + blockSize * rooms[h].x;
 						rect.y = blockSize * (row - (i + 0.5)) + blockSize * rooms[h].y;
 						rect.w = blockSize;
 						rect.h = blockSize;
-						DrawImage(texture, rect, cameraP->getCam(), 0, 0, 0, 0, 0);
+                        texturesP->DrawImage(texName, rect, cameraP->getCam());
 					}
 				}
 			}
@@ -375,9 +379,8 @@ public:
 	}
 
 	void Draw() {
-		SDL_Texture* texture = texturesP->getTexture(texName);
 		OBJRECT rect = { x,y,w,h };
-		DrawImage(texture, rect, cameraP->getCam(), angle, flipX, flipY, 0, 0);
+        texturesP->DrawImage(texName, rect, cameraP->getCam());
 	}
 };
 Textures* GameObject::texturesP = nullptr;
@@ -540,6 +543,7 @@ public:
 		}
 	}
 
+    /*
 	void MoveCameraRoom() {
 		std::vector<CAMERAROOM>* room = cameraP->GetRoom();
 		for (int i = 0; i < room->size(); i++) {
@@ -560,9 +564,10 @@ public:
 		}
 		
 	}
+    */
 
 
-
+    /*
 	void DrawPart(std::string texName, double angle, double axisX, double axisY) {
 		SDL_Texture* texture = texturesP->getTexture(texName);
 		double rectX = 140 * (w/60);
@@ -579,6 +584,7 @@ public:
 		DrawPart("armL", sin(moveBody) * -16, 90, 60);
 		DrawPart("armR", sin(moveBody) * 16, 70, 70);
 	}
+    */
 };
 Level* Player::levelP = nullptr;
 Camera* Player::cameraP = nullptr;
@@ -638,7 +644,7 @@ int main(int argc, char* argv[]) {
 	Level::cameraP = &camera;
 	Player::levelP = &level;	
 	Player::cameraP = &camera;
-	Camera::playerP = &Assy2;
+	//Camera::playerP = &Assy2;
 	
 
 	double accumulator = 0.0;
@@ -651,13 +657,18 @@ int main(int argc, char* argv[]) {
 
 	pending.push_back(std::make_unique<Unko>(400,1200));
 	pending.push_back(std::make_unique<Unko>(5935, 800));
-	while (running) {
+
+	while (running) {    
+        CAMERA cam = camera.getCam();
+
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
 				running = false;
 			}
 			if (event.type == SDL_MOUSEWHEEL) {
-				camera.SetZoom(camera.getCam().zoom + event.wheel.y * 0.1);
+                cam.zoom = cam.zoom + event.wheel.y * 0.1;
+                camera.setCam(cam);
+				//camera.SetZoom(camera.getCam().zoom + event.wheel.y * 0.1);
 			}
 		}
 
@@ -679,10 +690,10 @@ int main(int argc, char* argv[]) {
 				std::cout << speedMultiplier << std::endl;
 			}
 			if (keystate[SDL_SCANCODE_RIGHT]) {
-				camera.SetOffsetX(camera.GetOffsetX() + 4 * timeScale * 60);
+				//camera.SetOffsetX(camera.GetOffsetX() + 4 * timeScale * 60);
 			}
 			if (keystate[SDL_SCANCODE_LEFT]) {
-				camera.SetOffsetX(camera.GetOffsetX() - 4 * timeScale * 60);
+				//camera.SetOffsetX(camera.GetOffsetX() - 4 * timeScale * 60);
 			}
 			if (keystate[SDL_SCANCODE_SPACE]) {
 				textures.LoadTextures();
@@ -700,11 +711,11 @@ int main(int argc, char* argv[]) {
 			}
 			if (keystate[SDL_SCANCODE_A]) {
 				Assy2.SetAX(-3840.0);
-				camera.SetOffsetX(camera.GetOffsetX() - 4);
+				//camera.SetOffsetX(camera.GetOffsetX() - 4);
 			}
 			if (keystate[SDL_SCANCODE_D]) {
 				Assy2.SetAX(3840.0);
-				camera.SetOffsetX(camera.GetOffsetX() + 4);
+				//camera.SetOffsetX(camera.GetOffsetX() + 4);
 			}
 
 			for (auto& obj : objects) {
@@ -726,26 +737,25 @@ int main(int argc, char* argv[]) {
 		SDL_SetRenderDrawColor(renderer, 100, 50, 50, 255);
 		SDL_RenderClear(renderer);
 
-		SDL_Rect a = { 100,100,100,100 };
-		SDL_Point b = { 0 , 0 };
-		SDL_RenderCopyEx(renderer, textures.getTexture("assy"), NULL, &a, SDL_GetTicks() * 0.2, &b, (SDL_RendererFlip)SDL_FLIP_NONE);
+
+        /*
 		camera.targetX = Assy2.GetX() + camera.GetOffsetX();
 		camera.targetY = Assy2.GetY();
 		Assy2.MoveCameraRoom();
 		camera.SetX(camera.targetX + (camera.getCam().x - camera.targetX) / (1.02));
 		camera.SetY(camera.targetY + (camera.getCam().y - camera.targetY) / (1.02));
-		//camera.SetX(Assy2.GetX());
-		//camera.SetY(Assy2.GetY());
-		
-
+        */
 		
 		level.DrawMap();
 		for (auto& obj : objects) {
 			obj->Draw();
 		}
-		//Assy2.Draw();
-		Assy2.DrawPlayer();
+		Assy2.Draw();
+		//Assy2.DrawPlayer();
+
+
 		
+        /*
 		color = { 255,255,255 };
 		DrawText(font100, std::to_string(Assy2.GetX()), color, 0, 200);
 		DrawText(font100, std::to_string(Assy2.GetY()), color, 0, 300);
@@ -753,13 +763,12 @@ int main(int argc, char* argv[]) {
 		DrawText(font100, std::to_string(camera.getCam().y), color, 200, 500);
 		DrawText(font100, std::to_string(camera.targetX), color, 400, 600);
 		DrawText(font100, std::to_string(camera.targetY), color, 400, 700);
+        */
 
-        //TTextures tt;
-        OBJRECT uon = { 100,100,100,100 };
-        //tt.DrawImage("assy", uon);
-
+        //SDL_Rect rect = { 100,100,100,100 };
+        //SDL_RenderCopy(settings::renderer, IMG_LoadTexture(settings::renderer, "Assets/textures/assy.png"), NULL, &rect);
+        textures.Update();
 		SDL_RenderPresent(settings::renderer);
-        std::cout << "a";
 	}
 
 	SDL_DestroyWindow(window);

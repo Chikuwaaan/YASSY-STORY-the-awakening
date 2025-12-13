@@ -5,14 +5,18 @@
 struct CAMERA {
 	double x;
 	double y;
+    double offsetX;
+    double offsetY;
+    double targetX;
+    double targetY;
 	double zoom;
 };
 
 struct OBJRECT {
-	double x;
-	double y;
-	double w;
-	double h;
+	double x = 0.0;
+	double y = 0.0;
+	double w = 100.0;
+	double h = 100.0;
 	bool touch = false;
 };
 

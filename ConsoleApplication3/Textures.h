@@ -12,6 +12,7 @@ private:
 public:
     Textures();
     void LoadTextures();
-    void DrawImage(std::string texName, OBJRECT rect);
+    void DrawImage(std::string texName, OBJRECT rect, CAMERA camera);
     SDL_Texture* GetTexture(std::string name);
+    void Update();
 };
