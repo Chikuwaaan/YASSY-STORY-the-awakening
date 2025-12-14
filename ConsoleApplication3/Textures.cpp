@@ -2,8 +2,11 @@
 #include "namespace.h"
 #include "Camera.h"
 
+Camera* Textures::cameraP = nullptr;
+
 Textures::Textures() {
     LoadTextures();
+    font = TTF_OpenFont("C:/Windows/Fonts/meiryo.ttc", 50);
 }
 
 void Textures::LoadTextures() {
@@ -23,11 +26,13 @@ void Textures::LoadTextures() {
     map["armL"] = IMG_LoadTexture(settings::renderer, "Assets/textures/armL.png");
     map["armR"] = IMG_LoadTexture(settings::renderer, "Assets/textures/armR.png");
     map["unko"] = IMG_LoadTexture(settings::renderer, "Assets/textures/unko.png");
+    map["camera"] = IMG_LoadTexture(settings::renderer, "Assets/textures/camera.png");
 
     std::cout << "[DEBUG]テクスチャをロードしました";
 }
 
-void Textures::DrawImage(std::string texName, OBJRECT rect, CAMERA camera) {
+void Textures::DrawImage(std::string texName, OBJRECT rect) {
+    CAMERA camera = cameraP->getCam();
     double pivotX = settings::baseW / 2.0;
     double pivotY = settings::baseH / 2.0;
     SDL_Rect dst;
@@ -38,6 +43,19 @@ void Textures::DrawImage(std::string texName, OBJRECT rect, CAMERA camera) {
     SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
 }
 
+void Textures::DrawRect(SDL_Color color, OBJRECT rect) {
+    CAMERA camera = cameraP->getCam();
+    double pivotX = settings::baseW / 2.0;
+    double pivotY = settings::baseH / 2.0;
+    SDL_Rect dst;
+    dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+    dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+    dst.w = (int)(rect.w * camera.zoom);
+    dst.h = (int)(rect.h * camera.zoom);
+    SDL_SetRenderDrawColor(settings::renderer, color.r, color.g, color.b, color.a);
+    SDL_RenderDrawRect(settings::renderer, &dst);
+}
+
 SDL_Texture* Textures::GetTexture(std::string name) {
     if (map.count(name) == 0) {
         return map["missing"];
@@ -45,6 +63,15 @@ SDL_Texture* Textures::GetTexture(std::string name) {
     else {
         return map[name];
     }
+}
+
+void Textures::DrawTextA(std::string text, SDL_Color color, int x, int y) {
+    SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), color);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(settings::renderer, surface);
+    SDL_Rect dst = { x,y,surface->w, surface->h };
+    SDL_RenderCopy(settings::renderer, texture, NULL, &dst);
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(surface);
 }
 
 void Textures::Update() {

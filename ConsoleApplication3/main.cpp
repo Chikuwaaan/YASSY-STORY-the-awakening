@@ -13,34 +13,8 @@
 #include "structs.h"
 #include "Textures.h"
 #include "Camera.h"
-
-
-
-SDL_Window* window;
-SDL_Renderer* renderer;
-const double fps = 120.0;
-const double dt = 1.0 / fps;
-double speedMultiplier = 1.0;
-double timeScale = dt * speedMultiplier;
-int baseW = 1920;
-int baseH = 1080;
-
-
-
-bool HitDetection(OBJRECT obj1, OBJRECT obj2) {
-	double x1 = obj1.x;
-	double y1 = obj1.y;
-	double w1 = obj1.w;
-	double h1 = obj1.h;
-	double x2 = obj2.x;
-	double y2 = obj2.y;
-	double w2 = obj2.w;
-	double h2 = obj2.h;
-	return (x1 - 0.5 * w1 < x2 + 0.5 * w2 &&
-		x1 + 0.5 * w1 > x2 - 0.5 * w2 &&
-		y1 - 0.5 * h1 < y2 + 0.5 * h2 &&
-		y1 + 0.5 * h1 > y2 - 0.5 * h2);
-}
+#include "Level.h"
+#include "GameObject.h"
 
 /*
 void DrawImage(SDL_Texture* texture, OBJRECT rect, CAMERA camera,  bool horizontalFlip, bool verticalFlip, double angle, double axisX, double axisY) {
@@ -90,9 +64,6 @@ void DrawText(TTF_Font* font, std::string textIn, SDL_Color color, int x, int y)
 	SDL_FreeSurface(surface);
 }
 */
-
-class GameObject;
-class Player;
 
 /*
 class Camera {
@@ -197,7 +168,8 @@ public:
 };
 */
 
-class Level {
+/*
+class LLevel {
 private:
 	std::vector<BLOCKROOM> rooms;
 	double blockSize = 120;
@@ -243,26 +215,6 @@ public:
 		
 	};
 
-	/*
-	void DrawMap() {
-		for (int i = 0; i < row; i++) {
-			for (int j = 0; j < column; j++) {
-				//DrawImage(j, i);
-				std::string texName = std::to_string(map[i][j]);
-				if (texName != "0") {
-					SDL_Texture* texture = texturesP->getTexture(texName);
-					OBJRECT rect;
-					rect.x = blockSize * (j + 0.5);
-					rect.y = blockSize * (row - (i + 0.5));
-					rect.w = blockSize;
-					rect.h = blockSize;
-					DrawImage(texture, rect, cameraP->getCam(), 0, 0, 0, 0, 0);
-				}
-				
-			}
-		}
-	}*/
-
 	void DrawMap() {
 		const int room = (int)rooms.size();
 
@@ -285,6 +237,7 @@ public:
 		}
 
 	};
+   
 
 
 	OBJRECT IsTouching(OBJRECT obj1) {
@@ -317,7 +270,7 @@ public:
 						OBJRECT obj2 = { blockSize * (j + levelX + 0.5) , blockSize * (row - (i - levelY + 0.5)) , blockSize, blockSize };
 						//DrawImage(texturesP->getTexture("unko"), obj2, cameraP->getCam(), 0, 0, 0, 0, 0);
 						//std::cout << obj2.x << "," << obj2.y << std::endl;
-						a = HitDetection(obj1, obj2);
+						a = utilities::HitDetection(obj1, obj2);
 						if (a) {
 							return { blockSize * (j + levelX + 0.5), blockSize * (row - (i - levelY + 0.5)), blockSize, blockSize, true };
 						}
@@ -336,8 +289,9 @@ public:
 };
 Textures* Level::texturesP = nullptr;
 Camera* Level::cameraP = nullptr;
+*/
 
-
+/*
 class GameObject {
 protected:
 	std::string texName;
@@ -358,11 +312,11 @@ public:
 	}
 
 	void MoveX(double distance) {
-		x += distance * timeScale;
+		x += distance * settings::timeScale;
 	}
 
 	void MoveY(double distance) {
-		y += distance * timeScale;
+		y += distance * settings::timeScale;
 	}
 
 	double GetX() {
@@ -380,26 +334,13 @@ public:
 
 	void Draw() {
 		OBJRECT rect = { x,y,w,h };
-        texturesP->DrawImage(texName, rect, cameraP->getCam());
+        texturesP->DrawImage(texName, rect);
 	}
 };
 Textures* GameObject::texturesP = nullptr;
 Camera* GameObject::cameraP = nullptr;
 std::vector<std::unique_ptr<GameObject>>* GameObject::pendingP = nullptr;
-
-class Unko : public GameObject {
-private:
-public:
-	Unko(double posX, double posY) {
-		texName = "unko";
-		x = posX;
-		y = posY;
-		w = 100.0;
-		h = 100.0;
-	}
-	void Update() override {
-	}
-};
+*/
 
 class Player : public GameObject {
 private:
@@ -431,7 +372,7 @@ public:
 	}
 
 	void SetAX(double acceleration) {
-		vX += acceleration * timeScale;
+		vX += acceleration * settings::timeScale;
 		if (vX > maxSpeed) {
 			vX = maxSpeed;
 		}
@@ -439,12 +380,14 @@ public:
 			vX = -1 * maxSpeed;
 		}
 
+        /*
 		if (acceleration > 0.0) {
 			flipX = false;
 		}
 		else if (acceleration < 0.0) {
 			flipX = true;
 		}
+        */
 	}
 
 	void AddW(double length) {
@@ -462,39 +405,38 @@ public:
 
 	void Update() override {
 
-		vY -= 2000 * timeScale;
+		vY -= 2000 * settings::timeScale;
 		
 		
 		OBJRECT touchingMap;
 		//Y
-		MoveY(vY);
+		MoveY();
 		onGround = false;
 		touchingMap = isTouchingMap(x, y, w, h);
 		while (touchingMap.touch && vY < 0.0) {
 			onGround = true;
 			vY = 0.0;
-			y = touchingMap.y + 0.5*h + levelP->getBlockSize()*0.5;
+			y = touchingMap.y + 0.5*h + levelP->GetBlockSize()*0.5;
 			touchingMap = isTouchingMap(x, y, w, h);
 		}
 		while (touchingMap.touch && vY > 0.0) {
 			vY = 0.0;
-			y = touchingMap.y - 0.5 * h - levelP->getBlockSize() * 0.5;
+			y = touchingMap.y - 0.5 * h - levelP->GetBlockSize() * 0.5;
 			touchingMap = isTouchingMap(x, y, w, h);
-			pendingP->push_back(std::make_unique<Unko>(x , y + h + levelP->getBlockSize()));
 		}
 		
 		//X
-		MoveX(vX);
+		MoveX();
 		touchingMap = isTouchingMap(x, y, w, h);
 		while (touchingMap.touch) {
 			if (vX > 0.0) {
 				vX = 0.0;
-				x = touchingMap.x - 0.5 * w - levelP->getBlockSize() * 0.5;
+				x = touchingMap.x - 0.5 * w - levelP->GetBlockSize() * 0.5;
 				touchingMap = isTouchingMap(x, y, w, h);
 			}
 			else if (vX < 0.0) {
 				vX = 0.0;
-				x = touchingMap.x + 0.5 * w + levelP->getBlockSize() * 0.5;
+				x = touchingMap.x + 0.5 * w + levelP->GetBlockSize() * 0.5;
 				touchingMap = isTouchingMap(x, y, w, h);
 			}
 			else {
@@ -503,13 +445,13 @@ public:
 		}
 
 		if (vX >= minSpeed) {
-			vX -= deceleration * timeScale;
+			vX -= deceleration * settings::timeScale;
 		}
 		else if (vX < minSpeed && vX > minSpeed*-1) {
 			vX = 0.0;
 		}
 		else if (vX <= minSpeed*-1) {
-			vX += deceleration * timeScale;
+			vX += deceleration * settings::timeScale;
 		}
 		else {
 			vX = 0.0;
@@ -525,11 +467,11 @@ public:
 		}
 
 		if (!onGround) {
-			moveBody += 12 * timeScale;
+			moveBody += 12 * settings::timeScale;
 		}
 
 		if (vX != 0.0) {
-			moveBody += 12 * timeScale;
+			moveBody += 12 * settings::timeScale;
 		}
 		else if (onGround) {
 			moveBody = 0;
@@ -617,19 +559,15 @@ int main(int argc, char* argv[]) {
 	
 	SDL_DisplayMode dm;
 	SDL_GetCurrentDisplayMode(0, &dm);
-	float scaleX = (float)dm.w / baseW;
-	float scaleY = (float)dm.h / baseH;
+	float scaleX = (float)dm.w / settings::baseW;
+	float scaleY = (float)dm.h / settings::baseH;
 	float scale = (scaleX < scaleY) ? scaleX : scaleY;
-	int winW = (int)(baseW * scale);
-	int winH = (int)(baseH * scale);
+	int winW = (int)(settings::baseW * scale);
+	int winH = (int)(settings::baseH * scale);
 	settings::window = SDL_CreateWindow("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winW, winH, SDL_WINDOW_FULLSCREEN_DESKTOP);
 	settings::renderer = SDL_CreateRenderer(settings::window, -1, SDL_RENDERER_SOFTWARE);
 
-    window = settings::window;
-    renderer = settings::renderer;
-
-	SDL_RenderSetLogicalSize(renderer, baseW, baseH);
-	SDL_RenderSetLogicalSize(renderer, 1600, 900);
+	SDL_RenderSetLogicalSize(settings::renderer, settings::baseW, settings::baseH);
 
 	std::vector<std::unique_ptr<GameObject>> objects;
 	std::vector<std::unique_ptr<GameObject>> pending;
@@ -639,12 +577,12 @@ int main(int argc, char* argv[]) {
 	Player Assy2("assy2");
 	GameObject::texturesP = &textures;
 	GameObject::cameraP = &camera;
-	GameObject::pendingP = &pending;
+	//GameObject::pendingP = &pending;
 	Level::texturesP = &textures;
-	Level::cameraP = &camera;
 	Player::levelP = &level;	
 	Player::cameraP = &camera;
-	//Camera::playerP = &Assy2;
+	Camera::texturesP = &textures;
+    Textures::cameraP = &camera;
 	
 
 	double accumulator = 0.0;
@@ -654,9 +592,6 @@ int main(int argc, char* argv[]) {
 	SDL_Event event;
 	bool running = true;
 
-
-	pending.push_back(std::make_unique<Unko>(400,1200));
-	pending.push_back(std::make_unique<Unko>(5935, 800));
 
 	while (running) {    
         CAMERA cam = camera.getCam();
@@ -676,19 +611,10 @@ int main(int argc, char* argv[]) {
 		double frameTime = currentTime - lastTime;
 		lastTime = currentTime;
 		accumulator += frameTime;
-		timeScale = dt * speedMultiplier;
 		
-		while (accumulator >= dt) {
-			SDL_RenderSetLogicalSize(renderer, baseW, baseH);
+		while (accumulator >= settings::dt) {
+			SDL_RenderSetLogicalSize(settings::renderer, settings::baseW, settings::baseH);
 			const Uint8* keystate = SDL_GetKeyboardState(NULL);
-			if (keystate[SDL_SCANCODE_UP]) {
-				speedMultiplier += 0.01;
-				std::cout << speedMultiplier << std::endl;
-			}
-			if (keystate[SDL_SCANCODE_DOWN]) {
-				speedMultiplier -= 0.01;
-				std::cout << speedMultiplier << std::endl;
-			}
 			if (keystate[SDL_SCANCODE_RIGHT]) {
 				//camera.SetOffsetX(camera.GetOffsetX() + 4 * timeScale * 60);
 			}
@@ -728,14 +654,14 @@ int main(int argc, char* argv[]) {
 			pending.clear();
 
 			//std::cout << std::endl;
-			SDL_RenderPresent(renderer);
-			accumulator -= dt;
+			SDL_RenderPresent(settings::renderer);
+			accumulator -= settings::dt;
 		}
 
 		//SDL_RenderSetLogicalSize(renderer, (int)(baseW / camera.getCam().zoom), (int)(baseH / camera.getCam().zoom));
 		//SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
-		SDL_SetRenderDrawColor(renderer, 100, 50, 50, 255);
-		SDL_RenderClear(renderer);
+		SDL_SetRenderDrawColor(settings::renderer, 100, 50, 50, 255);
+		SDL_RenderClear(settings::renderer);
 
 
         /*
@@ -768,10 +694,13 @@ int main(int argc, char* argv[]) {
         //SDL_Rect rect = { 100,100,100,100 };
         //SDL_RenderCopy(settings::renderer, IMG_LoadTexture(settings::renderer, "Assets/textures/assy.png"), NULL, &rect);
         textures.Update();
+        camera.Update();
+        color = { 255,255,255,255 };
+        textures.DrawTextA("unchi", color, 0, 0);
 		SDL_RenderPresent(settings::renderer);
 	}
 
-	SDL_DestroyWindow(window);
+	SDL_DestroyWindow(settings::window);
 	SDL_Quit();
 	return 0;
 }

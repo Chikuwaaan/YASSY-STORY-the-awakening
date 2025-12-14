@@ -1,6 +1,7 @@
-#include <SDL.h>
-
 #pragma once
+
+#include <SDL.h>
+#include "structs.h"
 
 namespace settings {
 	extern double maxFps;
@@ -11,4 +12,8 @@ namespace settings {
     extern int baseH;
     extern SDL_Window* window;
     extern SDL_Renderer* renderer;
+}
+
+namespace utilities {
+    extern bool HitDetection(OBJRECT obj1, OBJRECT obj2);
 }

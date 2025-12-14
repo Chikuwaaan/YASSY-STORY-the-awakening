@@ -134,14 +134,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="GameOObject.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="namespace.cpp" />
     <ClCompile Include="Textures.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="GameOObject.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="namespace.h" />
     <ClInclude Include="structs.h" />
