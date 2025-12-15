@@ -12,8 +12,11 @@ private:
 public:
     static Textures* texturesP;
     Camera();
-    CAMERA getCam();
-    void setCam(CAMERA cam);
+    CAMERA GetCam();
+    void SetCam(CAMERA cam);
+    void SetTargetX(double x);
+    void SetTargetY(double y);
     void Update();
+    std::vector<CAMERAROOM>* GetRoom();
 };
 

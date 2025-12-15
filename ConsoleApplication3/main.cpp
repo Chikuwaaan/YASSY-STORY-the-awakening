@@ -15,6 +15,7 @@
 #include "Camera.h"
 #include "Level.h"
 #include "GameObject.h"
+#include "Player.h"
 
 /*
 void DrawImage(SDL_Texture* texture, OBJRECT rect, CAMERA camera,  bool horizontalFlip, bool verticalFlip, double angle, double axisX, double axisY) {
@@ -342,14 +343,9 @@ Camera* GameObject::cameraP = nullptr;
 std::vector<std::unique_ptr<GameObject>>* GameObject::pendingP = nullptr;
 */
 
-class Player : public GameObject {
+/*
+class PPlayer : public GameObject {
 private:
-	double vX = 0.0, vY = 0.0;
-	struct BLOCKPOS {
-		double x;
-		double y;
-		bool touch;
-	};
 	bool onGround = false;
 	double maxSpeed = 480.0;
 	double minSpeed = 8.0;
@@ -359,10 +355,11 @@ public:
 	static Level* levelP;
 	static Camera* cameraP;
 
+
 	Player(std::string tex){
 		texName = "missing";
 		x = 180.0;
-		y = 180.0;
+		y = 1000.0;
 		w = 60.0;
 		h = 100.0;
 	};
@@ -380,21 +377,14 @@ public:
 			vX = -1 * maxSpeed;
 		}
 
-        /*
+        
 		if (acceleration > 0.0) {
 			flipX = false;
 		}
 		else if (acceleration < 0.0) {
 			flipX = true;
 		}
-        */
-	}
-
-	void AddW(double length) {
-		w += length;
-	}
-	void AddH(double length) {
-		h += length;
+        
 	}
 
 	OBJRECT isTouchingMap(double x, double y, double w, double h) {
@@ -404,6 +394,7 @@ public:
 
 
 	void Update() override {
+
 
 		vY -= 2000 * settings::timeScale;
 		
@@ -485,7 +476,7 @@ public:
 		}
 	}
 
-    /*
+    
 	void MoveCameraRoom() {
 		std::vector<CAMERAROOM>* room = cameraP->GetRoom();
 		for (int i = 0; i < room->size(); i++) {
@@ -506,10 +497,10 @@ public:
 		}
 		
 	}
-    */
+    
 
 
-    /*
+    
 	void DrawPart(std::string texName, double angle, double axisX, double axisY) {
 		SDL_Texture* texture = texturesP->getTexture(texName);
 		double rectX = 140 * (w/60);
@@ -526,11 +517,12 @@ public:
 		DrawPart("armL", sin(moveBody) * -16, 90, 60);
 		DrawPart("armR", sin(moveBody) * 16, 70, 70);
 	}
-    */
+    
 };
 Level* Player::levelP = nullptr;
 Camera* Player::cameraP = nullptr;
 
+*/
 
 
 
@@ -594,7 +586,7 @@ int main(int argc, char* argv[]) {
 
 
 	while (running) {    
-        CAMERA cam = camera.getCam();
+        CAMERA cam = camera.GetCam();
 
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
@@ -602,7 +594,7 @@ int main(int argc, char* argv[]) {
 			}
 			if (event.type == SDL_MOUSEWHEEL) {
                 cam.zoom = cam.zoom + event.wheel.y * 0.1;
-                camera.setCam(cam);
+                camera.SetCam(cam);
 				//camera.SetZoom(camera.getCam().zoom + event.wheel.y * 0.1);
 			}
 		}
@@ -625,12 +617,6 @@ int main(int argc, char* argv[]) {
 				textures.LoadTextures();
 				//Mix_Music* music = Mix_LoadMUS("Assets/audio/YASSY_ZONE.wav");
 				//Mix_PlayMusic(music, -1);
-			}
-			if (keystate[SDL_SCANCODE_N]) {
-				Assy2.AddW(1);
-			}
-			if (keystate[SDL_SCANCODE_M]) {
-				Assy2.AddH(1);
 			}
 			if (keystate[SDL_SCANCODE_W]) {
 				Assy2.Jump();
@@ -676,8 +662,8 @@ int main(int argc, char* argv[]) {
 		for (auto& obj : objects) {
 			obj->Draw();
 		}
-		Assy2.Draw();
-		//Assy2.DrawPlayer();
+		//Assy2.Draw();
+		Assy2.DrawPlayer();
 
 
 		

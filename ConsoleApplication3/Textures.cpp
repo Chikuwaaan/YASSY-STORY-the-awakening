@@ -32,7 +32,7 @@ void Textures::LoadTextures() {
 }
 
 void Textures::DrawImage(std::string texName, OBJRECT rect) {
-    CAMERA camera = cameraP->getCam();
+    CAMERA camera = cameraP->GetCam();
     double pivotX = settings::baseW / 2.0;
     double pivotY = settings::baseH / 2.0;
     SDL_Rect dst;
@@ -43,8 +43,35 @@ void Textures::DrawImage(std::string texName, OBJRECT rect) {
     SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
 }
 
+void Textures::DrawImageEx(std::string texName, OBJRECT rect, double angle, OBJRECT center, bool flipX, bool flipY) {
+    CAMERA camera = cameraP->GetCam();
+    double pivotX = settings::baseW / 2.0;
+    double pivotY = settings::baseH / 2.0;
+    SDL_Rect dst;
+    dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+    dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+    dst.w = (int)(rect.w * camera.zoom);
+    dst.h = (int)(rect.h * camera.zoom);
+
+    SDL_Point point;
+    point.x = (int)center.x;
+    point.y = (int)center.y;
+
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
+    if (flipX && flipY) {
+        flip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
+    }
+    else if (flipX) {
+        flip = SDL_FLIP_VERTICAL;
+    }
+    else if (flipY) {
+        flip = SDL_FLIP_HORIZONTAL;
+    }
+    SDL_RenderCopyEx(settings::renderer, GetTexture(texName), NULL, &dst, angle, &point, flip);
+}
+
 void Textures::DrawRect(SDL_Color color, OBJRECT rect) {
-    CAMERA camera = cameraP->getCam();
+    CAMERA camera = cameraP->GetCam();
     double pivotX = settings::baseW / 2.0;
     double pivotY = settings::baseH / 2.0;
     SDL_Rect dst;
