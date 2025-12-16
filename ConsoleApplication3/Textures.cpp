@@ -54,8 +54,8 @@ void Textures::DrawImageEx(std::string texName, OBJRECT rect, double angle, OBJR
     dst.h = (int)(rect.h * camera.zoom);
 
     SDL_Point point;
-    point.x = (int)center.x;
-    point.y = (int)center.y;
+    point.x = (int)(center.x * camera.zoom);
+    point.y = (int)(center.y * camera.zoom);
 
     SDL_RendererFlip flip = SDL_FLIP_NONE;
     if (flipX && flipY) {

@@ -16,7 +16,10 @@ private:
     double deceleration;
     double moveBody;
     double aX, aY;
+    int coyoteTime;
+    
 public:
+    bool canJump;
     static Level* levelP;
     static Camera* cameraP;
     Player(std::string tex);

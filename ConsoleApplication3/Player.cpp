@@ -17,10 +17,11 @@ Player::Player(std::string tex) {
     x = 180.0;
     y = 1000.0;
     w = 60.0;
-    h = 100.0;
+    h = 80.0;
     aX = 0.0;
     aY = 0.0;
     flipX = false;
+    coyoteTime = 0;
 }
 
 void Player::SetAX(double acceleration) {
@@ -55,6 +56,13 @@ void Player::Update() {
         vY = 0.0;
         y = touchingMap.y - 0.5 * h - levelP->GetBlockSize() * 0.5;
         touchingMap = isTouchingMap(x, y, w, h);
+    }
+    if (onGround) {
+        coyoteTime = 0;
+        canJump = true;
+    }
+    else {
+        coyoteTime++;
     }
 
     //X
@@ -100,8 +108,6 @@ void Player::Update() {
     if (y < -1000.0) {
         x = 180.0;
         y = 180.0;
-        w = 60.0;
-        h = 100.0;
         //Mix_Music* music = Mix_LoadMUS("Assets/audio/sanctuary.wav");
         //Mix_PlayMusic(music, -1);
     }
@@ -121,8 +127,9 @@ void Player::Update() {
 }
 
 void Player::Jump() {
-    if (onGround) {
-        vY = 1250.0;
+    if (coyoteTime < 6 && canJump) {
+        vY = 1000.0;
+        canJump = false;
     }
 }
 
@@ -157,19 +164,19 @@ void Player::DrawPlayer() {
     DrawPart("legR", sin(moveBody) * -16, 34, 60);
     DrawPart("body", sin(moveBody), 0, 0);
     DrawPart("head", sin(moveBody) * 4, 80, 20);
-    DrawPart("armL", sin(moveBody) * -16, 90, 60);
-    DrawPart("armR", sin(moveBody) * 16, 70, 70);
+    DrawPart("armL", sin(moveBody) * -16, 80, 50);
+    DrawPart("armR", sin(moveBody) * 16, 60, 50);
 }
 
 void Player::DrawPart(std::string tex, double angle, int X, int Y) {
     OBJRECT rect;
     rect.x = (int)x + 20 + flipX * -40;
-    rect.y = (int)y + 4;
-    rect.w = 140;
-    rect.h = 140;
+    rect.y = (int)y + 5;
+    rect.w = 120;
+    rect.h = 120;
     OBJRECT point;
     if (flipX) {
-        point.x = 140 - X;
+        point.x = rect.w - X;
     }
     else {
         point.x = X;

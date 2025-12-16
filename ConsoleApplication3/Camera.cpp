@@ -13,8 +13,8 @@ Camera::Camera() {
     camera.targetY = 540.0;
     camera.zoom = 1.0;
 
-    room.push_back({ 0,1920,0,1080,960,960,540,540 });
-    room.push_back({ 1920,1920 * 2,0,1440,960 * 3 - 120,960 * 3 + 120,540,660 });
+    //room.push_back({ 0,1920,0,1080,960,960,540,540 });
+    //room.push_back({ 1920,1920 * 2,0,1440,960 * 3 - 120,960 * 3 + 120,540,660 });
 }
 
 CAMERA Camera::GetCam() {

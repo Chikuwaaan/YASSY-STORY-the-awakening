@@ -5,7 +5,7 @@ namespace settings {
     double dt = 1.0 / maxFps;
     double timeMultiplier = 1.0;
     double timeScale = dt * timeMultiplier;
-    int baseW = 1920;
+    int baseW = 1440;
     int baseH = 1080;
     SDL_Window* window;
     SDL_Renderer* renderer;
