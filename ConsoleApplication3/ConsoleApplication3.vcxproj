@@ -140,6 +140,7 @@
     <ClCompile Include="namespace.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="Zako.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="namespace.h" />
     <ClInclude Include="structs.h" />
     <ClInclude Include="Textures.h" />
+    <ClInclude Include="Zako.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ConsoleApplication3.rc" />

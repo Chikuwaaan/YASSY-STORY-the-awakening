@@ -17,39 +17,41 @@
 #include "GameObject.h"
 #include "Player.h"
 
-int main(int argc, char* argv[]) {
-	SetProcessDPIAware();
-	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-	TTF_Init();
-	IMG_Init(IMG_INIT_PNG);
+void SystemInit() {
+    SetProcessDPIAware();
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+    TTF_Init();
+    IMG_Init(IMG_INIT_PNG);
 
-	SDL_Surface* surface = IMG_Load("Assets/textures/assy.png");
-	SDL_Cursor* cursor = SDL_CreateColorCursor(surface, 0, 0);
-	SDL_SetCursor(cursor);
-	SDL_FreeSurface(surface);
+    SDL_Surface* surface = IMG_Load("Assets/textures/assy.png");
+    SDL_Cursor* cursor = SDL_CreateColorCursor(surface, 0, 0);
+    SDL_SetCursor(cursor);
+    SDL_FreeSurface(surface);
 
-	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-	//Mix_Music* music = Mix_LoadMUS("Assets/audio/sanctuary.wav");
-	//Mix_PlayMusic(music, -1);
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+    //Mix_Music* music = Mix_LoadMUS("Assets/audio/sanctuary.wav");
+    //Mix_PlayMusic(music, -1);
 
-	TTF_Font* font100 = TTF_OpenFont("C:/Windows/Fonts/meiryo.ttc", 50);
-	if (!font100) {
-		std::cout << "フォントが読み込めませんでした。";
-		return 1;
-	}
-	
+    TTF_Font* font100 = TTF_OpenFont("C:/Windows/Fonts/meiryo.ttc", 50);
+    if (!font100) {
+        std::cout << "フォントが読み込めませんでした。";
+    }
+
     //Open Window
-	SDL_DisplayMode dm;
+    SDL_DisplayMode dm;
     SDL_GetCurrentDisplayMode(0, &dm);
-	float scaleX = (float)dm.w / settings::baseW;
-	float scaleY = (float)dm.h / settings::baseH;
-	float scale = (scaleX < scaleY) ? scaleX : scaleY;
-	int winW = (int)(settings::baseW * scale);
-	int winH = (int)(settings::baseH * scale);
-	settings::window = SDL_CreateWindow("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winW, winH, SDL_WINDOW_FULLSCREEN_DESKTOP);
-	settings::renderer = SDL_CreateRenderer(settings::window, -1, SDL_RENDERER_SOFTWARE);
+    float scaleX = (float)dm.w / settings::baseW;
+    float scaleY = (float)dm.h / settings::baseH;
+    float scale = (scaleX < scaleY) ? scaleX : scaleY;
+    int winW = (int)(settings::baseW * scale);
+    int winH = (int)(settings::baseH * scale);
+    settings::window = SDL_CreateWindow("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winW, winH, SDL_WINDOW_FULLSCREEN_DESKTOP);
+    settings::renderer = SDL_CreateRenderer(settings::window, -1, SDL_RENDERER_SOFTWARE);
     SDL_RenderSetLogicalSize(settings::renderer, settings::baseW, settings::baseH);
-    
+}
+
+int main(int argc, char* argv[]) {
+    SystemInit();
 
 	std::vector<std::unique_ptr<GameObject>> objects;
 	std::vector<std::unique_ptr<GameObject>> pending;
@@ -74,6 +76,10 @@ int main(int argc, char* argv[]) {
 	SDL_Event event;
 	bool running = true;
 
+    int flames = 0;
+    bool countFlame = true;
+    double fpsAccum = 0.0;
+    int realFps = 0;
 
 	while (running) {    
         CAMERA cam = camera.GetCam();
@@ -93,8 +99,14 @@ int main(int argc, char* argv[]) {
 		double frameTime = currentTime - lastTime;
 		lastTime = currentTime;
 		accumulator += frameTime;
+        fpsAccum += frameTime;
 		
 		while (accumulator >= settings::dt) {
+            if (countFlame) {
+                flames++;
+                countFlame = false;
+            }
+
 			SDL_RenderSetLogicalSize(settings::renderer, settings::baseW, settings::baseH);
 			const Uint8* keystate = SDL_GetKeyboardState(NULL);
 			if (keystate[SDL_SCANCODE_RIGHT]) {
@@ -136,6 +148,7 @@ int main(int argc, char* argv[]) {
 			SDL_RenderPresent(settings::renderer);
 			accumulator -= settings::dt;
 		}
+        countFlame = true;
 
 		//SDL_RenderSetLogicalSize(renderer, (int)(baseW / camera.getCam().zoom), (int)(baseH / camera.getCam().zoom));
 		//SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
@@ -145,13 +158,7 @@ int main(int argc, char* argv[]) {
         SDL_Rect rect = { 0, 0, settings::baseW, settings::baseH };
         SDL_RenderFillRect(settings::renderer, &rect);
 
-        /*
-		camera.targetX = Assy2.GetX() + camera.GetOffsetX();
-		camera.targetY = Assy2.GetY();
-		Assy2.MoveCameraRoom();
-		camera.SetX(camera.targetX + (camera.getCam().x - camera.targetX) / (1.02));
-		camera.SetY(camera.targetY + (camera.getCam().y - camera.targetY) / (1.02));
-        */
+        
 		
 		level.DrawMap();
 		for (auto& obj : objects) {
@@ -159,25 +166,8 @@ int main(int argc, char* argv[]) {
 		}
 		//Assy2.Draw();
 		Assy2.DrawPlayer();
-
-
-		
-        /*
-		color = { 255,255,255 };
-		DrawText(font100, std::to_string(Assy2.GetX()), color, 0, 200);
-		DrawText(font100, std::to_string(Assy2.GetY()), color, 0, 300);
-		DrawText(font100, std::to_string(camera.getCam().x), color, 200, 400);
-		DrawText(font100, std::to_string(camera.getCam().y), color, 200, 500);
-		DrawText(font100, std::to_string(camera.targetX), color, 400, 600);
-		DrawText(font100, std::to_string(camera.targetY), color, 400, 700);
-        */
-
-        //SDL_Rect rect = { 100,100,100,100 };
-        //SDL_RenderCopy(settings::renderer, IMG_LoadTexture(settings::renderer, "Assets/textures/assy.png"), NULL, &rect);
         textures.Update();
         camera.Update();
-        color = { 255,255,255,255 };
-        textures.DrawTextA("unchi", color, 0, 0);
 		SDL_RenderPresent(settings::renderer);
 	}
 

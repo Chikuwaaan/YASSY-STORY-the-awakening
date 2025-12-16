@@ -92,10 +92,10 @@ SDL_Texture* Textures::GetTexture(std::string name) {
     }
 }
 
-void Textures::DrawTextA(std::string text, SDL_Color color, int x, int y) {
+void Textures::DrawTextA(std::string text, SDL_Color color, int x, int y, int w, int h) {
     SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), color);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(settings::renderer, surface);
-    SDL_Rect dst = { x,y,surface->w, surface->h };
+    SDL_Rect dst = { x,y,surface->w * w, surface->h * h};
     SDL_RenderCopy(settings::renderer, texture, NULL, &dst);
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);

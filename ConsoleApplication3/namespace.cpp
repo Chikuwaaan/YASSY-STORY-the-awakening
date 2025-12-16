@@ -27,3 +27,7 @@ namespace utilities {
             y1 + 0.5 * h1 > y2 - 0.5 * h2);
     }
 }
+
+namespace platformer {
+    double gravity = -2000.0;
+}

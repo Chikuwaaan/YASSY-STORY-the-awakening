@@ -42,7 +42,7 @@ void Player::Update() {
 
     OBJRECT touchingMap;
     //Y
-    vY -= 2000 * settings::timeScale;
+    vY += platformer::gravity * settings::timeScale;
     MoveY();
     onGround = false;
     touchingMap = isTouchingMap(x, y, w, h);
@@ -106,10 +106,7 @@ void Player::Update() {
     aX = 0.0;
 
     if (y < -1000.0) {
-        x = 180.0;
-        y = 180.0;
-        //Mix_Music* music = Mix_LoadMUS("Assets/audio/sanctuary.wav");
-        //Mix_PlayMusic(music, -1);
+        Die();
     }
 
     if (!onGround) {
@@ -157,6 +154,13 @@ void Player::MoveCameraRoom() {
         }
     }
     cameraP->SetCam(camera);
+}
+
+void Player::Die() {
+    x = 180.0;
+    y = 180.0;
+    //Mix_Music* music = Mix_LoadMUS("Assets/audio/sanctuary.wav");
+    //Mix_PlayMusic(music, -1);
 }
 
 void Player::DrawPlayer() {

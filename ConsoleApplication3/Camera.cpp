@@ -36,7 +36,7 @@ void Camera::SetTargetY(double y) {
 void Camera::Update() {
     //OBJRECT rect = { camera.x,camera.y,60,60 };
     //texturesP->DrawImage("camera", rect);
-    //texturesP->DrawRect({ 255,255,255,255 }, { camera.x, camera.y, (double)settings::baseW, (double)settings::baseH });
+    texturesP->DrawRect({ 255,255,255,255 }, { camera.x, camera.y, (double)settings::baseW, (double)settings::baseH });
 
     //camera.x = camera.targetX;
     //camera.y = camera.targetY;

@@ -1,7 +1,7 @@
 #pragma once
-#include "GameObject.h"
 #include <string>
 #include "structs.h"
+#include "GameObject.h"
 
 class Level;
 class Camera;
@@ -28,6 +28,7 @@ public:
     void Update() override;
     void Jump();
     void MoveCameraRoom();
+    void Die();
     
     void DrawPlayer();
     void DrawPart(std::string tex, double angle, int x, int y);
