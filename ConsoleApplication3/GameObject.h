@@ -12,6 +12,7 @@ protected:
     std::string texName;
     double x, y, w, h;
     double vX, vY;
+    bool flipX;
 public:
     static Textures* texturesP;
     static Camera* cameraP;
@@ -21,5 +22,6 @@ public:
     void MoveX();
     void MoveY();
     void Draw();
+    void FlipX(bool flip);
 };
 

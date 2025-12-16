@@ -28,3 +28,7 @@ void GameObject::Draw() {
     texturesP->DrawImage(texName, rect);
 
 }
+
+void GameObject::FlipX(bool flip) {
+    flipX = flip;
+}

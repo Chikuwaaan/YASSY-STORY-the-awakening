@@ -623,12 +623,15 @@ int main(int argc, char* argv[]) {
 			}
 			if (keystate[SDL_SCANCODE_A]) {
 				Assy2.SetAX(-3840.0);
-				//camera.SetOffsetX(camera.GetOffsetX() - 4);
+                Assy2.FlipX(true);
 			}
 			if (keystate[SDL_SCANCODE_D]) {
 				Assy2.SetAX(3840.0);
-				//camera.SetOffsetX(camera.GetOffsetX() + 4);
+                Assy2.FlipX(false);
 			}
+            if (keystate[SDL_SCANCODE_ESCAPE]) {
+                running = false;
+            }
 
 			for (auto& obj : objects) {
 				obj->Update();
@@ -662,7 +665,7 @@ int main(int argc, char* argv[]) {
 		for (auto& obj : objects) {
 			obj->Draw();
 		}
-		//Assy2.Draw();
+		Assy2.Draw();
 		Assy2.DrawPlayer();
 
 

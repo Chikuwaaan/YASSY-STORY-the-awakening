@@ -61,10 +61,10 @@ void Textures::DrawImageEx(std::string texName, OBJRECT rect, double angle, OBJR
     if (flipX && flipY) {
         flip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
     }
-    else if (flipX) {
+    else if (flipY) {
         flip = SDL_FLIP_VERTICAL;
     }
-    else if (flipY) {
+    else if (flipX) {
         flip = SDL_FLIP_HORIZONTAL;
     }
     SDL_RenderCopyEx(settings::renderer, GetTexture(texName), NULL, &dst, angle, &point, flip);

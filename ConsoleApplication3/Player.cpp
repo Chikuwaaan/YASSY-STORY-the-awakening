@@ -20,6 +20,7 @@ Player::Player(std::string tex) {
     h = 100.0;
     aX = 0.0;
     aY = 0.0;
+    flipX = false;
 }
 
 void Player::SetAX(double acceleration) {
@@ -152,22 +153,27 @@ void Player::MoveCameraRoom() {
 }
 
 void Player::DrawPlayer() {
-    DrawPart("legL", sin(moveBody) * 16, 0, 0);
-    DrawPart("legR", sin(moveBody) * -16, 0, 0);
-    DrawPart("body", cos(moveBody), 0, 0);
-    DrawPart("head", cos(moveBody) * 4, 0, 0);
-    DrawPart("armL", sin(moveBody) * -16, 0, 0);
-    DrawPart("armR", sin(moveBody) * 16, 0, 0);
+    DrawPart("legL", sin(moveBody) * 16, 30, 60);
+    DrawPart("legR", sin(moveBody) * -16, 34, 60);
+    DrawPart("body", sin(moveBody), 0, 0);
+    DrawPart("head", sin(moveBody) * 4, 80, 20);
+    DrawPart("armL", sin(moveBody) * -16, 90, 60);
+    DrawPart("armR", sin(moveBody) * 16, 70, 70);
 }
 
 void Player::DrawPart(std::string tex, double angle, int X, int Y) {
     OBJRECT rect;
-    rect.x = (int)x;
-    rect.y = (int)y;
+    rect.x = (int)x + 20 + flipX * -40;
+    rect.y = (int)y + 4;
     rect.w = 140;
     rect.h = 140;
     OBJRECT point;
-    point.x = X;
+    if (flipX) {
+        point.x = 140 - X;
+    }
+    else {
+        point.x = X;
+    }
     point.y = Y;
-    texturesP->DrawImageEx(tex, rect, 0.0, point, 0, 0);
+    texturesP->DrawImageEx(tex, rect, angle, point, flipX, 0);
 }
