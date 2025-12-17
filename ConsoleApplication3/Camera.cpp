@@ -5,7 +5,7 @@
 Textures* Camera::texturesP = nullptr;
 
 Camera::Camera() {
-    camera.x = 960.0;
+    camera.x = 720.0;
     camera.y = 540.0;
     camera.offsetX = 0.0;
     camera.offsetY = 0.0;
@@ -15,6 +15,7 @@ Camera::Camera() {
 
     //room.push_back({ 0,1920,0,1080,960,960,540,540 });
     //room.push_back({ 1920,1920 * 2,0,1440,960 * 3 - 120,960 * 3 + 120,540,660 });
+    room.push_back({ 0,1440,0,1080,720,720,540,540 });
 }
 
 CAMERA Camera::GetCam() {
@@ -40,8 +41,8 @@ void Camera::Update() {
 
     //camera.x = camera.targetX;
     //camera.y = camera.targetY;
-    camera.x = camera.targetX + (camera.x - camera.targetX) / (1.02);
-    camera.y = camera.targetY + (camera.y - camera.targetY) / (1.02);
+    camera.x = camera.targetX + (camera.x - camera.targetX) / (1.005);
+    camera.y = camera.targetY + (camera.y - camera.targetY) / (1.005);
 
 
 }

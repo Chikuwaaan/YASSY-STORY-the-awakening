@@ -8,8 +8,8 @@
 Level* Player::levelP = nullptr;
 Camera* Player::cameraP = nullptr;
 
-Player::Player(std::string tex) {
-    texName = "missing";
+Player::Player() {
+    texName = "assy";
     maxSpeed = 480.0;
     minSpeed = 8.0;
     deceleration = 1920.0;
@@ -125,7 +125,7 @@ void Player::Update() {
 
 void Player::Jump() {
     if (coyoteTime < 6 && canJump) {
-        vY = 1000.0;
+        vY = 1100.0;
         canJump = false;
     }
 }

@@ -17,48 +17,18 @@
 #include "GameObject.h"
 #include "Player.h"
 
-void SystemInit() {
-    SetProcessDPIAware();
-    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-    TTF_Init();
-    IMG_Init(IMG_INIT_PNG);
-
-    SDL_Surface* surface = IMG_Load("Assets/textures/assy.png");
-    SDL_Cursor* cursor = SDL_CreateColorCursor(surface, 0, 0);
-    SDL_SetCursor(cursor);
-    SDL_FreeSurface(surface);
-
-    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    //Mix_Music* music = Mix_LoadMUS("Assets/audio/sanctuary.wav");
-    //Mix_PlayMusic(music, -1);
-
-    TTF_Font* font100 = TTF_OpenFont("C:/Windows/Fonts/meiryo.ttc", 50);
-    if (!font100) {
-        std::cout << "フォントが読み込めませんでした。";
-    }
-
-    //Open Window
-    SDL_DisplayMode dm;
-    SDL_GetCurrentDisplayMode(0, &dm);
-    float scaleX = (float)dm.w / settings::baseW;
-    float scaleY = (float)dm.h / settings::baseH;
-    float scale = (scaleX < scaleY) ? scaleX : scaleY;
-    int winW = (int)(settings::baseW * scale);
-    int winH = (int)(settings::baseH * scale);
-    settings::window = SDL_CreateWindow("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winW, winH, SDL_WINDOW_FULLSCREEN_DESKTOP);
-    settings::renderer = SDL_CreateRenderer(settings::window, -1, SDL_RENDERER_SOFTWARE);
-    SDL_RenderSetLogicalSize(settings::renderer, settings::baseW, settings::baseH);
-}
+#include "Game.h"
 
 int main(int argc, char* argv[]) {
-    SystemInit();
+    Game game;
+    game.InitSystem();
 
 	std::vector<std::unique_ptr<GameObject>> objects;
 	std::vector<std::unique_ptr<GameObject>> pending;
 	Camera camera;
 	Textures textures;
 	Level level;
-	Player Assy2("assy2");
+	Player Assy2;
 	GameObject::texturesP = &textures;
 	GameObject::cameraP = &camera;
 	//GameObject::pendingP = &pending;
@@ -158,7 +128,13 @@ int main(int argc, char* argv[]) {
         SDL_Rect rect = { 0, 0, settings::baseW, settings::baseH };
         SDL_RenderFillRect(settings::renderer, &rect);
 
-        
+        if (fpsAccum > 1.0) {
+            realFps = (int)round(flames / fpsAccum);
+            fpsAccum -= 1.0;
+            flames = 0;
+        }
+        color = { 255,255,255,255 };
+        textures.DrawTextA(std::to_string(realFps), color, 0, 0, 1, 1);
 		
 		level.DrawMap();
 		for (auto& obj : objects) {

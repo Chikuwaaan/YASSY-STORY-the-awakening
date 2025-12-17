@@ -22,7 +22,7 @@ public:
     bool canJump;
     static Level* levelP;
     static Camera* cameraP;
-    Player(std::string tex);
+    Player();
     void SetAX(double acceleration);
     OBJRECT isTouchingMap(double x, double y, double w, double h);
     void Update() override;
