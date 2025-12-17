@@ -5,6 +5,7 @@
 
 class Textures;
 class Camera;
+class Input;
 
 class GameObject
 {
@@ -16,6 +17,7 @@ protected:
 public:
     static Textures* texturesP;
     static Camera* cameraP;
+    static Input* inputP;
 
     virtual void Update() = 0;
     GameObject();

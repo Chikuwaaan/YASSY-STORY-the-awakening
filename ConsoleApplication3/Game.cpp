@@ -10,10 +10,11 @@
 
 Game::Game() {
     running = true;
-    LinkPointer();
 }
 
 void Game::Run() {
+    MakeInstance();
+
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
     while (running) {
@@ -23,8 +24,8 @@ void Game::Run() {
         accumulator += frameTime;
 
         while (accumulator >= settings::dt) {
+            input->GetKey();
             while (SDL_PollEvent(&event));
-            input.GetKey();
             Update();
             accumulator -= settings::dt;
         }
@@ -40,20 +41,20 @@ void Game::Update() {
     for (auto& obj : objects) {
         obj->Update();
     }
-    assy.Update();
+    assy->Update();
 
     for (auto& p : pendingObjects) {
         objects.push_back(std::move(p));
     }
     pendingObjects.clear();
 
-    level.DrawMap();
+    level->DrawMap();
     for (auto& obj : objects) {
         obj->Draw();
     }
-    assy.DrawPlayer();
-    textures.Update();
-    camera.Update();
+    assy->DrawPlayer();
+    textures->Update();
+    camera->Update();
 
     SDL_RenderPresent(settings::renderer);
 }
@@ -85,20 +86,24 @@ void Game::InitSystem() {
     settings::renderer = SDL_CreateRenderer(settings::window, -1, SDL_RENDERER_ACCELERATED);
     SDL_RenderSetLogicalSize(settings::renderer, settings::baseW, settings::baseH);
 
-    textures.LoadTextures();
 }
 
 
-void Game::LinkPointer() {
+void Game::MakeInstance() {
+    camera = std::make_unique<Camera>();
+    textures = std::make_unique<Textures>();
+    level = std::make_unique<Level>();
+    assy = std::make_unique<Player>();
+    input = std::make_unique<Input>();
 
-
-    Camera::texturesP = &textures;
-    Textures::cameraP = &camera;
-    Level::texturesP = &textures;
-    Player::levelP = &level;
-    Player::cameraP = &camera;
-    GameObject::texturesP = &textures;
-    GameObject::cameraP = &camera;
+    Camera::texturesP = textures.get();
+    Textures::cameraP = camera.get();
+    Level::texturesP = textures.get();
+    Player::levelP = level.get();
+    Player::cameraP = camera.get();
+    GameObject::texturesP = textures.get();
+    GameObject::cameraP = camera.get();
+    GameObject::inputP = input.get();
 }
 
 void Game::Quit() {

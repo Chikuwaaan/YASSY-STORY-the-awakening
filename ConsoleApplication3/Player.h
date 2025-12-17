@@ -27,6 +27,8 @@ public:
     OBJRECT isTouchingMap(double x, double y, double w, double h);
     void Update() override;
     void Jump();
+    void CollideY();
+    void CollideX();
     void MoveCameraRoom();
     void Die();
     

@@ -2,9 +2,11 @@
 #include "namespace.h"
 #include "structs.h"
 #include "Textures.h"
+#include "Input.h"
 
 Textures* GameObject::texturesP = nullptr;
 Camera* GameObject::cameraP = nullptr;
+Input* GameObject::inputP = nullptr;
 
 GameObject::GameObject() {
     x = 0.0;

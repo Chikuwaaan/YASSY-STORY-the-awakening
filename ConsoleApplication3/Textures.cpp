@@ -28,14 +28,7 @@ void Textures::LoadTextures() {
     map["armR"] = IMG_LoadTexture(settings::renderer, "Assets/textures/armR.png");
     map["unko"] = IMG_LoadTexture(settings::renderer, "Assets/textures/unko.png");
     map["camera"] = IMG_LoadTexture(settings::renderer, "Assets/textures/camera.png");
-
-    SDL_Texture* tex = IMG_LoadTexture(settings::renderer, "Assets/textures/missing.png");
-    if (!tex) std::cout << IMG_GetError() << std::endl;
-    if (!settings::renderer) std::cout << "rendererがあかん";
-
-    if (map["missing"]) std::cout << "missingをよみこめた";
-
-    //std::cout << "[DEBUG]テクスチャをロードしました" << std::endl;
+    std::cout << "[DEBUG]テクスチャをロードしました" << std::endl;
 }
 
 void Textures::DrawImage(std::string texName, OBJRECT rect) {
@@ -43,8 +36,9 @@ void Textures::DrawImage(std::string texName, OBJRECT rect) {
     double pivotX = settings::baseW / 2.0;
     double pivotY = settings::baseH / 2.0;
     SDL_Rect dst;
-    dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-    dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+    //ちょっとよくわからん
+    dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+    dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
     dst.w = (int)(rect.w * camera.zoom);
     dst.h = (int)(rect.h * camera.zoom);
     SDL_Rect ds = { 200,200,200,200 };
@@ -56,8 +50,8 @@ void Textures::DrawImageEx(std::string texName, OBJRECT rect, double angle, OBJR
     double pivotX = settings::baseW / 2.0;
     double pivotY = settings::baseH / 2.0;
     SDL_Rect dst;
-    dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-    dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+    dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+    dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
     dst.w = (int)(rect.w * camera.zoom);
     dst.h = (int)(rect.h * camera.zoom);
 
@@ -83,8 +77,8 @@ void Textures::DrawRect(SDL_Color color, OBJRECT rect) {
     double pivotX = settings::baseW / 2.0;
     double pivotY = settings::baseH / 2.0;
     SDL_Rect dst;
-    dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-    dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+    dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+    dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
     dst.w = (int)(rect.w * camera.zoom);
     dst.h = (int)(rect.h * camera.zoom);
     SDL_SetRenderDrawColor(settings::renderer, color.r, color.g, color.b, color.a);

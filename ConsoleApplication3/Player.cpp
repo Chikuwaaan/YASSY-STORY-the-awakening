@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include <iostream>
 #include "Textures.h"
+#include "Input.h"
 
 Level* Player::levelP = nullptr;
 Camera* Player::cameraP = nullptr;
@@ -22,7 +23,6 @@ Player::Player() {
     aY = 0.0;
     flipX = false;
     coyoteTime = 0;
-    std::cout << "‚â‚Á‚µ[’a¶";
 }
 
 void Player::SetAX(double acceleration) {
@@ -40,31 +40,24 @@ void Player::Update() {
     cameraP->SetTargetY(y);
     MoveCameraRoom();
 
+    const Uint8* keystate = inputP->keystate;
+    if (keystate[SDL_SCANCODE_W]) {
+        Jump();
+    }
+    if (keystate[SDL_SCANCODE_A]) {
+        SetAX(-3840.0);
+        FlipX(true);
+    }
+    if (keystate[SDL_SCANCODE_D]) {
+        SetAX(3840.0);
+        FlipX(false);
+    }
+    
 
-    OBJRECT touchingMap;
     //Y
     vY += platformer::gravity * settings::timeScale;
     MoveY();
-    onGround = false;
-    touchingMap = isTouchingMap(x, y, w, h);
-    while (touchingMap.touch && vY < 0.0) {
-        onGround = true;
-        vY = 0.0;
-        y = touchingMap.y + 0.5 * h + levelP->GetBlockSize() * 0.5;
-        touchingMap = isTouchingMap(x, y, w, h);
-    }
-    while (touchingMap.touch && vY > 0.0) {
-        vY = 0.0;
-        y = touchingMap.y - 0.5 * h - levelP->GetBlockSize() * 0.5;
-        touchingMap = isTouchingMap(x, y, w, h);
-    }
-    if (onGround) {
-        coyoteTime = 0;
-        canJump = true;
-    }
-    else {
-        coyoteTime++;
-    }
+    CollideY();
 
     //X
     vX += aX * settings::timeScale;
@@ -75,22 +68,8 @@ void Player::Update() {
         vX = -1 * maxSpeed;
     }
     MoveX();
-    touchingMap = isTouchingMap(x, y, w, h);
-    while (touchingMap.touch) {
-        if (vX > 0.0) {
-            vX = 0.0;
-            x = touchingMap.x - 0.5 * w - levelP->GetBlockSize() * 0.5;
-            touchingMap = isTouchingMap(x, y, w, h);
-        }
-        else if (vX < 0.0) {
-            vX = 0.0;
-            x = touchingMap.x + 0.5 * w + levelP->GetBlockSize() * 0.5;
-            touchingMap = isTouchingMap(x, y, w, h);
-        }
-        else {
-            break;
-        }
-    }
+    CollideX();
+    
 
     if (vX >= minSpeed) {
         vX -= deceleration * settings::timeScale;
@@ -127,6 +106,51 @@ void Player::Jump() {
     if (coyoteTime < 6 && canJump) {
         vY = 1100.0;
         canJump = false;
+    }
+}
+
+void Player::CollideY() {
+    OBJRECT touchingMap;
+    onGround = false;
+    touchingMap = isTouchingMap(x, y, w, h);
+    while (touchingMap.touch && vY < 0.0) {
+        onGround = true;
+        vY = 0.0;
+        y = touchingMap.y + 0.5 * h + levelP->GetBlockSize() * 0.5;
+        touchingMap = isTouchingMap(x, y, w, h);
+    }
+    while (touchingMap.touch && vY > 0.0) {
+        vY = 0.0;
+        y = touchingMap.y - 0.5 * h - levelP->GetBlockSize() * 0.5;
+        touchingMap = isTouchingMap(x, y, w, h);
+    }
+    if (onGround) {
+        coyoteTime = 0;
+        canJump = true;
+    }
+    else {
+        coyoteTime++;
+    }
+
+}
+
+void Player::CollideX() {
+    OBJRECT touchingMap;
+    touchingMap = isTouchingMap(x, y, w, h);
+    while (touchingMap.touch) {
+        if (vX > 0.0) {
+            vX = 0.0;
+            x = touchingMap.x - 0.5 * w - levelP->GetBlockSize() * 0.5;
+            touchingMap = isTouchingMap(x, y, w, h);
+        }
+        else if (vX < 0.0) {
+            vX = 0.0;
+            x = touchingMap.x + 0.5 * w + levelP->GetBlockSize() * 0.5;
+            touchingMap = isTouchingMap(x, y, w, h);
+        }
+        else {
+            break;
+        }
     }
 }
 

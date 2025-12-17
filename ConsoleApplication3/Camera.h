@@ -3,6 +3,7 @@
 #include "structs.h"
 #include <vector>
 class Textures;
+class Input;
 
 class Camera
 {
@@ -11,6 +12,7 @@ private:
     std::vector<CAMERAROOM> room;
 public:
     static Textures* texturesP;
+    static Input* inputP;
     Camera();
     CAMERA GetCam();
     void SetCam(CAMERA cam);

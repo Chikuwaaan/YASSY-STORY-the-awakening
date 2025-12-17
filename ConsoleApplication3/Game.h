@@ -18,18 +18,22 @@ private:
     std::vector<std::unique_ptr<GameObject>> objects;
     std::vector<std::unique_ptr<GameObject>> dyingObjects;
     std::vector<std::unique_ptr<GameObject>> pendingObjects;
-    Camera camera;
-    Textures textures;
-    Level level;
-    Player assy;
-    Input input;
+    std::unique_ptr<Camera> camera;
+    std::unique_ptr<Textures> textures;
+    std::unique_ptr<Level> level;
+    std::unique_ptr<Player> assy;
+    std::unique_ptr<Input> input;
+    //Level level;
+    //Player assy;
+    //Input input;
     SDL_Event event;
 public:
+    
     Game();
     void Run();
     void Update();
     void InitSystem();
-    void LinkPointer(); 
+    void MakeInstance(); 
     void Quit();
 };
 

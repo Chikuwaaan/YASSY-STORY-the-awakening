@@ -1,15 +1,18 @@
 #include "Camera.h"
 #include "Textures.h"
 #include "namespace.h"
+#include "Input.h"
+#include <iostream>
 
 Textures* Camera::texturesP = nullptr;
+Input* Camera::inputP = nullptr;
 
 Camera::Camera() {
     camera.x = 720.0;
     camera.y = 540.0;
     camera.offsetX = 0.0;
     camera.offsetY = 0.0;
-    camera.targetX = 960.0;
+    camera.targetX = 720.0;
     camera.targetY = 540.0;
     camera.zoom = 1.0;
 
@@ -35,14 +38,18 @@ void Camera::SetTargetY(double y) {
 }
 
 void Camera::Update() {
-    //OBJRECT rect = { camera.x,camera.y,60,60 };
-    //texturesP->DrawImage("camera", rect);
+    std::cout << "b";
+    const Uint8* keystate = inputP->keystate;
+
+    //‚È‚ñ‚©‚±‚±‚Å‚¨‚¿‚é
+    if (keystate[SDL_SCANCODE_UP]) {
+        std::cout << "a";
+    }
+
     texturesP->DrawRect({ 255,255,255,255 }, { camera.x, camera.y, (double)settings::baseW, (double)settings::baseH });
 
-    //camera.x = camera.targetX;
-    //camera.y = camera.targetY;
-    camera.x = camera.targetX + (camera.x - camera.targetX) / (1.005);
-    camera.y = camera.targetY + (camera.y - camera.targetY) / (1.005);
+    camera.x = camera.targetX + (camera.x - camera.targetX) / (1.02);
+    camera.y = camera.targetY + (camera.y - camera.targetY) / (1.02);
 
 
 }
