@@ -22,6 +22,7 @@ Player::Player() {
     aY = 0.0;
     flipX = false;
     coyoteTime = 0;
+    std::cout << "‚â‚Á‚µ[’a¶";
 }
 
 void Player::SetAX(double acceleration) {
@@ -120,7 +121,6 @@ void Player::Update() {
         moveBody = 0;
     }
 
-    
 }
 
 void Player::Jump() {

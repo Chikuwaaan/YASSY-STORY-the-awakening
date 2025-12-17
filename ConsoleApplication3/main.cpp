@@ -1,28 +1,14 @@
 ﻿#include <iostream>
-#include <SDL.h>
-#include <SDL_ttf.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <vector>
-#include <string>
-#include <map>
-#include <windows.h>
-#include <cmath>
-
-#include "namespace.h"
-#include "structs.h"
-#include "Textures.h"
-#include "Camera.h"
-#include "Level.h"
-#include "GameObject.h"
-#include "Player.h"
-
 #include "Game.h"
 
 int main(int argc, char* argv[]) {
     Game game;
     game.InitSystem();
+    game.Run();
+    game.Quit();
+    return 0;
 
+    /*
 	std::vector<std::unique_ptr<GameObject>> objects;
 	std::vector<std::unique_ptr<GameObject>> pending;
 	Camera camera;
@@ -51,6 +37,7 @@ int main(int argc, char* argv[]) {
     double fpsAccum = 0.0;
     int realFps = 0;
 
+    
 	while (running) {    
         CAMERA cam = camera.GetCam();
 
@@ -146,8 +133,8 @@ int main(int argc, char* argv[]) {
         camera.Update();
 		SDL_RenderPresent(settings::renderer);
 	}
+    */
 
-	SDL_DestroyWindow(settings::window);
-	SDL_Quit();
-	return 0;
+	//SDL_DestroyWindow(settings::window);
+	//SDL_Quit();
 }

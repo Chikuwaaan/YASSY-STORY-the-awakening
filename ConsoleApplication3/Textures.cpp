@@ -7,6 +7,7 @@ Camera* Textures::cameraP = nullptr;
 Textures::Textures() {
     LoadTextures();
     font = TTF_OpenFont("C:/Windows/Fonts/meiryo.ttc", 50);
+    std::cout << "Texturesが作成されました";
 }
 
 void Textures::LoadTextures() {
@@ -28,7 +29,13 @@ void Textures::LoadTextures() {
     map["unko"] = IMG_LoadTexture(settings::renderer, "Assets/textures/unko.png");
     map["camera"] = IMG_LoadTexture(settings::renderer, "Assets/textures/camera.png");
 
-    std::cout << "[DEBUG]テクスチャをロードしました";
+    SDL_Texture* tex = IMG_LoadTexture(settings::renderer, "Assets/textures/missing.png");
+    if (!tex) std::cout << IMG_GetError() << std::endl;
+    if (!settings::renderer) std::cout << "rendererがあかん";
+
+    if (map["missing"]) std::cout << "missingをよみこめた";
+
+    //std::cout << "[DEBUG]テクスチャをロードしました" << std::endl;
 }
 
 void Textures::DrawImage(std::string texName, OBJRECT rect) {
@@ -40,6 +47,7 @@ void Textures::DrawImage(std::string texName, OBJRECT rect) {
     dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
     dst.w = (int)(rect.w * camera.zoom);
     dst.h = (int)(rect.h * camera.zoom);
+    SDL_Rect ds = { 200,200,200,200 };
     SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
 }
 

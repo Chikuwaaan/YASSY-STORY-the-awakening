@@ -6,9 +6,56 @@
 #include <windows.h>
 #include "Game.h"
 #include "namespace.h"
+#include "GameObject.h"
 
 Game::Game() {
+    running = true;
+    LinkPointer();
+}
 
+void Game::Run() {
+    double accumulator = 0.0;
+    double lastTime = SDL_GetTicks() / 1000.0;
+    while (running) {
+        double currentTime = SDL_GetTicks() / 1000.0;
+        double frameTime = currentTime - lastTime;
+        lastTime = currentTime;
+        accumulator += frameTime;
+
+        while (accumulator >= settings::dt) {
+            while (SDL_PollEvent(&event));
+            input.GetKey();
+            Update();
+            accumulator -= settings::dt;
+        }
+    }
+}
+
+void Game::Update() {
+    SDL_SetRenderDrawColor(settings::renderer, 117, 226, 255, 255);
+    SDL_Rect rect = { 0, 0, settings::baseW, settings::baseH };
+    SDL_RenderFillRect(settings::renderer, &rect);
+    //SDL_RenderCopy(settings::renderer, IMG_LoadTexture(settings::renderer, "Assets/textures/assy.png"), NULL, &rect);
+
+    for (auto& obj : objects) {
+        obj->Update();
+    }
+    assy.Update();
+
+    for (auto& p : pendingObjects) {
+        objects.push_back(std::move(p));
+    }
+    pendingObjects.clear();
+
+    level.DrawMap();
+    for (auto& obj : objects) {
+        obj->Draw();
+    }
+    assy.DrawPlayer();
+    textures.Update();
+    camera.Update();
+
+    SDL_RenderPresent(settings::renderer);
 }
 
 void Game::InitSystem() {
@@ -37,4 +84,24 @@ void Game::InitSystem() {
     settings::window = SDL_CreateWindow("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winW, winH, SDL_WINDOW_FULLSCREEN_DESKTOP);
     settings::renderer = SDL_CreateRenderer(settings::window, -1, SDL_RENDERER_ACCELERATED);
     SDL_RenderSetLogicalSize(settings::renderer, settings::baseW, settings::baseH);
+
+    textures.LoadTextures();
+}
+
+
+void Game::LinkPointer() {
+
+
+    Camera::texturesP = &textures;
+    Textures::cameraP = &camera;
+    Level::texturesP = &textures;
+    Player::levelP = &level;
+    Player::cameraP = &camera;
+    GameObject::texturesP = &textures;
+    GameObject::cameraP = &camera;
+}
+
+void Game::Quit() {
+    SDL_DestroyWindow(settings::window);
+    SDL_Quit();
 }
