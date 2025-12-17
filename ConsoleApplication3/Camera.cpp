@@ -38,12 +38,19 @@ void Camera::SetTargetY(double y) {
 }
 
 void Camera::Update() {
-    std::cout << "b";
     const Uint8* keystate = inputP->keystate;
 
-    //‚È‚ñ‚©‚±‚±‚Å‚¨‚¿‚é
     if (keystate[SDL_SCANCODE_UP]) {
-        std::cout << "a";
+        camera.offsetY += 4;
+    }
+    if (keystate[SDL_SCANCODE_DOWN]) {
+        camera.offsetY -= 4;
+    }
+    if (keystate[SDL_SCANCODE_LEFT]) {
+        camera.offsetX -= 4;
+    }
+    if (keystate[SDL_SCANCODE_RIGHT]) {
+        camera.offsetX += 4;
     }
 
     texturesP->DrawRect({ 255,255,255,255 }, { camera.x, camera.y, (double)settings::baseW, (double)settings::baseH });

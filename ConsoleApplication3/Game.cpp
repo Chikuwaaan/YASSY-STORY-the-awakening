@@ -97,6 +97,7 @@ void Game::MakeInstance() {
     input = std::make_unique<Input>();
 
     Camera::texturesP = textures.get();
+    Camera::inputP = input.get();
     Textures::cameraP = camera.get();
     Level::texturesP = textures.get();
     Player::levelP = level.get();
