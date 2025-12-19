@@ -31,6 +31,7 @@ public:
     
     Game();
     void Run();
+    void HandleEvent();
     void Update();
     void InitSystem();
     void MakeInstance(); 

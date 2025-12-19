@@ -17,7 +17,7 @@ struct OBJRECT {
 	double y = 0.0;
 	double w = 100.0;
 	double h = 100.0;
-	bool touch = false;
+	int block = 0;
 };
 
 struct CAMERAROOM {
@@ -35,4 +35,8 @@ struct BLOCKROOM {
 	int x;
 	int y;
 	std::vector<std::vector<int>> terrain;
+};
+
+struct EVENT {
+    int mouseWheel;
 };

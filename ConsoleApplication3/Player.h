@@ -15,9 +15,11 @@ private:
     double minSpeed;
     double deceleration;
     double moveBody;
+    double walkVX;
+    double liftVX;
     double aX, aY;
     int coyoteTime;
-    
+    int groundBlock, headBlock, rightBlock, leftBlock;
 public:
     bool canJump;
     static Level* levelP;

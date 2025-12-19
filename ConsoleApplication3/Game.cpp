@@ -24,10 +24,21 @@ void Game::Run() {
         accumulator += frameTime;
 
         while (accumulator >= settings::dt) {
-            input->GetKey();
-            while (SDL_PollEvent(&event));
+            HandleEvent();
             Update();
             accumulator -= settings::dt;
+        }
+    }
+}
+
+void Game::HandleEvent() {
+    input->GetKey();
+
+    input->event.mouseWheel = 0;
+
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_MOUSEWHEEL) {
+            input->event.mouseWheel = event.wheel.y;
         }
     }
 }
@@ -48,13 +59,15 @@ void Game::Update() {
     }
     pendingObjects.clear();
 
-    level->DrawMap();
+    
     for (auto& obj : objects) {
         obj->Draw();
     }
+    level->DrawMap();
     assy->DrawPlayer();
     textures->Update();
     camera->Update();
+    
 
     SDL_RenderPresent(settings::renderer);
 }
