@@ -92,6 +92,7 @@ OBJRECT Level::IsTouching(OBJRECT obj1) {
         int levelY = rooms[h].y;
         int playerLevelX = (int)(obj1.x / blockSize) - levelX;
         int playerLevelY = row - (int)(obj1.y / blockSize) - 1 + levelY;
+        std::cout << playerLevelX << std::endl;
 
         int i = playerLevelY - height;
         int j;
