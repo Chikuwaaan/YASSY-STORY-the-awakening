@@ -26,6 +26,10 @@ void Game::Run() {
         while (accumulator >= settings::dt) {
             HandleEvent();
             Update();
+            const Uint8* keystate = input->keystate;
+            if (keystate[SDL_SCANCODE_ESCAPE]) {
+                running = 0;
+            }
             accumulator -= settings::dt;
         }
     }
@@ -64,12 +68,15 @@ void Game::Update() {
         obj->Draw();
     }
     level->DrawMap();
+    assy->Draw();
     assy->DrawPlayer();
     textures->Update();
     camera->Update();
     
 
     SDL_RenderPresent(settings::renderer);
+
+    
 }
 
 void Game::InitSystem() {
@@ -84,7 +91,7 @@ void Game::InitSystem() {
     SDL_FreeSurface(surface);
 
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    //Mix_Music* music = Mix_LoadMUS("Assets/audio/sanctuary.wav");
+    //Mix_Music* music = Mix_LoadMUS("Assets/sounds/ending.mp3");
     //Mix_PlayMusic(music, -1);
 
     //Open Window

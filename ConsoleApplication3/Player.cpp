@@ -11,12 +11,12 @@ Level* Player::levelP = nullptr;
 Camera* Player::cameraP = nullptr;
 
 Player::Player() {
-    texName = "assy";
+    texName = "missing";
     maxSpeed = 480.0;
     minSpeed = 8.0;
     deceleration = 1920.0;
     moveBody = 0;
-    x = 180.0;
+    x = 0.0;
     y = 1000.0;
     w = 60.0;
     h = 80.0;
@@ -55,12 +55,17 @@ void Player::Update() {
         SetAX(3840.0);
         FlipX(false);
     }
+    if (keystate[SDL_SCANCODE_M]) {
+        h++;
+    }
     
 
     //Y
     vY += platformer::gravity * settings::timeScale;
     MoveY();
+    levelP->IsTouching2({ x,y,w,h });
     CollideY();
+    //std::cout << groundBlock;
 
     liftVX = 0.0;
     if (groundBlock == 2) {
@@ -89,7 +94,7 @@ void Player::Update() {
 
     MoveX();
     CollideX();
-    std::cout << leftBlock << "," << rightBlock << std::endl;
+    //std::cout << leftBlock << "," << rightBlock << std::endl;
     if (rightBlock == 2) {
         vX = -100000;
     }
@@ -170,6 +175,33 @@ void Player::CollideY() {
     }
 }
 
+void Player::CollideY2() {
+    headBlock = 0;
+    groundBlock = 0;
+    onGround = false;
+    OBJRECT pRect = { x,y,w,h };
+    OBJRECT bRect = levelP->IsTouching2(pRect);
+
+    while (bRect.block && vY < 0.0) {
+        bRect = levelP->IsTouching2(pRect);
+        onGround = true;
+        vY = 0.0;
+        y = bRect.y + bRect.h / 2 + h / 2;
+        groundBlock = bRect.block;
+        //std::cout << groundBlock;
+    }
+
+
+    if (onGround) {
+        coyoteTime = 0;
+        canJump = true;
+    }
+    else {
+        coyoteTime++;
+    }
+
+}
+
 void Player::CollideX() {
     rightBlock = 0;
     leftBlock = 0;
@@ -179,11 +211,13 @@ void Player::CollideX() {
         touchingMap = isTouchingMap(x, y, w, h);
         if (vX > 0.0) {
             vX = 0.0;
+            walkVX = 0.0;
             x = touchingMap.x - 0.5 * w - levelP->GetBlockSize() * 0.5;
             rightBlock = touchingMap.block;
         }
         else if (vX < 0.0) {
             vX = 0.0;
+            walkVX = 0.0;
             x = touchingMap.x + 0.5 * w + levelP->GetBlockSize() * 0.5;
             leftBlock = touchingMap.block;
         }
@@ -239,10 +273,12 @@ void Player::DrawPlayer() {
     DrawPart("armR", sin(moveBody) * 16, 60, 50);
 
     SDL_Color color = { 255,255,255,255 };
-    texturesP->DrawTextA("vx:" + std::to_string(vX), color, 0, 0, 1, 1);
-    texturesP->DrawTextA("vy:" + std::to_string(vY), color, 360, 0, 1, 1);
+    texturesP->DrawTextA("x:" + std::to_string(x), color, 0, 0, 1, 1);
+    texturesP->DrawTextA("y:" + std::to_string(y), color, 500, 0, 1, 1);
+    texturesP->DrawTextA("vx:" + std::to_string(vX), color, 0, 50, 1, 1);
+    texturesP->DrawTextA("vy:" + std::to_string(vY), color, 500, 50, 1, 1);
     texturesP->DrawTextA("walkVX:" + std::to_string(walkVX), color, 0, 100, 1, 1);
-    texturesP->DrawTextA("liftVX:" + std::to_string(liftVX), color, 0, 200, 1, 1);
+    texturesP->DrawTextA("liftVX:" + std::to_string(liftVX), color, 500, 100, 1, 1);
     texturesP->DrawTextA("moveBody:" + std::to_string(moveBody), color, 0, 980, 1, 1);
     texturesP->DrawTextA("onGround:" + std::to_string(onGround), color, 500, 980, 1, 1);
 }
