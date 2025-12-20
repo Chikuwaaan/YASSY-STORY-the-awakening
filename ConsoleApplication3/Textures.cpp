@@ -7,7 +7,6 @@ Camera* Textures::cameraP = nullptr;
 Textures::Textures() {
     LoadTextures();
     font = TTF_OpenFont("C:/Windows/Fonts/meiryo.ttc", 50);
-    std::cout << "Textures‚ªì¬‚³‚ê‚Ü‚µ‚½";
 }
 
 void Textures::LoadTextures() {

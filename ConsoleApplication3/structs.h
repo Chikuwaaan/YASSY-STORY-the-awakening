@@ -34,7 +34,7 @@ struct CAMERAROOM {
 struct BLOCKROOM {
 	int x;
 	int y;
-	std::vector<std::vector<int>> terrain;
+	std::vector<std::vector<uint8_t>> terrain;
 };
 
 struct EVENT {
