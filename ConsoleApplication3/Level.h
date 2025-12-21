@@ -18,6 +18,6 @@ public:
     void DrawMap();
     OBJRECT IsTouching(OBJRECT obj1);
     OBJRECT IsTouching2(OBJRECT obj1, bool direction);
-    double GetBlockSize();
+    void FixBlockPos(int* x, int* y);
 };
 

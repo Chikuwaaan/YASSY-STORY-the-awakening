@@ -180,14 +180,14 @@ void Player::CollideY() {
     OBJRECT bRect = levelP->IsTouching2(pRect, 0);
     texturesP->DrawTextA(std::to_string(bRect.block), color, 1340, 0, 1, 1);
 
-    while (bRect.block && vY < 0.0) {
+    if (bRect.block && vY < 0.0) {
         bRect = levelP->IsTouching2(pRect, 0);
         onGround = true;
         vY = 0.0;
         y = bRect.y + bRect.h / 2 + h / 2;
         groundBlock = bRect.block;
     }
-    while (bRect.block && vY > 0.0) {
+    if (bRect.block && vY > 0.0) {
         bRect = levelP->IsTouching2(pRect, 0);
         vY = 0.0;
         y = bRect.y - bRect.h / 2 - h / 2;
@@ -240,14 +240,14 @@ void Player::CollideX() {
     OBJRECT bRect = levelP->IsTouching2(pRect, 1);
     texturesP->DrawTextA(std::to_string(bRect.block), color, 1340, 50, 1, 1);
 
-    while (bRect.block) {
+    if (bRect.block) {
         bRect = isTouchingMap(x, y, w, h);
         if (vX > 0.0) {
             if (aX > 0){
                 walkVX = 0.0;
             }
             vX = 0.0;
-            x = bRect.x - 0.5 * w - levelP->GetBlockSize() * 0.5;
+            x = bRect.x - 0.5 * w - bRect.w * 0.5;
             rightBlock = bRect.block;
         }
         else if (vX < 0.0) {
@@ -255,7 +255,7 @@ void Player::CollideX() {
                 walkVX = 0.0;
             }
             vX = 0.0;
-            x = bRect.x + 0.5 * w + levelP->GetBlockSize() * 0.5;
+            x = bRect.x + 0.5 * w + bRect.w * 0.5;
             leftBlock = bRect.block;
         }
 
@@ -290,8 +290,8 @@ void Player::MoveCameraRoom() {
 }
 
 void Player::Die() {
-    x = 180.0;
-    y = 180.0;
+    x = 2200.0;
+    y = 100.0;
 
     Mix_Chunk* se = Mix_LoadWAV("Assets/sounds/discord.wav");
     Mix_PlayChannel(-1, se, 0);

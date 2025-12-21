@@ -9,10 +9,10 @@ Level::Level() {
     blockSize = 90.0;
     rooms.push_back({ 0,0,{
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,2,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,1,1,1,1,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0},
+        {0,0,0,0,0,0,2,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0},
         {1,0,0,3,1,1,1,4,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
         {1,1,1,2,1,1,1,4,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 } });
@@ -22,6 +22,9 @@ Level::Level() {
         {0},
         {4,4},
 }});
+    rooms.push_back({ 32,0,{
+        {0,0,0,4,0,0,4,0,0,0,4,4,4,0,0,0,0,4}
+} });
     /*
     rooms.push_back({ -3,0,{
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -184,6 +187,7 @@ OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
         for (int i = -1; i < 2; i += 2) {
             int blockX = levelX;
             int blockY = levelY + i;
+            FixBlockPos(&blockX, &blockY);
             int blockType = level[blockY][blockX];
             if (blockType == 0) {
                 if (blockX < extraX) {
@@ -193,6 +197,7 @@ OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
                     blockX--;
                 }
             }
+            FixBlockPos(&blockX, &blockY);
             blockType = level[blockY][blockX];
 
             if (blockType) {
@@ -213,6 +218,7 @@ OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
         for (int i = -1; i < 2; i += 2) {
             int blockX = levelX + i;
             int blockY = levelY;
+            FixBlockPos(&blockX, &blockY);
             int blockType = level[blockY][blockX];
             if (blockType == 0) {
                 if (blockY < extraY) {
@@ -222,6 +228,7 @@ OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
                     blockY--;
                 }
             }
+            FixBlockPos(&blockX, &blockY);
             blockType = level[blockY][blockX];
 
             if (blockType) {
@@ -243,6 +250,18 @@ OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
     return { 0,0,0,0,0 };
 }
 
-double Level::GetBlockSize() {
-    return blockSize;
+void Level::FixBlockPos(int* x, int* y) {
+    if (*x < 0) {
+        *x = 0;
+    }
+    else if (*x >= std::size(level[0])) {
+        *x = std::size(level[0]) - 1;
+    }
+
+    if (*y < 0) {
+        *y = 0;
+    }
+    else if (*y >= std::size(level)) {
+        *y = std::size(level) - 1;
+    }
 }
