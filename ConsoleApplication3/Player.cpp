@@ -22,6 +22,7 @@ Player::Player() {
     h = 80.0;
     aX = 0.0;
     aY = 0.0;
+    canJump = 0;
     flipX = false;
     coyoteTime = 0;
     walkVX = 0.0;
@@ -63,7 +64,6 @@ void Player::Update() {
     //Y
     vY += platformer::gravity * settings::timeScale;
     MoveY();
-    levelP->IsTouching2({ x,y,w,h });
     CollideY();
     //std::cout << groundBlock;
 
@@ -95,13 +95,7 @@ void Player::Update() {
     MoveX();
     CollideX();
     //std::cout << leftBlock << "," << rightBlock << std::endl;
-    if (rightBlock == 2) {
-        vX = -100000;
-    }
-    else if (leftBlock == 2) {
-        vX = 100000;
-    }
-    
+
 
     if (walkVX >= minSpeed) {
         walkVX -= deceleration * settings::timeScale;
@@ -143,6 +137,7 @@ void Player::Jump() {
     }
 }
 
+/*
 void Player::CollideY() {
     headBlock = 0;
     groundBlock = 0;
@@ -174,21 +169,29 @@ void Player::CollideY() {
         coyoteTime++;
     }
 }
+*/
 
-void Player::CollideY2() {
+void Player::CollideY() {
+    SDL_Color color = { 255,255,255,255 };
     headBlock = 0;
     groundBlock = 0;
     onGround = false;
     OBJRECT pRect = { x,y,w,h };
-    OBJRECT bRect = levelP->IsTouching2(pRect);
+    OBJRECT bRect = levelP->IsTouching2(pRect, 0);
+    texturesP->DrawTextA(std::to_string(bRect.block), color, 1340, 0, 1, 1);
 
     while (bRect.block && vY < 0.0) {
-        bRect = levelP->IsTouching2(pRect);
+        bRect = levelP->IsTouching2(pRect, 0);
         onGround = true;
         vY = 0.0;
         y = bRect.y + bRect.h / 2 + h / 2;
         groundBlock = bRect.block;
-        //std::cout << groundBlock;
+    }
+    while (bRect.block && vY > 0.0) {
+        bRect = levelP->IsTouching2(pRect, 0);
+        vY = 0.0;
+        y = bRect.y - bRect.h / 2 - h / 2;
+        headBlock = bRect.block;
     }
 
 
@@ -202,6 +205,7 @@ void Player::CollideY2() {
 
 }
 
+/*
 void Player::CollideX() {
     rightBlock = 0;
     leftBlock = 0;
@@ -224,6 +228,38 @@ void Player::CollideX() {
         else {
             break;
         }
+    }
+}
+*/
+
+void Player::CollideX() {
+    SDL_Color color = { 255,255,255,255 };
+    rightBlock = 0;
+    leftBlock = 0;
+    OBJRECT pRect = { x,y,w,h };
+    OBJRECT bRect = levelP->IsTouching2(pRect, 1);
+    texturesP->DrawTextA(std::to_string(bRect.block), color, 1340, 50, 1, 1);
+
+    while (bRect.block) {
+        bRect = isTouchingMap(x, y, w, h);
+        if (vX > 0.0) {
+            if (aX > 0){
+                walkVX = 0.0;
+            }
+            vX = 0.0;
+            x = bRect.x - 0.5 * w - levelP->GetBlockSize() * 0.5;
+            rightBlock = bRect.block;
+        }
+        else if (vX < 0.0) {
+            if (aX < 0){
+                walkVX = 0.0;
+            }
+            vX = 0.0;
+            x = bRect.x + 0.5 * w + levelP->GetBlockSize() * 0.5;
+            leftBlock = bRect.block;
+        }
+
+        
     }
 }
 

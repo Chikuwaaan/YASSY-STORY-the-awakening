@@ -17,7 +17,7 @@ public:
     void SetLevel();
     void DrawMap();
     OBJRECT IsTouching(OBJRECT obj1);
-    OBJRECT IsTouching2(OBJRECT obj1);
+    OBJRECT IsTouching2(OBJRECT obj1, bool direction);
     double GetBlockSize();
 };
 

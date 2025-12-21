@@ -18,6 +18,7 @@ void Textures::LoadTextures() {
     map["2"] = IMG_LoadTexture(settings::renderer, "Assets/textures/dokufee.png");
     map["3"] = IMG_LoadTexture(settings::renderer, "Assets/textures/assy2.png");
     map["4"] = IMG_LoadTexture(settings::renderer, "Assets/textures/dotchiku.png");
+    map["5"] = IMG_LoadTexture(settings::renderer, "Assets/textures/nsfw.png");
     map["assy"] = IMG_LoadTexture(settings::renderer, "Assets/textures/assy.png");
     map["assy2"] = IMG_LoadTexture(settings::renderer, "Assets/textures/assy2.png");
     map["assyChara"] = IMG_LoadTexture(settings::renderer, "Assets/textures/assyChara.png");

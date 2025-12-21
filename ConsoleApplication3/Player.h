@@ -18,10 +18,11 @@ private:
     double walkVX;
     double liftVX;
     double aX, aY;
+    bool canJump;
     int coyoteTime;
     int groundBlock, headBlock, rightBlock, leftBlock;
 public:
-    bool canJump;
+    
     static Level* levelP;
     static Camera* cameraP;
     Player();
@@ -30,7 +31,6 @@ public:
     void Update() override;
     void Jump();
     void CollideY();
-    void CollideY2();
     void CollideX();
     void MoveCameraRoom();
     void Die();

@@ -10,9 +10,9 @@ Level::Level() {
     rooms.push_back({ 0,0,{
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,2,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
         {1,0,0,3,1,1,1,4,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
         {1,1,1,2,1,1,1,4,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 } });
@@ -169,33 +169,76 @@ OBJRECT Level::IsTouching(OBJRECT obj1) {
     return { 0, 0, 0, 0, 0 };
 }
 
-OBJRECT Level::IsTouching2(OBJRECT obj1) {
+OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
     SDL_Color color = { 255,255,255,255 };
 
     int levelX = (int)round((obj1.x - blockSize / 2) / blockSize);
     int extraX = (int)round((obj1.x) / blockSize);
     int levelY = (int)round((obj1.y - blockSize / 2) / blockSize);
+    int extraY = (int)round((obj1.y) / blockSize);
     texturesP->DrawTextA(std::to_string(levelX) + " " + std::to_string(levelY), color, 1000, 0, 1, 1);
-    texturesP->DrawTextA(std::to_string(extraX), color, 1000, 50, 1, 1);
+    texturesP->DrawTextA(std::to_string(extraX) + " " + std::to_string(extraY), color, 1000, 50, 1, 1);
 
-    int blockX = levelX;
-    int blockType = level[levelY - 1][blockX];
-    if (blockType == 0) {
-        if (blockX < extraX) {
-            blockX++;
-        }
-        else if (blockX = extraX){
-            blockX--;
+    //0=y, 1=x
+    if (!direction) {
+        for (int i = -1; i < 2; i += 2) {
+            int blockX = levelX;
+            int blockY = levelY + i;
+            int blockType = level[blockY][blockX];
+            if (blockType == 0) {
+                if (blockX < extraX) {
+                    blockX++;
+                }
+                else if (blockX = extraX) {
+                    blockX--;
+                }
+            }
+            blockType = level[blockY][blockX];
+
+            if (blockType) {
+                OBJRECT obj2;
+                obj2.x = (blockX + 0.5) * blockSize;
+                obj2.y = (blockY + 0.5) * blockSize;
+                obj2.w = blockSize;
+                obj2.h = blockSize;
+                obj2.block = blockType;
+                if (utilities::HitDetection(obj1, obj2)) {
+                    return obj2;
+                }
+            }
         }
     }
-    blockType = level[levelY - 1][blockX];
-    texturesP->DrawTextA(std::to_string(blockType), color, 1340, 0, 1, 1);
 
-    if (blockType) {
-        OBJRECT obj2;
-        obj2.x = (blockX + 0.5) * blockSize;
-        std::cout << obj2.x << std::endl;
+    else {
+        for (int i = -1; i < 2; i += 2) {
+            int blockX = levelX + i;
+            int blockY = levelY;
+            int blockType = level[blockY][blockX];
+            if (blockType == 0) {
+                if (blockY < extraY) {
+                    blockY++;
+                }
+                else if (blockY = extraY) {
+                    blockY--;
+                }
+            }
+            blockType = level[blockY][blockX];
+
+            if (blockType) {
+                OBJRECT obj2;
+                obj2.x = (blockX + 0.5) * blockSize;
+                obj2.y = (blockY + 0.5) * blockSize;
+                obj2.w = blockSize;
+                obj2.h = blockSize;
+                obj2.block = blockType;
+                if (utilities::HitDetection(obj1, obj2)) {
+                    return obj2;
+                }
+            }
+        }
     }
+    
+    
 
     return { 0,0,0,0,0 };
 }
