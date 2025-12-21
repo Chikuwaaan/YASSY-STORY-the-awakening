@@ -14,7 +14,7 @@ Camera::Camera() {
     camera.offsetY = 0.0;
     camera.targetX = 720.0;
     camera.targetY = 540.0;
-    camera.zoom = 1.0;
+    camera.zoom = 0.5;
 
     //room.push_back({ 0,1920,0,1080,960,960,540,540 });
     //room.push_back({ 1920,1920 * 2,0,1440,960 * 3 - 120,960 * 3 + 120,540,660 });

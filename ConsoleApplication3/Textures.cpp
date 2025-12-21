@@ -35,8 +35,8 @@ void Textures::LoadTextures() {
 
 void Textures::DrawImage(std::string texName, OBJRECT rect) {
     CAMERA camera = cameraP->GetCam();
-    if (rect.x - (camera.x - settings::baseW*0.5) > -200 && 
-        rect.x - (camera.x - settings::baseW * 0.5) < settings::baseW + 200) {
+    if (rect.x + rect.w*0.5 - (camera.x - settings::baseW * 0.5 / camera.zoom) > 0 &&
+        rect.x - rect.w*0.5 - (camera.x - settings::baseW * 0.5 / camera.zoom) < settings::baseW / camera.zoom + 0) {
         double pivotX = settings::baseW / 2.0;
         double pivotY = settings::baseH / 2.0;
         SDL_Rect dst;
