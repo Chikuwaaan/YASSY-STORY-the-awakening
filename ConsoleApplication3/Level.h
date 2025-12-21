@@ -9,7 +9,7 @@ class Level
 {
 private:
     std::vector<BLOCKROOM> rooms;
-    uint8_t level[32][64];
+    uint8_t level[32][128];
     double blockSize;
 public:
     static Textures* texturesP;

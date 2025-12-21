@@ -35,16 +35,18 @@ void Textures::LoadTextures() {
 
 void Textures::DrawImage(std::string texName, OBJRECT rect) {
     CAMERA camera = cameraP->GetCam();
-    double pivotX = settings::baseW / 2.0;
-    double pivotY = settings::baseH / 2.0;
-    SDL_Rect dst;
-    //‚¿‚å‚Á‚Æ‚æ‚­‚í‚©‚ç‚ñ
-    dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-    dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-    dst.w = (int)(rect.w * camera.zoom);
-    dst.h = (int)(rect.h * camera.zoom);
-    SDL_Rect ds = { 200,200,200,200 };
-    SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
+    if (rect.x - (camera.x - settings::baseW*0.5) > -200 && 
+        rect.x - (camera.x - settings::baseW * 0.5) < settings::baseW + 200) {
+        double pivotX = settings::baseW / 2.0;
+        double pivotY = settings::baseH / 2.0;
+        SDL_Rect dst;
+        dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+        dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+        dst.w = (int)(rect.w * camera.zoom);
+        dst.h = (int)(rect.h * camera.zoom);
+        SDL_Rect ds = { 200,200,200,200 };
+        SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
+    }
 }
 
 void Textures::DrawImageEx(std::string texName, OBJRECT rect, double angle, OBJRECT center, bool flipX, bool flipY) {

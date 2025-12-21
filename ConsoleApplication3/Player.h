@@ -19,6 +19,8 @@ private:
     double liftVX;
     double aX, aY;
     bool canJump;
+    bool jumpPressed;
+    int isJumping;
     int coyoteTime;
     int groundBlock, headBlock, rightBlock, leftBlock;
 public:

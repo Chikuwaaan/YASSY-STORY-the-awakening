@@ -11,10 +11,11 @@ Level* Player::levelP = nullptr;
 Camera* Player::cameraP = nullptr;
 
 Player::Player() {
+    onGround = 0;
     texName = "missing";
     maxSpeed = 480.0;
-    minSpeed = 8.0;
-    deceleration = 1920.0;
+    minSpeed = 16.0;
+    deceleration = 2160.0;
     moveBody = 0;
     x = 0.0;
     y = 1000.0;
@@ -23,10 +24,15 @@ Player::Player() {
     aX = 0.0;
     aY = 0.0;
     canJump = 0;
+    isJumping = 0;
     flipX = false;
     coyoteTime = 0;
     walkVX = 0.0;
     liftVX = 0.0;
+    groundBlock = 0;
+    headBlock = 0;
+    rightBlock = 0;
+    leftBlock = 0;
 }
 
 void Player::SetAX(double acceleration) {
@@ -46,14 +52,19 @@ void Player::Update() {
 
     const Uint8* keystate = inputP->keystate;
     if (keystate[SDL_SCANCODE_W]) {
-        Jump();
+        jumpPressed = 1;
     }
+    else {
+        jumpPressed = 0;
+    }
+    Jump();
+
     if (keystate[SDL_SCANCODE_A]) {
-        SetAX(-3840.0);
+        SetAX(-2160.0);
         FlipX(true);
     }
     if (keystate[SDL_SCANCODE_D]) {
-        SetAX(3840.0);
+        SetAX(2160.0);
         FlipX(false);
     }
     if (keystate[SDL_SCANCODE_M]) {
@@ -67,14 +78,19 @@ void Player::Update() {
     CollideY();
     //std::cout << groundBlock;
 
-    liftVX = 0.0;
+ 
+    liftVX = 0;
+
     if (groundBlock == 2) {
-        Jump();
+        vY = 1300.0;
     }
     else if (headBlock == 2) {
         vY = -1000.0;
     }
     else if (headBlock == 3) {
+        Die();
+    }
+    else if (groundBlock == 3) {
         Die();
     }
     else if (groundBlock == 4) {
@@ -83,35 +99,65 @@ void Player::Update() {
 
 
     //X
-    walkVX += aX * settings::timeScale;
+    if (onGround) {
+        if (aX) {
+            walkVX += aX * settings::timeScale;
+        }
+        else {
+            if (walkVX >= minSpeed) {
+                walkVX -= deceleration * settings::timeScale;
+            }
+            else if (walkVX < minSpeed && walkVX > minSpeed * -1) {
+                walkVX = 0.0;
+            }
+            else if (walkVX <= minSpeed * -1) {
+                walkVX += deceleration * settings::timeScale;
+            }
+            else {
+                walkVX = 0.0;
+            }
+        }
+    }
+    else {
+        if (aX) {
+            walkVX += aX * settings::timeScale * 0.5;
+        }
+        else {
+            if (walkVX >= minSpeed) {
+                walkVX -= deceleration * settings::timeScale * 0.5;
+            }
+            else if (walkVX < minSpeed && walkVX > minSpeed * -1) {
+                walkVX = 0.0;
+            }
+            else if (walkVX <= minSpeed * -1) {
+                walkVX += deceleration * settings::timeScale * 0.5;
+            }
+            else {
+                walkVX = 0.0;
+            }
+        }
+    }
+    
+
     if (walkVX > maxSpeed) {
         walkVX = maxSpeed;
     }
     else if (walkVX < -1 * maxSpeed) {
         walkVX = -1 * maxSpeed;
     }
-    vX = walkVX + liftVX;
+    if (onGround) {
+        vX = walkVX + liftVX;
+    }
+    else {
+        vX = walkVX + liftVX * 0.5;
+    }
+    
 
     MoveX();
     CollideX();
-    //std::cout << leftBlock << "," << rightBlock << std::endl;
-
-
-    if (walkVX >= minSpeed) {
-        walkVX -= deceleration * settings::timeScale;
-    }
-    else if (walkVX < minSpeed && walkVX > minSpeed * -1) {
-        walkVX = 0.0;
-    }
-    else if (walkVX <= minSpeed * -1) {
-        walkVX += deceleration * settings::timeScale;
-    }
-    else {
-        walkVX = 0.0;
-    }
     aX = 0.0;
-
-
+    
+    
     if (y < -1000.0) {
         Die();
     }
@@ -131,45 +177,23 @@ void Player::Update() {
 }
 
 void Player::Jump() {
-    if (coyoteTime < 6 && canJump) {
-        vY = 1100.0;
+    if (jumpPressed && coyoteTime < 6 && canJump) {
+        vY = 600.0;
         canJump = false;
+        isJumping = 1;
+    }
+
+    if (0 < isJumping && isJumping < 30) {
+        vY = 500.0 + isJumping * 14.0;
+        if (vY > 800.0) vY = 800.0;
+        isJumping++;
+    }
+
+    if (!jumpPressed && isJumping) {
+        std::cout << isJumping << std::endl;
+        isJumping = 0;
     }
 }
-
-/*
-void Player::CollideY() {
-    headBlock = 0;
-    groundBlock = 0;
-    OBJRECT touchingMap;
-    onGround = false;
-    touchingMap = isTouchingMap(x, y, w, h);
-
-    while (touchingMap.block && vY < 0.0) {
-        touchingMap = isTouchingMap(x, y, w, h);
-        onGround = true;
-        vY = 0.0;
-        y = touchingMap.y + 0.5 * h + levelP->GetBlockSize() * 0.5;
-        groundBlock = touchingMap.block;
-        //touchingMap = isTouchingMap(x, y, w, h);
-    }
-    while (touchingMap.block && vY > 0.0) {
-        touchingMap = isTouchingMap(x, y, w, h);
-        vY = 0.0;
-        y = touchingMap.y - 0.5 * h - levelP->GetBlockSize() * 0.5;
-        headBlock = touchingMap.block;
-        //touchingMap = isTouchingMap(x, y, w, h);
-    }
-
-    if (onGround) {
-        coyoteTime = 0;
-        canJump = true;
-    }
-    else {
-        coyoteTime++;
-    }
-}
-*/
 
 void Player::CollideY() {
     SDL_Color color = { 255,255,255,255 };
@@ -190,6 +214,7 @@ void Player::CollideY() {
     if (bRect.block && vY > 0.0) {
         bRect = levelP->IsTouching2(pRect, 0);
         vY = 0.0;
+        isJumping = 0;
         y = bRect.y - bRect.h / 2 - h / 2;
         headBlock = bRect.block;
     }
@@ -198,39 +223,13 @@ void Player::CollideY() {
     if (onGround) {
         coyoteTime = 0;
         canJump = true;
+        isJumping = 0;
     }
     else {
         coyoteTime++;
     }
 
 }
-
-/*
-void Player::CollideX() {
-    rightBlock = 0;
-    leftBlock = 0;
-    OBJRECT touchingMap;
-    touchingMap = isTouchingMap(x, y, w, h);
-    while (touchingMap.block) {
-        touchingMap = isTouchingMap(x, y, w, h);
-        if (vX > 0.0) {
-            vX = 0.0;
-            walkVX = 0.0;
-            x = touchingMap.x - 0.5 * w - levelP->GetBlockSize() * 0.5;
-            rightBlock = touchingMap.block;
-        }
-        else if (vX < 0.0) {
-            vX = 0.0;
-            walkVX = 0.0;
-            x = touchingMap.x + 0.5 * w + levelP->GetBlockSize() * 0.5;
-            leftBlock = touchingMap.block;
-        }
-        else {
-            break;
-        }
-    }
-}
-*/
 
 void Player::CollideX() {
     SDL_Color color = { 255,255,255,255 };
@@ -243,7 +242,7 @@ void Player::CollideX() {
     if (bRect.block) {
         bRect = isTouchingMap(x, y, w, h);
         if (vX > 0.0) {
-            if (aX > 0){
+            if (!liftVX){
                 walkVX = 0.0;
             }
             vX = 0.0;
@@ -251,7 +250,7 @@ void Player::CollideX() {
             rightBlock = bRect.block;
         }
         else if (vX < 0.0) {
-            if (aX < 0){
+            if (!liftVX){
                 walkVX = 0.0;
             }
             vX = 0.0;
@@ -290,8 +289,14 @@ void Player::MoveCameraRoom() {
 }
 
 void Player::Die() {
-    x = 2200.0;
-    y = 100.0;
+    x = 45.0;
+    y = 300.0;
+    vX = 0.0;
+    vY = 0.0;
+    aX = 0.0;
+    aY = 0.0;
+    walkVX = 0.0;
+    liftVX = 0.0;
 
     Mix_Chunk* se = Mix_LoadWAV("Assets/sounds/discord.wav");
     Mix_PlayChannel(-1, se, 0);
