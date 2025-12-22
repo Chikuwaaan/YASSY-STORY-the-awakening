@@ -1,3 +1,4 @@
+#include <iostream>
 #include "GameObject.h"
 #include "namespace.h"
 #include "structs.h"
@@ -11,10 +12,11 @@ Input* GameObject::inputP = nullptr;
 GameObject::GameObject() {
     x = 0.0;
     y = 0.0;
-    w = 200.0;
-    h = 200.0;
+    w = 180.0;
+    h = 180.0;
     vX = 0.0;
     vY = 0.0;
+    collision = 0;
 }
 
 void GameObject::MoveX() {

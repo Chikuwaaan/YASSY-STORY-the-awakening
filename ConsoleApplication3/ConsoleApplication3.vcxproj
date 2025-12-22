@@ -138,11 +138,11 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="Lift.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="namespace.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Textures.cpp" />
-    <ClCompile Include="Zako.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -150,12 +150,12 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="Lift.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="namespace.h" />
     <ClInclude Include="structs.h" />
     <ClInclude Include="Textures.h" />
-    <ClInclude Include="Zako.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ConsoleApplication3.rc" />

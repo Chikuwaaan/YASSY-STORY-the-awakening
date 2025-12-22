@@ -19,8 +19,8 @@ Player::Player() {
     moveBody = 0;
     x = 0.0;
     y = 1000.0;
-    w = 60.0;
-    h = 80.0;
+    w = 40.0;
+    h = 70.0;
     aX = 0.0;
     aY = 0.0;
     canJump = 0;
@@ -178,14 +178,17 @@ void Player::Update() {
 
 void Player::Jump() {
     if (jumpPressed && coyoteTime < 6 && canJump) {
-        vY = 600.0;
+        vY = 800.0;
         canJump = false;
         isJumping = 1;
     }
 
     if (0 < isJumping && isJumping < 30) {
-        vY = 500.0 + isJumping * 14.0;
-        if (vY > 800.0) vY = 800.0;
+        vY = 600 + isJumping * 10.0;
+        if (vY > 840) {
+            vY = 840;
+        }
+        
         isJumping++;
     }
 
@@ -306,12 +309,13 @@ void Player::Die() {
 }
 
 void Player::DrawPlayer() {
-    DrawPart("legL", sin(moveBody) * 16, 30, 60);
-    DrawPart("legR", sin(moveBody) * -16, 34, 60);
-    DrawPart("body", sin(moveBody), 0, 0);
-    DrawPart("head", sin(moveBody) * 4, 80, 20);
-    DrawPart("armL", sin(moveBody) * -16, 80, 50);
-    DrawPart("armR", sin(moveBody) * 16, 60, 50);
+    DrawPart("legL", sin(moveBody) * 16, 30, 50);
+    DrawPart("legR", sin(moveBody) * -16, 20, 50);
+    DrawPart("body", 0, 0, 0);
+    DrawPart("head", sin(moveBody) * 4, 60, 30);
+    DrawPart("armL", sin(moveBody) * -16, 70, 50);
+    DrawPart("armR", sin(moveBody) * 16, 55, 50);
+    
 
     SDL_Color color = { 255,255,255,255 };
     texturesP->DrawTextA("x:" + std::to_string(x), color, 0, 0, 1, 1);
@@ -328,8 +332,8 @@ void Player::DrawPart(std::string tex, double angle, int X, int Y) {
     OBJRECT rect;
     rect.x = (int)x + 20 + flipX * -40;
     rect.y = (int)y + 5;
-    rect.w = 120;
-    rect.h = 120;
+    rect.w = 110;
+    rect.h = 110;
     OBJRECT point;
     if (flipX) {
         point.x = rect.w - X;

@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "namespace.h"
 #include "GameObject.h"
+#include "Lift.h"
 
 Game::Game() {
     running = true;
@@ -14,6 +15,8 @@ Game::Game() {
 
 void Game::Run() {
     MakeInstance();
+
+    pendingObjects.push_back(std::make_unique<Lift>(720, 300, 1));
 
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
@@ -48,6 +51,8 @@ void Game::HandleEvent() {
 }
 
 void Game::Update() {
+    platformer::flames++;
+
     SDL_SetRenderDrawColor(settings::renderer, 117, 226, 255, 255);
     SDL_Rect rect = { 0, 0, settings::baseW, settings::baseH };
     SDL_RenderFillRect(settings::renderer, &rect);
@@ -68,7 +73,7 @@ void Game::Update() {
         obj->Draw();
     }
     level->DrawMap();
-    assy->Draw();
+    //assy->Draw();
     assy->DrawPlayer();
     textures->Update();
     camera->Update();

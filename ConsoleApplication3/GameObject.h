@@ -14,6 +14,8 @@ protected:
     double x, y, w, h;
     double vX, vY;
     bool flipX;
+
+    bool collision;
 public:
     static Textures* texturesP;
     static Camera* cameraP;
