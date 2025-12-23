@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include "structs.h"
 
 class Textures;
 class Camera;
@@ -14,9 +15,10 @@ protected:
     double x, y, w, h;
     double vX, vY;
     bool flipX;
-
-    bool collision;
+    COLLISION collision;
 public:
+    
+
     static Textures* texturesP;
     static Camera* cameraP;
     static Input* inputP;
@@ -25,6 +27,9 @@ public:
     GameObject();
     void MoveX();
     void MoveY();
+    OBJRECT GetRect();
+    double GetVX();
+    COLLISION GetCollosion();
     void Draw();
     void FlipX(bool flip);
 };

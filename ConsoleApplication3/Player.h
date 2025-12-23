@@ -5,6 +5,7 @@
 
 class Level;
 class Camera;
+class Game;
 
 class Player :
     public GameObject
@@ -23,8 +24,9 @@ private:
     int isJumping;
     int coyoteTime;
     int groundBlock, headBlock, rightBlock, leftBlock;
+    GameObject* touchingEntity;
 public:
-    
+    static Game* gameP;
     static Level* levelP;
     static Camera* cameraP;
     Player();

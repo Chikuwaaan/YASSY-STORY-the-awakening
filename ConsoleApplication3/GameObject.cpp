@@ -16,7 +16,7 @@ GameObject::GameObject() {
     h = 180.0;
     vX = 0.0;
     vY = 0.0;
-    collision = 0;
+    collision = { 0,0,0,0 };
 }
 
 void GameObject::MoveX() {
@@ -25,6 +25,23 @@ void GameObject::MoveX() {
 
 void GameObject::MoveY() {
     y += vY * settings::timeScale;
+}
+
+OBJRECT GameObject::GetRect() {
+    OBJRECT Rect;
+    Rect.x = x;
+    Rect.y = y;
+    Rect.w = w;
+    Rect.h = h;
+    return Rect;
+}
+
+double GameObject::GetVX() {
+    return vX;
+}
+
+COLLISION GameObject::GetCollosion() {
+    return collision;
 }
 
 void GameObject::Draw() {

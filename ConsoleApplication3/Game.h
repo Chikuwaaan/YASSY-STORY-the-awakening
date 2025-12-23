@@ -15,7 +15,7 @@ class Game
 {
 private:
     bool running;
-    std::vector<std::unique_ptr<GameObject>> objects;
+    
     std::vector<std::unique_ptr<GameObject>> dyingObjects;
     std::vector<std::unique_ptr<GameObject>> pendingObjects;
     std::unique_ptr<Camera> camera;
@@ -28,7 +28,8 @@ private:
     //Input input;
     SDL_Event event;
 public:
-    
+    std::vector<std::unique_ptr<GameObject>> objects;
+
     Game();
     void Run();
     void HandleEvent();

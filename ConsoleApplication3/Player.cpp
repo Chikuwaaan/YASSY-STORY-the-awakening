@@ -2,6 +2,7 @@
 #include "namespace.h"
 #include "Level.h"
 #include "Camera.h"
+#include "Game.h"
 #include <iostream>
 #include <SDL_mixer.h>
 #include "Textures.h"
@@ -9,6 +10,7 @@
 
 Level* Player::levelP = nullptr;
 Camera* Player::cameraP = nullptr;
+Game* Player::gameP = nullptr;
 
 Player::Player() {
     onGround = 0;
@@ -33,6 +35,7 @@ Player::Player() {
     headBlock = 0;
     rightBlock = 0;
     leftBlock = 0;
+    touchingEntity = nullptr;
 }
 
 void Player::SetAX(double acceleration) {
@@ -78,8 +81,11 @@ void Player::Update() {
     CollideY();
     //std::cout << groundBlock;
 
- 
     liftVX = 0;
+    if (touchingEntity != nullptr) {
+        liftVX = touchingEntity->GetVX();
+    }
+
 
     if (groundBlock == 2) {
         vY = 1300.0;
@@ -199,30 +205,6 @@ void Player::Jump() {
 }
 
 void Player::CollideY() {
-    SDL_Color color = { 255,255,255,255 };
-    headBlock = 0;
-    groundBlock = 0;
-    onGround = false;
-    OBJRECT pRect = { x,y,w,h };
-    OBJRECT bRect = levelP->IsTouching2(pRect, 0);
-    texturesP->DrawTextA(std::to_string(bRect.block), color, 1340, 0, 1, 1);
-
-    if (bRect.block && vY < 0.0) {
-        bRect = levelP->IsTouching2(pRect, 0);
-        onGround = true;
-        vY = 0.0;
-        y = bRect.y + bRect.h / 2 + h / 2;
-        groundBlock = bRect.block;
-    }
-    if (bRect.block && vY > 0.0) {
-        bRect = levelP->IsTouching2(pRect, 0);
-        vY = 0.0;
-        isJumping = 0;
-        y = bRect.y - bRect.h / 2 - h / 2;
-        headBlock = bRect.block;
-    }
-
-
     if (onGround) {
         coyoteTime = 0;
         canJump = true;
@@ -231,6 +213,44 @@ void Player::CollideY() {
     else {
         coyoteTime++;
     }
+
+    headBlock = 0;
+    groundBlock = 0;
+    onGround = false;
+    OBJRECT pRect = { x,y,w,h };
+    OBJRECT bRect = levelP->IsTouching2(pRect, 0);
+    if (bRect.block && vY < 0.0) {
+        onGround = true;
+        vY = 0.0;
+        y = bRect.y + bRect.h / 2 + h / 2;
+        groundBlock = bRect.block;
+        return;
+    }
+    if (bRect.block && vY > 0.0) {
+        vY = 0.0;
+        isJumping = 0;
+        y = bRect.y - bRect.h / 2 - h / 2;
+        headBlock = bRect.block;
+        return;
+    }
+
+    touchingEntity = nullptr;
+    for (auto& p : gameP->objects) {
+        OBJRECT eRect = p->GetRect();
+        COLLISION collision = p->GetCollosion();
+
+        if (utilities::HitDetection(pRect, eRect)) {
+            if (vY < 0.0) {
+                onGround = true;
+                vY = 0.0;
+                y = eRect.y + eRect.h / 2 + h / 2;
+                touchingEntity = p.get();
+                return;
+            }
+        }
+    }
+
+    
 
 }
 
