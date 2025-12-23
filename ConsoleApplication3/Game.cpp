@@ -8,6 +8,7 @@
 #include "namespace.h"
 #include "GameObject.h"
 #include "Lift.h"
+#include "Zako.h"
 
 Game::Game() {
     running = true;
@@ -18,6 +19,7 @@ void Game::Run() {
 
     pendingObjects.push_back(std::make_unique<Lift>(720, 300, 160, 160));
     pendingObjects.push_back(std::make_unique<Lift>(1200, 500, 320, -160));
+    pendingObjects.push_back(std::make_unique<Zako>());
 
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;

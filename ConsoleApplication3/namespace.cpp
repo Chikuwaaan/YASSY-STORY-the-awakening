@@ -32,3 +32,4 @@ namespace platformer {
     double gravity = -2000.0;
     int flames = 0;
 }
+

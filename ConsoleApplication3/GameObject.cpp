@@ -10,6 +10,7 @@ Camera* GameObject::cameraP = nullptr;
 Input* GameObject::inputP = nullptr;
 
 GameObject::GameObject() {
+    type = entityType::Null;
     x = 0.0;
     y = 0.0;
     w = 180.0;
@@ -17,6 +18,10 @@ GameObject::GameObject() {
     vX = 0.0;
     vY = 0.0;
     collision = { 0,0,0,0 };
+}
+
+entityType GameObject::GetType() {
+    return type;
 }
 
 void GameObject::MoveX() {

@@ -26,6 +26,7 @@ Player::Player() {
     aX = 0.0;
     aY = 0.0;
     canJump = 0;
+    jumpPressed = 0;
     isJumping = 0;
     flipX = false;
     coyoteTime = 0;
@@ -74,6 +75,7 @@ void Player::Update() {
         h++;
     }
     
+    touchingEntity = nullptr;
 
     //Y
     vY += platformer::gravity * settings::timeScale;
@@ -85,13 +87,20 @@ void Player::Update() {
     }
     MoveY();
     CollideY();
-    //std::cout << groundBlock;
 
     liftVX = 0;
-    if (touchingEntity != nullptr) {
-        liftVX = touchingEntity->GetVX();
-    }
 
+    if (touchingEntity != nullptr) {
+        if (touchingEntity->GetType() == entityType::Lift) {
+            if (onGround) {
+                liftVX = touchingEntity->GetVX();
+            }
+        }
+        if (touchingEntity->GetType() == entityType::Zako) {
+            Die();
+        }
+    }
+    
 
     if (groundBlock == 2) {
         vY = 1300.0;
@@ -240,24 +249,25 @@ void Player::CollideY() {
     }
 
     //lift
-    touchingEntity = nullptr;
     for (auto& p : gameP->objects) {
         OBJRECT eRect = p->GetRect();
         COLLISION collision = p->GetCollosion();
 
         if (utilities::HitDetection(pRect, eRect)) {
+            touchingEntity = p.get();
             if (p->GetCollosion().up == 1 && vY < 0.0 && pRect.y - pRect.h / 2 > eRect.y + eRect.h / 2 - 10) {
                 onGround = true;
                 vY = 0.0;
                 y = eRect.y + eRect.h / 2 + h / 2;
-                touchingEntity = p.get();
+                return;
+            } else if (p->GetCollosion().down == 1 && vY > 0.0 && pRect.y + pRect.h / 2 < eRect.y - eRect.h / 2 + 10) {
+                vY = 0.0;
+                isJumping = 0;
+                y = bRect.y - bRect.h / 2 - h / 2;
                 return;
             }
         }
     }
-
-    
-
 }
 
 void Player::CollideX() {

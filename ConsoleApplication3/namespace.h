@@ -22,3 +22,4 @@ namespace platformer {
     extern double gravity;
     extern int flames;
 }
+

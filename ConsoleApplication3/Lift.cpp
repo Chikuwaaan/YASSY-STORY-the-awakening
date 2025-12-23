@@ -4,6 +4,7 @@
 #include "namespace.h"
 
 Lift::Lift(double spawnX, double spawnY, double amp, double velocity) {
+    type = entityType::Zako;
     h = 80;
     w = 160;
     collision = { 0,1,0,0 };

@@ -47,3 +47,9 @@ struct BLOCKROOM {
 struct EVENT {
     int mouseWheel;
 };
+
+enum class entityType {
+    Null,
+    Lift,
+    Zako
+};

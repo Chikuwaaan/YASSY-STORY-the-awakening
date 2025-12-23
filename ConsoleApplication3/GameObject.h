@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "structs.h"
+#include "namespace.h"
 
 class Textures;
 class Camera;
@@ -16,6 +17,7 @@ protected:
     double vX, vY;
     bool flipX;
     COLLISION collision;
+    entityType type;
 public:
     
 
@@ -23,8 +25,9 @@ public:
     static Camera* cameraP;
     static Input* inputP;
 
-    virtual void Update() = 0;
+    virtual void Update() {};
     GameObject();
+    entityType GetType();
     void MoveX();
     void MoveY();
     OBJRECT GetRect();
