@@ -3,31 +3,29 @@
 #include "Lift.h"
 #include "namespace.h"
 
-Lift::Lift(double spawnX, double spawnY, int initialDirection) {
-    h = 90;
+Lift::Lift(double spawnX, double spawnY, double amp, double velocity) {
+    h = 80;
+    w = 160;
     collision = { 0,1,0,0 };
     texName = "5";
     x = spawnX;
     y = spawnY;
     posX = spawnX;
     posY = spawnY;
-    direction = initialDirection;
-    amplitude = 80;
-    speed = 80;
-
-    if ( !(initialDirection == 1 || initialDirection == -1)) {
-        std::cout << "リフト生成エラー: initialDirectionの値が不正です";
-    }
+    amplitude = amp;
+    vX = velocity;
 
 }
 
 void Lift::Update() {
-    vX = speed * direction;
     MoveX();
 
-    if (std::abs(x - posX) >= amplitude) {
-        x = posX + (amplitude - 1) * direction;
-        direction = direction * -1;
+    
+    if (posX - x > amplitude) {
+        vX = vX * -1;
+    }
+    else if (x - posX > amplitude) {
+        vX = vX * -1;
     }
     
 }

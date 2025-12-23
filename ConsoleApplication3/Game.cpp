@@ -16,8 +16,8 @@ Game::Game() {
 void Game::Run() {
     MakeInstance();
 
-    pendingObjects.push_back(std::make_unique<Lift>(720, 300, 1));
-    pendingObjects.push_back(std::make_unique<Lift>(1200, 500, -1));
+    pendingObjects.push_back(std::make_unique<Lift>(720, 300, 160, 160));
+    pendingObjects.push_back(std::make_unique<Lift>(1200, 500, 320, -160));
 
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;

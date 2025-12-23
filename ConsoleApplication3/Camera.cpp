@@ -58,8 +58,8 @@ void Camera::Update() {
 
     texturesP->DrawRect({ 255,255,255,255 }, { camera.x, camera.y, (double)settings::baseW, (double)settings::baseH });
 
-    camera.x = camera.targetX + (camera.x - camera.targetX) / (1.02);
-    camera.y = camera.targetY + (camera.y - camera.targetY) / (1.02);
+    camera.x = camera.targetX + (camera.x - camera.targetX) / (1.05);
+    camera.y = camera.targetY + (camera.y - camera.targetY) / (1.05);
 
 
 }

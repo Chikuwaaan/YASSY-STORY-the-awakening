@@ -77,6 +77,12 @@ void Player::Update() {
 
     //Y
     vY += platformer::gravity * settings::timeScale;
+    if (vY > 1200) {
+        vY = 1200;
+    }
+    else if (vY < -1200) {
+        vY = -1200;
+    }
     MoveY();
     CollideY();
     //std::cout << groundBlock;
@@ -199,7 +205,6 @@ void Player::Jump() {
     }
 
     if (!jumpPressed && isJumping) {
-        std::cout << isJumping << std::endl;
         isJumping = 0;
     }
 }
@@ -234,13 +239,14 @@ void Player::CollideY() {
         return;
     }
 
+    //lift
     touchingEntity = nullptr;
     for (auto& p : gameP->objects) {
         OBJRECT eRect = p->GetRect();
         COLLISION collision = p->GetCollosion();
 
         if (utilities::HitDetection(pRect, eRect)) {
-            if (vY < 0.0) {
+            if (p->GetCollosion().up == 1 && vY < 0.0 && pRect.y - pRect.h / 2 > eRect.y + eRect.h / 2 - 10) {
                 onGround = true;
                 vY = 0.0;
                 y = eRect.y + eRect.h / 2 + h / 2;

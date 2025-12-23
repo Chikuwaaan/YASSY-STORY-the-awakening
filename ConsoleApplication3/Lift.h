@@ -5,11 +5,9 @@ class Lift :
 {
 private:
     double posX, posY;
-    int direction;
     double amplitude;
-    double speed;
 public:
-    Lift(double spawnX, double spawnY, int initialDirection);
+    Lift(double spawnX, double spawnY, double amp, double velocity);
     void Update() override;
 };
 
