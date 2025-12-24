@@ -32,6 +32,7 @@ Player::Player() {
     coyoteTime = 0;
     walkVX = 0.0;
     liftVX = 0.0;
+    liftVY = 0.0;
     groundBlock = 0;
     headBlock = 0;
     rightBlock = 0;
@@ -75,21 +76,18 @@ void Player::Update() {
         h++;
     }
     
-    touchingEntity = nullptr;
+    liftVX = 0.0;
+    
 
     //Y
-    vY += platformer::gravity * settings::timeScale;
     if (vY > 1200) {
         vY = 1200;
     }
     else if (vY < -1200) {
         vY = -1200;
     }
-    MoveY();
-    CollideY();
 
-    liftVX = 0;
-
+    vY += platformer::gravity * settings::timeScale;
     if (touchingEntity != nullptr) {
         if (touchingEntity->GetType() == entityType::Lift) {
             if (onGround) {
@@ -97,6 +95,13 @@ void Player::Update() {
             }
         }
     }
+
+    MoveY();
+    CollideY();
+    
+    
+
+    
     
 
     if (groundBlock == 2) {
@@ -112,9 +117,10 @@ void Player::Update() {
         Die();
     }
     else if (groundBlock == 4) {
-        liftVX = -360;
+        liftVX = -30;
     }
 
+    
 
     //X
     if (onGround) {
@@ -198,7 +204,9 @@ void Player::Jump() {
     if (jumpPressed && coyoteTime < 6 && canJump) {
         vY = 800.0;
         canJump = false;
+        onGround = false;
         isJumping = 1;
+        std::cout << "JUMP";
     }
 
     if (0 < isJumping && isJumping < 30) {
@@ -225,52 +233,59 @@ void Player::CollideY() {
         coyoteTime++;
     }
 
-    headBlock = 0;
-    groundBlock = 0;
+    touchingEntity = nullptr;
     onGround = false;
     OBJRECT pRect = { x,y,w,h };
+
+    
+
+    //block
+    headBlock = 0;
+    groundBlock = 0;
+    
     OBJRECT bRect = levelP->IsTouching2(pRect, 0);
+    //std::cout << bRect.block << " " << vY << std::endl;
     if (bRect.block && vY < 0.0) {
         onGround = true;
         vY = 0.0;
         y = bRect.y + bRect.h / 2 + h / 2;
         groundBlock = bRect.block;
-        return;
+        std::cout << "uo";
     }
     if (bRect.block && vY > 0.0) {
         vY = 0.0;
         isJumping = 0;
         y = bRect.y - bRect.h / 2 - h / 2;
         headBlock = bRect.block;
-        return;
     }
 
-    //lift
+    //entity
     for (auto& p : gameP->objects) {
         OBJRECT eRect = p->GetRect();
         COLLISION collision = p->GetCollosion();
 
         if (utilities::HitDetection(pRect, eRect)) {
             touchingEntity = p.get();
-            if (vY < 0.0 && pRect.y - pRect.h / 2 > eRect.y + eRect.h / 2 - 12) {
+            if (!isJumping && pRect.y - pRect.h / 2 > eRect.y + eRect.h / 2 - 12) {
                 if (collision.up) {
                     onGround = true;
-                    vY = 0.0;
+                    vY = p->GetVY();
                     y = eRect.y + eRect.h / 2 + h / 2;
-                    return;
+                    std::cout << "?";
                 }
                 else {
                     onGround = true;
                     vY = 300.0;
                     p->Damage();
-                    return;
+                    std::cout << "!";
                 }
-                
-            } else if (collision.down == 1 && vY > 0.0 && pRect.y + pRect.h / 2 < eRect.y - eRect.h / 2 + 12) {
+
+            }
+
+            else if (collision.down == 1 && pRect.y + pRect.h / 2 < eRect.y - eRect.h / 2 + 12) {
                 vY = 0.0;
                 isJumping = 0;
-                y = bRect.y - bRect.h / 2 - h / 2;
-                return;
+                y = eRect.y - eRect.h / 2 - h / 2;
             }
         }
     }
@@ -302,9 +317,19 @@ void Player::CollideX() {
             x = bRect.x + 0.5 * w + bRect.w * 0.5;
             leftBlock = bRect.block;
         }
-
-        
     }
+
+    for (auto& p : gameP->objects) {
+        OBJRECT eRect = p->GetRect();
+        COLLISION collision = p->GetCollosion();
+
+        if (utilities::HitDetection(pRect, eRect)) {
+            touchingEntity = p.get();
+
+        }
+    }
+
+
 }
 
 void Player::MoveCameraRoom() {

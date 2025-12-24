@@ -50,6 +50,10 @@ double GameObject::GetVX() {
     return vX;
 }
 
+double GameObject::GetVY() {
+    return vY;
+}
+
 COLLISION GameObject::GetCollosion() {
     return collision;
 }

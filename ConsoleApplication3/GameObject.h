@@ -35,6 +35,7 @@ public:
     void MoveY();
     OBJRECT GetRect();
     double GetVX();
+    double GetVY();
     COLLISION GetCollosion();
     void Draw();
     void FlipX(bool flip);

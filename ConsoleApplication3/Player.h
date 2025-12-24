@@ -17,7 +17,7 @@ private:
     double deceleration;
     double moveBody;
     double walkVX;
-    double liftVX;
+    double liftVX, liftVY;
     double aX, aY;
     bool canJump;
     bool jumpPressed;

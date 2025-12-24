@@ -14,19 +14,19 @@ Lift::Lift(double spawnX, double spawnY, double amp, double velocity) {
     posX = spawnX;
     posY = spawnY;
     amplitude = amp;
-    vX = velocity;
+    vY = velocity;
 
 }
 
 void Lift::Update() {
-    MoveX();
+    MoveY();
 
     
-    if (posX - x > amplitude) {
-        vX = vX * -1;
+    if (posY - y > amplitude) {
+        vY = vY * -1;
     }
-    else if (x - posX > amplitude) {
-        vX = vX * -1;
+    else if (y - posY > amplitude) {
+        vY = vY * -1;
     }
     
 }
