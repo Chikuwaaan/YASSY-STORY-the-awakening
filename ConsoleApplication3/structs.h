@@ -20,13 +20,6 @@ struct OBJRECT {
 	int block = 0;
 };
 
-struct COLLISION {
-    bool right;
-    bool up;
-    bool left;
-    bool down;
-};
-
 struct CAMERAROOM {
 	double x1;
 	double x2;

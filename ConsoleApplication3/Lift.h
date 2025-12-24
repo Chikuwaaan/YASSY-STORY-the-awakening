@@ -5,9 +5,9 @@ class Lift :
 {
 private:
     double posX, posY;
-    double amplitude;
+    double amplitudeX, amplitudeY;
 public:
-    Lift(double spawnX, double spawnY, double amp, double velocity);
+    Lift(double spawnX, double ampX, double velocityX, double spawnY, double ampY, double velocityY);
     void Update() override;
 };
 

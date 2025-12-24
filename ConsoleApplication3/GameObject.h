@@ -16,9 +16,8 @@ protected:
     double x, y, w, h;
     double vX, vY;
     bool flipX;
-    COLLISION collision;
     entityType type;
-    
+    bool collision;
 public:
     bool dead;
 
@@ -36,7 +35,7 @@ public:
     OBJRECT GetRect();
     double GetVX();
     double GetVY();
-    COLLISION GetCollosion();
+    bool GetCollosion();
     void Draw();
     void FlipX(bool flip);
 };

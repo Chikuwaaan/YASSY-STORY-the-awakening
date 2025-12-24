@@ -17,8 +17,7 @@ Game::Game() {
 void Game::Run() {
     MakeInstance();
 
-    pendingObjects.push_back(std::make_unique<Lift>(400, 180, 160, 160));
-    pendingObjects.push_back(std::make_unique<Lift>(1200, 500, 100, -160));
+    pendingObjects.push_back(std::make_unique<Lift>(500, 100, 100, 200, 0, 0));
     pendingObjects.push_back(std::make_unique<Zako>());
 
     double accumulator = 0.0;

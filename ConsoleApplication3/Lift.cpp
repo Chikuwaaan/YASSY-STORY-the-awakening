@@ -3,30 +3,40 @@
 #include "Lift.h"
 #include "namespace.h"
 
-Lift::Lift(double spawnX, double spawnY, double amp, double velocity) {
+Lift::Lift(double spawnX, double ampX, double velocityX, double spawnY, double ampY, double velocityY) {
     type = entityType::Lift;
     h = 80;
     w = 80;
-    collision = { 0,1,0,0 };
+    collision = 1;
     texName = "ssk";
     x = spawnX;
     y = spawnY;
     posX = spawnX;
+    amplitudeX = ampX;
+    vX = velocityX;
     posY = spawnY;
-    amplitude = amp;
-    vY = velocity;
+    amplitudeY = ampY;
+    vY = velocityY;
 
 }
 
 void Lift::Update() {
-    MoveY();
+    if (posX - x > amplitudeX) {
+        vX = vX * -1;
+    }
+    else if (x - posX > amplitudeX) {
+        vX = vX * -1;
+    }
+    
+    if (posY - y > amplitudeY) {
+        vY = vY * -1;
+    }
+    else if (y - posY > amplitudeY) {
+        vY = vY * -1;
+    }
+    
 
-    
-    if (posY - y > amplitude) {
-        vY = vY * -1;
-    }
-    else if (y - posY > amplitude) {
-        vY = vY * -1;
-    }
-    
+    //std::cout << vX << " " << vY << std::endl;
+    MoveX();
+    MoveY();
 }

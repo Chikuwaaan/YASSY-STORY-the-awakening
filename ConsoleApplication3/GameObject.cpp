@@ -17,7 +17,7 @@ GameObject::GameObject() {
     h = 180.0;
     vX = 0.0;
     vY = 0.0;
-    collision = { 0,0,0,0 };
+    collision = 0;
     dead = 0;
 }
 
@@ -54,7 +54,7 @@ double GameObject::GetVY() {
     return vY;
 }
 
-COLLISION GameObject::GetCollosion() {
+bool GameObject::GetCollosion() {
     return collision;
 }
 

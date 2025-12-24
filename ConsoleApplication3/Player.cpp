@@ -206,7 +206,6 @@ void Player::Jump() {
         canJump = false;
         onGround = false;
         isJumping = 1;
-        std::cout << "JUMP";
     }
 
     if (0 < isJumping && isJumping < 30) {
@@ -250,7 +249,7 @@ void Player::CollideY() {
         vY = 0.0;
         y = bRect.y + bRect.h / 2 + h / 2;
         groundBlock = bRect.block;
-        std::cout << "uo";
+        //std::cout << "uo";
     }
     if (bRect.block && vY > 0.0) {
         vY = 0.0;
@@ -262,28 +261,45 @@ void Player::CollideY() {
     //entity
     for (auto& p : gameP->objects) {
         OBJRECT eRect = p->GetRect();
-        COLLISION collision = p->GetCollosion();
+        bool collision = p->GetCollosion();
 
         if (utilities::HitDetection(pRect, eRect)) {
             touchingEntity = p.get();
-            if (!isJumping && pRect.y - pRect.h / 2 > eRect.y + eRect.h / 2 - 12) {
-                if (collision.up) {
+            if (pRect.y > eRect.y) {
+                if (collision) {
                     onGround = true;
-                    vY = p->GetVY();
-                    y = eRect.y + eRect.h / 2 + h / 2;
-                    std::cout << "?";
+                    if (!groundBlock && !headBlock) {
+                        vY = p->GetVY();
+                    }
+                    else {
+                        vY = 0.0;
+                    }
+
+                    if (!headBlock) {
+                        y = eRect.y + eRect.h / 2 + h / 2;
+                    }
                 }
                 else {
                     onGround = true;
                     vY = 300.0;
                     p->Damage();
-                    std::cout << "!";
                 }
 
             }
 
-            else if (collision.down == 1 && pRect.y + pRect.h / 2 < eRect.y - eRect.h / 2 + 12) {
-                vY = 0.0;
+            else if (collision && pRect.y < eRect.y) {
+                double v = p->GetVY();
+                if (v < 0.0) {
+                    vY = p->GetVY();
+                }
+                else {
+                    vY = 0.0;
+                }
+
+                if (groundBlock) {
+                    Die();
+                }
+                
                 isJumping = 0;
                 y = eRect.y - eRect.h / 2 - h / 2;
             }
@@ -321,11 +337,29 @@ void Player::CollideX() {
 
     for (auto& p : gameP->objects) {
         OBJRECT eRect = p->GetRect();
-        COLLISION collision = p->GetCollosion();
+        bool collision = p->GetCollosion();
 
         if (utilities::HitDetection(pRect, eRect)) {
             touchingEntity = p.get();
-
+            if (collision && pRect.x > eRect.x) {
+                //if (!liftVX) {
+                //    walkVX = 0.0;
+                //}
+                //vX = 0.0;
+                //x = eRect.x + 0.5 * w + eRect.w * 0.5 + 10;
+                std::cout << "uo";
+                //liftVX = p->GetVX();
+            } 
+            /*
+            else if (collision && pRect.x < eRect.x) {
+                if (!liftVX) {
+                    walkVX = 0.0;
+                }
+                vX = 0.0;
+                x = eRect.x - 0.5 * w - eRect.w * 0.5;
+                liftVX = p->GetVX();
+            }
+            */
         }
     }
 
