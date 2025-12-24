@@ -4,11 +4,11 @@
 #include "namespace.h"
 
 Lift::Lift(double spawnX, double spawnY, double amp, double velocity) {
-    type = entityType::Zako;
+    type = entityType::Lift;
     h = 80;
-    w = 160;
+    w = 80;
     collision = { 0,1,0,0 };
-    texName = "5";
+    texName = "ssk";
     x = spawnX;
     y = spawnY;
     posX = spawnX;

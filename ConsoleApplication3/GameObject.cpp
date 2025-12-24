@@ -18,10 +18,15 @@ GameObject::GameObject() {
     vX = 0.0;
     vY = 0.0;
     collision = { 0,0,0,0 };
+    dead = 0;
 }
 
 entityType GameObject::GetType() {
     return type;
+}
+
+bool GameObject::IsDead() {
+    return dead;
 }
 
 void GameObject::MoveX() {

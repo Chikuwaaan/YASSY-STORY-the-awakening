@@ -96,9 +96,6 @@ void Player::Update() {
                 liftVX = touchingEntity->GetVX();
             }
         }
-        if (touchingEntity->GetType() == entityType::Zako) {
-            Die();
-        }
     }
     
 
@@ -255,12 +252,21 @@ void Player::CollideY() {
 
         if (utilities::HitDetection(pRect, eRect)) {
             touchingEntity = p.get();
-            if (p->GetCollosion().up == 1 && vY < 0.0 && pRect.y - pRect.h / 2 > eRect.y + eRect.h / 2 - 10) {
-                onGround = true;
-                vY = 0.0;
-                y = eRect.y + eRect.h / 2 + h / 2;
-                return;
-            } else if (p->GetCollosion().down == 1 && vY > 0.0 && pRect.y + pRect.h / 2 < eRect.y - eRect.h / 2 + 10) {
+            if (vY < 0.0 && pRect.y - pRect.h / 2 > eRect.y + eRect.h / 2 - 12) {
+                if (collision.up) {
+                    onGround = true;
+                    vY = 0.0;
+                    y = eRect.y + eRect.h / 2 + h / 2;
+                    return;
+                }
+                else {
+                    onGround = true;
+                    vY = 300.0;
+                    p->Damage();
+                    return;
+                }
+                
+            } else if (collision.down == 1 && vY > 0.0 && pRect.y + pRect.h / 2 < eRect.y - eRect.h / 2 + 12) {
                 vY = 0.0;
                 isJumping = 0;
                 y = bRect.y - bRect.h / 2 - h / 2;

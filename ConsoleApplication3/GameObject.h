@@ -18,16 +18,19 @@ protected:
     bool flipX;
     COLLISION collision;
     entityType type;
-public:
     
+public:
+    bool dead;
 
     static Textures* texturesP;
     static Camera* cameraP;
     static Input* inputP;
 
     virtual void Update() {};
+    virtual void Damage() {};
     GameObject();
     entityType GetType();
+    bool IsDead();
     void MoveX();
     void MoveY();
     OBJRECT GetRect();

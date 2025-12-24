@@ -30,6 +30,7 @@ void Textures::LoadTextures() {
     map["armR"] = IMG_LoadTexture(settings::renderer, "Assets/textures/armR.png");
     map["unko"] = IMG_LoadTexture(settings::renderer, "Assets/textures/unko.png");
     map["camera"] = IMG_LoadTexture(settings::renderer, "Assets/textures/camera.png");
+    map["ssk"] = IMG_LoadTexture(settings::renderer, "Assets/textures/ssk.png");
     std::cout << "[DEBUG]テクスチャをロードしました" << std::endl;
 }
 

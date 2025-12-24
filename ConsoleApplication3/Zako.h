@@ -5,6 +5,7 @@ class Zako :
 {
 public:
     Zako();
-    void Update();
+    void Update() override;
+    void Damage() override;
 };
 

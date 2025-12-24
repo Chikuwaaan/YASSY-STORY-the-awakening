@@ -17,8 +17,8 @@ Game::Game() {
 void Game::Run() {
     MakeInstance();
 
-    pendingObjects.push_back(std::make_unique<Lift>(720, 300, 160, 160));
-    pendingObjects.push_back(std::make_unique<Lift>(1200, 500, 320, -160));
+    pendingObjects.push_back(std::make_unique<Lift>(760, 200, 80, 80));
+    pendingObjects.push_back(std::make_unique<Lift>(1200, 500, 100, -160));
     pendingObjects.push_back(std::make_unique<Zako>());
 
     double accumulator = 0.0;
@@ -70,7 +70,8 @@ void Game::Update() {
         objects.push_back(std::move(p));
     }
     pendingObjects.clear();
-
+    
+    
     
     for (auto& obj : objects) {
         obj->Draw();
@@ -81,6 +82,12 @@ void Game::Update() {
     textures->Update();
     camera->Update();
     
+    objects.erase(
+        std::remove_if(objects.begin(), objects.end(),
+            [](const std::unique_ptr<GameObject>& o)
+            {return o->IsDead(); }),
+        objects.end()
+    );
 
     SDL_RenderPresent(settings::renderer);
 
