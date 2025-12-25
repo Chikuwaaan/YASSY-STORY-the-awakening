@@ -75,9 +75,9 @@ void Player::Update() {
     if (keystate[SDL_SCANCODE_M]) {
         h++;
     }
-    
+
     liftVX = 0.0;
-    
+
 
     //Y
     if (vY > 1200) {
@@ -91,18 +91,18 @@ void Player::Update() {
     if (touchingEntity != nullptr) {
         if (touchingEntity->GetType() == entityType::Lift) {
             if (onGround) {
-                liftVX = touchingEntity->GetVX();
+                //vY = touchingEntity->GetVY();
             }
         }
     }
 
     MoveY();
     CollideY();
-    
-    
 
-    
-    
+
+
+
+
 
     if (groundBlock == 2) {
         vY = 1300.0;
@@ -120,7 +120,7 @@ void Player::Update() {
         liftVX = -30;
     }
 
-    
+
 
     //X
     if (onGround) {
@@ -161,7 +161,7 @@ void Player::Update() {
             }
         }
     }
-    
+
 
     if (walkVX > maxSpeed) {
         walkVX = maxSpeed;
@@ -175,13 +175,13 @@ void Player::Update() {
     else {
         vX = walkVX + liftVX * 0.5;
     }
-    
+
 
     MoveX();
     CollideX();
     aX = 0.0;
-    
-    
+
+
     if (y < -1000.0) {
         Die();
     }
@@ -197,7 +197,7 @@ void Player::Update() {
         moveBody = 0;
     }
 
-    
+
 }
 
 void Player::Jump() {
@@ -213,7 +213,7 @@ void Player::Jump() {
         if (vY > 840) {
             vY = 840;
         }
-        
+
         isJumping++;
     }
 
@@ -223,6 +223,7 @@ void Player::Jump() {
 }
 
 void Player::CollideY() {
+    std::cout << std::endl;
     if (onGround) {
         coyoteTime = 0;
         canJump = true;
@@ -236,12 +237,12 @@ void Player::CollideY() {
     onGround = false;
     OBJRECT pRect = { x,y,w,h };
 
-    
+
 
     //block
     headBlock = 0;
     groundBlock = 0;
-    
+
     OBJRECT bRect = levelP->IsTouching2(pRect, 0);
     //std::cout << bRect.block << " " << vY << std::endl;
     if (bRect.block && vY < 0.0) {
@@ -263,28 +264,48 @@ void Player::CollideY() {
         OBJRECT eRect = p->GetRect();
         bool collision = p->GetCollosion();
 
+        if (collision && utilities::HitDetection(pRect, eRect)) {
+            
+            double v = p->GetVX();
+            if (v > 0) {
+                x += (v + 0.01) * settings::timeScale;
+            }
+            else if (v < 0) {
+                x += (v - 0.01) * settings::timeScale;
+            }
+            
+            /*
+            v = p->GetVY();
+            if (v > 0) {
+                y += (v + 0) * settings::timeScale;
+            }
+            else if (v < 0) {
+                y += (v - 0) * settings::timeScale;
+            }
+            */
+            
+            //MoveY();
+            pRect = { x,y,w,h };
+            
+        }
+        
+
+        
         if (utilities::HitDetection(pRect, eRect)) {
             touchingEntity = p.get();
             if (pRect.y > eRect.y) {
                 if (collision) {
-                    onGround = true;
-                    if (!groundBlock && !headBlock) {
-                        vY = p->GetVY();
-                    }
-                    else {
-                        vY = 0.0;
-                    }
+                    //std::cout << "uo";
 
-                    if (!headBlock) {
-                        y = eRect.y + eRect.h / 2 + h / 2;
-                    }
+                    onGround = true;
+                    vY = p->GetVY();
+                    y = eRect.y + eRect.h / 2 + h / 2 + 0.01;
                 }
                 else {
                     onGround = true;
                     vY = 300.0;
                     p->Damage();
                 }
-
             }
 
             else if (collision && pRect.y < eRect.y) {
@@ -299,7 +320,7 @@ void Player::CollideY() {
                 if (groundBlock) {
                     Die();
                 }
-                
+
                 isJumping = 0;
                 y = eRect.y - eRect.h / 2 - h / 2;
             }
@@ -318,7 +339,7 @@ void Player::CollideX() {
     if (bRect.block) {
         bRect = isTouchingMap(x, y, w, h);
         if (vX > 0.0) {
-            if (!liftVX){
+            if (!liftVX) {
                 walkVX = 0.0;
             }
             vX = 0.0;
@@ -326,7 +347,7 @@ void Player::CollideX() {
             rightBlock = bRect.block;
         }
         else if (vX < 0.0) {
-            if (!liftVX){
+            if (!liftVX) {
                 walkVX = 0.0;
             }
             vX = 0.0;
@@ -335,6 +356,7 @@ void Player::CollideX() {
         }
     }
 
+    
     for (auto& p : gameP->objects) {
         OBJRECT eRect = p->GetRect();
         bool collision = p->GetCollosion();
@@ -342,26 +364,24 @@ void Player::CollideX() {
         if (utilities::HitDetection(pRect, eRect)) {
             touchingEntity = p.get();
             if (collision && pRect.x > eRect.x) {
-                //if (!liftVX) {
-                //    walkVX = 0.0;
-                //}
-                //vX = 0.0;
-                //x = eRect.x + 0.5 * w + eRect.w * 0.5 + 10;
-                std::cout << "uo";
-                //liftVX = p->GetVX();
-            } 
-            /*
+                if (!liftVX) {
+                    walkVX = 0.0;
+                }
+                vX = 0.0;
+                x = eRect.x + 0.5 * w + eRect.w * 0.5;
+            }
+            
             else if (collision && pRect.x < eRect.x) {
                 if (!liftVX) {
                     walkVX = 0.0;
                 }
                 vX = 0.0;
                 x = eRect.x - 0.5 * w - eRect.w * 0.5;
-                liftVX = p->GetVX();
             }
-            */
+            
         }
     }
+    
 
 
 }
@@ -402,7 +422,7 @@ void Player::Die() {
     walkVX = 0.0;
     liftVX = 0.0;
 
-    Mix_Chunk* se = Mix_LoadWAV("Assets/sounds/discord.wav");
+    Mix_Chunk* se = Mix_LoadWAV("Assets/sounds/die.wav");
     Mix_PlayChannel(-1, se, 0);
 
     //Mix_Music* music = Mix_LoadMUS("Assets/audio/sanctuary.wav");
@@ -416,7 +436,7 @@ void Player::DrawPlayer() {
     DrawPart("head", sin(moveBody) * 4, 60, 30);
     DrawPart("armL", sin(moveBody) * -16, 70, 50);
     DrawPart("armR", sin(moveBody) * 16, 55, 50);
-    
+
 
     SDL_Color color = { 255,255,255,255 };
     texturesP->DrawTextA("x:" + std::to_string(x), color, 0, 0, 1, 1);

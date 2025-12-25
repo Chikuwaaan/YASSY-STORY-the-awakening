@@ -38,7 +38,7 @@ public:
     void CollideX();
     void MoveCameraRoom();
     void Die();
-    
+
     void DrawPlayer();
     void DrawPart(std::string tex, double angle, int x, int y);
 };

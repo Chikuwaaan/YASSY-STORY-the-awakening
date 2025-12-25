@@ -5,8 +5,8 @@
 
 Lift::Lift(double spawnX, double ampX, double velocityX, double spawnY, double ampY, double velocityY) {
     type = entityType::Lift;
-    h = 80;
-    w = 80;
+    h = 200;
+    w = 400;
     collision = 1;
     texName = "ssk";
     x = spawnX;
