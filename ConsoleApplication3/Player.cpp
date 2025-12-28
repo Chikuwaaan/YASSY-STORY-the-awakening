@@ -433,13 +433,14 @@ void Player::Die() {
 }
 
 void Player::DrawPlayer() {
+    /*
     DrawPart("legL", sin(moveBody) * 16, 30, 50);
     DrawPart("legR", sin(moveBody) * -16, 20, 50);
     DrawPart("body", 0, 0, 0);
     DrawPart("head", sin(moveBody) * 4, 60, 30);
     DrawPart("armL", sin(moveBody) * -16, 70, 50);
     DrawPart("armR", sin(moveBody) * 16, 55, 50);
-
+    */
 
     SDL_Color color = { 255,255,255,255 };
     texturesP->DrawTextA("x:" + std::to_string(x), color, 0, 0, 1, 1);

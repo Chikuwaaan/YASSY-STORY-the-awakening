@@ -2,10 +2,13 @@
 #include "Textures.h"
 #include "namespace.h"
 #include <cmath>
+#include <fstream>
 
 Textures* Level::texturesP = nullptr;
 
 Level::Level() {
+    levelW = 128;
+    levelH = 32;
     blockSize = 80.0;
     rooms.push_back({ 0,0,{
         {1,1,1,1,1,1,1,1,1,1}
@@ -107,6 +110,7 @@ Level::Level() {
 } });
 */
     SetLevel();
+    FileInput();
 }
 
 void Level::SetLevel() {
@@ -129,7 +133,53 @@ void Level::SetLevel() {
     }
 }
 
+void Level::FileOutput() {
+    std::vector<uint8_t> map;
+    map.reserve(levelW * levelH);
+
+    for (int y = 0; y < levelH; y++) {
+        for (int x = 0; x < levelW; x++) {
+            map.push_back(level[y][x]);
+        }
+    }
+
+    uint32_t W = levelW;
+    uint32_t H = levelH;
+
+    std::ofstream ofs("level.bin", std::ios::binary);
+    ofs.write((char*)&W, sizeof(W));
+    ofs.write((char*)&H, sizeof(H));
+    ofs.write((char*)map.data(), sizeof(uint8_t) * H * W);
+}
+
+void Level::FileInput() {
+    std::ifstream ifs("level.bin", std::ios::binary);
+    if (!ifs) return;
+
+    uint32_t W;
+    uint32_t H;
+
+    ifs.read(reinterpret_cast<char*>(&W), sizeof(uint32_t));
+    ifs.read(reinterpret_cast<char*>(&H), sizeof(uint32_t));
+    if (W <= 0 || H <= 0) return;
+
+    levelW = W;
+    levelH = H;
+
+    std::vector<uint8_t> map;
+    map.resize(W * H);
+    
+    ifs.read(reinterpret_cast<char*>(map.data()), map.size() * sizeof(uint8_t));
+
+    for (int y = 0; y < (int)H; y++) {
+        for (int x = 0; x < (int)W; x++) {
+            level[y][x] = map[y * W + x];
+        }
+    }
+}
+
 void Level::DrawMap() {
+    /*
     const int room = (int)rooms.size();
 
     for (int h = 0; h < room; h++) {
@@ -149,7 +199,21 @@ void Level::DrawMap() {
             }
         }
     }
+    */
 
+    for (int y = 0; y < levelH; y++) {
+        for (int x = 0; x < levelW; x++) {
+            std::string texName = std::to_string(level[y][x]);
+            if (texName != "0") {
+                OBJRECT rect;
+                rect.x = blockSize * x + blockSize / 2;
+                rect.y = blockSize * y + blockSize / 2;
+                rect.w = blockSize;
+                rect.h = blockSize;
+                texturesP->DrawImage(texName, rect);
+            }
+        }
+    }
 };
 
 OBJRECT Level::IsTouching(OBJRECT obj1) {

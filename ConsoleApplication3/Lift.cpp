@@ -5,10 +5,10 @@
 
 Lift::Lift(double spawnX, double ampX, double velocityX, double spawnY, double ampY, double velocityY) {
     type = entityType::Lift;
-    h = 200;
+    h = 100;
     w = 400;
     collision = 1;
-    texName = "missing";
+    texName = "unko";
     x = spawnX;
     y = spawnY;
     posX = spawnX;
