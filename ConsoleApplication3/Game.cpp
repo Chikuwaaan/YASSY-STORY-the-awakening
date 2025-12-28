@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "Lift.h"
 #include "Zako.h"
+#include "ScreenShot.h"
 
 Game::Game() {
     running = true;
@@ -17,8 +18,6 @@ Game::Game() {
 void Game::Run() {
     MakeInstance();
 
-    pendingObjects.push_back(std::make_unique<Lift>(500, 100, 100, 300, 200, 200));
-    //pendingObjects.push_back(std::make_unique<Zako>());
 
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
@@ -32,9 +31,16 @@ void Game::Run() {
             HandleEvent();
             Update();
             const Uint8* keystate = input->keystate;
-            if (keystate[SDL_SCANCODE_ESCAPE]) {
-                running = 0;
+            const SDL_Event event = input->event;
+            if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
+                if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
+                    running = 0;
+                }
+                if (event.key.keysym.scancode == SDL_SCANCODE_F12) {
+                    screenshot->SaveScreenShot();
+                }
             }
+
             accumulator -= settings::dt;
         }
     }
@@ -42,14 +48,7 @@ void Game::Run() {
 
 void Game::HandleEvent() {
     input->GetKey();
-
-    input->event.mouseWheel = 0;
-
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_MOUSEWHEEL) {
-            input->event.mouseWheel = event.wheel.y;
-        }
-    }
+    SDL_PollEvent(&(input->event));
 }
 
 void Game::Update() {
@@ -76,8 +75,8 @@ void Game::Update() {
         obj->Draw();
     }
     level->DrawMap();
-    //assy->Draw();
-    assy->DrawPlayer();
+    assy->Draw();
+    //assy->DrawPlayer();
     textures->Update();
     camera->Update();
     
@@ -99,10 +98,12 @@ void Game::InitSystem() {
     TTF_Init();
     IMG_Init(IMG_INIT_PNG);
 
+    /*
     SDL_Surface* surface = IMG_Load("Assets/textures/assy.png");
     SDL_Cursor* cursor = SDL_CreateColorCursor(surface, 0, 0);
     SDL_SetCursor(cursor);
     SDL_FreeSurface(surface);
+    */
 
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
     //Mix_Music* music = Mix_LoadMUS("Assets/sounds/ending.mp3");
@@ -129,6 +130,7 @@ void Game::MakeInstance() {
     level = std::make_unique<Level>();
     assy = std::make_unique<Player>();
     input = std::make_unique<Input>();
+    screenshot = std::make_unique<ScreenShot>();
 
     Camera::texturesP = textures.get();
     Camera::inputP = input.get();

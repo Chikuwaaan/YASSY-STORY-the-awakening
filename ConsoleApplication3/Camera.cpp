@@ -52,8 +52,8 @@ void Camera::Update() {
     if (keystate[SDL_SCANCODE_RIGHT]) {
         camera.offsetX += 4;
     }
-    if (inputP->event.mouseWheel != 0) {
-        camera.zoom += inputP->event.mouseWheel * 0.1;
+    if (inputP->event.type == SDL_MOUSEWHEEL) {
+        camera.zoom += inputP->event.wheel.y * 0.1;
     }
 
     texturesP->DrawRect({ 255,255,255,255 }, { camera.x, camera.y, (double)settings::baseW, (double)settings::baseH });

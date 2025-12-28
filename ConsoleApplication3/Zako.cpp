@@ -1,10 +1,13 @@
 #include "Zako.h"
 #include "SDL_mixer.h"
 
-Zako::Zako() {
+Zako::Zako(double x0, double y0) {
+    texName = "missing";
     type = entityType::Zako;
-    x = 1100;
-    y = 300;
+    x = x0;
+    y = y0;
+    w = 80;
+    h = 80;
 }
 
 void Zako::Update() {

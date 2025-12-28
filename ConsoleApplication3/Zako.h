@@ -4,7 +4,7 @@ class Zako :
     public GameObject
 {
 public:
-    Zako();
+    Zako(double x0, double y0);
     void Update() override;
     void Damage() override;
 };

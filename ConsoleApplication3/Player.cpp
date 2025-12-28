@@ -223,7 +223,6 @@ void Player::Jump() {
 }
 
 void Player::CollideY() {
-    std::cout << std::endl;
     if (onGround) {
         coyoteTime = 0;
         canJump = true;
@@ -295,11 +294,15 @@ void Player::CollideY() {
             touchingEntity = p.get();
             if (pRect.y > eRect.y) {
                 if (collision) {
-                    //std::cout << "uo";
-
                     onGround = true;
-                    vY = p->GetVY();
                     y = eRect.y + eRect.h / 2 + h / 2 + 0.01;
+                    double v = p->GetVY();
+                    if (v < 0) {
+                        vY = v;
+                    }
+                    else if (v > 0) {
+                        vY = v * -1;
+                    }
                 }
                 else {
                     onGround = true;

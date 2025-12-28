@@ -2,12 +2,13 @@
 
 #include "SDL.h"
 #include "structs.h"
+#include <SDL.h>
 
 class Input
 {
 public:
     const Uint8* keystate;
-    EVENT event;
+    SDL_Event event;
     void GetKey();
 };
 

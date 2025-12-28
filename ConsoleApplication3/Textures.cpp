@@ -14,7 +14,7 @@ void Textures::LoadTextures() {
         SDL_DestroyTexture(value);
     }
     map["missing"] = IMG_LoadTexture(settings::renderer, "Assets/textures/missing.png");
-    map["1"] = IMG_LoadTexture(settings::renderer, "Assets/textures/BAN.png");
+    map["1"] = IMG_LoadTexture(settings::renderer, "Assets/textures/block.png");
     map["2"] = IMG_LoadTexture(settings::renderer, "Assets/textures/dokufee.png");
     map["3"] = IMG_LoadTexture(settings::renderer, "Assets/textures/assy2.png");
     map["4"] = IMG_LoadTexture(settings::renderer, "Assets/textures/dotchiku.png");
@@ -31,6 +31,7 @@ void Textures::LoadTextures() {
     map["unko"] = IMG_LoadTexture(settings::renderer, "Assets/textures/unko.png");
     map["camera"] = IMG_LoadTexture(settings::renderer, "Assets/textures/camera.png");
     map["ssk"] = IMG_LoadTexture(settings::renderer, "Assets/textures/ssk.png");
+    map["annoying_chikuwa"] = IMG_LoadTexture(settings::renderer, "Assets/textures/annoying_chikuwa.png");
     std::cout << "[DEBUG]テクスチャをロードしました" << std::endl;
 }
 

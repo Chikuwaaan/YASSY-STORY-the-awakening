@@ -37,10 +37,6 @@ struct BLOCKROOM {
 	std::vector<std::vector<uint8_t>> terrain;
 };
 
-struct EVENT {
-    int mouseWheel;
-};
-
 enum class entityType {
     Null,
     Lift,

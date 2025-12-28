@@ -7,6 +7,7 @@
 #include "Level.h"
 #include "Player.h"
 #include "Input.h"
+#include "ScreenShot.h"
 
 class GameObject;
 class Textures;
@@ -23,10 +24,10 @@ private:
     std::unique_ptr<Level> level;
     std::unique_ptr<Player> assy;
     std::unique_ptr<Input> input;
+    std::unique_ptr<ScreenShot> screenshot;
     //Level level;
     //Player assy;
     //Input input;
-    SDL_Event event;
 public:
     std::vector<std::unique_ptr<GameObject>> objects;
 
