@@ -1,10 +1,14 @@
 #include "Level.h"
 #include "Textures.h"
 #include "namespace.h"
+#include "Input.h"
+#include "Camera.h"
 #include <cmath>
 #include <fstream>
 
 Textures* Level::texturesP = nullptr;
+Input* Level::inputP = nullptr;
+Camera* Level::cameraP = nullptr;
 
 Level::Level() {
     levelW = 128;
@@ -178,29 +182,24 @@ void Level::FileInput() {
     }
 }
 
-void Level::DrawMap() {
-    /*
-    const int room = (int)rooms.size();
+void Level::Editor() {
+    MOUSE mouse = inputP->mouse;
+    CAMERA cam = cameraP->GetCam();
+    int mouseX = (int)((mouse.x + cam.x - settings::baseW / 2) / blockSize);
+    int mouseY = (int)((mouse.y + cam.y - settings::baseH / 2) / blockSize);
 
-    for (int h = 0; h < room; h++) {
-        int row = (int)rooms[h].terrain.size();
-        for (int i = 0; i < row; i++) {
-            int column = (int)rooms[h].terrain[i].size();
-            for (int j = 0; j < column; j++) {
-                std::string texName = std::to_string(rooms[h].terrain[i][j]);
-                if (texName != "0") {
-                    OBJRECT rect;
-                    rect.x = blockSize * (j + 0.5) + blockSize * rooms[h].x;
-                    rect.y = blockSize * (row - (i + 0.5)) + blockSize * rooms[h].y;
-                    rect.w = blockSize;
-                    rect.h = blockSize;
-                    texturesP->DrawImage(texName, rect);
-                }
-            }
-        }
+    SDL_Color color = { 255,255,255,255 };
+    texturesP->DrawTextA(std::to_string(mouseX) + " " + std::to_string(mouseY), color, 1700, 1000, 1, 1);
+
+    if (mouse.right) {
+        level[mouseY][mouseX] = 0;
     }
-    */
+    if (mouse.left) {
+        level[mouseY][mouseX] = 1;
+    }
+}
 
+void Level::DrawMap() {
     for (int y = 0; y < levelH; y++) {
         for (int x = 0; x < levelW; x++) {
             std::string texName = std::to_string(level[y][x]);

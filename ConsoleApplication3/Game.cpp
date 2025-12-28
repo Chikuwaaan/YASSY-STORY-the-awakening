@@ -92,7 +92,7 @@ void Game::Update() {
         objects.end()
     );
 
-    //level->Editor();
+    level->Editor();
 
     SDL_RenderPresent(settings::renderer);
 }
@@ -141,7 +141,8 @@ void Game::MakeInstance() {
     Camera::inputP = input.get();
     Textures::cameraP = camera.get();
     Level::texturesP = textures.get();
-    //Level::inputP = input.get();
+    Level::inputP = input.get();
+    Level::cameraP = camera.get();
     Player::gameP = this;
     Player::levelP = level.get();
     Player::cameraP = camera.get();
