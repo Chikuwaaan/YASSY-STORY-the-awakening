@@ -55,4 +55,9 @@ struct EVENT {
     bool ESCAPE;
     bool F12;
     int MouseWheel;
+    bool MouseLeft;
+    bool MouseMiddle;
+    bool MouseRight;
+    bool MouseX1;
+    bool MouseX2;
 };

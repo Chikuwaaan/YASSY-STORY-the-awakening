@@ -35,6 +35,11 @@ void Input::GetEvent() {
     event.ESCAPE = 0;
     event.F12 = 0;
     event.MouseWheel = 0;
+    event.MouseLeft = 0;
+    event.MouseMiddle = 0;
+    event.MouseRight = 0;
+    event.MouseX1 = 0;
+    event.MouseX2 = 0;
 
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
@@ -49,6 +54,23 @@ void Input::GetEvent() {
 
         if (e.type == SDL_MOUSEWHEEL) {
             event.MouseWheel = e.wheel.y;
+        }
+        if (e.type == SDL_MOUSEBUTTONDOWN) {
+            if (e.button.button == SDL_BUTTON_LEFT) {
+                event.MouseLeft = 1;
+            }
+            if (e.button.button == SDL_BUTTON_MIDDLE) {
+                event.MouseMiddle = 1;
+            }
+            if (e.button.button == SDL_BUTTON_RIGHT) {
+                event.MouseRight = 1;
+            }
+            if (e.button.button == SDL_BUTTON_X1) {
+                event.MouseX1 = 1;
+            }
+            if (e.button.button == SDL_BUTTON_X2) {
+                event.MouseX2 = 1;
+            }
         }
     }
 }

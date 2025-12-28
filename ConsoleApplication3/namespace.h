@@ -15,7 +15,7 @@ namespace settings {
 }
 
 namespace utilities {
-    extern bool HitDetection(OBJRECT obj1, OBJRECT obj2);
+    bool HitDetection(OBJRECT obj1, OBJRECT obj2);
 }
 
 namespace platformer {

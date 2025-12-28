@@ -19,6 +19,11 @@ void Textures::LoadTextures() {
     map["3"] = IMG_LoadTexture(settings::renderer, "Assets/textures/assy2.png");
     map["4"] = IMG_LoadTexture(settings::renderer, "Assets/textures/dotchiku.png");
     map["5"] = IMG_LoadTexture(settings::renderer, "Assets/textures/nsfw.png");
+    map["6"] = IMG_LoadTexture(settings::renderer, "Assets/textures/uo.png");
+    map["7"] = IMG_LoadTexture(settings::renderer, "Assets/textures/ys.png");
+    map["8"] = IMG_LoadTexture(settings::renderer, "Assets/textures/pawn.png");
+    map["9"] = IMG_LoadTexture(settings::renderer, "Assets/textures/summon.png");
+    map["10"] = IMG_LoadTexture(settings::renderer, "Assets/textures/assy.png");
     map["assy"] = IMG_LoadTexture(settings::renderer, "Assets/textures/assy.png");
     map["assy2"] = IMG_LoadTexture(settings::renderer, "Assets/textures/assy2.png");
     map["assyChara"] = IMG_LoadTexture(settings::renderer, "Assets/textures/assyChara.png");
@@ -51,6 +56,15 @@ void Textures::DrawImage(std::string texName, OBJRECT rect) {
         SDL_Rect ds = { 200,200,200,200 };
         SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
     }
+}
+
+void Textures::DrawImageA(std::string texName, OBJRECT rect) {
+    SDL_Rect dst;
+    dst.x = (int)rect.x;
+    dst.y = (int)rect.y;
+    dst.w = (int)rect.w;
+    dst.h = (int)rect.h;
+    SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
 }
 
 void Textures::DrawImageEx(std::string texName, OBJRECT rect, double angle, OBJRECT center, bool flipX, bool flipY) {
@@ -107,6 +121,26 @@ void Textures::DrawTextA(std::string text, SDL_Color color, int x, int y, int w,
     SDL_Texture* texture = SDL_CreateTextureFromSurface(settings::renderer, surface);
     SDL_Rect dst = { x,y,surface->w * w, surface->h * h};
     SDL_RenderCopy(settings::renderer, texture, NULL, &dst);
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(surface);
+}
+
+void Textures::DrawTextR(std::string text, SDL_Color color, int x, int y, int w, int h) {
+    SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), color);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(settings::renderer, surface);
+
+    CAMERA camera = cameraP->GetCam();
+    double pivotX = settings::baseW / 2.0;
+    double pivotY = settings::baseH / 2.0;
+    SDL_Rect rect = { x,y,surface->w * w, surface->h * h };
+    SDL_Rect dst;
+    dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+    dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+    dst.w = (int)(rect.w * camera.zoom);
+    dst.h = (int)(rect.h * camera.zoom);
+    SDL_Rect ds = { 200,200,200,200 };
+    SDL_RenderCopy(settings::renderer, texture, NULL, &dst);
+
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);
 }

@@ -11,6 +11,7 @@ Input* Level::inputP = nullptr;
 Camera* Level::cameraP = nullptr;
 
 Level::Level() {
+    editorPalette = 1;
     levelW = 128;
     levelH = 32;
     blockSize = 80.0;
@@ -184,19 +185,45 @@ void Level::FileInput() {
 
 void Level::Editor() {
     MOUSE mouse = inputP->mouse;
-    CAMERA cam = cameraP->GetCam();
-    int mouseX = (int)((mouse.x + cam.x - settings::baseW / 2) / blockSize);
-    int mouseY = (int)((mouse.y + cam.y - settings::baseH / 2) / blockSize);
+    EVENT event = inputP->event;
+    CAMERA camera = cameraP->GetCam();
+    //int mouseX = (int)((mouse.x + cam.x - settings::baseW / 2 ) / blockSize);
 
+    int pivotX = settings::baseW / 2;
+    int pivotY = settings::baseH / 2;
+    int mouseX = (int)((mouse.x / camera.zoom + (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) / blockSize);
+    int mouseY = (int)((mouse.y / camera.zoom + (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) / blockSize);
+    if (mouseX < 0) {
+        mouseX = 0;
+    }
+    else if (mouseX >= levelW) {
+        mouseX = levelW - 1;
+    }
+    if (mouseY < 0) {
+        mouseY = 0;
+    }
+    else if (mouseY >= levelH) {
+        mouseY = levelH - 1;
+    }
     SDL_Color color = { 255,255,255,255 };
     texturesP->DrawTextA(std::to_string(mouseX) + " " + std::to_string(mouseY), color, 1700, 1000, 1, 1);
+    
+
+    if (event.MouseX1) {
+        editorPalette--;
+    }
+    if (event.MouseX2) {
+        editorPalette++;
+    }
 
     if (mouse.right) {
         level[mouseY][mouseX] = 0;
     }
     if (mouse.left) {
-        level[mouseY][mouseX] = 1;
+        level[mouseY][mouseX] = editorPalette;
     }
+
+    texturesP->DrawImageA(std::to_string(editorPalette), { 1830, 10, 80, 80 });
 }
 
 void Level::DrawMap() {

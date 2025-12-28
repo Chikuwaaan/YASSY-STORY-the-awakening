@@ -18,7 +18,7 @@ Game::Game() {
 void Game::Run() {
     MakeInstance();
 
-    pendingObjects.push_back(std::make_unique<Lift>(1500, 200, -100, 300, 0, 0));
+    //pendingObjects.push_back(std::make_unique<Lift>(1500, 200, -100, 300, 0, 0));
     //pendingObjects.push_back(std::make_unique<Lift>(2500, 200, -200, 400, 0, 0));
     //pendingObjects.push_back(std::make_unique<Lift>(3500, 0, 0, 500, 300, 300));
 

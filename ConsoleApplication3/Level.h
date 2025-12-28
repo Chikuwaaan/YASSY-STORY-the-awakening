@@ -14,6 +14,7 @@ private:
     int levelW, levelH;
     uint8_t level[32][128];
     double blockSize;
+    int editorPalette;
 public:
     static Textures* texturesP;
     static Input* inputP;

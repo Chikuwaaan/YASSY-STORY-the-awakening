@@ -3,6 +3,7 @@
 #include "namespace.h"
 #include "Input.h"
 #include <iostream>
+#include <cmath>
 
 Textures* Camera::texturesP = nullptr;
 Input* Camera::inputP = nullptr;
@@ -18,7 +19,7 @@ Camera::Camera() {
 
     //room.push_back({ 0,1920,0,1080,960,960,540,540 });
     //room.push_back({ 1920,1920 * 2,0,1440,960 * 3 - 120,960 * 3 + 120,540,660 });
-    room.push_back({ -1000,10000,-1000,10000,960,10000,540,540 });
+    room.push_back({ -1000,10000,-1000,1000,960,10000,540,540 });
 }
 
 CAMERA Camera::GetCam() {
@@ -57,6 +58,22 @@ void Camera::Update() {
     }
 
     texturesP->DrawRect({ 255,255,255,255 }, { camera.x, camera.y, (double)settings::baseW, (double)settings::baseH });
+    for (int i = 0; i < room.size(); i++) {
+            OBJRECT rect;
+            rect.x = (room[i].x1 + room[i].x2) / 2;
+            rect.y = (room[i].y1 + room[i].y2) / 2;
+            rect.w = abs(room[i].x1 - room[i].x2);
+            rect.h = abs(room[i].y1 - room[i].y2);
+            texturesP->DrawRect({ 255,0,0,255 }, rect);
+            texturesP->DrawTextR(std::to_string(i), {255,0,0,255}, (int)room[i].x1, (int)room[i].y2, 2, 2);
+
+            rect.x = (room[i].x3 + room[i].x4) / 2;
+            rect.y = (room[i].y3 + room[i].y4) / 2;
+            rect.w = abs(room[i].x3 - room[i].x4);
+            rect.h = abs(room[i].y3 - room[i].y4);
+            texturesP->DrawRect({ 0,127,0,255 }, rect);
+            texturesP->DrawTextR(std::to_string(i), { 0,127,0,255 }, (int)room[i].x3, (int)room[i].y4, 2, 2);
+    }
 
     camera.x = camera.targetX + (camera.x - camera.targetX) / (1.05);
     camera.y = camera.targetY + (camera.y - camera.targetY) / (1.05);
