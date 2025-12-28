@@ -31,7 +31,6 @@ public:
     static Camera* cameraP;
     Player();
     void SetAX(double acceleration);
-    OBJRECT isTouchingMap(double x, double y, double w, double h);
     void Update() override;
     void Jump();
     void CollideY();

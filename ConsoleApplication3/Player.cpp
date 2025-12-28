@@ -44,11 +44,6 @@ void Player::SetAX(double acceleration) {
     aX += acceleration;
 }
 
-OBJRECT Player::isTouchingMap(double x, double y, double w, double h) {
-    OBJRECT obj = { x, y, w, h };
-    return levelP->IsTouching(obj);
-}
-
 
 void Player::Update() {
     cameraP->SetTargetX(x);
@@ -340,7 +335,7 @@ void Player::CollideX() {
     texturesP->DrawTextA(std::to_string(bRect.block), color, 1340, 50, 1, 1);
 
     if (bRect.block) {
-        bRect = isTouchingMap(x, y, w, h);
+        bRect = levelP->IsTouching2(pRect, 1);
         if (vX > 0.0) {
             if (!liftVX) {
                 walkVX = 0.0;

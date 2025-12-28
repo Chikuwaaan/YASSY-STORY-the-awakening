@@ -19,7 +19,6 @@ public:
     void FileOutput();
     void FileInput();
     void DrawMap();
-    OBJRECT IsTouching(OBJRECT obj1);
     OBJRECT IsTouching2(OBJRECT obj1, bool direction);
     void FixBlockPos(int* x, int* y);
 };

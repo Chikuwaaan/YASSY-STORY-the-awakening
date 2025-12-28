@@ -2,6 +2,14 @@
 
 #pragma once
 
+struct MOUSE {
+    int x;
+    int y;
+    bool left;
+    bool middle;
+    bool right;
+};
+
 struct CAMERA {
 	double x;
 	double y;
@@ -41,4 +49,10 @@ enum class entityType {
     Null,
     Lift,
     Zako
+};
+
+struct EVENT {
+    bool ESCAPE;
+    bool F12;
+    int MouseWheel;
 };

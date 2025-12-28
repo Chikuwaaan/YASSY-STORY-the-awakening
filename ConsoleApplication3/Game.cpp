@@ -18,9 +18,9 @@ Game::Game() {
 void Game::Run() {
     MakeInstance();
 
-    pendingObjects.push_back(std::make_unique<Lift>(1500, 200, 200, 300, 0, 0));
-    pendingObjects.push_back(std::make_unique<Lift>(2500, 200, -200, 400, 0, 0));
-    pendingObjects.push_back(std::make_unique<Lift>(3500, 0, 0, 500, 300, 300));
+    pendingObjects.push_back(std::make_unique<Lift>(1500, 200, -100, 300, 0, 0));
+    //pendingObjects.push_back(std::make_unique<Lift>(2500, 200, -200, 400, 0, 0));
+    //pendingObjects.push_back(std::make_unique<Lift>(3500, 0, 0, 500, 300, 300));
 
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
@@ -33,16 +33,16 @@ void Game::Run() {
         while (accumulator >= settings::dt) {
             HandleEvent();
             Update();
+            
             const Uint8* keystate = input->keystate;
-            const SDL_Event event = input->event;
-            if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
-                if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
-                    level->FileOutput();
-                    running = 0;
-                }
-                if (event.key.keysym.scancode == SDL_SCANCODE_F12) {
-                    screenshot->SaveScreenShot();
-                }
+            const EVENT event = input->event;
+
+            if (event.ESCAPE) {
+                running = 0;
+                level->FileOutput();
+            }
+            if (event.F12) {
+                screenshot->SaveScreenShot();
             }
 
             accumulator -= settings::dt;
@@ -52,7 +52,8 @@ void Game::Run() {
 
 void Game::HandleEvent() {
     input->GetKey();
-    SDL_PollEvent(&(input->event));
+    input->GetCursor();
+    input->GetEvent();
 }
 
 void Game::Update() {
@@ -91,9 +92,9 @@ void Game::Update() {
         objects.end()
     );
 
-    SDL_RenderPresent(settings::renderer);
+    //level->Editor();
 
-    
+    SDL_RenderPresent(settings::renderer);
 }
 
 void Game::InitSystem() {
@@ -140,6 +141,7 @@ void Game::MakeInstance() {
     Camera::inputP = input.get();
     Textures::cameraP = camera.get();
     Level::texturesP = textures.get();
+    //Level::inputP = input.get();
     Player::gameP = this;
     Player::levelP = level.get();
     Player::cameraP = camera.get();

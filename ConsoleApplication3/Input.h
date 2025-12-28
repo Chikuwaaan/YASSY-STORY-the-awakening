@@ -8,7 +8,11 @@ class Input
 {
 public:
     const Uint8* keystate;
-    SDL_Event event;
+    EVENT event;
+    MOUSE mouse;
     void GetKey();
+    void GetCursor();
+    void GetEvent();
+    
 };
 

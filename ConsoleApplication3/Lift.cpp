@@ -5,7 +5,7 @@
 
 Lift::Lift(double spawnX, double ampX, double velocityX, double spawnY, double ampY, double velocityY) {
     type = entityType::Lift;
-    h = 100;
+    h = 1000;
     w = 400;
     collision = 1;
     texName = "unko";

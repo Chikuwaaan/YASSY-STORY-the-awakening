@@ -1,5 +1,55 @@
 #include "Input.h"
+#include "namespace.h"
 
 void Input::GetKey() {
     keystate = SDL_GetKeyboardState(NULL);
 }
+
+void Input::GetCursor() {
+    int x, y;
+    Uint32 buttons = SDL_GetMouseState(&x, &y);
+    mouse.x = x;
+    mouse.y = settings::baseH - y;
+
+    if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+        mouse.left = 1;
+    }
+    else {
+        mouse.left = 0;
+    }
+    if (buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE)) {
+        mouse.middle = 1;
+    }
+    else {
+        mouse.middle = 0;
+    }
+    if (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
+        mouse.right = 1;
+    }
+    else {
+        mouse.right = 0;
+    }
+}
+
+void Input::GetEvent() {
+    event.ESCAPE = 0;
+    event.F12 = 0;
+    event.MouseWheel = 0;
+
+    SDL_Event e;
+    while (SDL_PollEvent(&e)) {
+        if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
+            if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
+                event.ESCAPE = 1;
+            }
+            if (e.key.keysym.scancode == SDL_SCANCODE_F12) {
+                event.F12 = 1;
+            }
+        }
+
+        if (e.type == SDL_MOUSEWHEEL) {
+            event.MouseWheel = e.wheel.y;
+        }
+    }
+}
+

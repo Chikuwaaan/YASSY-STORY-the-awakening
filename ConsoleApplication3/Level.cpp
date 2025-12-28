@@ -216,46 +216,6 @@ void Level::DrawMap() {
     }
 };
 
-OBJRECT Level::IsTouching(OBJRECT obj1) {
-    bool a = false;
-    const int room = (int)rooms.size();
-    const int width = (int)(obj1.w / blockSize) + 1;
-    const int height = (int)(obj1.h / blockSize) + 1;
-
-    for (int h = 0; h < room; h++) {
-        int row = (int)rooms[h].terrain.size();
-        int column = (int)rooms[h].terrain[0].size();
-        int levelX = rooms[h].x;
-        int levelY = rooms[h].y;
-        int playerLevelX = (int)(obj1.x / blockSize) - levelX;
-        int playerLevelY = row - (int)(obj1.y / blockSize) - 1 + levelY;
-
-        int i = playerLevelY - height;
-        int j;
-        int k = playerLevelY + height;
-        int l = playerLevelX + width;
-        if (i < 0) i = 0;
-        if (k > (row - 1)) k = row - 1;
-        for (; i <= k; i++) {
-            j = playerLevelX - width;
-            if (j < 0) j = 0;
-            if (l > (column - 1)) l = column - 1;
-
-            for (; j <= l; j++) {
-                if (rooms[h].terrain[i][j] != 0) {
-                    OBJRECT obj2 = { blockSize * (j + levelX + 0.5) , blockSize * (row - (i - levelY + 0.5)) , blockSize, blockSize };
-                    a = utilities::HitDetection(obj1, obj2);
-                    if (a) {
-                        return { blockSize * (j + levelX + 0.5), blockSize * (row - (i - levelY + 0.5)), blockSize, blockSize, rooms[h].terrain[i][j] };
-                    }
-                }
-            }
-        }
-    }
-
-
-    return { 0, 0, 0, 0, 0 };
-}
 
 OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
     SDL_Color color = { 255,255,255,255 };
