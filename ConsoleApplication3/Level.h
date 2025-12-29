@@ -10,6 +10,7 @@ class Camera;
 class Level
 {
 private:
+    std::vector<std::vector<std::string>> blockProperty;
     std::vector<BLOCKROOM> rooms;
     int levelW, levelH;
     uint8_t level[32][128];
@@ -25,6 +26,8 @@ public:
     void FileInput();
     void Editor();
     void DrawMap();
+    int CheckAroundTile(int y, int x);
+    bool CheckTile(int y, int x);
     OBJRECT IsTouching2(OBJRECT obj1, bool direction);
     void FixBlockPos(int* x, int* y);
 };

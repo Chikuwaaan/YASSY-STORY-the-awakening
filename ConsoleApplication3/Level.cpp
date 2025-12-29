@@ -19,6 +19,12 @@ Level::Level() {
         {1,1,1,1,1,1,1,1,1,1}
 } });
 
+    blockProperty = {
+        {"0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a"},
+        {"1-0","1-1","1-2","1-0","1-4","1-5","1-0","1-0","1-8","1-0","1-10","1-0","1-0","1-0","1-0","1-15"}
+    };
+    
+
     /*
     rooms.push_back({ 0,0,{
         {0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
@@ -208,12 +214,13 @@ void Level::Editor() {
     SDL_Color color = { 255,255,255,255 };
     texturesP->DrawTextA(std::to_string(mouseX) + " " + std::to_string(mouseY), color, 1700, 1000, 1, 1);
     
+    
 
     if (event.MouseX1) {
-        editorPalette--;
+        if (editorPalette > 0) editorPalette--;
     }
     if (event.MouseX2) {
-        editorPalette++;
+        if (editorPalette < blockProperty.size() - 1) editorPalette++;
     }
 
     if (mouse.right) {
@@ -223,25 +230,60 @@ void Level::Editor() {
         level[mouseY][mouseX] = editorPalette;
     }
 
-    texturesP->DrawImageA(std::to_string(editorPalette), { 1830, 10, 80, 80 });
+    texturesP->DrawImageA(blockProperty[editorPalette][0], {1830, 10, 80, 80});
+    texturesP->DrawTextA(std::to_string(editorPalette), {255,255,255,255}, 1830, 100, 1, 1);
 }
 
 void Level::DrawMap() {
     for (int y = 0; y < levelH; y++) {
         for (int x = 0; x < levelW; x++) {
-            std::string texName = std::to_string(level[y][x]);
-            if (texName != "0") {
+            if (level[y][x] != 0) {
+                int mask = CheckAroundTile(y, x);
+                std::string tex = blockProperty[level[y][x]][mask];
                 OBJRECT rect;
                 rect.x = blockSize * x + blockSize / 2;
                 rect.y = blockSize * y + blockSize / 2;
                 rect.w = blockSize;
                 rect.h = blockSize;
-                texturesP->DrawImage(texName, rect);
+                texturesP->DrawImage(tex, rect);
             }
         }
     }
 };
 
+int Level::CheckAroundTile(int y, int x) {
+    int a = 0;
+    int X, Y;
+    
+    X = x + 1;
+    if (X < levelW) {
+        a += CheckTile(y, X) * 1;
+    }
+    X = x - 1;
+    if (X >= 0) {
+        a += CheckTile(y, X) * 4;
+    }
+
+    Y = y + 1;
+    if (Y < levelH) {
+        a += CheckTile(Y, x) * 2;
+    }
+    Y = y - 1;
+    if (Y >= 0) {
+        a += CheckTile(Y, x) * 8;
+    }
+
+    return a;
+}
+
+bool Level::CheckTile(int y, int x) {
+    if (level[y][x] == 0) {
+        return 0;
+    }
+    else {
+        return 1;
+    }
+}
 
 OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
     SDL_Color color = { 255,255,255,255 };

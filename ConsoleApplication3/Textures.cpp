@@ -10,33 +10,27 @@ Textures::Textures() {
 }
 
 void Textures::LoadTextures() {
+    SDL_Renderer* r = settings::renderer;
+
     for (auto [_, value] : map) {
         SDL_DestroyTexture(value);
     }
     map["missing"] = IMG_LoadTexture(settings::renderer, "Assets/textures/missing.png");
-    map["1"] = IMG_LoadTexture(settings::renderer, "Assets/textures/block.png");
-    map["2"] = IMG_LoadTexture(settings::renderer, "Assets/textures/dokufee.png");
-    map["3"] = IMG_LoadTexture(settings::renderer, "Assets/textures/assy2.png");
-    map["4"] = IMG_LoadTexture(settings::renderer, "Assets/textures/dotchiku.png");
-    map["5"] = IMG_LoadTexture(settings::renderer, "Assets/textures/nsfw.png");
-    map["6"] = IMG_LoadTexture(settings::renderer, "Assets/textures/uo.png");
-    map["7"] = IMG_LoadTexture(settings::renderer, "Assets/textures/ys.png");
-    map["8"] = IMG_LoadTexture(settings::renderer, "Assets/textures/pawn.png");
-    map["9"] = IMG_LoadTexture(settings::renderer, "Assets/textures/summon.png");
-    map["10"] = IMG_LoadTexture(settings::renderer, "Assets/textures/assy.png");
-    map["assy"] = IMG_LoadTexture(settings::renderer, "Assets/textures/assy.png");
-    map["assy2"] = IMG_LoadTexture(settings::renderer, "Assets/textures/assy2.png");
-    map["assyChara"] = IMG_LoadTexture(settings::renderer, "Assets/textures/assyChara.png");
-    map["legL"] = IMG_LoadTexture(settings::renderer, "Assets/textures/legL.png");
-    map["legR"] = IMG_LoadTexture(settings::renderer, "Assets/textures/legR.png");
-    map["body"] = IMG_LoadTexture(settings::renderer, "Assets/textures/body.png");
-    map["head"] = IMG_LoadTexture(settings::renderer, "Assets/textures/head.png");
-    map["armL"] = IMG_LoadTexture(settings::renderer, "Assets/textures/armL.png");
-    map["armR"] = IMG_LoadTexture(settings::renderer, "Assets/textures/armR.png");
-    map["unko"] = IMG_LoadTexture(settings::renderer, "Assets/textures/unko.png");
-    map["camera"] = IMG_LoadTexture(settings::renderer, "Assets/textures/camera.png");
-    map["ssk"] = IMG_LoadTexture(settings::renderer, "Assets/textures/ssk.png");
-    map["annoying_chikuwa"] = IMG_LoadTexture(settings::renderer, "Assets/textures/annoying_chikuwa.png");
+    map["legL"] = IMG_LoadTexture(r, "Assets/textures/legL.png");
+    map["legR"] = IMG_LoadTexture(r, "Assets/textures/legR.png");
+    map["body"] = IMG_LoadTexture(r, "Assets/textures/body.png");
+    map["head"] = IMG_LoadTexture(r, "Assets/textures/head.png");
+    map["armL"] = IMG_LoadTexture(r, "Assets/textures/armL.png");
+    map["armR"] = IMG_LoadTexture(r, "Assets/textures/armR.png");
+
+    map["1-0"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-0.png");
+    map["1-1"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-1.png");
+    map["1-2"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-2.png");
+    map["1-4"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-4.png");
+    map["1-5"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-5.png");
+    map["1-8"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-8.png");
+    map["1-10"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-10.png");
+    map["1-15"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-15.png");
     std::cout << "[DEBUG]テクスチャをロードしました" << std::endl;
 }
 
