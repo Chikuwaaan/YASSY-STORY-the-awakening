@@ -19,10 +19,16 @@ Level::Level() {
         {1,1,1,1,1,1,1,1,1,1}
 } });
 
-    blockProperty = {
-        {"0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a","0_a"},
-        {"1-0","1-1","1-2","1-0","1-4","1-5","1-0","1-0","1-8","1-0","1-10","1-0","1-0","1-0","1-0","1-15"}
-    };
+    blockProperty.push_back({});
+    blockProperty.push_back({ {1,1,1,1,0,0,0,0},{
+        {0b0000, "1-0000"},{0b0001, "1-0001"},{0b0010, "1-0010"},{0b0011, "1-0011"},
+        {0b0100, "1-0100"},{0b0101, "1-0101"},{0b0110, "1-0110"},{0b1000, "1-1000"},
+        {0b1001, "1-1001"},{0b1010, "1-1010"},{0b1100, "1-1100"},{0b1111, "1-1111"},
+        {0b0111, "1-0111"},{0b1110, "1-1110"},{0b1101, "1-1101"},{0b1011, "1-1011"}
+} });
+    blockProperty.push_back({ {0,1,0,1,0,0,0,0}, {
+        {0, "2-0"},{2, "2-2"},{8, "2-8"},{10, "2-10"}
+} });
     
 
     /*
@@ -230,16 +236,18 @@ void Level::Editor() {
         level[mouseY][mouseX] = editorPalette;
     }
 
-    texturesP->DrawImageA(blockProperty[editorPalette][0], {1830, 10, 80, 80});
+    texturesP->DrawImageA(blockProperty[editorPalette].tex[0], {1830, 10, 80, 80});
     texturesP->DrawTextA(std::to_string(editorPalette), {255,255,255,255}, 1830, 100, 1, 1);
 }
 
 void Level::DrawMap() {
     for (int y = 0; y < levelH; y++) {
         for (int x = 0; x < levelW; x++) {
-            if (level[y][x] != 0) {
-                int mask = CheckAroundTile(y, x);
-                std::string tex = blockProperty[level[y][x]][mask];
+
+            int blockType = level[y][x];
+            if (blockType != 0) {
+                int mask = CheckAroundTile(y, x, blockProperty[blockType].checkFor);
+                std::string tex = GetTexName(blockType, mask);
                 OBJRECT rect;
                 rect.x = blockSize * x + blockSize / 2;
                 rect.y = blockSize * y + blockSize / 2;
@@ -251,27 +259,60 @@ void Level::DrawMap() {
     }
 };
 
-int Level::CheckAroundTile(int y, int x) {
+std::string Level::GetTexName(int block, int mask) {
+    if (block >= blockProperty.size()) return "missing";
+
+    if (blockProperty[block].tex.count(mask) == 0) {
+        return "missing";
+    }
+    else {
+        return blockProperty[block].tex[mask];
+    }
+}
+
+int Level::CheckAroundTile(int y, int x, CHECKFOR checkFor) {
     int a = 0;
     int X, Y;
     
     X = x + 1;
-    if (X < levelW) {
+    if (X < levelW && checkFor.a) {
         a += CheckTile(y, X) * 1;
     }
-    X = x - 1;
-    if (X >= 0) {
-        a += CheckTile(y, X) * 4;
-    }
-
     Y = y + 1;
-    if (Y < levelH) {
+    if (Y < levelH && checkFor.b) {
         a += CheckTile(Y, x) * 2;
     }
+    X = x - 1;
+    if (X >= 0 && checkFor.c) {
+        a += CheckTile(y, X) * 4;
+    }
     Y = y - 1;
-    if (Y >= 0) {
+    if (Y >= 0 && checkFor.d) {
         a += CheckTile(Y, x) * 8;
     }
+
+    
+    X = x + 1;
+    Y = y + 1;
+    if (X < levelW && Y < levelH && checkFor.e) {
+        a += CheckTile(Y, X) * 16;
+    }
+    X = x - 1;
+    Y = y + 1;
+    if (X >= 0 && Y < levelH && checkFor.f) {
+        a += CheckTile(Y, X) * 32;
+    }
+    X = x - 1;
+    Y = y - 1;
+    if (X >= 0 && Y >= 0 && checkFor.g) {
+        a += CheckTile(Y, X) * 64;
+    }
+    X = x + 1;
+    Y = y - 1;
+    if (X < levelW && Y >= 0 && checkFor.h) {
+        a += CheckTile(Y, X) * 128;
+    }
+    
 
     return a;
 }

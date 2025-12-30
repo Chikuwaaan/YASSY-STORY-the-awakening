@@ -23,14 +23,29 @@ void Textures::LoadTextures() {
     map["armL"] = IMG_LoadTexture(r, "Assets/textures/armL.png");
     map["armR"] = IMG_LoadTexture(r, "Assets/textures/armR.png");
 
-    map["1-0"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-0.png");
-    map["1-1"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-1.png");
-    map["1-2"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-2.png");
-    map["1-4"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-4.png");
-    map["1-5"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-5.png");
-    map["1-8"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-8.png");
-    map["1-10"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-10.png");
-    map["1-15"] = IMG_LoadTexture(r, "Assets/textures/blocks/1-15.png");
+    map["BG1"] = IMG_LoadTexture(r, "Assets/textures/untitled.png");
+
+    map["1-0000"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-0000.png");
+    map["1-0001"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-0001.png");
+    map["1-0010"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-0010.png");
+    map["1-0011"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-0011.png");
+    map["1-0100"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-0100.png");
+    map["1-0101"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-0101.png");
+    map["1-0110"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-0110.png");
+    map["1-1000"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-1000.png");
+    map["1-1001"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-1001.png");
+    map["1-1010"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-1010.png");
+    map["1-1100"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-1100.png");
+    map["1-1111"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-1111.png");
+    map["1-0111"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-0111.png");
+    map["1-1110"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-1110.png");
+    map["1-1101"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-1101.png");
+    map["1-1011"] = IMG_LoadTexture(r, "Assets/textures/blocks/1/1-1011.png");
+
+    map["2-0"] = IMG_LoadTexture(r, "Assets/textures/blocks/2-0.png");
+    map["2-2"] = IMG_LoadTexture(r, "Assets/textures/blocks/2-2.png");
+    map["2-8"] = IMG_LoadTexture(r, "Assets/textures/blocks/2-8.png");
+    map["2-10"] = IMG_LoadTexture(r, "Assets/textures/blocks/2-10.png");
     std::cout << "[DEBUG]テクスチャをロードしました" << std::endl;
 }
 

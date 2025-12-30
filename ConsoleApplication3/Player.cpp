@@ -98,7 +98,7 @@ void Player::Update() {
 
 
 
-
+    /*
     if (groundBlock == 2) {
         vY = 1300.0;
     }
@@ -114,6 +114,7 @@ void Player::Update() {
     else if (groundBlock == 4) {
         liftVX = -30;
     }
+    */
 
 
 
