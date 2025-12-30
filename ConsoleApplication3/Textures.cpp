@@ -63,6 +63,9 @@ void Textures::DrawImage(std::string texName, OBJRECT rect) {
         dst.w = (int)(rect.w * camera.zoom);
         dst.h = (int)(rect.h * camera.zoom);
         SDL_Rect ds = { 200,200,200,200 };
+
+        SDL_Color rainbow = utilities::HSVtoRGB(platformer::flames % 360, 0.2, 1, 255);
+        SDL_SetTextureColorMod(GetTexture(texName), rainbow.r, rainbow.g, rainbow.b);
         SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
     }
 }

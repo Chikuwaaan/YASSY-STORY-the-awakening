@@ -1,4 +1,5 @@
 #include "namespace.h"
+#include <cmath>
 
 namespace settings {
     double maxFps = 120.0;
@@ -25,6 +26,32 @@ namespace utilities {
             x1 + 0.5 * w1 > x2 - 0.5 * w2 &&
             y1 - 0.5 * h1 < y2 + 0.5 * h2 &&
             y1 + 0.5 * h1 > y2 - 0.5 * h2);
+    }
+
+    SDL_Color HSVtoRGB(double h, double s, double v, int a) {
+        SDL_Color rgb;
+
+        float c = v * s;
+        float h_ = h / 60.0f;
+        float x = c * (1 - std::fabs(fmod(h_, 2.0f) - 1));
+
+        float r1 = 0, g1 = 0, b1 = 0;
+
+        if (0 <= h_ && h_ < 1) { r1 = c; g1 = x; }
+        else if (1 <= h_ && h_ < 2) { r1 = x; g1 = c; }
+        else if (2 <= h_ && h_ < 3) { g1 = c; b1 = x; }
+        else if (3 <= h_ && h_ < 4) { g1 = x; b1 = c; }
+        else if (4 <= h_ && h_ < 5) { r1 = x; b1 = c; }
+        else if (5 <= h_ && h_ < 6) { r1 = c; b1 = x; }
+
+        float m = v - c;
+
+        rgb.r = static_cast<int>((r1 + m) * 255);
+        rgb.g = static_cast<int>((g1 + m) * 255);
+        rgb.b = static_cast<int>((b1 + m) * 255);
+        rgb.a = a;
+
+        return rgb;
     }
 }
 
