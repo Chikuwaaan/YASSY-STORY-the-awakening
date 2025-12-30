@@ -66,7 +66,9 @@ void Game::Update() {
 
 
     SDL_Color rainbow = utilities::HSVtoRGB(platformer::flames % 360, 1, 1, 255);
-    textures->DrawRect(rainbow, {0, 0, 300, 300});
+    textures->DrawRect(rainbow, {0, 0, 300, 300, 1}, 1);
+
+    textures->DrawTexts("unchi", { 255,255,255,255 }, { 0,0,1,1 }, 1, {});
 
 
     for (auto& obj : objects) {

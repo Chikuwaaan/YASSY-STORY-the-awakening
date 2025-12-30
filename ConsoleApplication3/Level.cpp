@@ -218,7 +218,6 @@ void Level::Editor() {
         mouseY = levelH - 1;
     }
     SDL_Color color = { 255,255,255,255 };
-    texturesP->DrawTextA(std::to_string(mouseX) + " " + std::to_string(mouseY), color, 1700, 1000, 1, 1);
     
     
 
@@ -237,7 +236,6 @@ void Level::Editor() {
     }
 
     texturesP->DrawImage(blockProperty[editorPalette].tex[0], {1830, 10, 80, 80}, 0 ,{});
-    texturesP->DrawTextA(std::to_string(editorPalette), {255,255,255,255}, 1830, 100, 1, 1);
 }
 
 void Level::DrawMap() {
@@ -333,8 +331,6 @@ OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
     int extraX = (int)round((obj1.x) / blockSize);
     int levelY = (int)round((obj1.y - blockSize / 2) / blockSize);
     int extraY = (int)round((obj1.y) / blockSize);
-    texturesP->DrawTextA(std::to_string(levelX) + " " + std::to_string(levelY), color, 1000, 0, 1, 1);
-    texturesP->DrawTextA(std::to_string(extraX) + " " + std::to_string(extraY), color, 1000, 50, 1, 1);
 
     //0=y, 1=x
     if (!direction) {

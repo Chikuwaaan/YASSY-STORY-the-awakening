@@ -50,30 +50,16 @@ void Textures::LoadTextures() {
     std::cout << "[DEBUG]テクスチャをロードしました" << std::endl;
 }
 
-/*
-void Textures::DrawImage(std::string texName, OBJRECT rect) {
-    CAMERA camera = cameraP->GetCam();
-    if (rect.x + rect.w*0.5 - (camera.x + camera.offsetX - settings::baseW * 0.5 / camera.zoom) > 0 &&
-        rect.x - rect.w*0.5 - (camera.x + camera.offsetX - settings::baseW * 0.5 / camera.zoom) < settings::baseW / camera.zoom &&
-        rect.y + rect.h*0.5 - (camera.y + camera.offsetY - settings::baseH * 0.5 / camera.zoom) > 0 &&
-        rect.y - rect.h*0.5 - (camera.y + camera.offsetY - settings::baseH * 0.5 / camera.zoom) < settings::baseH / camera.zoom){
-        double pivotX = settings::baseW / 2.0;
-        double pivotY = settings::baseH / 2.0;
-        SDL_Rect dst;
-        dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-        dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-        dst.w = (int)(rect.w * camera.zoom);
-        dst.h = (int)(rect.h * camera.zoom);
-        SDL_Rect ds = { 200,200,200,200 };
-
-        //SDL_Color rainbow = utilities::HSVtoRGB(platformer::flames % 360, 0.2, 1, 255);
-        //SDL_SetTextureColorMod(GetTexture(texName), rainbow.r, rainbow.g, rainbow.b);
-        SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
+SDL_Texture* Textures::GetTexture(std::string name) {
+    if (map.count(name) == 0) {
+        return map["missing"];
+    }
+    else {
+        return map[name];
     }
 }
-*/
 
-void Textures::DrawImage(std::string texName, OBJRECT rect, bool relative, ROTATE rotate) {
+SDL_Rect Textures::GetDst(OBJRECT rect, bool relative) {
     CAMERA camera = cameraP->GetCam();
     SDL_Rect dst;
     if (relative) {
@@ -90,6 +76,13 @@ void Textures::DrawImage(std::string texName, OBJRECT rect, bool relative, ROTAT
         dst.w = (int)rect.w;
         dst.h = (int)rect.h;
     }
+
+    return dst;
+}
+
+void Textures::DrawImage(std::string texName, OBJRECT rect, bool relative, ROTATE rotate) {
+    CAMERA camera = cameraP->GetCam();
+    SDL_Rect dst = GetDst(rect, relative);
 
     if (rotate.rotate) {
         SDL_Point point;
@@ -112,91 +105,58 @@ void Textures::DrawImage(std::string texName, OBJRECT rect, bool relative, ROTAT
     }
 }
 
-/*
-void Textures::DrawImageA(std::string texName, OBJRECT rect) {
-    SDL_Rect dst;
-    dst.x = (int)rect.x;
-    dst.y = (int)rect.y;
-    dst.w = (int)rect.w;
-    dst.h = (int)rect.h;
-    SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
-}
-*/
-/*
-void Textures::DrawImageEx(std::string texName, OBJRECT rect, double angle, OBJRECT center, bool flipX, bool flipY) {
-    CAMERA camera = cameraP->GetCam();
-    double pivotX = settings::baseW / 2.0;
-    double pivotY = settings::baseH / 2.0;
-    SDL_Rect dst;
-    dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-    dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-    dst.w = (int)(rect.w * camera.zoom);
-    dst.h = (int)(rect.h * camera.zoom);
+void Textures::DrawRect(SDL_Color color, OBJRECT rect, bool relative) {
+    SDL_Rect dst = GetDst(rect, relative);
 
-    SDL_Point point;
-    point.x = (int)(center.x * camera.zoom);
-    point.y = (int)(center.y * camera.zoom);
-
-    SDL_RendererFlip flip = SDL_FLIP_NONE;
-    if (flipX && flipY) {
-        flip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
-    }
-    else if (flipY) {
-        flip = SDL_FLIP_VERTICAL;
-    }
-    else if (flipX) {
-        flip = SDL_FLIP_HORIZONTAL;
-    }
-    SDL_RenderCopyEx(settings::renderer, GetTexture(texName), NULL, &dst, angle, &point, flip);
-}
-*/
-
-void Textures::DrawRect(SDL_Color color, OBJRECT rect) {
-    CAMERA camera = cameraP->GetCam();
-    double pivotX = settings::baseW / 2.0;
-    double pivotY = settings::baseH / 2.0;
-    SDL_Rect dst;
-    dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-    dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-    dst.w = (int)(rect.w * camera.zoom);
-    dst.h = (int)(rect.h * camera.zoom);
     SDL_SetRenderDrawColor(settings::renderer, color.r, color.g, color.b, color.a);
-    SDL_RenderDrawRect(settings::renderer, &dst);
-}
-
-SDL_Texture* Textures::GetTexture(std::string name) {
-    if (map.count(name) == 0) {
-        return map["missing"];
+    if (rect.block) {
+        SDL_RenderFillRect(settings::renderer, &dst);
     }
     else {
-        return map[name];
+        SDL_RenderDrawRect(settings::renderer, &dst);
     }
 }
 
-void Textures::DrawTextA(std::string text, SDL_Color color, int x, int y, int w, int h) {
-    SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), color);
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(settings::renderer, surface);
-    SDL_Rect dst = { x,y,surface->w * w, surface->h * h};
-    SDL_RenderCopy(settings::renderer, texture, NULL, &dst);
-    SDL_DestroyTexture(texture);
-    SDL_FreeSurface(surface);
-}
-
-void Textures::DrawTextR(std::string text, SDL_Color color, int x, int y, int w, int h) {
-    SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), color);
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(settings::renderer, surface);
-
+void Textures::DrawTexts(std::string text, SDL_Color color, OBJRECT rect, bool relative, ROTATE rotate) {
     CAMERA camera = cameraP->GetCam();
-    double pivotX = settings::baseW / 2.0;
-    double pivotY = settings::baseH / 2.0;
-    SDL_Rect rect = { x,y,surface->w * w, surface->h * h };
+    SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), color);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(settings::renderer, surface);
     SDL_Rect dst;
-    dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-    dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-    dst.w = (int)(rect.w * camera.zoom);
-    dst.h = (int)(rect.h * camera.zoom);
-    SDL_Rect ds = { 200,200,200,200 };
-    SDL_RenderCopy(settings::renderer, texture, NULL, &dst);
+    if (relative) {
+        double pivotX = settings::baseW / 2.0;
+        double pivotY = settings::baseH / 2.0;
+        dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+        dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+        dst.w = (int)(surface->w * rect.w * camera.zoom);
+        dst.h = (int)(surface->h * rect.h * camera.zoom);
+    }
+    else {
+        dst.x = (int)rect.x;
+        dst.y = (int)rect.y;
+        dst.w = (int)surface->w * rect.w;
+        dst.h = (int)surface->h * rect.h;
+    }
+
+    
+    if (rotate.rotate) {
+        SDL_Point point;
+        point.x = (int)(rotate.centerX * camera.zoom);
+        point.y = (int)(rotate.centerY * camera.zoom);
+        SDL_RendererFlip flip = SDL_FLIP_NONE;
+        if (rotate.flipX && rotate.flipY) {
+            flip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
+        }
+        else if (rotate.flipY) {
+            flip = SDL_FLIP_VERTICAL;
+        }
+        else if (rotate.flipX) {
+            flip = SDL_FLIP_HORIZONTAL;
+        }
+        SDL_RenderCopyEx(settings::renderer, texture, NULL, &dst, rotate.angle, &point, flip);
+    }
+    else {
+        SDL_RenderCopy(settings::renderer, texture, NULL, &dst);
+    }
 
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);

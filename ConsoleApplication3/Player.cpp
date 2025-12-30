@@ -333,7 +333,6 @@ void Player::CollideX() {
     leftBlock = 0;
     OBJRECT pRect = { x,y,w,h };
     OBJRECT bRect = levelP->IsTouching2(pRect, 1);
-    texturesP->DrawTextA(std::to_string(bRect.block), color, 1340, 50, 1, 1);
 
     if (bRect.block) {
         bRect = levelP->IsTouching2(pRect, 1);
@@ -445,14 +444,6 @@ void Player::DrawPlayer() {
     DrawPart("armR", sin(moveBody) * 16, 55, 50);
 
     SDL_Color color = { 255,255,255,255 };
-    texturesP->DrawTextA("x:" + std::to_string(x), color, 0, 0, 1, 1);
-    texturesP->DrawTextA("y:" + std::to_string(y), color, 500, 0, 1, 1);
-    texturesP->DrawTextA("vx:" + std::to_string(vX), color, 0, 50, 1, 1);
-    texturesP->DrawTextA("vy:" + std::to_string(vY), color, 500, 50, 1, 1);
-    texturesP->DrawTextA("walkVX:" + std::to_string(walkVX), color, 0, 100, 1, 1);
-    texturesP->DrawTextA("liftVX:" + std::to_string(liftVX), color, 500, 100, 1, 1);
-    texturesP->DrawTextA("moveBody:" + std::to_string(moveBody), color, 0, 980, 1, 1);
-    texturesP->DrawTextA("onGround:" + std::to_string(onGround), color, 500, 980, 1, 1);
 }
 
 /*

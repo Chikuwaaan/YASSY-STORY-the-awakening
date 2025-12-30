@@ -57,22 +57,20 @@ void Camera::Update() {
         camera.zoom += inputP->event.MouseWheel * 0.1;
     }
 
-    texturesP->DrawRect({ 255,255,255,255 }, { camera.x, camera.y, (double)settings::baseW, (double)settings::baseH });
+    texturesP->DrawRect({ 255,255,255,255 }, { camera.x, camera.y, (double)settings::baseW, (double)settings::baseH }, 1);
     for (int i = 0; i < room.size(); i++) {
             OBJRECT rect;
             rect.x = (room[i].x1 + room[i].x2) / 2;
             rect.y = (room[i].y1 + room[i].y2) / 2;
             rect.w = abs(room[i].x1 - room[i].x2);
             rect.h = abs(room[i].y1 - room[i].y2);
-            texturesP->DrawRect({ 255,0,0,255 }, rect);
-            texturesP->DrawTextR(std::to_string(i), {255,0,0,255}, (int)room[i].x1, (int)room[i].y2, 2, 2);
+            texturesP->DrawRect({ 255,0,0,255 }, rect, 1);
 
             rect.x = (room[i].x3 + room[i].x4) / 2;
             rect.y = (room[i].y3 + room[i].y4) / 2;
             rect.w = abs(room[i].x3 - room[i].x4);
             rect.h = abs(room[i].y3 - room[i].y4);
-            texturesP->DrawRect({ 0,127,0,255 }, rect);
-            texturesP->DrawTextR(std::to_string(i), { 0,127,0,255 }, (int)room[i].x3, (int)room[i].y4, 2, 2);
+            texturesP->DrawRect({ 0,127,0,255 }, rect, 1);
     }
 
     camera.x = camera.targetX + (camera.x - camera.targetX) / (1.05);
