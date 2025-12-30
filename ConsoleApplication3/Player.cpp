@@ -455,6 +455,7 @@ void Player::DrawPlayer() {
     texturesP->DrawTextA("onGround:" + std::to_string(onGround), color, 500, 980, 1, 1);
 }
 
+/*
 void Player::DrawPart(std::string tex, double angle, int X, int Y) {
     OBJRECT rect;
     rect.x = (int)x + 20 + flipX * -40;
@@ -470,4 +471,22 @@ void Player::DrawPart(std::string tex, double angle, int X, int Y) {
     }
     point.y = Y;
     texturesP->DrawImageEx(tex, rect, angle, point, flipX, 0);
+}
+*/
+
+void Player::DrawPart(std::string tex, double angle, double X,double Y) {
+    OBJRECT rect;
+    rect.x = (int)x + 20 + flipX * -40;
+    rect.y = (int)y + 5;
+    rect.w = 110;
+    rect.h = 110;
+    OBJRECT point;
+    if (flipX) {
+        point.x = rect.w - X;
+    }
+    else {
+        point.x = X;
+    }
+    point.y = Y;
+    texturesP->DrawImage(tex, rect, 1, {1, angle, point.x, point.y, flipX});
 }

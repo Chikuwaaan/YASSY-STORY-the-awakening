@@ -31,11 +31,11 @@ namespace utilities {
     SDL_Color HSVtoRGB(double h, double s, double v, int a) {
         SDL_Color rgb;
 
-        float c = v * s;
-        float h_ = h / 60.0f;
-        float x = c * (1 - std::fabs(fmod(h_, 2.0f) - 1));
+        double c = v * s;
+        double h_ = h / 60.0f;
+        double x = c * (1 - std::fabs(fmod(h_, 2.0f) - 1));
 
-        float r1 = 0, g1 = 0, b1 = 0;
+        double r1 = 0, g1 = 0, b1 = 0;
 
         if (0 <= h_ && h_ < 1) { r1 = c; g1 = x; }
         else if (1 <= h_ && h_ < 2) { r1 = x; g1 = c; }
@@ -44,7 +44,7 @@ namespace utilities {
         else if (4 <= h_ && h_ < 5) { r1 = x; b1 = c; }
         else if (5 <= h_ && h_ < 6) { r1 = c; b1 = x; }
 
-        float m = v - c;
+        double m = v - c;
 
         rgb.r = static_cast<int>((r1 + m) * 255);
         rgb.g = static_cast<int>((g1 + m) * 255);

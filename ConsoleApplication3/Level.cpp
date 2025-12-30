@@ -236,7 +236,7 @@ void Level::Editor() {
         level[mouseY][mouseX] = editorPalette;
     }
 
-    texturesP->DrawImageA(blockProperty[editorPalette].tex[0], {1830, 10, 80, 80});
+    texturesP->DrawImage(blockProperty[editorPalette].tex[0], {1830, 10, 80, 80}, 0 ,{});
     texturesP->DrawTextA(std::to_string(editorPalette), {255,255,255,255}, 1830, 100, 1, 1);
 }
 
@@ -253,7 +253,7 @@ void Level::DrawMap() {
                 rect.y = blockSize * y + blockSize / 2;
                 rect.w = blockSize;
                 rect.h = blockSize;
-                texturesP->DrawImage(tex, rect);
+                texturesP->DrawImage(tex, rect, 1, {});
             }
         }
     }

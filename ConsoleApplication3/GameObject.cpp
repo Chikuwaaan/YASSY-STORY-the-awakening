@@ -60,7 +60,7 @@ bool GameObject::GetCollosion() {
 
 void GameObject::Draw() {
     OBJRECT rect = { x,y,w,h };
-    texturesP->DrawImage(texName, rect);
+    texturesP->DrawImage(texName, rect, 1, {});
 
 }
 

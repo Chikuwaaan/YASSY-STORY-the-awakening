@@ -22,6 +22,7 @@ void Textures::LoadTextures() {
     map["head"] = IMG_LoadTexture(r, "Assets/textures/head.png");
     map["armL"] = IMG_LoadTexture(r, "Assets/textures/armL.png");
     map["armR"] = IMG_LoadTexture(r, "Assets/textures/armR.png");
+    map["unko"] = IMG_LoadTexture(r, "Assets/textures/unko.png");
 
     map["BG1"] = IMG_LoadTexture(r, "Assets/textures/untitled.png");
 
@@ -49,6 +50,7 @@ void Textures::LoadTextures() {
     std::cout << "[DEBUG]テクスチャをロードしました" << std::endl;
 }
 
+/*
 void Textures::DrawImage(std::string texName, OBJRECT rect) {
     CAMERA camera = cameraP->GetCam();
     if (rect.x + rect.w*0.5 - (camera.x + camera.offsetX - settings::baseW * 0.5 / camera.zoom) > 0 &&
@@ -64,12 +66,53 @@ void Textures::DrawImage(std::string texName, OBJRECT rect) {
         dst.h = (int)(rect.h * camera.zoom);
         SDL_Rect ds = { 200,200,200,200 };
 
-        SDL_Color rainbow = utilities::HSVtoRGB(platformer::flames % 360, 0.2, 1, 255);
-        SDL_SetTextureColorMod(GetTexture(texName), rainbow.r, rainbow.g, rainbow.b);
+        //SDL_Color rainbow = utilities::HSVtoRGB(platformer::flames % 360, 0.2, 1, 255);
+        //SDL_SetTextureColorMod(GetTexture(texName), rainbow.r, rainbow.g, rainbow.b);
+        SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
+    }
+}
+*/
+
+void Textures::DrawImage(std::string texName, OBJRECT rect, bool relative, ROTATE rotate) {
+    CAMERA camera = cameraP->GetCam();
+    SDL_Rect dst;
+    if (relative) {
+        double pivotX = settings::baseW / 2.0;
+        double pivotY = settings::baseH / 2.0;
+        dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+        dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+        dst.w = (int)(rect.w * camera.zoom);
+        dst.h = (int)(rect.h * camera.zoom);
+    }
+    else {
+        dst.x = (int)rect.x;
+        dst.y = (int)rect.y;
+        dst.w = (int)rect.w;
+        dst.h = (int)rect.h;
+    }
+
+    if (rotate.rotate) {
+        SDL_Point point;
+        point.x = (int)(rotate.centerX * camera.zoom);
+        point.y = (int)(rotate.centerY * camera.zoom);
+        SDL_RendererFlip flip = SDL_FLIP_NONE;
+        if (rotate.flipX && rotate.flipY) {
+            flip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
+        }
+        else if (rotate.flipY) {
+            flip = SDL_FLIP_VERTICAL;
+        }
+        else if (rotate.flipX) {
+            flip = SDL_FLIP_HORIZONTAL;
+        }
+        SDL_RenderCopyEx(settings::renderer, GetTexture(texName), NULL, &dst, rotate.angle, &point, flip);
+    }
+    else {
         SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
     }
 }
 
+/*
 void Textures::DrawImageA(std::string texName, OBJRECT rect) {
     SDL_Rect dst;
     dst.x = (int)rect.x;
@@ -78,7 +121,8 @@ void Textures::DrawImageA(std::string texName, OBJRECT rect) {
     dst.h = (int)rect.h;
     SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
 }
-
+*/
+/*
 void Textures::DrawImageEx(std::string texName, OBJRECT rect, double angle, OBJRECT center, bool flipX, bool flipY) {
     CAMERA camera = cameraP->GetCam();
     double pivotX = settings::baseW / 2.0;
@@ -105,6 +149,7 @@ void Textures::DrawImageEx(std::string texName, OBJRECT rect, double angle, OBJR
     }
     SDL_RenderCopyEx(settings::renderer, GetTexture(texName), NULL, &dst, angle, &point, flip);
 }
+*/
 
 void Textures::DrawRect(SDL_Color color, OBJRECT rect) {
     CAMERA camera = cameraP->GetCam();

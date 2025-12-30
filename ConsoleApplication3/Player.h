@@ -39,6 +39,6 @@ public:
     void Die();
 
     void DrawPlayer();
-    void DrawPart(std::string tex, double angle, int x, int y);
+    void DrawPart(std::string tex, double angle, double x, double y);
 };
 

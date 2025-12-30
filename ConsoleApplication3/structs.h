@@ -4,6 +4,15 @@
 
 #pragma once
 
+struct ROTATE {
+    bool rotate;
+    double angle;
+    double centerX;
+    double centerY;
+    bool flipX;
+    bool flipY;
+};
+
 struct MOUSE {
     int x;
     int y;

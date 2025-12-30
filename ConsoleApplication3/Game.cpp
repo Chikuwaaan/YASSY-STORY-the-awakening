@@ -64,10 +64,10 @@ void Game::Update() {
     SDL_RenderFillRect(settings::renderer, &rect);
     //SDL_RenderCopy(settings::renderer, IMG_LoadTexture(settings::renderer, "Assets/textures/assy.png"), NULL, &rect);
 
-    textures->DrawImageA("BG1", { 0, 0, (double)settings::baseW, (double)settings::baseH });
 
     SDL_Color rainbow = utilities::HSVtoRGB(platformer::flames % 360, 1, 1, 255);
     textures->DrawRect(rainbow, {0, 0, 300, 300});
+
 
     for (auto& obj : objects) {
         obj->Update();
