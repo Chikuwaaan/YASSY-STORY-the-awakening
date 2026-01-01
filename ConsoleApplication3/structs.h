@@ -73,8 +73,11 @@ struct BLOCK {
 };
 
 
+enum class ImageMod {
 
-enum class entityType {
+};
+
+enum class EntityType {
     Null,
     Lift,
     Zako

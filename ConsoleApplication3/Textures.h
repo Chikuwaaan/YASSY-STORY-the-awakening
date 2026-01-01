@@ -23,4 +23,5 @@ public:
     void DrawRect(SDL_Color color, OBJRECT rect, bool relative);
     void DrawTexts(std::string text, SDL_Color color, OBJRECT rect, bool relative, ROTATE rotate);
     void Update();
+    void ModTextures();
 };

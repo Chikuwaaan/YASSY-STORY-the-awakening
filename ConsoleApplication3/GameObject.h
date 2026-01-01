@@ -16,7 +16,7 @@ protected:
     double x, y, w, h;
     double vX, vY;
     bool flipX;
-    entityType type;
+    EntityType type;
     bool collision;
 public:
     bool dead;
@@ -28,7 +28,7 @@ public:
     virtual void Update() {};
     virtual void Damage() {};
     GameObject();
-    entityType GetType();
+    EntityType GetType();
     bool IsDead();
     void MoveX();
     void MoveY();

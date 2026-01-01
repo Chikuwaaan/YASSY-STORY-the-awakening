@@ -83,13 +83,6 @@ void Player::Update() {
     }
 
     vY += platformer::gravity * settings::timeScale;
-    if (touchingEntity != nullptr) {
-        if (touchingEntity->GetType() == entityType::Lift) {
-            if (onGround) {
-                //vY = touchingEntity->GetVY();
-            }
-        }
-    }
 
     MoveY();
     CollideY();

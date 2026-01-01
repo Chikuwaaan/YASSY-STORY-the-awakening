@@ -4,7 +4,7 @@
 #include "namespace.h"
 
 Lift::Lift(double spawnX, double ampX, double velocityX, double spawnY, double ampY, double velocityY) {
-    type = entityType::Lift;
+    type = EntityType::Lift;
     h = 1000;
     w = 400;
     collision = 1;

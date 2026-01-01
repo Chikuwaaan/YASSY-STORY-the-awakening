@@ -3,7 +3,7 @@
 
 Zako::Zako(double x0, double y0) {
     texName = "missing";
-    type = entityType::Zako;
+    type = EntityType::Zako;
     x = x0;
     y = y0;
     w = 80;

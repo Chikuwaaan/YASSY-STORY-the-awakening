@@ -10,7 +10,7 @@ Camera* GameObject::cameraP = nullptr;
 Input* GameObject::inputP = nullptr;
 
 GameObject::GameObject() {
-    type = entityType::Null;
+    type = EntityType::Null;
     x = 0.0;
     y = 0.0;
     w = 180.0;
@@ -21,7 +21,7 @@ GameObject::GameObject() {
     dead = 0;
 }
 
-entityType GameObject::GetType() {
+EntityType GameObject::GetType() {
     return type;
 }
 

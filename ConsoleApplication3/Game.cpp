@@ -60,21 +60,19 @@ void Game::Update() {
     platformer::flames++;
 
     SDL_SetRenderDrawColor(settings::renderer, 117, 226, 255, 255);
+    SDL_SetRenderDrawColor(settings::renderer, 255, 255, 255, 255);
     SDL_Rect rect = { 0, 0, settings::baseW, settings::baseH };
     SDL_RenderFillRect(settings::renderer, &rect);
     //SDL_RenderCopy(settings::renderer, IMG_LoadTexture(settings::renderer, "Assets/textures/assy.png"), NULL, &rect);
 
 
-    SDL_Color rainbow = utilities::HSVtoRGB(platformer::flames % 360, 1, 1, 255);
-    textures->DrawRect(rainbow, {0, 0, 300, 300, 1}, 1);
-
-    textures->DrawTexts("unchi", { 255,255,255,255 }, { 0,0,1,1 }, 1, {});
-
-
+    //UPDATE
     for (auto& obj : objects) {
         obj->Update();
     }
     assy->Update();
+    textures->Update();
+
 
     for (auto& p : pendingObjects) {
         objects.push_back(std::move(p));

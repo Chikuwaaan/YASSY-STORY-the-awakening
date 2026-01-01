@@ -1,6 +1,7 @@
 #include "Textures.h"
 #include "namespace.h"
 #include "Camera.h"
+#include <cmath>
 
 Camera* Textures::cameraP = nullptr;
 
@@ -65,16 +66,16 @@ SDL_Rect Textures::GetDst(OBJRECT rect, bool relative) {
     if (relative) {
         double pivotX = settings::baseW / 2.0;
         double pivotY = settings::baseH / 2.0;
-        dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-        dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-        dst.w = (int)(rect.w * camera.zoom);
-        dst.h = (int)(rect.h * camera.zoom);
+        dst.x = (int)round((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+        dst.y = (int)round(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+        dst.w = (int)round(rect.w * camera.zoom);
+        dst.h = (int)round(rect.h * camera.zoom);
     }
     else {
-        dst.x = (int)rect.x;
-        dst.y = (int)rect.y;
-        dst.w = (int)rect.w;
-        dst.h = (int)rect.h;
+        dst.x = (int)round(rect.x);
+        dst.y = (int)round(rect.y);
+        dst.w = (int)round(rect.w);
+        dst.h = (int)round(rect.h);
     }
 
     return dst;
@@ -125,16 +126,16 @@ void Textures::DrawTexts(std::string text, SDL_Color color, OBJRECT rect, bool r
     if (relative) {
         double pivotX = settings::baseW / 2.0;
         double pivotY = settings::baseH / 2.0;
-        dst.x = (int)((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-        dst.y = (int)(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-        dst.w = (int)(surface->w * rect.w * camera.zoom);
-        dst.h = (int)(surface->h * rect.h * camera.zoom);
+        dst.x = (int)round((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+        dst.y = (int)round(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+        dst.w = (int)round(surface->w * rect.w * camera.zoom);
+        dst.h = (int)round(surface->h * rect.h * camera.zoom);
     }
     else {
-        dst.x = (int)rect.x;
-        dst.y = (int)rect.y;
-        dst.w = (int)surface->w * rect.w;
-        dst.h = (int)surface->h * rect.h;
+        dst.x = (int)round(rect.x);
+        dst.y = (int)round(rect.y);
+        dst.w = (int)round(surface->w * rect.w);
+        dst.h = (int)round(surface->h * rect.h);
     }
 
     
@@ -163,4 +164,17 @@ void Textures::DrawTexts(std::string text, SDL_Color color, OBJRECT rect, bool r
 }
 
 void Textures::Update() {
+    ModTextures();
+}
+
+void Textures::ModTextures() {
+    for (const auto& [key, value] : map) {
+        if (key.size() == 0) continue;
+        char c1 = key[0];
+
+        if (c1 == '1') {
+            SDL_Color rainbow = utilities::HSVtoRGB(platformer::flames % 360, 0.2, 1, 255);
+            SDL_SetTextureColorMod(value, rainbow.r, rainbow.g, rainbow.b);
+        }
+    }
 }
