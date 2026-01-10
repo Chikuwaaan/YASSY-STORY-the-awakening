@@ -4,15 +4,39 @@
 #include <cmath>
 
 Camera* Textures::cameraP = nullptr;
+SDL_Renderer* r = settings::renderer;
+namespace fs = std::filesystem;
 
 Textures::Textures() {
-    LoadTextures();
+    LoadTextures("Assets/textures");
     font = TTF_OpenFont("C:/Windows/Fonts/meiryo.ttc", 50);
 }
 
-void Textures::LoadTextures() {
-    SDL_Renderer* r = settings::renderer;
+void Textures::LoadTextures(fs::path directoryPath) {
+    for (const auto& entry : fs::directory_iterator(directoryPath)) {
+        if (entry.is_regular_file()) {
+            std::string ext = entry.path().extension().string();
 
+            if (ext == ".png") {
+                std::string filePath = entry.path().string();
+                std::string key = entry.path().stem().string();
+                const char* c = filePath.c_str();
+
+                if (map.count(key) == 0) {
+                    map[key] = IMG_LoadTexture(settings::renderer, c);
+                }
+                else {
+                    std::cout << "[DEBUG]テクスチャの読み込みに失敗しました：ファイル名が重複しています" << filePath << std::endl;
+                }
+            }
+            
+        }
+        else if (entry.is_directory()) {
+            LoadTextures(entry.path());
+        }
+    }
+
+    /*
     for (auto [_, value] : map) {
         SDL_DestroyTexture(value);
     }
@@ -49,6 +73,8 @@ void Textures::LoadTextures() {
     map["2-8"] = IMG_LoadTexture(r, "Assets/textures/blocks/2-8.png");
     map["2-10"] = IMG_LoadTexture(r, "Assets/textures/blocks/2-10.png");
     std::cout << "[DEBUG]テクスチャをロードしました" << std::endl;
+    */
+    
 }
 
 SDL_Texture* Textures::GetTexture(std::string name) {

@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include <filesystem>
 #include "structs.h"
 
 class Camera;
@@ -16,7 +17,7 @@ private:
 public:
     static Camera* cameraP;
     Textures();
-    void LoadTextures();
+    void LoadTextures(std::filesystem::path directoryPath);
     SDL_Texture* GetTexture(std::string name);
     SDL_Rect GetDst(OBJRECT rect, bool relative);
     void DrawImage(std::string texName, OBJRECT rect, bool relative, ROTATE rotate);
