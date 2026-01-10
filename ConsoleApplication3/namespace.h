@@ -20,6 +20,7 @@ namespace utilities {
 }
 
 namespace platformer {
+    extern int level;
     extern double gravity;
     extern int flames;
 }

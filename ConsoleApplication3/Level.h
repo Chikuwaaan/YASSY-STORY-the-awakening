@@ -22,9 +22,11 @@ public:
     static Input* inputP;
     static Camera* cameraP;
     Level();
-    void SetLevel();
     void FileOutput();
-    void FileInput();
+
+    void LoadLevel(int n);
+    void LoadMap(int n);
+
     void Editor();
     void DrawMap();
     std::string GetTexName(int block, int mask);
