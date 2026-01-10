@@ -7,10 +7,12 @@
 #include <SDL_mixer.h>
 #include "Textures.h"
 #include "Input.h"
+#include "OverLay.h"
 
 Level* Player::levelP = nullptr;
 Camera* Player::cameraP = nullptr;
 Game* Player::gameP = nullptr;
+OverLay* Player::overlayP = nullptr;
 
 Player::Player() {
     onGround = 0;
@@ -37,6 +39,9 @@ Player::Player() {
     headBlock = 0;
     rightBlock = 0;
     leftBlock = 0;
+    isDead = 0;
+    dieTime = 0;
+    dieAnim = 0;
     touchingEntity = nullptr;
 }
 
@@ -49,6 +54,19 @@ void Player::Update() {
     cameraP->SetTargetX(x);
     cameraP->SetTargetY(y);
     MoveCameraRoom();
+
+    if (dieTime > 0) {
+        dieTime -= settings::timeScale;
+        if (dieTime < 3.0 && dieAnim) {
+            dieAnim = 0;
+            overlayP->PinHole(2000, 1000, 1.0, { 0,0,0,255 });
+        }
+        return;
+    }
+    if (isDead) {
+        isDead = 0;
+        Spawn();
+    }
 
     const Uint8* keystate = inputP->keystate;
     if (keystate[SDL_SCANCODE_W]) {
@@ -404,6 +422,17 @@ void Player::MoveCameraRoom() {
 }
 
 void Player::Die() {
+    isDead = 1;
+    dieTime = 3.0;
+    dieAnim = 1;
+
+    Mix_Chunk* se = Mix_LoadWAV("Assets/sounds/die.wav");
+    Mix_PlayChannel(-1, se, 0);
+    //Mix_Music* music = Mix_LoadMUS("Assets/audio/sanctuary.wav");
+    //Mix_PlayMusic(music, -1);
+}
+
+void Player::Spawn() {
     x = 45.0;
     y = 300.0;
     vX = 0.0;
@@ -413,11 +442,11 @@ void Player::Die() {
     walkVX = 0.0;
     liftVX = 0.0;
 
-    Mix_Chunk* se = Mix_LoadWAV("Assets/sounds/die.wav");
-    Mix_PlayChannel(-1, se, 0);
-
-    //Mix_Music* music = Mix_LoadMUS("Assets/audio/sanctuary.wav");
-    //Mix_PlayMusic(music, -1);
+    overlayP->FadeOut(1, {0,0,0,255});
+    CAMERA cam = cameraP->GetCam();
+    cam.x = x;
+    cam.y = y;
+    cameraP->SetCam(cam);
 }
 
 void Player::DrawPlayer() {

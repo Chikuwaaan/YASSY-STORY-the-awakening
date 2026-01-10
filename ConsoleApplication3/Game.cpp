@@ -19,6 +19,9 @@ Game::Game() {
 void Game::Run() {
     MakeInstance();
     level->LoadLevel(0);
+    assy->Spawn();
+
+    pendingObjects.push_back(std::make_unique<Lift>(100,100,100,100,100,100));
 
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
@@ -151,10 +154,12 @@ void Game::MakeInstance() {
     Player::gameP = this;
     Player::levelP = level.get();
     Player::cameraP = camera.get();
+    Player::overlayP = overlay.get();
     GameObject::texturesP = textures.get();
     GameObject::cameraP = camera.get();
     GameObject::inputP = input.get();
     OverLay::texturesP = textures.get();
+    OverLay::playerP = assy.get();
 }
 
 void Game::Quit() {

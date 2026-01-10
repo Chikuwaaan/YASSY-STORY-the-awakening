@@ -8,7 +8,7 @@ Lift::Lift(double spawnX, double ampX, double velocityX, double spawnY, double a
     h = 1000;
     w = 400;
     collision = 1;
-    texName = "unko";
+    texName = "summon";
     x = spawnX;
     y = spawnY;
     posX = spawnX;

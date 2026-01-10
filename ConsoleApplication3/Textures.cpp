@@ -134,6 +134,7 @@ void Textures::DrawImage(std::string texName, OBJRECT rect, bool relative, ROTAT
 }
 
 void Textures::DrawRect(SDL_Color color, OBJRECT rect, bool relative) {
+    SDL_SetRenderTarget(r, nullptr);
     SDL_Rect dst = GetDst(rect, relative);
 
     SDL_SetRenderDrawColor(settings::renderer, color.r, color.g, color.b, color.a);

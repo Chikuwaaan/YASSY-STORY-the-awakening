@@ -1,31 +1,73 @@
 #include "OverLay.h"
 #include "namespace.h"
 #include "Textures.h"
+#include "Player.h"
 
 Textures* OverLay::texturesP = nullptr;
+Player* OverLay::playerP = nullptr;
 
 OverLay::OverLay() {
-    pinHole = { 0,0,0,{0,0,0,0} };
+    pinHole = { 0,0,0,0,{0,0,0,0} };
+    fade = { 0,0,0,{0,0,0,0} };
+    //PinHole(1000, 100, { 0,0,0,255 });
 }
 
 void OverLay::Update() {
     SDL_Renderer* r = settings::renderer;
-    SDL_Texture* texture = SDL_CreateTexture(r, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, settings::baseW, settings::baseH);
-    SDL_SetRenderTarget(r, texture);
+    if (pinHole.effect) {
+        SDL_Texture* texture = SDL_CreateTexture(r, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, settings::baseW, settings::baseH);
+        SDL_SetRenderTarget(r, texture);
 
-    SDL_Rect rect = { 0, 0, settings::baseW, settings::baseH };
-    SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-    SDL_RenderFillRect(r, &rect);
-    //SDL_SetRenderDrawBlendMode(r, SDL_BLENDMODE_MUL);
-    SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_MOD);
-    SDL_RenderCopy(r, texturesP->map["circle_mask"], NULL, NULL);
+        SDL_Rect rect = { 0, 0, settings::baseW, settings::baseH };
+        SDL_SetRenderDrawColor(r, pinHole.color.r, pinHole.color.g, pinHole.color.b, pinHole.color.a);
+        SDL_RenderFillRect(r, &rect);
 
-    SDL_SetRenderTarget(r, nullptr);
-    SDL_RenderCopy(r, texture, NULL, &rect);
-    SDL_DestroyTexture(texture);
-    
+        SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_MOD);
+        OBJRECT pRect = playerP->GetRect();
+        OBJRECT dst;
+        dst.x = (int)pRect.x;
+        dst.y = (int)pRect.y;
+        dst.w = pinHole.radius * 2;
+        dst.h = pinHole.radius * 2;
+        pinHole.radius -= pinHole.shrinkSpeed * settings::timeScale;
+        if (pinHole.radius <= 0) {
+            pinHole.radius = 0;
+            pinHole.waitTime -= settings::timeScale;
+            if (pinHole.waitTime < 0) {
+                pinHole.effect = 0;
+            }
+        }
+        texturesP->DrawImage("circle_mask", dst, 1, {});
+
+        SDL_SetRenderTarget(r, nullptr);
+        SDL_RenderCopy(r, texture, NULL, &rect);
+        SDL_DestroyTexture(texture);
+    }
+
+    if (fade.effect) {
+        SDL_SetRenderDrawBlendMode(r, SDL_BLENDMODE_BLEND);
+        OBJRECT rect = { 0, 0, (double)settings::baseW, (double)settings::baseH, 1 };
+        texturesP->DrawRect(fade.color, rect, 0);
+        fade.time -= fade.speed * settings::timeScale;
+        fade.color.a = (int)(255 * fade.time);
+        if (fade.time < 0) fade.effect = 0;
+    }
+
+    OBJRECT rect = { 0, 0, (double)settings::baseW, (double)settings::baseH };
+    texturesP->DrawRect({ 0,0,0,255 }, rect, 0);
 }
 
-void OverLay::PinHole() {
+void OverLay::PinHole(double radius, double shrinkSpeed, double waitTime, SDL_Color color) {
+    pinHole.effect = 1;
+    pinHole.radius = radius;
+    pinHole.shrinkSpeed = shrinkSpeed;
+    pinHole.waitTime = waitTime;
+    pinHole.color = color;
+}
 
+void OverLay::FadeOut(double speed, SDL_Color color) {
+    fade.effect = 1;
+    fade.speed = speed;
+    fade.time = 1;
+    fade.color = color;
 }

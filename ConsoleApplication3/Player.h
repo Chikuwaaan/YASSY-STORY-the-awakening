@@ -6,6 +6,7 @@
 class Level;
 class Camera;
 class Game;
+class OverLay;
 
 class Player :
     public GameObject
@@ -24,11 +25,16 @@ private:
     int isJumping;
     int coyoteTime;
     int groundBlock, headBlock, rightBlock, leftBlock;
+
+    bool isDead;
+    double dieTime;
+    bool dieAnim;
     GameObject* touchingEntity;
 public:
     static Game* gameP;
     static Level* levelP;
     static Camera* cameraP;
+    static OverLay* overlayP;
     Player();
     void SetAX(double acceleration);
     void Update() override;
@@ -37,6 +43,7 @@ public:
     void CollideX();
     void MoveCameraRoom();
     void Die();
+    void Spawn();
 
     void DrawPlayer();
     void DrawPart(std::string tex, double angle, double x, double y);
