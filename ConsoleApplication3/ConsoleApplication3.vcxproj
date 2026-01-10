@@ -141,6 +141,7 @@
     <ClCompile Include="Lift.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="namespace.cpp" />
+    <ClCompile Include="OverLay.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ScreenShot.cpp" />
     <ClCompile Include="Textures.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Lift.h" />
+    <ClInclude Include="OverLay.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="namespace.h" />

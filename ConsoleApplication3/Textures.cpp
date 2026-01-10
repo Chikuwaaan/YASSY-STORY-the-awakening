@@ -9,6 +9,7 @@ namespace fs = std::filesystem;
 
 Textures::Textures() {
     LoadTextures("Assets/textures");
+    //SDL_SetTextureAlphaMod(map["circle_mask"], 127);
     font = TTF_OpenFont("C:/Windows/Fonts/meiryo.ttc", 50);
 }
 

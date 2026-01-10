@@ -12,9 +12,10 @@ class Camera;
 
 class Textures {
 private:
-    std::map<std::string, SDL_Texture*> map;
+    
     TTF_Font* font;
 public:
+    std::map<std::string, SDL_Texture*> map;
     static Camera* cameraP;
     Textures();
     void LoadTextures(std::filesystem::path directoryPath);

@@ -8,9 +8,12 @@
 #include "Player.h"
 #include "Input.h"
 #include "ScreenShot.h"
+#include "OverLay.h"
 
 class GameObject;
 class Textures;
+
+
 
 class Game
 {
@@ -25,6 +28,7 @@ private:
     std::unique_ptr<Player> assy;
     std::unique_ptr<Input> input;
     std::unique_ptr<ScreenShot> screenshot;
+    std::unique_ptr<OverLay> overlay;
     //Level level;
     //Player assy;
     //Input input;

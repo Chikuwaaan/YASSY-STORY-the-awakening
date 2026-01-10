@@ -10,6 +10,7 @@
 #include "Lift.h"
 #include "Zako.h"
 #include "ScreenShot.h"
+#include "OverLay.h"
 
 Game::Game() {
     running = true;
@@ -96,6 +97,7 @@ void Game::Update() {
 
     level->Editor();
 
+    overlay->Update();
     SDL_RenderPresent(settings::renderer);
 }
 
@@ -138,6 +140,7 @@ void Game::MakeInstance() {
     assy = std::make_unique<Player>();
     input = std::make_unique<Input>();
     screenshot = std::make_unique<ScreenShot>();
+    overlay = std::make_unique<OverLay>();
 
     Camera::texturesP = textures.get();
     Camera::inputP = input.get();
@@ -151,6 +154,7 @@ void Game::MakeInstance() {
     GameObject::texturesP = textures.get();
     GameObject::cameraP = camera.get();
     GameObject::inputP = input.get();
+    OverLay::texturesP = textures.get();
 }
 
 void Game::Quit() {
