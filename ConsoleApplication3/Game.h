@@ -36,6 +36,7 @@ public:
     std::vector<std::unique_ptr<GameObject>> objects;
 
     Game();
+    void SetupEntities();
     void Run();
     void HandleEvent();
     void Update();

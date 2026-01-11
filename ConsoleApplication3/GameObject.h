@@ -8,6 +8,7 @@
 class Textures;
 class Camera;
 class Input;
+class Level;
 
 class GameObject
 {
@@ -24,6 +25,7 @@ public:
     static Textures* texturesP;
     static Camera* cameraP;
     static Input* inputP;
+    static Level* levelP;
 
     virtual void Update() {};
     virtual void Damage() {};

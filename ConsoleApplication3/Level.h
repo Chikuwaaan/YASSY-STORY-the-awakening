@@ -22,7 +22,7 @@ public:
     static Input* inputP;
     static Camera* cameraP;
     Level();
-    void FileOutput();
+    void FileOutput(int n);
 
     void LoadLevel(int n);
     void LoadMap(int n);
@@ -30,7 +30,9 @@ public:
     void Editor();
     void DrawMap();
     std::string GetTexName(int block, int mask);
+    double GetBlockSize();
     int CheckAroundTile(int y, int x, CHECKFOR checkFor);
+    
     bool CheckTile(int y, int x);
     OBJRECT IsTouching2(OBJRECT obj1, bool direction);
     void FixBlockPos(int* x, int* y);

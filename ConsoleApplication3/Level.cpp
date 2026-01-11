@@ -29,9 +29,12 @@ Level::Level() {
     blockProperty.push_back({ {0,1,0,1,0,0,0,0}, {
         {0, "2-0"},{2, "2-2"},{8, "2-8"},{10, "2-10"}
 } });
+    blockProperty.push_back({ {0,0,0,0,0,0,0,0}, {
+        {0, "3-0"}
+} });
 }
 
-void Level::FileOutput() {
+void Level::FileOutput(int n) {
     std::vector<uint8_t> map;
     map.reserve(levelW * levelH);
 
@@ -44,7 +47,9 @@ void Level::FileOutput() {
     uint32_t W = levelW;
     uint32_t H = levelH;
 
-    std::ofstream ofs("level.bin", std::ios::binary);
+    std::string path = "Levels/";
+    path = path + std::to_string(n) + "/map.bin";
+    std::ofstream ofs(path, std::ios::binary);
     ofs.write((char*)&W, sizeof(W));
     ofs.write((char*)&H, sizeof(H));
     ofs.write((char*)map.data(), sizeof(uint8_t) * H * W);
@@ -57,8 +62,8 @@ void Level::LoadLevel(int n) {
 
 void Level::LoadMap(int n) {
     std::string path = "Levels/";
-    path = path + std::to_string(n) + "map.bin";
-    std::ifstream ifs("level.bin", std::ios::binary);
+    path = path + std::to_string(n) + "/map.bin";
+    std::ifstream ifs(path, std::ios::binary);
     if (!ifs) return;
 
     uint32_t W;
@@ -121,6 +126,10 @@ void Level::Editor() {
     }
 
     texturesP->DrawImage(blockProperty[editorPalette].tex[0], {1830, 10, 80, 80}, 0 ,{});
+    texturesP->DrawTexts(std::to_string(mouseX), { 0,0,0,255 }, { 1400, 0, 1, 1 }, 0, {});
+    texturesP->DrawTexts(std::to_string((int)(mouseX * blockSize)), { 0,0,0,255 }, { 1400, 50, 1, 1 }, 0, {});
+    texturesP->DrawTexts(std::to_string(mouseY), { 0,0,0,255 }, { 1600, 0, 1, 1 }, 0, {});
+    texturesP->DrawTexts(std::to_string((int)(mouseY * blockSize)), { 0,0,0,255 }, { 1600, 50, 1, 1 }, 0, {});
 }
 
 void Level::DrawMap() {
@@ -151,6 +160,10 @@ std::string Level::GetTexName(int block, int mask) {
     else {
         return blockProperty[block].tex[mask];
     }
+}
+
+double Level::GetBlockSize() {
+    return blockSize;
 }
 
 int Level::CheckAroundTile(int y, int x, CHECKFOR checkFor) {

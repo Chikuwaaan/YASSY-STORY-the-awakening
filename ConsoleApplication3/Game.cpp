@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "Lift.h"
 #include "Zako.h"
+#include "Spikes.h"
 #include "ScreenShot.h"
 #include "OverLay.h"
 
@@ -16,20 +17,33 @@ Game::Game() {
     running = true;
 }
 
+void Game::SetupEntities() {
+    objects.clear();
+    pendingObjects.push_back(std::make_unique<Lift>(-500, 400, 200, 00, 0, 0));
+    pendingObjects.push_back(std::make_unique<Zako>(1480, 520));
+    pendingObjects.push_back(std::make_unique<Spikes>(1480, 760, 0, 3));
+}
+
 void Game::Run() {
     MakeInstance();
     level->LoadLevel(0);
     assy->Spawn();
 
-    pendingObjects.push_back(std::make_unique<Lift>(100,100,100,100,100,100));
+    
 
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
+
+    bool countFlame = 0;
+    int frames = 0;
+    double fpsAccumulator = 0;
+    int realFPS = 0;
     while (running) {
         double currentTime = SDL_GetTicks() / 1000.0;
         double frameTime = currentTime - lastTime;
         lastTime = currentTime;
         accumulator += frameTime;
+        fpsAccumulator += frameTime;
 
         while (accumulator >= settings::dt) {
             HandleEvent();
@@ -40,14 +54,27 @@ void Game::Run() {
 
             if (event.ESCAPE) {
                 running = 0;
-                level->FileOutput();
+                level->FileOutput(0);
             }
             if (event.F12) {
                 screenshot->SaveScreenShot();
             }
 
             accumulator -= settings::dt;
+            if (countFlame == 0) {
+                frames++;
+                countFlame = 1;
+            }
         }
+        countFlame = 0;
+        if (fpsAccumulator >= 1) {
+            realFPS = (int)round(frames / fpsAccumulator);
+            frames = 0;
+            fpsAccumulator = 0;
+        }
+        textures->DrawTexts(std::to_string(realFPS), { 0,0,0,255 }, { 0,0,1,1 }, 0, {});
+
+        SDL_RenderPresent(settings::renderer);
     }
 }
 
@@ -101,7 +128,6 @@ void Game::Update() {
     level->Editor();
 
     overlay->Update();
-    SDL_RenderPresent(settings::renderer);
 }
 
 void Game::InitSystem() {
@@ -158,6 +184,7 @@ void Game::MakeInstance() {
     GameObject::texturesP = textures.get();
     GameObject::cameraP = camera.get();
     GameObject::inputP = input.get();
+    GameObject::levelP = level.get();
     OverLay::texturesP = textures.get();
     OverLay::playerP = assy.get();
 }

@@ -91,6 +91,9 @@ void Player::Update() {
 
     liftVX = 0.0;
 
+    
+
+
 
     //Y
     if (vY > 1200) {
@@ -105,29 +108,13 @@ void Player::Update() {
     MoveY();
     CollideY();
 
-
-
-
-
-    /*
-    if (groundBlock == 2) {
-        vY = 1300.0;
-    }
-    else if (headBlock == 2) {
-        vY = -1000.0;
+    //ギミック
+    if (groundBlock == 3) {
+        Die();
     }
     else if (headBlock == 3) {
         Die();
     }
-    else if (groundBlock == 3) {
-        Die();
-    }
-    else if (groundBlock == 4) {
-        liftVX = -30;
-    }
-    */
-
-
 
     //X
     if (onGround) {
@@ -183,10 +170,17 @@ void Player::Update() {
         vX = walkVX + liftVX * 0.5;
     }
 
-
     MoveX();
     CollideX();
     aX = 0.0;
+
+    //ギミック
+    if (rightBlock == 3) {
+        Die();
+    }
+    else if (leftBlock == 3) {
+        Die();
+    }
 
 
     if (y < -1000.0) {
@@ -243,20 +237,16 @@ void Player::CollideY() {
     onGround = false;
     OBJRECT pRect = { x,y,w,h };
 
-
-
     //block
     headBlock = 0;
     groundBlock = 0;
 
     OBJRECT bRect = levelP->IsTouching2(pRect, 0);
-    //std::cout << bRect.block << " " << vY << std::endl;
     if (bRect.block && vY < 0.0) {
         onGround = true;
         vY = 0.0;
         y = bRect.y + bRect.h / 2 + h / 2;
         groundBlock = bRect.block;
-        //std::cout << "uo";
     }
     if (bRect.block && vY > 0.0) {
         vY = 0.0;
@@ -279,26 +269,13 @@ void Player::CollideY() {
             else if (v < 0) {
                 x += (v - 0.01) * settings::timeScale;
             }
-            
-            /*
-            v = p->GetVY();
-            if (v > 0) {
-                y += (v + 0) * settings::timeScale;
-            }
-            else if (v < 0) {
-                y += (v - 0) * settings::timeScale;
-            }
-            */
-            
-            //MoveY();
             pRect = { x,y,w,h };
             
         }
-        
 
-        
         if (utilities::HitDetection(pRect, eRect)) {
             touchingEntity = p.get();
+            collision = p->GetCollosion();
             if (pRect.y > eRect.y) {
                 if (collision) {
                     onGround = true;
@@ -447,17 +424,11 @@ void Player::Spawn() {
     cam.x = x;
     cam.y = y;
     cameraP->SetCam(cam);
+
+    gameP->SetupEntities();
 }
 
 void Player::DrawPlayer() {
-    /*
-    DrawPart("legL", sin(moveBody) * 16, 30, 50);
-    DrawPart("legR", sin(moveBody) * -16, 20, 50);
-    DrawPart("body", 0, 0, 0);
-    DrawPart("head", sin(moveBody) * 4, 60, 30);
-    DrawPart("armL", sin(moveBody) * -16, 70, 50);
-    DrawPart("armR", sin(moveBody) * 16, 55, 50);
-    */
     DrawPart("legL", sin(moveBody) * 16, 30, 50);
     DrawPart("legR", sin(moveBody) * -16, 20, 50);
     DrawPart("body", 0, 0, 0);
@@ -468,24 +439,6 @@ void Player::DrawPlayer() {
     SDL_Color color = { 255,255,255,255 };
 }
 
-/*
-void Player::DrawPart(std::string tex, double angle, int X, int Y) {
-    OBJRECT rect;
-    rect.x = (int)x + 20 + flipX * -40;
-    rect.y = (int)y + 5;
-    rect.w = 110;
-    rect.h = 110;
-    OBJRECT point;
-    if (flipX) {
-        point.x = rect.w - X;
-    }
-    else {
-        point.x = X;
-    }
-    point.y = Y;
-    texturesP->DrawImageEx(tex, rect, angle, point, flipX, 0);
-}
-*/
 
 void Player::DrawPart(std::string tex, double angle, double X,double Y) {
     OBJRECT rect;

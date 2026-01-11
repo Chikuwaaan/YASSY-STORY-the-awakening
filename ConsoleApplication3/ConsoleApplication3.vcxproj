@@ -144,6 +144,7 @@
     <ClCompile Include="OverLay.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ScreenShot.cpp" />
+    <ClCompile Include="Spikes.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Zako.cpp" />
   </ItemGroup>
@@ -159,6 +160,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="namespace.h" />
     <ClInclude Include="ScreenShot.h" />
+    <ClInclude Include="Spikes.h" />
     <ClInclude Include="structs.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Zako.h" />

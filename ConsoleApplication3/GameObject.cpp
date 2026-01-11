@@ -4,10 +4,12 @@
 #include "structs.h"
 #include "Textures.h"
 #include "Input.h"
+#include "Level.h"
 
 Textures* GameObject::texturesP = nullptr;
 Camera* GameObject::cameraP = nullptr;
 Input* GameObject::inputP = nullptr;
+Level* GameObject::levelP = nullptr;
 
 GameObject::GameObject() {
     type = EntityType::Null;
