@@ -30,6 +30,7 @@ private:
     double dieTime;
     bool dieAnim;
     GameObject* touchingEntity;
+    bool stomping;
 public:
     static Game* gameP;
     static Level* levelP;

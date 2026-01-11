@@ -43,6 +43,7 @@ Player::Player() {
     dieTime = 0;
     dieAnim = 0;
     touchingEntity = nullptr;
+    stomping = 0;
 }
 
 void Player::SetAX(double acceleration) {
@@ -115,6 +116,23 @@ void Player::Update() {
     else if (headBlock == 3) {
         Die();
     }
+
+    if (touchingEntity != nullptr) {
+        EntityType type = touchingEntity->GetType();
+        if (type == EntityType::Zako) {
+            if (stomping) {
+                touchingEntity->Damage();
+                vY = 300;
+                onGround = 1;
+            }
+            else {
+                Die();
+            }
+        }
+    }
+
+    
+
 
     //X
     if (onGround) {
@@ -234,6 +252,7 @@ void Player::CollideY() {
     }
 
     touchingEntity = nullptr;
+    stomping = 0;
     onGround = false;
     OBJRECT pRect = { x,y,w,h };
 
@@ -276,7 +295,7 @@ void Player::CollideY() {
         if (utilities::HitDetection(pRect, eRect)) {
             touchingEntity = p.get();
             collision = p->GetCollosion();
-            if (pRect.y > eRect.y) {
+            if ((pRect.y - pRect.h / 2) > eRect.y) {
                 if (collision) {
                     onGround = true;
                     y = eRect.y + eRect.h / 2 + h / 2 + 0.01;
@@ -289,9 +308,9 @@ void Player::CollideY() {
                     }
                 }
                 else {
-                    onGround = true;
-                    vY = 300.0;
-                    p->Damage();
+                    if (vY < 0) {
+                        stomping = 1;
+                    }
                 }
             }
 

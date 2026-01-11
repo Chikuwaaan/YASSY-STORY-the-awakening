@@ -126,10 +126,13 @@ void Level::Editor() {
     }
 
     texturesP->DrawImage(blockProperty[editorPalette].tex[0], {1830, 10, 80, 80}, 0 ,{});
-    texturesP->DrawTexts(std::to_string(mouseX), { 0,0,0,255 }, { 1400, 0, 1, 1 }, 0, {});
-    texturesP->DrawTexts(std::to_string((int)(mouseX * blockSize)), { 0,0,0,255 }, { 1400, 50, 1, 1 }, 0, {});
-    texturesP->DrawTexts(std::to_string(mouseY), { 0,0,0,255 }, { 1600, 0, 1, 1 }, 0, {});
-    texturesP->DrawTexts(std::to_string((int)(mouseY * blockSize)), { 0,0,0,255 }, { 1600, 50, 1, 1 }, 0, {});
+    texturesP->DrawTexts(std::to_string(mouseX), color, { 1400, 0, 1, 1 }, 0, {});
+    texturesP->DrawTexts(std::to_string((int)(mouseX * blockSize)), color, { 1400, 50, 1, 1 }, 0, {});
+    texturesP->DrawTexts(std::to_string(mouseY), color, { 1600, 0, 1, 1 }, 0, {});
+    texturesP->DrawTexts(std::to_string((int)(mouseY * blockSize)), color, { 1600, 50, 1, 1 }, 0, {});
+    texturesP->DrawTexts(std::to_string((int)(mouseX * blockSize + blockSize / 2)), color, { 1400, 100, 1, 1 }, 0, {});
+    texturesP->DrawTexts(std::to_string((int)(mouseY * blockSize + blockSize / 2)), color, { 1600, 100, 1, 1 }, 0, {});
+
 }
 
 void Level::DrawMap() {
@@ -138,7 +141,7 @@ void Level::DrawMap() {
 
             int blockType = level[y][x];
             if (blockType != 0) {
-                int mask = CheckAroundTile(y, x, blockProperty[blockType].checkFor);
+                int mask = CheckAroundTile(y, x, blockProperty[blockType].checkFor, blockType);
                 std::string tex = GetTexName(blockType, mask);
                 OBJRECT rect;
                 rect.x = blockSize * x + blockSize / 2;
@@ -166,59 +169,59 @@ double Level::GetBlockSize() {
     return blockSize;
 }
 
-int Level::CheckAroundTile(int y, int x, CHECKFOR checkFor) {
+int Level::CheckAroundTile(int y, int x, CHECKFOR checkFor, int type) {
     int a = 0;
     int X, Y;
     
     X = x + 1;
     if (X < levelW && checkFor.a) {
-        a += CheckTile(y, X) * 1;
+        a += CheckTile(y, X, type) * 1;
     }
     Y = y + 1;
     if (Y < levelH && checkFor.b) {
-        a += CheckTile(Y, x) * 2;
+        a += CheckTile(Y, x, type) * 2;
     }
     X = x - 1;
     if (X >= 0 && checkFor.c) {
-        a += CheckTile(y, X) * 4;
+        a += CheckTile(y, X, type) * 4;
     }
     Y = y - 1;
     if (Y >= 0 && checkFor.d) {
-        a += CheckTile(Y, x) * 8;
+        a += CheckTile(Y, x, type) * 8;
     }
 
     
     X = x + 1;
     Y = y + 1;
     if (X < levelW && Y < levelH && checkFor.e) {
-        a += CheckTile(Y, X) * 16;
+        a += CheckTile(Y, X, type) * 16;
     }
     X = x - 1;
     Y = y + 1;
     if (X >= 0 && Y < levelH && checkFor.f) {
-        a += CheckTile(Y, X) * 32;
+        a += CheckTile(Y, X, type) * 32;
     }
     X = x - 1;
     Y = y - 1;
     if (X >= 0 && Y >= 0 && checkFor.g) {
-        a += CheckTile(Y, X) * 64;
+        a += CheckTile(Y, X, type) * 64;
     }
     X = x + 1;
     Y = y - 1;
     if (X < levelW && Y >= 0 && checkFor.h) {
-        a += CheckTile(Y, X) * 128;
+        a += CheckTile(Y, X, type) * 128;
     }
     
 
     return a;
 }
 
-bool Level::CheckTile(int y, int x) {
-    if (level[y][x] == 0) {
-        return 0;
+bool Level::CheckTile(int y, int x, int type) {
+    if (level[y][x] == type) {
+        return 1;
     }
     else {
-        return 1;
+        return 0;
     }
 }
 

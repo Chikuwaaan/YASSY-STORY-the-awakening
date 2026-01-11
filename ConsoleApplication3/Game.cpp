@@ -21,6 +21,8 @@ void Game::SetupEntities() {
     objects.clear();
     pendingObjects.push_back(std::make_unique<Lift>(-500, 400, 200, 00, 0, 0));
     pendingObjects.push_back(std::make_unique<Zako>(1480, 520));
+    pendingObjects.push_back(std::make_unique<Zako>(1960, 600));
+    pendingObjects.push_back(std::make_unique<Zako>(2280, 920));
     pendingObjects.push_back(std::make_unique<Spikes>(1480, 760, 0, 3));
 }
 
@@ -72,7 +74,7 @@ void Game::Run() {
             frames = 0;
             fpsAccumulator = 0;
         }
-        textures->DrawTexts(std::to_string(realFPS), { 0,0,0,255 }, { 0,0,1,1 }, 0, {});
+        textures->DrawTexts(std::to_string(realFPS), { 255,255,255,255 }, { 0,0,1,1 }, 0, {});
 
         SDL_RenderPresent(settings::renderer);
     }
@@ -87,8 +89,8 @@ void Game::HandleEvent() {
 void Game::Update() {
     platformer::flames++;
 
-    SDL_SetRenderDrawColor(settings::renderer, 117, 226, 255, 255);
-    SDL_SetRenderDrawColor(settings::renderer, 255, 255, 255, 255);
+    //SDL_SetRenderDrawColor(settings::renderer, 117, 226, 255, 255);
+    SDL_SetRenderDrawColor(settings::renderer, 0, 0, 0, 255);
     SDL_Rect rect = { 0, 0, settings::baseW, settings::baseH };
     SDL_RenderFillRect(settings::renderer, &rect);
     //SDL_RenderCopy(settings::renderer, IMG_LoadTexture(settings::renderer, "Assets/textures/assy.png"), NULL, &rect);

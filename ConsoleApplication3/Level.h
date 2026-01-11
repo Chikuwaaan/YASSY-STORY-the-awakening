@@ -31,9 +31,9 @@ public:
     void DrawMap();
     std::string GetTexName(int block, int mask);
     double GetBlockSize();
-    int CheckAroundTile(int y, int x, CHECKFOR checkFor);
+    int CheckAroundTile(int y, int x, CHECKFOR checkFor, int type);
     
-    bool CheckTile(int y, int x);
+    bool CheckTile(int y, int x, int type);
     OBJRECT IsTouching2(OBJRECT obj1, bool direction);
     void FixBlockPos(int* x, int* y);
 };

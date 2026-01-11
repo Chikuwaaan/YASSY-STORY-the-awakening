@@ -2,7 +2,7 @@
 #include "SDL_mixer.h"
 
 Zako::Zako(double x0, double y0) {
-    texName = "unko";
+    texName = "nsfw";
     type = EntityType::Zako;
     x = x0;
     y = y0;
