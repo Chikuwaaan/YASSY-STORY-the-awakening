@@ -48,6 +48,7 @@ struct CAMERAROOM {
 	double x4;
 	double y3;
 	double y4;
+    bool force;
 };
 
 struct BLOCKROOM {

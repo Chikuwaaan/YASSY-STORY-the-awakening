@@ -22,8 +22,10 @@ private:
     double aX, aY;
     bool canJump;
     bool jumpPressed;
-    int isJumping;
+    bool isJumping;
+    double jumpingTime;
     int coyoteTime;
+    double gravity;
     int groundBlock, headBlock, rightBlock, leftBlock;
 
     bool isDead;

@@ -12,6 +12,7 @@
 #include "Spikes.h"
 #include "ScreenShot.h"
 #include "OverLay.h"
+#include "BackGround.h"
 
 Game::Game() {
     running = true;
@@ -50,6 +51,8 @@ void Game::Run() {
         while (accumulator >= settings::dt) {
             HandleEvent();
             Update();
+            textures->DrawTexts(std::to_string(realFPS), { 0,0,0,255 }, { 0,0,1,1 }, 0, {});
+            
             
             const Uint8* keystate = input->keystate;
             const EVENT event = input->event;
@@ -74,7 +77,7 @@ void Game::Run() {
             frames = 0;
             fpsAccumulator = 0;
         }
-        textures->DrawTexts(std::to_string(realFPS), { 255,255,255,255 }, { 0,0,1,1 }, 0, {});
+        
 
         SDL_RenderPresent(settings::renderer);
     }
@@ -89,12 +92,10 @@ void Game::HandleEvent() {
 void Game::Update() {
     platformer::flames++;
 
-    //SDL_SetRenderDrawColor(settings::renderer, 117, 226, 255, 255);
-    SDL_SetRenderDrawColor(settings::renderer, 0, 0, 0, 255);
-    SDL_Rect rect = { 0, 0, settings::baseW, settings::baseH };
-    SDL_RenderFillRect(settings::renderer, &rect);
-    //SDL_RenderCopy(settings::renderer, IMG_LoadTexture(settings::renderer, "Assets/textures/assy.png"), NULL, &rect);
-
+    CAMERA cam = camera->GetCam();
+    OBJRECT screenRect = { 0, 0, (double)settings::baseW, (double)settings::baseH, 1};
+    textures->DrawRect({ 0,0,0,255 }, screenRect, 0);
+    background->Draw();
 
     //UPDATE
     for (auto& obj : objects) {
@@ -146,8 +147,8 @@ void Game::InitSystem() {
     */
 
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    //Mix_Music* music = Mix_LoadMUS("Assets/sounds/ending.mp3");
-    //Mix_PlayMusic(music, -1);
+    Mix_Music* music = Mix_LoadMUS("Assets/sounds/glass.mp3");
+    Mix_PlayMusic(music, -1);
 
     //Open Window
     SDL_DisplayMode dm;
@@ -172,6 +173,7 @@ void Game::MakeInstance() {
     input = std::make_unique<Input>();
     screenshot = std::make_unique<ScreenShot>();
     overlay = std::make_unique<OverLay>();
+    background = std::make_unique<BackGround>();
 
     Camera::texturesP = textures.get();
     Camera::inputP = input.get();

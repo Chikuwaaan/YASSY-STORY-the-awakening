@@ -192,7 +192,7 @@ void Textures::DrawTexts(std::string text, SDL_Color color, OBJRECT rect, bool r
 }
 
 void Textures::Update() {
-    ModTextures();
+    //ModTextures();
 }
 
 void Textures::ModTextures() {

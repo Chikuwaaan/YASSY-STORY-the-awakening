@@ -125,6 +125,7 @@ void Level::Editor() {
         level[mouseY][mouseX] = editorPalette;
     }
 
+    color = { 0,0,0,255 };
     texturesP->DrawImage(blockProperty[editorPalette].tex[0], {1830, 10, 80, 80}, 0 ,{});
     texturesP->DrawTexts(std::to_string(mouseX), color, { 1400, 0, 1, 1 }, 0, {});
     texturesP->DrawTexts(std::to_string((int)(mouseX * blockSize)), color, { 1400, 50, 1, 1 }, 0, {});

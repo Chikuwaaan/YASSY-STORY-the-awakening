@@ -24,14 +24,16 @@ Player::Player() {
     x = 200.0;
     y = 1000.0;
     w = 40.0;
-    h = 70.0;
+    h = 60.0;
     aX = 0.0;
     aY = 0.0;
     canJump = 0;
     jumpPressed = 0;
     isJumping = 0;
+    jumpingTime = 0.0;
     flipX = false;
     coyoteTime = 0;
+    gravity = platformer::gravity;
     walkVX = 0.0;
     liftVX = 0.0;
     liftVY = 0.0;
@@ -104,7 +106,7 @@ void Player::Update() {
         vY = -1200;
     }
 
-    vY += platformer::gravity * settings::timeScale;
+    vY +=gravity * settings::timeScale;
 
     MoveY();
     CollideY();
@@ -221,6 +223,34 @@ void Player::Update() {
 
 void Player::Jump() {
     if (jumpPressed && coyoteTime < 6 && canJump) {
+        vY = 840.0;
+        canJump = false;
+        onGround = false;
+        isJumping = true;
+        jumpingTime = 0.0;
+        Mix_Chunk* se = Mix_LoadWAV("Assets/sounds/player_jump.mp3");
+        Mix_PlayChannel(-1, se, 0);
+    }
+
+    if (isJumping) {
+        jumpingTime += settings::timeScale;
+    }
+    else {
+        jumpingTime = 0.0;
+    }
+
+    if (isJumping && vY > 0 && jumpingTime < 0.5) {
+        gravity = platformer::gravity * 0.42;
+    }
+    else {
+        gravity = platformer::gravity;
+    }
+
+    if (!jumpPressed && isJumping) {
+            isJumping = false;
+    }
+    /*
+    if (jumpPressed && coyoteTime < 6 && canJump) {
         vY = 800.0;
         canJump = false;
         onGround = false;
@@ -239,6 +269,7 @@ void Player::Jump() {
     if (!jumpPressed && isJumping) {
         isJumping = 0;
     }
+    */
 }
 
 void Player::CollideY() {
@@ -395,7 +426,6 @@ void Player::MoveCameraRoom() {
     std::vector<CAMERAROOM>* room = cameraP->GetRoom();
     CAMERA camera = cameraP->GetCam();
 
-
     for (int i = 0; i < room->size(); i++) {
         if (x > (*room)[i].x1 && x < (*room)[i].x2 && y >(*room)[i].y1 && y < (*room)[i].y2) {
             if ((*room)[i].x3 > camera.targetX) {
@@ -412,6 +442,13 @@ void Player::MoveCameraRoom() {
                 if ((*room)[i].y4 < camera.targetY) {
                     camera.targetY = (*room)[i].y4;
                 }
+
+            if ((*room)[i].force) {
+                if (camera.x < (*room)[i].x3) camera.x = (*room)[i].x3;
+                if (camera.x > (*room)[i].x4) camera.x = (*room)[i].x4;
+                if (camera.y < (*room)[i].y3) camera.y = (*room)[i].y3;
+                if (camera.y > (*room)[i].y4) camera.y = (*room)[i].y4;
+            }
         }
     }
     cameraP->SetCam(camera);
@@ -429,7 +466,7 @@ void Player::Die() {
 }
 
 void Player::Spawn() {
-    x = 45.0;
+    x = 200.0;
     y = 300.0;
     vX = 0.0;
     vY = 0.0;
@@ -462,7 +499,7 @@ void Player::DrawPlayer() {
 void Player::DrawPart(std::string tex, double angle, double X,double Y) {
     OBJRECT rect;
     rect.x = (int)x + 20 + flipX * -40;
-    rect.y = (int)y + 5;
+    rect.y = (int)y + 10;
     rect.w = 110;
     rect.h = 110;
     OBJRECT point;
