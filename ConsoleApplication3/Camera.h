@@ -10,6 +10,7 @@ class Camera
 private:
     CAMERA camera;
     std::vector<CAMERAROOM> room;
+    bool drawCameraRoom;
 public:
     static Textures* texturesP;
     static Input* inputP;

@@ -13,6 +13,7 @@
 #include "ScreenShot.h"
 #include "OverLay.h"
 #include "BackGround.h"
+#include "CheckPoint.h"
 
 Game::Game() {
     running = true;
@@ -20,16 +21,12 @@ Game::Game() {
 
 void Game::SetupEntities() {
     objects.clear();
-    pendingObjects.push_back(std::make_unique<Lift>(-500, 400, 200, 00, 0, 0));
-    pendingObjects.push_back(std::make_unique<Zako>(1480, 520));
-    pendingObjects.push_back(std::make_unique<Zako>(1960, 600));
-    pendingObjects.push_back(std::make_unique<Zako>(2280, 920));
-    pendingObjects.push_back(std::make_unique<Spikes>(1480, 760, 0, 3));
+    pendingObjects.push_back(std::make_unique<CheckPoint>());
 }
 
 void Game::Run() {
     MakeInstance();
-    level->LoadLevel(0);
+    level->LoadLevel(1);
     assy->Spawn();
 
     
@@ -59,17 +56,20 @@ void Game::Run() {
 
             if (event.ESCAPE) {
                 running = 0;
-                level->FileOutput(0);
+                level->FileOutput(1);
             }
             if (event.F12) {
                 screenshot->SaveScreenShot();
             }
+
+            SDL_RenderPresent(settings::renderer);
 
             accumulator -= settings::dt;
             if (countFlame == 0) {
                 frames++;
                 countFlame = 1;
             }
+
         }
         countFlame = 0;
         if (fpsAccumulator >= 1) {
@@ -79,7 +79,7 @@ void Game::Run() {
         }
         
 
-        SDL_RenderPresent(settings::renderer);
+        
     }
 }
 
@@ -116,7 +116,7 @@ void Game::Update() {
         obj->Draw();
     }
     level->DrawMap();
-    assy->Draw();
+    //assy->Draw();
     assy->DrawPlayer();
     textures->Update();
     camera->Update();

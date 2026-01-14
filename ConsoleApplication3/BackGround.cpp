@@ -7,6 +7,25 @@ BackGround::BackGround() {
 
 void BackGround::Draw() {
     CAMERA cam = cameraP->GetCam();
-    OBJRECT rect = { cam.x*0.8,cam.y*0.8,(double)settings::baseW*4,(double)settings::baseH*4 };
-    texturesP->DrawImage("bg_0", rect, 1, {});
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            int bgx = j;
+            int bgy = i;
+            OBJRECT rect;
+            rect.x = ((cam.x - settings::baseW / 2) * 0.8) + (settings::baseW * (bgx + 0.5));
+            rect.y = ((cam.y - settings::baseH / 2) * 0.8) + (settings::baseH * (bgy + 0.5));
+            rect.w = settings::baseW;
+            rect.h = settings::baseH;
+
+            std::string tex;
+            if (i % 2) {
+                tex = "bg_0-1";
+            }
+            else {
+                tex = "bg_0-0";
+            }
+            texturesP->DrawImage(tex, rect, 1, {});
+        }
+    }
+    return;
 }

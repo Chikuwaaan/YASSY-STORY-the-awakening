@@ -466,8 +466,8 @@ void Player::Die() {
 }
 
 void Player::Spawn() {
-    x = 200.0;
-    y = 300.0;
+    x = 8000.0;
+    y = 800.0;
     vX = 0.0;
     vY = 0.0;
     aX = 0.0;

@@ -14,7 +14,7 @@ private:
     std::vector<BLOCK> blockProperty;
     std::vector<BLOCKROOM> rooms;
     int levelW, levelH;
-    uint8_t level[32][128];
+    uint8_t level[32][256];
     double blockSize;
     int editorPalette;
 public:
