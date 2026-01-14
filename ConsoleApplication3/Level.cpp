@@ -12,7 +12,7 @@ Camera* Level::cameraP = nullptr;
 
 Level::Level() {
     editorPalette = 1;
-    levelW = 128;
+    levelW = 256;
     levelH = 32;
     blockSize = 80.0;
     rooms.push_back({ 0,0,{
@@ -71,8 +71,6 @@ void Level::LoadMap(int n) {
     ifs.read(reinterpret_cast<char*>(&W), sizeof(uint32_t));
     ifs.read(reinterpret_cast<char*>(&H), sizeof(uint32_t));
     if (W <= 0 || H <= 0) return;
-    levelW = W;
-    levelH = H;
 
     std::vector<uint8_t> map;
     map.resize(W * H);

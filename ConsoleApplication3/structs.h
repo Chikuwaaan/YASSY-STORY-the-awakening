@@ -4,6 +4,11 @@
 
 #pragma once
 
+struct POSITION {
+    double x;
+    double y;
+};
+
 struct ROTATE {
     bool rotate;
     double angle;
@@ -81,7 +86,8 @@ enum class ImageMod {
 enum class EntityType {
     Null,
     Lift,
-    Zako
+    Zako,
+    CheckPoint
 };
 
 struct EVENT {

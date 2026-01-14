@@ -1,9 +1,9 @@
 #include "CheckPoint.h"
 
 CheckPoint::CheckPoint() {
-    x = 9000;
-    y = 920;
-    w = 80;
-    h = 80;
+    x = 10720;
+    y = 640;
+    w = 160;
+    h = 160;
     texName = "cp";
 }

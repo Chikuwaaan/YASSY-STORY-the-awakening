@@ -27,6 +27,7 @@ void Game::SetupEntities() {
 void Game::Run() {
     MakeInstance();
     level->LoadLevel(1);
+    assy->SetSpawnPoint(400,600);
     assy->Spawn();
 
     

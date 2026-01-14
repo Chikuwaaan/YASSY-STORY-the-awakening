@@ -111,30 +111,6 @@ void Player::Update() {
     MoveY();
     CollideY();
 
-    //ギミック
-    if (groundBlock == 3) {
-        Die();
-    }
-    else if (headBlock == 3) {
-        Die();
-    }
-
-    if (touchingEntity != nullptr) {
-        EntityType type = touchingEntity->GetType();
-        if (type == EntityType::Zako) {
-            if (stomping) {
-                touchingEntity->Damage();
-                vY = 300;
-                onGround = 1;
-            }
-            else {
-                Die();
-            }
-        }
-    }
-
-    
-
 
     //X
     if (onGround) {
@@ -195,12 +171,33 @@ void Player::Update() {
     aX = 0.0;
 
     //ギミック
+    if (groundBlock == 3) {
+        Die();
+    }
+    else if (headBlock == 3) {
+        Die();
+    }
     if (rightBlock == 3) {
         Die();
     }
     else if (leftBlock == 3) {
         Die();
+    }    
+
+    if (touchingEntity != nullptr) {
+        EntityType type = touchingEntity->GetType();
+        if (type == EntityType::Zako) {
+            if (stomping) {
+                touchingEntity->Damage();
+                vY = 300;
+                onGround = 1;
+            }
+            else {
+                Die();
+            }
+        }
     }
+
 
 
     if (y < -1000.0) {
@@ -466,8 +463,8 @@ void Player::Die() {
 }
 
 void Player::Spawn() {
-    x = 8000.0;
-    y = 800.0;
+    x = spawnX;
+    y = spawnY;
     vX = 0.0;
     vY = 0.0;
     aX = 0.0;
@@ -482,6 +479,11 @@ void Player::Spawn() {
     cameraP->SetCam(cam);
 
     gameP->SetupEntities();
+}
+
+void Player::SetSpawnPoint(double x, double y) {
+    spawnX = x;
+    spawnY = y;
 }
 
 void Player::DrawPlayer() {

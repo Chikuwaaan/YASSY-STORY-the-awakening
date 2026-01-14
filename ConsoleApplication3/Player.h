@@ -33,6 +33,11 @@ private:
     bool dieAnim;
     GameObject* touchingEntity;
     bool stomping;
+
+    double spawnX, spawnY;
+
+    void CollideY();
+    void CollideX();
 public:
     static Game* gameP;
     static Level* levelP;
@@ -42,11 +47,11 @@ public:
     void SetAX(double acceleration);
     void Update() override;
     void Jump();
-    void CollideY();
-    void CollideX();
+    
     void MoveCameraRoom();
     void Die();
     void Spawn();
+    void SetSpawnPoint(double x, double y);
 
     void DrawPlayer();
     void DrawPart(std::string tex, double angle, double x, double y);
