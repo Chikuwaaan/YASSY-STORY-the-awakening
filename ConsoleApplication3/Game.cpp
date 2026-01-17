@@ -7,12 +7,10 @@
 #include "Game.h"
 #include "namespace.h"
 #include "GameObject.h"
+
 #include "Lift.h"
 #include "Zako.h"
 #include "Spikes.h"
-#include "ScreenShot.h"
-#include "OverLay.h"
-#include "BackGround.h"
 #include "CheckPoint.h"
 
 Game::Game() {
@@ -38,7 +36,7 @@ void Game::Run() {
     bool countFlame = 0;
     int frames = 0;
     double fpsAccumulator = 0;
-    int realFPS = 0;
+    double realFPS = 0;
     while (running) {
         double currentTime = SDL_GetTicks() / 1000.0;
         double frameTime = currentTime - lastTime;
@@ -74,9 +72,9 @@ void Game::Run() {
         }
         countFlame = 0;
         if (fpsAccumulator >= 1) {
-            realFPS = (int)round(frames / fpsAccumulator);
+            realFPS = (frames / fpsAccumulator);
             frames = 0;
-            fpsAccumulator = 0;
+            fpsAccumulator -= 1;
         }
         
 
@@ -95,7 +93,7 @@ void Game::Update() {
 
     CAMERA cam = camera->GetCam();
     OBJRECT screenRect = { 0, 0, (double)settings::baseW, (double)settings::baseH, 1};
-    textures->DrawRect({ 0,0,0,255 }, screenRect, 0);
+    textures->DrawRect({ 255,255,255,255 }, screenRect, 0);
     background->Draw();
 
     //UPDATE
@@ -148,7 +146,7 @@ void Game::InitSystem() {
     */
 
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    Mix_Music* music = Mix_LoadMUS("Assets/sounds/glass.mp3");
+    Mix_Music* music = Mix_LoadMUS("Assets/sounds/cloud_city.ogg");
     Mix_PlayMusic(music, -1);
 
     //Open Window
@@ -169,6 +167,7 @@ void Game::InitSystem() {
 void Game::MakeInstance() {
     camera = std::make_unique<Camera>();
     textures = std::make_unique<Textures>();
+    sounds = std::make_unique<Sounds>();
     level = std::make_unique<Level>();
     assy = std::make_unique<Player>();
     input = std::make_unique<Input>();
@@ -187,9 +186,11 @@ void Game::MakeInstance() {
     Player::cameraP = camera.get();
     Player::overlayP = overlay.get();
     GameObject::texturesP = textures.get();
+    GameObject::soundsP = sounds.get();
     GameObject::cameraP = camera.get();
     GameObject::inputP = input.get();
     GameObject::levelP = level.get();
+    GameObject::playerP = assy.get();
     OverLay::texturesP = textures.get();
     OverLay::playerP = assy.get();
 }

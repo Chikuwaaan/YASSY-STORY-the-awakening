@@ -186,15 +186,13 @@ void Player::Update() {
 
     if (touchingEntity != nullptr) {
         EntityType type = touchingEntity->GetType();
-        if (type == EntityType::Zako) {
-            if (stomping) {
-                touchingEntity->Damage();
-                vY = 300;
-                onGround = 1;
-            }
-            else {
-                Die();
-            }
+        if (stomping) {
+            touchingEntity->Stomped();
+            vY = 300;
+            onGround = 1;
+        }
+        else {
+            touchingEntity->Touched();
         }
     }
 
@@ -225,8 +223,9 @@ void Player::Jump() {
         onGround = false;
         isJumping = true;
         jumpingTime = 0.0;
-        Mix_Chunk* se = Mix_LoadWAV("Assets/sounds/player_jump.mp3");
-        Mix_PlayChannel(-1, se, 0);
+        //Mix_Chunk* se = Mix_LoadWAV("Assets/sounds/player_jump.mp3");
+        //Mix_PlayChannel(-1, se, 0);
+        soundsP->PlaySE("player_jump");
     }
 
     if (isJumping) {

@@ -12,7 +12,6 @@ class Camera;
 
 class Textures {
 private:
-    
     TTF_Font* font;
 public:
     std::map<std::string, SDL_Texture*> map;

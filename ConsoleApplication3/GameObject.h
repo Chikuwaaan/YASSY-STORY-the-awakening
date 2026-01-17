@@ -6,9 +6,12 @@
 #include "namespace.h"
 
 class Textures;
+class Sounds;
 class Camera;
 class Input;
 class Level;
+class Player;
+
 
 class GameObject
 {
@@ -23,12 +26,15 @@ public:
     bool dead;
 
     static Textures* texturesP;
+    static Sounds* soundsP;
     static Camera* cameraP;
     static Input* inputP;
     static Level* levelP;
+    static Player* playerP;
 
     virtual void Update() {};
-    virtual void Damage() {};
+    virtual void Touched() {};
+    virtual void Stomped() {};
     GameObject();
     EntityType GetType();
     bool IsDead();

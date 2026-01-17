@@ -5,5 +5,7 @@ class CheckPoint :
 {
 public:
     CheckPoint();
+    void Touched() override;
+    void Update() override;
 };
 

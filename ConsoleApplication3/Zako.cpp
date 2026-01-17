@@ -14,7 +14,7 @@ void Zako::Update() {
 
 }
 
-void Zako::Damage() {
+void Zako::Stomped() {
     dead = 1;
     Mix_Chunk* se = Mix_LoadWAV("Assets/sounds/1kill.wav");
     Mix_PlayChannel(-1, se, 0);
