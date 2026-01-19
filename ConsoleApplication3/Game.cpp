@@ -12,6 +12,8 @@
 #include "Zako.h"
 #include "Spikes.h"
 #include "CheckPoint.h"
+#include "UIManager.h"
+#include "UIElement.h"
 
 Game::Game() {
     running = true;
@@ -27,7 +29,7 @@ void Game::Run() {
     level->LoadLevel(1);
     assy->SetSpawnPoint(400,600);
     assy->Spawn();
-
+    UImanager->MakeUI();
     
 
     double accumulator = 0.0;
@@ -119,6 +121,7 @@ void Game::Update() {
     assy->DrawPlayer();
     textures->Update();
     camera->Update();
+    UImanager->Update();
     
     objects.erase(
         std::remove_if(objects.begin(), objects.end(),
@@ -174,6 +177,7 @@ void Game::MakeInstance() {
     screenshot = std::make_unique<ScreenShot>();
     overlay = std::make_unique<OverLay>();
     background = std::make_unique<BackGround>();
+    UImanager = std::make_unique<UIManager>();
 
     Camera::texturesP = textures.get();
     Camera::inputP = input.get();
@@ -193,6 +197,7 @@ void Game::MakeInstance() {
     GameObject::playerP = assy.get();
     OverLay::texturesP = textures.get();
     OverLay::playerP = assy.get();
+    UIElement::texturesP = textures.get();
 }
 
 void Game::Quit() {

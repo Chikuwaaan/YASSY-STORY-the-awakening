@@ -11,6 +11,7 @@
 #include "ScreenShot.h"
 #include "OverLay.h"
 #include "BackGround.h"
+#include "UIManager.h"
 
 class GameObject;
 class Textures;
@@ -33,6 +34,7 @@ private:
     std::unique_ptr<ScreenShot> screenshot;
     std::unique_ptr<OverLay> overlay;
     std::unique_ptr<BackGround> background;
+    std::unique_ptr<UIManager> UImanager;
     //Level level;
     //Player assy;
     //Input input;
