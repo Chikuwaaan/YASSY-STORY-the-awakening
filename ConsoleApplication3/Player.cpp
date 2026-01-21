@@ -89,7 +89,11 @@ void Player::Update() {
         FlipX(false);
     }
     if (keystate[SDL_SCANCODE_M]) {
-        h++;
+        maxSpeed = 640.0;
+        moveBody += 12 * settings::timeScale;
+    }
+    else {
+        maxSpeed = 480.0;
     }
 
     liftVX = 0.0;
@@ -212,8 +216,6 @@ void Player::Update() {
     else if (onGround) {
         moveBody = 0;
     }
-
-
 }
 
 void Player::Jump() {

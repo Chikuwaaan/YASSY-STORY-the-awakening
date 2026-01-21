@@ -50,6 +50,7 @@ void Game::Run() {
             HandleEvent();
             Update();
             textures->DrawTexts(std::to_string(realFPS), { 0,0,0,255 }, { 0,0,1,1 }, 0, {});
+            textures->DrawTexts(std::to_string(Mix_GetMusicPosition(NULL)), { 0,0,0,255 }, { 0,50,1,1 }, 0, {});
             
             
             const Uint8* keystate = input->keystate;
@@ -63,7 +64,7 @@ void Game::Run() {
                 screenshot->SaveScreenShot();
             }
 
-            SDL_RenderPresent(settings::renderer);
+            
 
             accumulator -= settings::dt;
             if (countFlame == 0) {
@@ -79,7 +80,7 @@ void Game::Run() {
             fpsAccumulator -= 1;
         }
         
-
+        SDL_RenderPresent(settings::renderer);
         
     }
 }
@@ -97,6 +98,7 @@ void Game::Update() {
     OBJRECT screenRect = { 0, 0, (double)settings::baseW, (double)settings::baseH, 1};
     textures->DrawRect({ 255,255,255,255 }, screenRect, 0);
     background->Draw();
+    
 
     //UPDATE
     for (auto& obj : objects) {
@@ -133,6 +135,7 @@ void Game::Update() {
     level->Editor();
 
     overlay->Update();
+    textures->DrawImage("missing", { 100, 980, 100, 100 }, 0, { 1, (double)platformer::flames });
 }
 
 void Game::InitSystem() {
@@ -149,7 +152,7 @@ void Game::InitSystem() {
     */
 
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    Mix_Music* music = Mix_LoadMUS("Assets/sounds/cloud_city.ogg");
+    Mix_Music* music = Mix_LoadMUS("Assets/sounds/4.ogg");
     Mix_PlayMusic(music, -1);
 
     //Open Window
@@ -161,7 +164,8 @@ void Game::InitSystem() {
     int winW = (int)(settings::baseW * scale);
     int winH = (int)(settings::baseH * scale);
     settings::window = SDL_CreateWindow("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winW, winH, SDL_WINDOW_FULLSCREEN_DESKTOP);
-    settings::renderer = SDL_CreateRenderer(settings::window, -1, SDL_RENDERER_ACCELERATED);
+    settings::renderer = SDL_CreateRenderer(settings::window, -1, SDL_RENDERER_ACCELERATED );
+    //| SDL_RENDERER_PRESENTVSYNC
     SDL_RenderSetLogicalSize(settings::renderer, settings::baseW, settings::baseH);
 
 }

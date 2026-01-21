@@ -7,7 +7,7 @@
 class UIManager
 {
 private:
-    std::vector<std::unique_ptr<UIElement>> UIs;
+    std::vector<std::vector<std::unique_ptr<UIElement>>> UIs;
 public:
     UIManager();
     void Update();

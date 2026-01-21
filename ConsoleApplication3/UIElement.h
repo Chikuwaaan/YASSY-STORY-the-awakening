@@ -11,6 +11,6 @@ private:
 public:
     static Textures* texturesP;
     UIElement(int UINum, int ElementNum);
-    void Update();
+    void Update() override;
     void SetUp();
 };
