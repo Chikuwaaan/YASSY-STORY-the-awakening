@@ -25,8 +25,13 @@ void Game::SetupEntities() {
 }
 
 void Game::Run() {
+    SDL_DisplayMode disp;
+    SDL_GetDesktopDisplayMode(0, &disp);
+    std::cout << "[DEBUG]リフレッシュレート：" << disp.refresh_rate << std::endl;
+    std::cout << 1.0 / disp.refresh_rate << std::endl;
+
     MakeInstance();
-    level->LoadLevel(2);
+    level->LoadLevel(1);
     assy->SetSpawnPoint(400,600);
     assy->Spawn();
     UImanager->MakeUI();
@@ -35,49 +40,30 @@ void Game::Run() {
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
 
-    bool countFlame = 0;
-    int frames = 0;
-    double fpsAccumulator = 0;
-    double realFPS = 0;
     while (running) {
         double currentTime = SDL_GetTicks() / 1000.0;
         double frameTime = currentTime - lastTime;
         lastTime = currentTime;
-        accumulator += frameTime;
-        fpsAccumulator += frameTime;
-
-        while (accumulator >= settings::dt) {
-            std::cout << accumulator << std::endl;
-            HandleEvent();
-            Update();
-            textures->DrawTexts(std::to_string(realFPS), { 255,255,255,255 }, { 0,0,1,1 }, 0, {});
-            textures->DrawTexts(std::to_string(Mix_GetMusicPosition(NULL)), { 0,0,0,255 }, { 0,50,1,1 }, 0, {});
+        if (frameTime > 0.1) frameTime = 0.1;
+        settings::timeScale = frameTime * settings::multiplier;
             
-            
-            const Uint8* keystate = input->keystate;
-            const EVENT event = input->event;
+        HandleEvent();
+        Update();
+        textures->DrawTexts(std::to_string(Mix_GetMusicPosition(NULL)), { 0,0,0,255 }, { 0,50,1,1 }, 0, {});
 
-            if (event.ESCAPE) {
-                running = 0;
-                level->FileOutput(2);
-            }
-            if (event.F12) {
-                screenshot->SaveScreenShot();
-            }
+        const Uint8* keystate = input->keystate;
+        const EVENT event = input->event;
 
-            accumulator -= settings::dt;
-            if (countFlame == 0) {
-                frames++;
-                countFlame = 1;
-            }
-            SDL_RenderPresent(settings::renderer);
+        if (event.ESCAPE) {
+            running = 0;
+            level->FileOutput(1);
         }
-        countFlame = 0;
-        if (fpsAccumulator >= 1) {
-            realFPS = (frames / fpsAccumulator);
-            frames = 0;
-            fpsAccumulator -= 1;
+        if (event.F12) {
+            screenshot->SaveScreenShot();
         }
+        accumulator -= settings::dt;
+
+        SDL_RenderPresent(settings::renderer);
     }
 }
 
@@ -148,8 +134,8 @@ void Game::InitSystem() {
     */
 
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    Mix_Music* music = Mix_LoadMUS("Assets/sounds/6.ogg");
-    Mix_PlayMusic(music, -1);
+    //Mix_Music* music = Mix_LoadMUS("Assets/sounds/6.ogg");
+    //Mix_PlayMusic(music, -1);
 
     //Open Window
     SDL_DisplayMode dm;
@@ -160,6 +146,7 @@ void Game::InitSystem() {
     int winW = (int)(settings::baseW * scale);
     int winH = (int)(settings::baseH * scale);
     settings::window = SDL_CreateWindow("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winW, winH, SDL_WINDOW_FULLSCREEN_DESKTOP);
+    //settings::window = SDL_CreateWindow("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1600, 900, 0);
     settings::renderer = SDL_CreateRenderer(settings::window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     //| SDL_RENDERER_PRESENTVSYNC
     SDL_RenderSetLogicalSize(settings::renderer, settings::baseW, settings::baseH);
