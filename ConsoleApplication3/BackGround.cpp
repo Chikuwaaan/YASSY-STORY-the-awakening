@@ -14,8 +14,8 @@ void BackGround::Draw() {
             OBJRECT rect;
             rect.x = ((cam.x - settings::baseW / 2) * 0.8) + (settings::baseW * (bgx + 0.5));
             rect.y = ((cam.y - settings::baseH / 2) * 0.8) + (settings::baseH * (bgy + 0.5));
-            rect.w = settings::baseW;
-            rect.h = settings::baseH;
+            rect.w = settings::baseW * 4;
+            rect.h = settings::baseH * 4;
 
             std::string tex;
             if (i % 2) {

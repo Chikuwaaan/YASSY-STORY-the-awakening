@@ -22,11 +22,13 @@ Camera::Camera() {
     //room.push_back({ 1920,1920 * 2,0,1440,960 * 3 - 120,960 * 3 + 120,540,660 });
     //room.push_back({ -1000,10000,-1000,1080,960,10000,540,540 });
     //room.push_back({ 160,2800,-2000,1440,960,1840,540,700,1 });
+    /*
     room.push_back({ 80,1040,400,2000,1040,1040,940,940,1 });
     room.push_back({ 1040,2000,400,2000,1040,1040,940,940,0 });
     room.push_back({ 2000,2960,400,2000,2960,2960,940,940,0 });
     room.push_back({ 2960,9360,400,2000,2960,8400,940,940,0 });
     room.push_back({9360,20000,400,2000,10320,20000,940,940,0});
+    */
 }
 
 CAMERA Camera::GetCam() {
@@ -83,8 +85,10 @@ void Camera::Update() {
     }
     
 
-    camera.x = camera.targetX + (camera.x - camera.targetX) / (1.05);
-    camera.y = camera.targetY + (camera.y - camera.targetY) / (1.05);
+    //camera.x = camera.x + (camera.targetX - camera.x) * settings::timeScale * 8;
+    //camera.y = camera.y + (camera.targetY - camera.y) * settings::timeScale * 8;
+    camera.x = camera.targetX;
+    camera.y = camera.targetY;
 
 
 }

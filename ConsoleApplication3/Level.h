@@ -7,6 +7,7 @@
 
 class Textures;
 class Camera;
+class Game;
 
 class Level
 {
@@ -21,6 +22,7 @@ public:
     static Textures* texturesP;
     static Input* inputP;
     static Camera* cameraP;
+    static Game* gameP;
     Level();
     void FileOutput(int n);
 

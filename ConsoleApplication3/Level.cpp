@@ -5,10 +5,13 @@
 #include "Camera.h"
 #include <cmath>
 #include <fstream>
+#include <SDL_mixer.h>
 
 Textures* Level::texturesP = nullptr;
 Input* Level::inputP = nullptr;
 Camera* Level::cameraP = nullptr;
+Game* Level::gameP = nullptr;
+
 
 Level::Level() {
     editorPalette = 1;
@@ -31,6 +34,12 @@ Level::Level() {
 } });
     blockProperty.push_back({ {0,0,0,0,0,0,0,0}, {
         {0, "3-0"}
+} });
+    blockProperty.push_back({ {1,1,1,1,0,0,0,0},{
+        {0b0000, "4-0000"},{0b0001, "4-0001"},{0b0010, "4-0010"},{0b0011, "4-0011"},
+        {0b0100, "4-0100"},{0b0101, "4-0101"},{0b0110, "4-0110"},{0b1000, "4-1000"},
+        {0b1001, "4-1001"},{0b1010, "4-1010"},{0b1100, "4-1100"},{0b1111, "4-1111"},
+        {0b0111, "4-0111"},{0b1110, "4-1110"},{0b1101, "4-1101"},{0b1011, "4-1011"}
 } });
 }
 
@@ -147,6 +156,16 @@ void Level::DrawMap() {
                 rect.y = blockSize * y + blockSize / 2;
                 rect.w = blockSize;
                 rect.h = blockSize;
+
+                if (blockType == 4) {
+                    double second = Mix_GetMusicPosition(NULL);
+                    if ((int)floor(second * 140 / 60) % 2) {
+                        tex = tex + 'a';
+                    }
+                    else {
+                        tex = tex + 'b';
+                    }
+                }
                 texturesP->DrawImage(tex, rect, 1, {});
             }
         }

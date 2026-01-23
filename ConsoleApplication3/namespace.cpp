@@ -2,7 +2,7 @@
 #include <cmath>
 
 namespace settings {
-    double maxFps = 120.0;
+    double maxFps = 60.0;
     double dt = 1.0 / maxFps;
     double multiplier = 1.0;
     double timeScale = dt * multiplier;

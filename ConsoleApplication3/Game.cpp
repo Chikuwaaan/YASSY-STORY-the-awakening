@@ -26,7 +26,7 @@ void Game::SetupEntities() {
 
 void Game::Run() {
     MakeInstance();
-    level->LoadLevel(1);
+    level->LoadLevel(2);
     assy->SetSpawnPoint(400,600);
     assy->Spawn();
     UImanager->MakeUI();
@@ -47,9 +47,10 @@ void Game::Run() {
         fpsAccumulator += frameTime;
 
         while (accumulator >= settings::dt) {
+            std::cout << accumulator << std::endl;
             HandleEvent();
             Update();
-            textures->DrawTexts(std::to_string(realFPS), { 0,0,0,255 }, { 0,0,1,1 }, 0, {});
+            textures->DrawTexts(std::to_string(realFPS), { 255,255,255,255 }, { 0,0,1,1 }, 0, {});
             textures->DrawTexts(std::to_string(Mix_GetMusicPosition(NULL)), { 0,0,0,255 }, { 0,50,1,1 }, 0, {});
             
             
@@ -58,20 +59,18 @@ void Game::Run() {
 
             if (event.ESCAPE) {
                 running = 0;
-                level->FileOutput(1);
+                level->FileOutput(2);
             }
             if (event.F12) {
                 screenshot->SaveScreenShot();
             }
-
-            
 
             accumulator -= settings::dt;
             if (countFlame == 0) {
                 frames++;
                 countFlame = 1;
             }
-
+            SDL_RenderPresent(settings::renderer);
         }
         countFlame = 0;
         if (fpsAccumulator >= 1) {
@@ -79,9 +78,6 @@ void Game::Run() {
             frames = 0;
             fpsAccumulator -= 1;
         }
-        
-        SDL_RenderPresent(settings::renderer);
-        
     }
 }
 
@@ -152,7 +148,7 @@ void Game::InitSystem() {
     */
 
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    Mix_Music* music = Mix_LoadMUS("Assets/sounds/4.ogg");
+    Mix_Music* music = Mix_LoadMUS("Assets/sounds/6.ogg");
     Mix_PlayMusic(music, -1);
 
     //Open Window
@@ -164,7 +160,7 @@ void Game::InitSystem() {
     int winW = (int)(settings::baseW * scale);
     int winH = (int)(settings::baseH * scale);
     settings::window = SDL_CreateWindow("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winW, winH, SDL_WINDOW_FULLSCREEN_DESKTOP);
-    settings::renderer = SDL_CreateRenderer(settings::window, -1, SDL_RENDERER_ACCELERATED );
+    settings::renderer = SDL_CreateRenderer(settings::window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     //| SDL_RENDERER_PRESENTVSYNC
     SDL_RenderSetLogicalSize(settings::renderer, settings::baseW, settings::baseH);
 
@@ -189,6 +185,7 @@ void Game::MakeInstance() {
     Level::texturesP = textures.get();
     Level::inputP = input.get();
     Level::cameraP = camera.get();
+    Level::gameP = this;
     Player::gameP = this;
     Player::levelP = level.get();
     Player::cameraP = camera.get();
