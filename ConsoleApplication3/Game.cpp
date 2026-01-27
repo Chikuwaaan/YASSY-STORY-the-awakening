@@ -17,6 +17,7 @@
 
 Game::Game() {
     running = true;
+    scene = Scene::Platformer;
 }
 
 void Game::SetupEntities() {
@@ -28,14 +29,14 @@ void Game::Run() {
     SDL_DisplayMode disp;
     SDL_GetDesktopDisplayMode(0, &disp);
     std::cout << "[DEBUG]リフレッシュレート：" << disp.refresh_rate << std::endl;
-    std::cout << 1.0 / disp.refresh_rate << std::endl;
 
     MakeInstance();
-    level->LoadLevel(1);
+    int levelN = platformer::level;
+    level->LoadLevel(levelN);
+    camera->LoadCameraRoom(levelN);
     assy->SetSpawnPoint(400,600);
     assy->Spawn();
     UImanager->MakeUI();
-    
 
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
@@ -56,7 +57,7 @@ void Game::Run() {
 
         if (event.ESCAPE) {
             running = 0;
-            level->FileOutput(1);
+            level->FileOutput(platformer::level);
         }
         if (event.F12) {
             screenshot->SaveScreenShot();
@@ -96,7 +97,6 @@ void Game::Update() {
     pendingObjects.clear();
     
     
-    
     for (auto& obj : objects) {
         obj->Draw();
     }
@@ -117,7 +117,7 @@ void Game::Update() {
     level->Editor();
 
     overlay->Update();
-    textures->DrawImage("missing", { 100, 980, 100, 100 }, 0, { 1, (double)platformer::flames });
+    textures->DrawImage("assy2", { 100, 980, 100, 100 }, 0, { 1, (double)platformer::flames });
 }
 
 void Game::InitSystem() {
@@ -126,16 +126,16 @@ void Game::InitSystem() {
     TTF_Init();
     IMG_Init(IMG_INIT_PNG);
 
-    /*
+    
     SDL_Surface* surface = IMG_Load("Assets/textures/assy.png");
     SDL_Cursor* cursor = SDL_CreateColorCursor(surface, 0, 0);
     SDL_SetCursor(cursor);
     SDL_FreeSurface(surface);
-    */
+    
 
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    //Mix_Music* music = Mix_LoadMUS("Assets/sounds/6.ogg");
-    //Mix_PlayMusic(music, -1);
+    Mix_Music* music = Mix_LoadMUS("Assets/sounds/6.ogg");
+    Mix_PlayMusic(music, -1);
 
     //Open Window
     SDL_DisplayMode dm;

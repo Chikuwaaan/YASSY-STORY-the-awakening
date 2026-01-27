@@ -22,7 +22,8 @@ class Game
 {
 private:
     bool running;
-    
+    Scene scene;
+
     std::vector<std::unique_ptr<GameObject>> dyingObjects;
     std::vector<std::unique_ptr<GameObject>> pendingObjects;
     std::unique_ptr<Camera> camera;

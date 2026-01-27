@@ -15,6 +15,9 @@ public:
     static Textures* texturesP;
     static Input* inputP;
     Camera();
+
+    void LoadCameraRoom(int n);
+
     CAMERA GetCam();
     void SetCam(CAMERA cam);
     void SetTargetX(double x);

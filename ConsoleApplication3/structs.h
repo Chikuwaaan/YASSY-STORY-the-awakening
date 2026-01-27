@@ -79,8 +79,10 @@ struct BLOCK {
 };
 
 
-enum class ImageMod {
-
+enum class Scene {
+    Title,
+    Platformer,
+    FaceYassy
 };
 
 enum class EntityType {

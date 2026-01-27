@@ -4,6 +4,7 @@
 #include "Input.h"
 #include <iostream>
 #include <cmath>
+#include <fstream>
 
 Textures* Camera::texturesP = nullptr;
 Input* Camera::inputP = nullptr;
@@ -17,18 +18,31 @@ Camera::Camera() {
     camera.targetY = 540.0;
     camera.zoom = 1.0;
     drawCameraRoom = 1;
+}
 
-    //room.push_back({ 0,1920,0,1080,960,960,540,540 });
-    //room.push_back({ 1920,1920 * 2,0,1440,960 * 3 - 120,960 * 3 + 120,540,660 });
-    //room.push_back({ -1000,10000,-1000,1080,960,10000,540,540 });
-    //room.push_back({ 160,2800,-2000,1440,960,1840,540,700,1 });
-    /*
-    room.push_back({ 80,1040,400,2000,1040,1040,940,940,1 });
-    room.push_back({ 1040,2000,400,2000,1040,1040,940,940,0 });
-    room.push_back({ 2000,2960,400,2000,2960,2960,940,940,0 });
-    room.push_back({ 2960,9360,400,2000,2960,8400,940,940,0 });
-    room.push_back({9360,20000,400,2000,10320,20000,940,940,0});
-    */
+void Camera::LoadCameraRoom(int n) {
+    std::string path = "Levels/";
+    path = path + std::to_string(n) + "/camera.csv";
+    std::ifstream file(path);
+    std::string line;
+
+    int i = 0;
+    while (std::getline(file, line)) {
+        room.push_back({});
+        std::stringstream stream(line);
+        std::string cell;
+        std::getline(stream, cell, ','); room[i].x1 = std::stoi(cell);
+        std::getline(stream, cell, ','); room[i].x2 = std::stoi(cell);
+        std::getline(stream, cell, ','); room[i].y1 = std::stoi(cell);
+        std::getline(stream, cell, ','); room[i].y2 = std::stoi(cell);
+        std::getline(stream, cell, ','); room[i].x3 = std::stoi(cell);
+        std::getline(stream, cell, ','); room[i].x4 = std::stoi(cell);
+        std::getline(stream, cell, ','); room[i].y3 = std::stoi(cell);
+        std::getline(stream, cell, ','); room[i].y4 = std::stoi(cell);
+        std::getline(stream, cell, ','); room[i].force = std::stoi(cell);
+        i++;
+    }
+    
 }
 
 CAMERA Camera::GetCam() {
