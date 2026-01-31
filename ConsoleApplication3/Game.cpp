@@ -14,10 +14,26 @@
 #include "CheckPoint.h"
 #include "UIManager.h"
 #include "UIElement.h"
+#include "FaceYassy.h"
 
 Game::Game() {
     running = true;
     scene = Scene::Platformer;
+}
+
+void Game::ChangeScene(Scene s) {
+    scene = s;
+    if (s == Scene::Platformer) {
+        int levelN = platformer::level;
+        level->LoadLevel(levelN);
+        camera->LoadCameraRoom(levelN);
+        assy->SetSpawnPoint(400, 600);
+        assy->Spawn();
+
+        
+        Mix_Music* music = Mix_LoadMUS("Assets/sounds/6.ogg");
+        Mix_PlayMusic(music, -1);
+    }
 }
 
 void Game::SetupEntities() {
@@ -26,16 +42,8 @@ void Game::SetupEntities() {
 }
 
 void Game::Run() {
-    SDL_DisplayMode disp;
-    SDL_GetDesktopDisplayMode(0, &disp);
-    std::cout << "[DEBUG]リフレッシュレート：" << disp.refresh_rate << std::endl;
-
-    MakeInstance();
-    int levelN = platformer::level;
-    level->LoadLevel(levelN);
-    camera->LoadCameraRoom(levelN);
-    assy->SetSpawnPoint(400,600);
-    assy->Spawn();
+    //ChangeScene(Scene::Platformer);
+    ChangeScene(Scene::FaceYassy);
     UImanager->MakeUI();
 
     double accumulator = 0.0;
@@ -50,14 +58,17 @@ void Game::Run() {
             
         HandleEvent();
         Update();
-        textures->DrawTexts(std::to_string(Mix_GetMusicPosition(NULL)), { 0,0,0,255 }, { 0,50,1,1 }, 0, {});
+        //textures->DrawTexts(std::to_string(Mix_GetMusicPosition(NULL)), { 0,0,0,255 }, { 0,50,1,1 }, 0, {});
 
         const Uint8* keystate = input->keystate;
         const EVENT event = input->event;
 
         if (event.ESCAPE) {
             running = 0;
-            level->FileOutput(platformer::level);
+            if (scene == Scene::Platformer) {
+                level->FileOutput(platformer::level);
+            }
+            
         }
         if (event.F12) {
             screenshot->SaveScreenShot();
@@ -75,49 +86,51 @@ void Game::HandleEvent() {
 }
 
 void Game::Update() {
-    platformer::flames++;
+    if (scene == Scene::Platformer) {
+        platformer::flames++;
 
-    CAMERA cam = camera->GetCam();
-    OBJRECT screenRect = { 0, 0, (double)settings::baseW, (double)settings::baseH, 1};
-    textures->DrawRect({ 255,255,255,255 }, screenRect, 0);
-    background->Draw();
-    
+        CAMERA cam = camera->GetCam();
+        OBJRECT screenRect = { 0, 0, (double)settings::baseW, (double)settings::baseH, 1 };
+        textures->DrawRect({ 255,255,255,255 }, screenRect, 0);
+        background->Draw();
 
-    //UPDATE
-    for (auto& obj : objects) {
-        obj->Update();
+        //UPDATE
+        for (auto& obj : objects) {
+            obj->Update();
+        }
+        assy->Update();
+        textures->Update();
+
+        for (auto& p : pendingObjects) {
+            objects.push_back(std::move(p));
+        }
+        pendingObjects.clear();
+
+        for (auto& obj : objects) {
+            obj->Draw();
+        }
+        level->DrawMap();
+        assy->DrawPlayer();
+        textures->Update();
+        camera->Update();
+        UImanager->Update();
+
+        objects.erase(
+            std::remove_if(objects.begin(), objects.end(),
+                [](const std::unique_ptr<GameObject>& o)
+                {return o->IsDead(); }),
+            objects.end()
+        );
+
+        level->Editor();
+
+        overlay->Update();
+        textures->DrawImage("assy2", { 100, 980, 100, 100 }, 0, { 1, (double)platformer::flames });
     }
-    assy->Update();
-    textures->Update();
 
-
-    for (auto& p : pendingObjects) {
-        objects.push_back(std::move(p));
+    if (scene == Scene::FaceYassy) {
+        faceyassy->Update();
     }
-    pendingObjects.clear();
-    
-    
-    for (auto& obj : objects) {
-        obj->Draw();
-    }
-    level->DrawMap();
-    //assy->Draw();
-    assy->DrawPlayer();
-    textures->Update();
-    camera->Update();
-    UImanager->Update();
-    
-    objects.erase(
-        std::remove_if(objects.begin(), objects.end(),
-            [](const std::unique_ptr<GameObject>& o)
-            {return o->IsDead(); }),
-        objects.end()
-    );
-
-    level->Editor();
-
-    overlay->Update();
-    textures->DrawImage("assy2", { 100, 980, 100, 100 }, 0, { 1, (double)platformer::flames });
 }
 
 void Game::InitSystem() {
@@ -125,17 +138,14 @@ void Game::InitSystem() {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     TTF_Init();
     IMG_Init(IMG_INIT_PNG);
-
     
     SDL_Surface* surface = IMG_Load("Assets/textures/assy.png");
     SDL_Cursor* cursor = SDL_CreateColorCursor(surface, 0, 0);
     SDL_SetCursor(cursor);
     SDL_FreeSurface(surface);
     
-
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    Mix_Music* music = Mix_LoadMUS("Assets/sounds/6.ogg");
-    Mix_PlayMusic(music, -1);
+    
 
     //Open Window
     SDL_DisplayMode dm;
@@ -151,6 +161,9 @@ void Game::InitSystem() {
     //| SDL_RENDERER_PRESENTVSYNC
     SDL_RenderSetLogicalSize(settings::renderer, settings::baseW, settings::baseH);
 
+    SDL_DisplayMode disp;
+    SDL_GetDesktopDisplayMode(0, &disp);
+    std::cout << "[DEBUG]リフレッシュレート：" << disp.refresh_rate << std::endl;
 }
 
 
@@ -165,6 +178,7 @@ void Game::MakeInstance() {
     overlay = std::make_unique<OverLay>();
     background = std::make_unique<BackGround>();
     UImanager = std::make_unique<UIManager>();
+    faceyassy = std::make_unique<FaceYassy>();
 
     Camera::texturesP = textures.get();
     Camera::inputP = input.get();
@@ -186,6 +200,8 @@ void Game::MakeInstance() {
     OverLay::texturesP = textures.get();
     OverLay::playerP = assy.get();
     UIElement::texturesP = textures.get();
+    FaceYassy::inputP = input.get();
+    FaceYassy::texturesP = textures.get();
 }
 
 void Game::Quit() {

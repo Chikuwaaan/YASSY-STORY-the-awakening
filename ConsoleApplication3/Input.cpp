@@ -33,7 +33,10 @@ void Input::GetCursor() {
 
 void Input::GetEvent() {
     event.ESCAPE = 0;
+    event.DEL = 0;
     event.F12 = 0;
+    event.Q = 0;
+    event.E = 0;
     event.MouseWheel = 0;
     event.MouseLeft = 0;
     event.MouseMiddle = 0;
@@ -47,8 +50,17 @@ void Input::GetEvent() {
             if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
                 event.ESCAPE = 1;
             }
+            if (e.key.keysym.scancode == SDL_SCANCODE_DELETE) {
+                event.DEL = 1;
+            }
             if (e.key.keysym.scancode == SDL_SCANCODE_F12) {
                 event.F12 = 1;
+            }
+            if (e.key.keysym.scancode == SDL_SCANCODE_Q) {
+                event.Q = 1;
+            }
+            if (e.key.keysym.scancode == SDL_SCANCODE_E) {
+                event.E = 1;
             }
         }
 

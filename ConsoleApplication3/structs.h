@@ -94,7 +94,10 @@ enum class EntityType {
 
 struct EVENT {
     bool ESCAPE;
+    bool DEL;
     bool F12;
+    bool Q;
+    bool E;
     int MouseWheel;
     bool MouseLeft;
     bool MouseMiddle;

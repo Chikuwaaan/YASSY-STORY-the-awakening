@@ -136,6 +136,7 @@
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CheckPoint.cpp" />
+    <ClCompile Include="FaceYassy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CheckPoint.h" />
+    <ClInclude Include="FaceYassy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Input.h" />

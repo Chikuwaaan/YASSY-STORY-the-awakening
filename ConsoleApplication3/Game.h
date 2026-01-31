@@ -12,6 +12,7 @@
 #include "OverLay.h"
 #include "BackGround.h"
 #include "UIManager.h"
+#include "FaceYassy.h"
 
 class GameObject;
 class Textures;
@@ -36,6 +37,7 @@ private:
     std::unique_ptr<OverLay> overlay;
     std::unique_ptr<BackGround> background;
     std::unique_ptr<UIManager> UImanager;
+    std::unique_ptr<FaceYassy> faceyassy;
     //Level level;
     //Player assy;
     //Input input;
@@ -43,6 +45,7 @@ public:
     std::vector<std::unique_ptr<GameObject>> objects;
 
     Game();
+    void ChangeScene(Scene s);
     void SetupEntities();
     void Run();
     void HandleEvent();
