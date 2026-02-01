@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "structs.h"
 #include "Textures.h"
+#include "Button.h"
 
 Input* FaceYassy::inputP = nullptr;
 Textures* FaceYassy::texturesP = nullptr;
@@ -17,6 +18,64 @@ FaceYassy::FaceYassy() {
     graby = 0;
     mousedx = 0;
     mousedy = 0;
+
+    trajectories.push_back({
+        {557,723},
+{643,913},
+{760,738},
+{1097,738},
+{1187,904},
+{1277,736},
+{1348,624},
+{1365,482},
+{1324,327},
+{1247,285},
+{1113,242},
+{897,228},
+{768,232},
+{620,244},
+{523,280},
+{477,396},
+{478,515},
+{501,641},
+        });
+    trajectories.push_back({
+        {682,606},
+{848,611},
+{711,516},
+{760,670},
+{817,524},
+        });
+    trajectories.push_back({
+        {982,614},
+{1118,615},
+{996,522},
+{1044,677},
+{1111,520},
+        });
+    trajectories.push_back({
+        {765,482},
+{1045,479},
+{1006,419},
+{897,398},
+{798,426},
+        });
+    trajectories.push_back({
+        {527,496},
+{571,437},
+        });
+    trajectories.push_back({
+        {613,500},
+{657,443},
+        });
+    trajectories.push_back({
+        {1173,497},
+{1207,440},
+        });
+    trajectories.push_back({
+        {1262,500},
+{1291,447},
+        });
 }
 
 void FaceYassy::Update() {
@@ -78,8 +137,11 @@ void FaceYassy::Update() {
             int x = trajectories[i][j].x + dx;
             int y = trajectories[i][j].y + dy
             */
-            int x = trajectories[i][j].x + 100.0 / (abs(trajectories[i][j].x - grabx) + 200) * mousedx;
-            int y = trajectories[i][j].y + 100.0 / (abs(trajectories[i][j].y - graby) + 200) * mousedy;
+            int effect = (abs(trajectories[i][j].x - grabx) * (abs(trajectories[i][j].x - grabx)));
+            effect = effect + (abs(trajectories[i][j].y - graby) * (abs(trajectories[i][j].y - graby)));
+            effect = effect + 80000;
+            int x = (int)round(trajectories[i][j].x + 40000.0 / effect * mousedx);
+            int y = (int)round(trajectories[i][j].y + 40000.0 / effect * mousedy);
             trajectoriesModded[i].push_back({x, y});
         }
     }
@@ -96,6 +158,23 @@ void FaceYassy::Update() {
             }
         }
     }
+}
 
-    
+void FaceYassy::Output() {
+    for (int i = 0; i < trajectories.size(); i++) {
+        for (int j = 0; j < trajectories[i].size(); j++) {
+            std::cout << "{" << trajectories[i][j].x << "," << trajectories[i][j].y << "}," << std::endl;
+        }
+        std::cout << std::endl;
+    }
+
+    Button a;
+    a.action = [this]() {
+        this->Unco();
+        };
+    a.action();
+}
+
+void FaceYassy::Unco() {
+    std::cout << "unco!!!" << std::endl;
 }

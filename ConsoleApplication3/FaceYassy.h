@@ -23,5 +23,7 @@ public:
 
     FaceYassy();
     void Update();
+    void Output();
+    void Unco();
 };
 

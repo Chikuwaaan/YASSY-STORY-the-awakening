@@ -68,7 +68,9 @@ void Game::Run() {
             if (scene == Scene::Platformer) {
                 level->FileOutput(platformer::level);
             }
-            
+            if (scene == Scene::FaceYassy) {
+                faceyassy->Output();
+            }
         }
         if (event.F12) {
             screenshot->SaveScreenShot();
