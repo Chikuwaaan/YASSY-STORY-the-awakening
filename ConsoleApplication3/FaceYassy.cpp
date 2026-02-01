@@ -168,11 +168,6 @@ void FaceYassy::Output() {
         std::cout << std::endl;
     }
 
-    Button a;
-    a.action = [this]() {
-        this->Unco();
-        };
-    a.action();
 }
 
 void FaceYassy::Unco() {

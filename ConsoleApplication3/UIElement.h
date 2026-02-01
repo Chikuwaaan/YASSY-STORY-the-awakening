@@ -3,14 +3,6 @@
 
 class Textures;
 
-class UIElement :
-    public GameObject
+class UIElement
 {
-private:
-    int UInum, elementNum;
-public:
-    static Textures* texturesP;
-    UIElement(int UINum, int ElementNum);
-    void Update() override;
-    void SetUp();
 };

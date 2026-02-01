@@ -1,16 +1,16 @@
 #pragma once
 #include <vector>
 #include <iostream>
-#include "UIElement.h"
+#include "Button.h"
 
 
 class UIManager
 {
 private:
-    std::vector<std::vector<std::unique_ptr<UIElement>>> UIs;
+    std::vector<Button*> buttons;
 public:
     UIManager();
-    void Update();
-    void MakeUI();
+    void RenderUI();
+    void AddButton(Button* ptr);
 };
 

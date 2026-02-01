@@ -1,20 +1,15 @@
 #include "UIManager.h"
-#include "UIElement.h"
-#include <iostream>
 
 UIManager::UIManager() {
-
+    buttons = {};
 }
 
-void UIManager::Update() {
-    for (auto& ui : UIs) {
-        for (auto& element : ui) {
-            element->Update();
-        }
+void UIManager::RenderUI() {
+    for (auto& p : buttons) {
+        p->Draw();
     }
 }
 
-void UIManager::MakeUI() {
-    UIs.push_back({});
-    UIs[0].push_back(std::make_unique<UIElement>(0,0));
+void UIManager::AddButton(Button* ptr) {
+    buttons.push_back(ptr);
 }

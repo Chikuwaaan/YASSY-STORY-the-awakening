@@ -36,7 +36,6 @@ private:
     std::unique_ptr<ScreenShot> screenshot;
     std::unique_ptr<OverLay> overlay;
     std::unique_ptr<BackGround> background;
-    std::unique_ptr<UIManager> UImanager;
     std::unique_ptr<FaceYassy> faceyassy;
     //Level level;
     //Player assy;
