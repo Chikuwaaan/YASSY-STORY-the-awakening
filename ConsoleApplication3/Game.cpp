@@ -45,6 +45,7 @@ void Game::SetupEntities() {
 void Game::Run() {
     //ChangeScene(Scene::Platformer);
     ChangeScene(Scene::FaceYassy);
+    faceyassy->Unco();
 
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
@@ -131,6 +132,7 @@ void Game::Update() {
 
     if (scene == Scene::FaceYassy) {
         faceyassy->Update();
+        ui->RenderUI();
     }
 }
 
@@ -179,6 +181,7 @@ void Game::MakeInstance() {
     overlay = std::make_unique<OverLay>();
     background = std::make_unique<BackGround>();
     faceyassy = std::make_unique<FaceYassy>();
+    ui = std::make_unique<UIManager>();
 
     Camera::texturesP = textures.get();
     Camera::inputP = input.get();
@@ -201,6 +204,7 @@ void Game::MakeInstance() {
     OverLay::playerP = assy.get();
     FaceYassy::inputP = input.get();
     FaceYassy::texturesP = textures.get();
+    FaceYassy::uiP = ui.get();
     Button::texturesP = textures.get();
 }
 

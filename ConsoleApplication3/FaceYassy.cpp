@@ -6,11 +6,16 @@
 #include "structs.h"
 #include "Textures.h"
 #include "Button.h"
+#include "UIManager.h"
 
 Input* FaceYassy::inputP = nullptr;
 Textures* FaceYassy::texturesP = nullptr;
+UIManager* FaceYassy::uiP = nullptr;
 
-FaceYassy::FaceYassy() {
+FaceYassy::FaceYassy() :
+    test(100, 100, 100, 100),
+    test2(200,200,200,200)
+{
     layer = 0;
     trajectories.push_back({});
     trajectoriesModded = {};
@@ -76,6 +81,9 @@ FaceYassy::FaceYassy() {
         {1262,500},
 {1291,447},
         });
+
+    
+
 }
 
 void FaceYassy::Update() {
@@ -171,5 +179,5 @@ void FaceYassy::Output() {
 }
 
 void FaceYassy::Unco() {
-    std::cout << "unco!!!" << std::endl;
+    uiP->AddButton(&test);
 }

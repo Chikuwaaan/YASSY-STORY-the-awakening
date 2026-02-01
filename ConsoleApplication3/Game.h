@@ -37,6 +37,7 @@ private:
     std::unique_ptr<OverLay> overlay;
     std::unique_ptr<BackGround> background;
     std::unique_ptr<FaceYassy> faceyassy;
+    std::unique_ptr<UIManager> ui;
     //Level level;
     //Player assy;
     //Input input;

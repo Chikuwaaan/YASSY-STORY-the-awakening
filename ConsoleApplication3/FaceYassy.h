@@ -2,9 +2,11 @@
 #include<vector>
 #include<SDL.h>
 #include <random>
+#include "Button.h"
 
 class Input;
 class Textures;
+class UIManager;
 
 class FaceYassy
 {
@@ -17,11 +19,17 @@ private:
 
     std::random_device rd;
     std::mt19937 gen;
+
+    Button test;
+    Button test2;
+
 public:
     static Input* inputP;
     static Textures* texturesP;
+    static UIManager* uiP;
 
     FaceYassy();
+
     void Update();
     void Output();
     void Unco();
