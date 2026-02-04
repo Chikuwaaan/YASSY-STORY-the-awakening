@@ -13,8 +13,7 @@ Textures* FaceYassy::texturesP = nullptr;
 UIManager* FaceYassy::uiP = nullptr;
 
 FaceYassy::FaceYassy() :
-    test(100, 100, 100, 100),
-    test2(200,200,200,200)
+    test(50,50,100,100)
 {
     layer = 0;
     trajectories.push_back({});
@@ -86,6 +85,12 @@ FaceYassy::FaceYassy() :
 
 }
 
+void FaceYassy::Delete() {
+    layer = 0;
+    trajectories.clear();
+    trajectories.push_back({});
+}
+
 void FaceYassy::Update() {
     SDL_Renderer* r = settings::renderer;
     SDL_Rect refresh = { 0,0,settings::baseW,settings::baseH };
@@ -109,29 +114,29 @@ void FaceYassy::Update() {
         }
     }
     if (inputP->event.Q) layer--;
-    if (inputP->event.MouseLeft) {
-        trajectories[layer].push_back({mouseX,mouseY});
-    }
     if (inputP->event.DEL) {
-        layer = 0;
-        trajectories.clear();
-        trajectories.push_back({});
+        test.action();
     }
 
-
-    if (inputP->event.MouseRight) {
-        grabx = (int)inputP->mouse.x;
-        graby = (int)inputP->mouse.y;
+    if (!uiP->IsCursorOnUI()) {
+        if (inputP->event.MouseLeft) {
+            trajectories[layer].push_back({ mouseX,mouseY });
+        }
+        if (inputP->event.MouseRight) {
+            grabx = (int)inputP->mouse.x;
+            graby = (int)inputP->mouse.y;
+        }
+        if (inputP->mouse.right) {
+            mousedx = inputP->mouse.x - grabx;
+            mousedy = inputP->mouse.y - graby;
+            texturesP->DrawTexts(std::to_string(mousedx) + " " + std::to_string(mousedy), color, { 0,50,1,1 }, 0, {});
+        }
+        else {
+            mousedx = 0;
+            mousedy = 0;
+        }
     }
-    if (inputP->mouse.right) {
-        mousedx = inputP->mouse.x - grabx;
-        mousedy = inputP->mouse.y - graby;
-        texturesP->DrawTexts(std::to_string(mousedx) + " " + std::to_string(mousedy), color, { 0,50,1,1 }, 0, {});
-    }
-    else {
-        mousedx = 0;
-        mousedy = 0;
-    }
+    
 
 
     trajectoriesModded.clear();
@@ -178,6 +183,9 @@ void FaceYassy::Output() {
 
 }
 
-void FaceYassy::Unco() {
+void FaceYassy::RegisterButtons() {
     uiP->AddButton(&test);
+    test.action = [this]() {
+        this->Delete();
+        };
 }

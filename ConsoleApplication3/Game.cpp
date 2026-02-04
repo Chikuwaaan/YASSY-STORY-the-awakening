@@ -45,7 +45,7 @@ void Game::SetupEntities() {
 void Game::Run() {
     //ChangeScene(Scene::Platformer);
     ChangeScene(Scene::FaceYassy);
-    faceyassy->Unco();
+    faceyassy->RegisterButtons();
 
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
@@ -132,7 +132,7 @@ void Game::Update() {
 
     if (scene == Scene::FaceYassy) {
         faceyassy->Update();
-        ui->RenderUI();
+        ui->Update();
     }
 }
 
@@ -206,6 +206,7 @@ void Game::MakeInstance() {
     FaceYassy::texturesP = textures.get();
     FaceYassy::uiP = ui.get();
     Button::texturesP = textures.get();
+    Button::inputP = input.get();
 }
 
 void Game::Quit() {

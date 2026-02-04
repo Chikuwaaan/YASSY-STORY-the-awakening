@@ -21,8 +21,8 @@ private:
     std::mt19937 gen;
 
     Button test;
-    Button test2;
 
+    void Delete();
 public:
     static Input* inputP;
     static Textures* texturesP;
@@ -32,6 +32,6 @@ public:
 
     void Update();
     void Output();
-    void Unco();
+    void RegisterButtons();
 };
 

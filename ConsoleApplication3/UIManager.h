@@ -10,7 +10,8 @@ private:
     std::vector<Button*> buttons;
 public:
     UIManager();
-    void RenderUI();
+    void Update();
     void AddButton(Button* ptr);
+    bool IsCursorOnUI();
 };
 
