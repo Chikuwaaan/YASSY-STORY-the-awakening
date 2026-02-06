@@ -2,6 +2,7 @@
 #include "Textures.h"
 #include "Input.h"
 #include "structs.h"
+#include "iconProperty.h"
 
 Textures* Button::texturesP = nullptr;
 Input* Button::inputP = nullptr;
@@ -17,7 +18,8 @@ Button::Button(int X, int Y, int W, int H) {
 void Button::Draw() {
     OBJRECT dst = { (double)x,(double)y,(double)w,(double)h,1 };
     texturesP->DrawRect(color, dst, 0);
-    texturesP->DrawSprite("icons", dst, 0, {});
+    SDL_Rect dstS = { x,y,w,h };
+    texturesP->DrawIcon(Icons::uo, dstS);
 }
 
 bool Button::OnMouse() {
@@ -34,10 +36,10 @@ bool Button::OnMouse() {
 void Button::CheckPressed() {
     bool on = OnMouse();
     if (on) {
-        color = { 0,0,255,255 };
+        color = { 150,150,150,255 };
     }
     else {
-        color = { 255,0,0,255 };
+        color = { 200,200,200,255 };
     }
 
     if (on) {

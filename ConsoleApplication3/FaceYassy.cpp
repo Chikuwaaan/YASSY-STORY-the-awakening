@@ -15,7 +15,7 @@ UIManager* FaceYassy::uiP = nullptr;
 Game* FaceYassy::gameP = nullptr;
 
 FaceYassy::FaceYassy() :
-    test(50,50,100,100)
+    test(64,64,128,128)
 {
     layer = 0;
     trajectories.push_back({});

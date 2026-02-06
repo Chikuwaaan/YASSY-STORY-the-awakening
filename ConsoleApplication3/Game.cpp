@@ -23,7 +23,6 @@ Game::Game() {
 }
 
 void Game::ChangeScene(Scene s) {
-    scene = s;
     if (s == Scene::Platformer) {
         int levelN = platformer::level;
         level->LoadLevel(levelN);

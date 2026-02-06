@@ -10,11 +10,13 @@
 
 class Camera;
 
+enum class Icons;
+
 class Textures {
 private:
     TTF_Font* font;
     std::map<std::string, SDL_Texture*> map;
-    //
+    std::map<Icons, SDL_Point> iconProperty;
 public:
     
     static Camera* cameraP;
@@ -23,7 +25,8 @@ public:
     SDL_Texture* GetTexture(std::string name);
     SDL_Rect GetDst(OBJRECT rect, bool relative);
     void DrawImage(std::string texName, OBJRECT rect, bool relative, ROTATE rotate);
-    void DrawSprite(std::string sheet, OBJRECT rect, bool relative, ROTATE rotate);
+    void DrawSprite(std::string sheet, OBJRECT rect, SDL_Rect src);
+    void DrawIcon(Icons icon, SDL_Rect rect);
     void DrawRect(SDL_Color color, OBJRECT rect, bool relative);
     void DrawTexts(std::string text, SDL_Color color, OBJRECT rect, bool relative, ROTATE rotate);
     void Update();

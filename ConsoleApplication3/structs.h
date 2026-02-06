@@ -78,10 +78,6 @@ struct BLOCK {
     std::map<int, std::string> tex;
 };
 
-enum class Icons {
-
-};
-
 enum class Scene {
     Title,
     Platformer,
