@@ -16,6 +16,7 @@ namespace settings {
 
 namespace utilities {
     bool HitDetection(OBJRECT obj1, OBJRECT obj2);
+    bool HitDetectionEquals(OBJRECT obj1, OBJRECT obj2);
     SDL_Color HSVtoRGB(double h, double s, double v, int a);
 }
 

@@ -93,7 +93,7 @@ void Game::Update() {
         platformer::flames++;
 
         CAMERA cam = camera->GetCam();
-        OBJRECT screenRect = { 0, 0, (double)settings::baseW, (double)settings::baseH, 1 };
+        OBJRECT screenRect = { (double)settings::baseW / 2, (double)settings::baseH / 2, (double)settings::baseW, (double)settings::baseH, 1 };
         textures->DrawRect({ 255,255,255,255 }, screenRect, 0);
         background->Draw();
 
@@ -127,7 +127,6 @@ void Game::Update() {
         level->Editor();
 
         overlay->Update();
-        textures->DrawImage("assy2", { 100, 980, 100, 100 }, 0, { 1, (double)platformer::flames });
     }
 
     if (scene == Scene::FaceYassy) {
@@ -205,6 +204,7 @@ void Game::MakeInstance() {
     FaceYassy::inputP = input.get();
     FaceYassy::texturesP = textures.get();
     FaceYassy::uiP = ui.get();
+    FaceYassy::gameP = this;
     Button::texturesP = textures.get();
     Button::inputP = input.get();
 }

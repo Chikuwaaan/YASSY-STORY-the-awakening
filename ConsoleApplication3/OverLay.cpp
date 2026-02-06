@@ -46,15 +46,15 @@ void OverLay::Update() {
 
     if (fade.effect) {
         SDL_SetRenderDrawBlendMode(r, SDL_BLENDMODE_BLEND);
-        OBJRECT rect = { 0, 0, (double)settings::baseW, (double)settings::baseH, 1 };
+        OBJRECT rect = { (double)settings::baseW/2.0, (double)settings::baseH/2.0, (double)settings::baseW, (double)settings::baseH, 1 };
         texturesP->DrawRect(fade.color, rect, 0);
         fade.time -= fade.speed * settings::timeScale;
         fade.color.a = (int)(255 * fade.time);
         if (fade.time < 0) fade.effect = 0;
     }
 
-    OBJRECT rect = { 0, 0, (double)settings::baseW, (double)settings::baseH };
-    texturesP->DrawRect({ 0,0,0,255 }, rect, 0);
+    //OBJRECT rect = { 0, 0, (double)settings::baseW, (double)settings::baseH };
+    //texturesP->DrawRect({ 0,0,0,255 }, rect, 0);
 }
 
 void OverLay::PinHole(double radius, double shrinkSpeed, double waitTime, SDL_Color color) {

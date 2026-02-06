@@ -88,22 +88,20 @@ SDL_Texture* Textures::GetTexture(std::string name) {
 }
 
 SDL_Rect Textures::GetDst(OBJRECT rect, bool relative) {
-    CAMERA camera = cameraP->GetCam();
+    CAMERA camera;
     SDL_Rect dst;
     if (relative) {
-        double pivotX = settings::baseW / 2.0;
-        double pivotY = settings::baseH / 2.0;
-        dst.x = (int)round((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-        dst.y = (int)round(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-        dst.w = (int)round(rect.w * camera.zoom);
-        dst.h = (int)round(rect.h * camera.zoom);
+        camera = cameraP->GetCam();
     }
     else {
-        dst.x = (int)round(rect.x);
-        dst.y = (int)round(rect.y);
-        dst.w = (int)round(rect.w);
-        dst.h = (int)round(rect.h);
+        camera = { settings::baseW / 2.0 , settings::baseH / 2.0 , 0, 0, settings::baseW / 2.0 , settings::baseH / 2.0, 1 };
     }
+    double pivotX = settings::baseW / 2.0;
+    double pivotY = settings::baseH / 2.0;
+    dst.x = (int)round((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+    dst.y = (int)round(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+    dst.w = (int)round(rect.w * camera.zoom);
+    dst.h = (int)round(rect.h * camera.zoom);
 
     return dst;
 }
@@ -130,6 +128,32 @@ void Textures::DrawImage(std::string texName, OBJRECT rect, bool relative, ROTAT
     }
     else {
         SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
+    }
+}
+
+void Textures::DrawSprite(std::string sheet, OBJRECT rect, bool relative, ROTATE rotate) {
+    CAMERA camera = cameraP->GetCam();
+    SDL_Rect dst = GetDst(rect, relative);
+    SDL_Rect src = { 0,0,16,16 };
+
+    if (rotate.rotate) {
+        SDL_Point point;
+        point.x = (int)(rotate.centerX * camera.zoom);
+        point.y = (int)(rotate.centerY * camera.zoom);
+        SDL_RendererFlip flip = SDL_FLIP_NONE;
+        if (rotate.flipX && rotate.flipY) {
+            flip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
+        }
+        else if (rotate.flipY) {
+            flip = SDL_FLIP_VERTICAL;
+        }
+        else if (rotate.flipX) {
+            flip = SDL_FLIP_HORIZONTAL;
+        }
+        SDL_RenderCopyEx(settings::renderer, GetTexture(sheet), NULL, &dst, rotate.angle, &point, flip);
+    }
+    else {
+        SDL_RenderCopy(settings::renderer, GetTexture(sheet), &src, &dst);
     }
 }
 

@@ -15,19 +15,20 @@ Button::Button(int X, int Y, int W, int H) {
 }
 
 void Button::Draw() {
-    OBJRECT dst = { (double)x - w/2,(double)y - h/2,(double)w,(double)h,1 };
+    OBJRECT dst = { (double)x,(double)y,(double)w,(double)h,1 };
     texturesP->DrawRect(color, dst, 0);
+    texturesP->DrawSprite("icons", dst, 0, {});
 }
 
 bool Button::OnMouse() {
     MOUSE mouse = inputP->mouse;
 
     OBJRECT cursor;
-    cursor = { (double)mouse.x,settings::baseH-(double)mouse.y,0,0 };
+    cursor = { (double)mouse.x,(double)mouse.y,0,0 };
     OBJRECT rect;
     rect = { (double)x,(double)y, (double)w, (double)h };
 
-    return utilities::HitDetection(cursor, rect);
+    return utilities::HitDetectionEquals(cursor, rect);
 }
 
 void Button::CheckPressed() {

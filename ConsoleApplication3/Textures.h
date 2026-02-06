@@ -13,14 +13,17 @@ class Camera;
 class Textures {
 private:
     TTF_Font* font;
-public:
     std::map<std::string, SDL_Texture*> map;
+    //
+public:
+    
     static Camera* cameraP;
     Textures();
     void LoadTextures(std::filesystem::path directoryPath);
     SDL_Texture* GetTexture(std::string name);
     SDL_Rect GetDst(OBJRECT rect, bool relative);
     void DrawImage(std::string texName, OBJRECT rect, bool relative, ROTATE rotate);
+    void DrawSprite(std::string sheet, OBJRECT rect, bool relative, ROTATE rotate);
     void DrawRect(SDL_Color color, OBJRECT rect, bool relative);
     void DrawTexts(std::string text, SDL_Color color, OBJRECT rect, bool relative, ROTATE rotate);
     void Update();

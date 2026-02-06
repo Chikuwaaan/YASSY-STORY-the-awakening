@@ -7,10 +7,12 @@
 #include "Textures.h"
 #include "Button.h"
 #include "UIManager.h"
+#include "Game.h"
 
 Input* FaceYassy::inputP = nullptr;
 Textures* FaceYassy::texturesP = nullptr;
 UIManager* FaceYassy::uiP = nullptr;
+Game* FaceYassy::gameP = nullptr;
 
 FaceYassy::FaceYassy() :
     test(50,50,100,100)
@@ -186,6 +188,6 @@ void FaceYassy::Output() {
 void FaceYassy::RegisterButtons() {
     uiP->AddButton(&test);
     test.action = [this]() {
-        this->Delete();
+        this->gameP->ChangeScene(Scene::Platformer);
         };
 }

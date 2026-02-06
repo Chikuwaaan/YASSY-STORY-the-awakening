@@ -1,5 +1,6 @@
 #include "Input.h"
 #include "namespace.h"
+#include <iostream>
 
 void Input::GetKey() {
     keystate = SDL_GetKeyboardState(NULL);
@@ -9,7 +10,8 @@ void Input::GetCursor() {
     int x, y;
     Uint32 buttons = SDL_GetMouseState(&x, &y);
     mouse.x = x;
-    mouse.y = settings::baseH - y;
+    mouse.y = settings::baseH - y - 1;
+    std::cout << mouse.x << "," << mouse.y << std::endl;
 
     if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) {
         mouse.left = 1;

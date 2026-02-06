@@ -7,6 +7,7 @@
 class Input;
 class Textures;
 class UIManager;
+class Game;
 
 class FaceYassy
 {
@@ -27,6 +28,7 @@ public:
     static Input* inputP;
     static Textures* texturesP;
     static UIManager* uiP;
+    static Game* gameP;
 
     FaceYassy();
 
