@@ -20,6 +20,6 @@ public:
     Button(int X, int Y, int W, int H);
     void Draw();
     bool OnMouse();
-    void CheckPressed();
+    bool CheckPressed();
 };
 

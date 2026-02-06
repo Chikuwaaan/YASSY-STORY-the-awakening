@@ -13,10 +13,11 @@
 #include "BackGround.h"
 #include "UIManager.h"
 #include "FaceYassy.h"
+#include "Button.h"
 
 class GameObject;
 class Textures;
-
+class UIManager;
 
 
 class Game
@@ -38,9 +39,8 @@ private:
     std::unique_ptr<BackGround> background;
     std::unique_ptr<FaceYassy> faceyassy;
     std::unique_ptr<UIManager> ui;
-    //Level level;
-    //Player assy;
-    //Input input;
+    
+    Button sceneChanger;
 public:
     std::vector<std::unique_ptr<GameObject>> objects;
 

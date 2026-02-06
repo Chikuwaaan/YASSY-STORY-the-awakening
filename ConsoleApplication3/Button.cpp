@@ -33,7 +33,7 @@ bool Button::OnMouse() {
     return utilities::HitDetectionEquals(cursor, rect);
 }
 
-void Button::CheckPressed() {
+bool Button::CheckPressed() {
     bool on = OnMouse();
     if (on) {
         color = { 150,150,150,255 };
@@ -46,7 +46,9 @@ void Button::CheckPressed() {
         if (inputP->event.MouseLeft) {
             if (action) {
                 action();
+                return 1;
             }
         }
     }
+    return 0;
 }

@@ -4,11 +4,15 @@ UIManager::UIManager() {
     buttons = {};
 }
 
-void UIManager::Update() {
+bool UIManager::Update() {
     for (auto& p : buttons) {
-        p->CheckPressed();
         p->Draw();
     }
+    for (auto& p : buttons) {
+        p->CheckPressed();
+        return 1;
+    }
+    return 0;
 }
 
 void UIManager::AddButton(Button* ptr) {

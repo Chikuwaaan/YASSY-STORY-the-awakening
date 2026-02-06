@@ -17,23 +17,63 @@
 #include "FaceYassy.h"
 #include "Button.h"
 
-Game::Game() {
+Game::Game() : 
+    sceneChanger(64, 64, 128, 128)
+{
     running = true;
     scene = Scene::Platformer;
 }
 
+/*リセットしないインスタンス↓
+* camera
+* textures
+* sounds
+* input
+* screenshot
+* overlay
+*/
 void Game::ChangeScene(Scene s) {
-    ui.reset();
+    level.reset();
+    assy.reset();
+    background.reset();
     faceyassy.reset();
+    ui.reset();
+    
 
     scene = s;
     if (s == Scene::Platformer) {
+        level = std::make_unique<Level>();
+        assy = std::make_unique<Player>();
+        background = std::make_unique<BackGround>();
+        ui = std::make_unique<UIManager>();
+
+        Camera::texturesP = textures.get();
+        Camera::inputP = input.get();
+        Level::texturesP = textures.get();
+        Level::inputP = input.get();
+        Level::cameraP = camera.get();
+        Level::gameP = this;
+        Player::gameP = this;
+        Player::levelP = level.get();
+        Player::cameraP = camera.get();
+        Player::overlayP = overlay.get();
+        GameObject::levelP = level.get();
+        GameObject::playerP = assy.get();
+        
+
+
         int levelN = platformer::level;
         level->LoadLevel(levelN);
         camera->LoadCameraRoom(levelN);
         assy->SetSpawnPoint(400, 600);
         assy->Spawn();
 
+        camera->Init();
+        sceneChanger.action = [this]() {
+            this->ChangeScene(Scene::FaceYassy);
+            };
+        ui->AddButton(&sceneChanger);
+        
         
         Mix_Music* music = Mix_LoadMUS("Assets/sounds/6.ogg");
         Mix_PlayMusic(music, -1);
@@ -48,6 +88,7 @@ void Game::ChangeScene(Scene s) {
         FaceYassy::uiP = ui.get();
         FaceYassy::gameP = this;
 
+        Mix_HaltMusic();
         faceyassy->RegisterButtons();
     }
 }
@@ -124,13 +165,17 @@ void Game::Update() {
         }
         pendingObjects.clear();
 
+        textures->Update();
+        camera->Update();
         for (auto& obj : objects) {
             obj->Draw();
         }
         level->DrawMap();
         assy->DrawPlayer();
-        textures->Update();
-        camera->Update();
+        if (ui->Update()) {
+            return;
+        }
+        
 
         objects.erase(
             std::remove_if(objects.begin(), objects.end(),
@@ -188,32 +233,17 @@ void Game::MakeInstance() {
     camera = std::make_unique<Camera>();
     textures = std::make_unique<Textures>();
     sounds = std::make_unique<Sounds>();
-    level = std::make_unique<Level>();
-    assy = std::make_unique<Player>();
     input = std::make_unique<Input>();
     screenshot = std::make_unique<ScreenShot>();
     overlay = std::make_unique<OverLay>();
-    background = std::make_unique<BackGround>();
-    faceyassy = std::make_unique<FaceYassy>();
     ui = std::make_unique<UIManager>();
 
-    Camera::texturesP = textures.get();
-    Camera::inputP = input.get();
+    
     Textures::cameraP = camera.get();
-    Level::texturesP = textures.get();
-    Level::inputP = input.get();
-    Level::cameraP = camera.get();
-    Level::gameP = this;
-    Player::gameP = this;
-    Player::levelP = level.get();
-    Player::cameraP = camera.get();
-    Player::overlayP = overlay.get();
     GameObject::texturesP = textures.get();
     GameObject::soundsP = sounds.get();
-    GameObject::cameraP = camera.get();
     GameObject::inputP = input.get();
-    GameObject::levelP = level.get();
-    GameObject::playerP = assy.get();
+    GameObject::cameraP = camera.get();
     OverLay::texturesP = textures.get();
     OverLay::playerP = assy.get();
     FaceYassy::inputP = input.get();

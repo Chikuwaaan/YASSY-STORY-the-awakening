@@ -11,7 +11,6 @@ void Input::GetCursor() {
     Uint32 buttons = SDL_GetMouseState(&x, &y);
     mouse.x = x;
     mouse.y = settings::baseH - y - 1;
-    std::cout << mouse.x << "," << mouse.y << std::endl;
 
     if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) {
         mouse.left = 1;

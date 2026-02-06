@@ -19,6 +19,7 @@ public:
     void LoadCameraRoom(int n);
 
     CAMERA GetCam();
+    void Init();
     void SetCam(CAMERA cam);
     void SetTargetX(double x);
     void SetTargetY(double y);
