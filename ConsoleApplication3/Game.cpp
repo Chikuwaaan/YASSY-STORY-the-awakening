@@ -23,6 +23,10 @@ Game::Game() {
 }
 
 void Game::ChangeScene(Scene s) {
+    ui.reset();
+    faceyassy.reset();
+
+    scene = s;
     if (s == Scene::Platformer) {
         int levelN = platformer::level;
         level->LoadLevel(levelN);
@@ -34,6 +38,18 @@ void Game::ChangeScene(Scene s) {
         Mix_Music* music = Mix_LoadMUS("Assets/sounds/6.ogg");
         Mix_PlayMusic(music, -1);
     }
+
+    if (s == Scene::FaceYassy) {
+        faceyassy = std::make_unique<FaceYassy>();
+        ui = std::make_unique<UIManager>();
+
+        FaceYassy::inputP = input.get();
+        FaceYassy::texturesP = textures.get();
+        FaceYassy::uiP = ui.get();
+        FaceYassy::gameP = this;
+
+        faceyassy->RegisterButtons();
+    }
 }
 
 void Game::SetupEntities() {
@@ -44,7 +60,7 @@ void Game::SetupEntities() {
 void Game::Run() {
     //ChangeScene(Scene::Platformer);
     ChangeScene(Scene::FaceYassy);
-    faceyassy->RegisterButtons();
+    
 
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
