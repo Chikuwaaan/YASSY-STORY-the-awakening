@@ -9,8 +9,9 @@ bool UIManager::Update() {
         p->Draw();
     }
     for (auto& p : buttons) {
-        p->CheckPressed();
-        return 1;
+        if (p->CheckPressed()) {
+            return 1;
+        }
     }
     return 0;
 }

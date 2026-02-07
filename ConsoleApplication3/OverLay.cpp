@@ -47,10 +47,26 @@ void OverLay::Update() {
     if (fade.effect) {
         SDL_SetRenderDrawBlendMode(r, SDL_BLENDMODE_BLEND);
         OBJRECT rect = { (double)settings::baseW/2.0, (double)settings::baseH/2.0, (double)settings::baseW, (double)settings::baseH, 1 };
+        fade.time -= settings::timeScale;
+        if (fade.time < 0) {
+            fade.effect = 0;
+            return;
+        }
+
+        if (fade.effect == 1) {
+            fade.color.a = (int)(255 * (fade.time / fade.speed));
+        }
+        else if (fade.effect == -1) {
+            fade.color.a = (int)(255 - 255 * (fade.time / fade.speed));
+        }
+
+        if (fade.color.a > 255) fade.color.a = 255;
+        if (fade.color.a < 0) fade.color.a = 0;
+        
         texturesP->DrawRect(fade.color, rect, 0);
-        fade.time -= fade.speed * settings::timeScale;
-        fade.color.a = (int)(255 * fade.time);
-        if (fade.time < 0) fade.effect = 0;
+
+        
+        
     }
 
     //OBJRECT rect = { 0, 0, (double)settings::baseW, (double)settings::baseH };
@@ -66,8 +82,15 @@ void OverLay::PinHole(double radius, double shrinkSpeed, double waitTime, SDL_Co
 }
 
 void OverLay::FadeOut(double speed, SDL_Color color) {
+    fade.effect = -1;
+    fade.speed = speed;
+    fade.time = speed;
+    fade.color = color;
+}
+
+void OverLay::FadeIn(double speed, SDL_Color color) {
     fade.effect = 1;
     fade.speed = speed;
-    fade.time = 1;
+    fade.time = speed;
     fade.color = color;
 }

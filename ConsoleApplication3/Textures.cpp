@@ -57,6 +57,16 @@ SDL_Texture* Textures::GetTexture(std::string name) {
     }
 }
 
+SDL_Rect Textures::GetTexRect(std::string name) {
+    SDL_Rect rect;
+    int w, h;
+    SDL_Texture* tex = GetTexture(name);
+
+    SDL_QueryTexture(tex, nullptr, nullptr, &w, &h);
+    rect = { 0, 0, w, h };
+    return rect;
+}
+
 SDL_Rect Textures::GetDst(OBJRECT rect, bool relative) {
     CAMERA camera;
     SDL_Rect dst;
@@ -78,6 +88,36 @@ SDL_Rect Textures::GetDst(OBJRECT rect, bool relative) {
 
 void Textures::DrawImage(std::string texName, OBJRECT rect, bool relative, ROTATE rotate) {
     CAMERA camera = cameraP->GetCam();
+    SDL_Rect dst = GetDst(rect, relative);
+
+    if (rotate.rotate) {
+        SDL_Point point;
+        point.x = (int)(rotate.centerX * camera.zoom);
+        point.y = (int)(rotate.centerY * camera.zoom);
+        SDL_RendererFlip flip = SDL_FLIP_NONE;
+        if (rotate.flipX && rotate.flipY) {
+            flip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
+        }
+        else if (rotate.flipY) {
+            flip = SDL_FLIP_VERTICAL;
+        }
+        else if (rotate.flipX) {
+            flip = SDL_FLIP_HORIZONTAL;
+        }
+        SDL_RenderCopyEx(settings::renderer, GetTexture(texName), NULL, &dst, rotate.angle, &point, flip);
+    }
+    else {
+        SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
+    }
+}
+
+void Textures::DrawImageS(std::string texName, SDL_Rect Rect, bool relative, ROTATE rotate) {
+    CAMERA camera = cameraP->GetCam();
+    OBJRECT rect;
+    rect.x = (double)Rect.x;
+    rect.y = (double)Rect.y;
+    rect.w = (double)Rect.w;
+    rect.h = (double)Rect.h;
     SDL_Rect dst = GetDst(rect, relative);
 
     if (rotate.rotate) {

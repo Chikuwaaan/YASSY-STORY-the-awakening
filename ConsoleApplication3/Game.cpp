@@ -38,9 +38,17 @@ void Game::ChangeScene(Scene s) {
     background.reset();
     faceyassy.reset();
     ui.reset();
-    
+    title.reset();
 
     scene = s;
+    if (s == Scene::Title) {
+        title = std::make_unique<Title>();
+        ui = std::make_unique<UIManager>();
+        Title::uiP = ui.get();
+        Title::texturesP = textures.get();
+
+        title->Init();
+    }
     if (s == Scene::Platformer) {
         level = std::make_unique<Level>();
         assy = std::make_unique<Player>();
@@ -59,8 +67,9 @@ void Game::ChangeScene(Scene s) {
         Player::overlayP = overlay.get();
         GameObject::levelP = level.get();
         GameObject::playerP = assy.get();
+        OverLay::texturesP = textures.get();
+        OverLay::playerP = assy.get();
         
-
 
         int levelN = platformer::level;
         level->LoadLevel(levelN);
@@ -99,8 +108,9 @@ void Game::SetupEntities() {
 }
 
 void Game::Run() {
-    //ChangeScene(Scene::Platformer);
-    ChangeScene(Scene::FaceYassy);
+    //ChangeScene(Scene::Title);
+    ChangeScene(Scene::Platformer);
+    //ChangeScene(Scene::FaceYassy);
     
 
     double accumulator = 0.0;
@@ -115,6 +125,7 @@ void Game::Run() {
             
         HandleEvent();
         Update();
+        
         //textures->DrawTexts(std::to_string(Mix_GetMusicPosition(NULL)), { 0,0,0,255 }, { 0,50,1,1 }, 0, {});
 
         const Uint8* keystate = input->keystate;
@@ -145,6 +156,10 @@ void Game::HandleEvent() {
 }
 
 void Game::Update() {
+    if (scene == Scene::Title) {
+        title->Update();
+    }
+
     if (scene == Scene::Platformer) {
         platformer::flames++;
 
@@ -172,10 +187,7 @@ void Game::Update() {
         }
         level->DrawMap();
         assy->DrawPlayer();
-        if (ui->Update()) {
-            return;
-        }
-        
+        textures->DrawTexts("sayyy", { 0,0,0,255 }, { 0,0,10,10 }, 1, {});
 
         objects.erase(
             std::remove_if(objects.begin(), objects.end(),
@@ -186,13 +198,18 @@ void Game::Update() {
 
         level->Editor();
 
-        overlay->Update();
+        
+
+        if (ui->Update()) {
+            return;
+        }
     }
 
     if (scene == Scene::FaceYassy) {
         faceyassy->Update();
         ui->Update();
     }
+    overlay->Update();
 }
 
 void Game::InitSystem() {
@@ -252,6 +269,8 @@ void Game::MakeInstance() {
     FaceYassy::gameP = this;
     Button::texturesP = textures.get();
     Button::inputP = input.get();
+    Title::overlayP = overlay.get();
+    Title::gameP = this;
 }
 
 void Game::Quit() {

@@ -151,6 +151,7 @@
     <ClCompile Include="Sounds.cpp" />
     <ClCompile Include="Spikes.cpp" />
     <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="Title.cpp" />
     <ClCompile Include="UIElement.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="Zako.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="Spikes.h" />
     <ClInclude Include="structs.h" />
     <ClInclude Include="Textures.h" />
+    <ClInclude Include="Title.h" />
     <ClInclude Include="UIElement.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="Zako.h" />

@@ -14,6 +14,7 @@
 #include "UIManager.h"
 #include "FaceYassy.h"
 #include "Button.h"
+#include "Title.h"
 
 class GameObject;
 class Textures;
@@ -39,7 +40,8 @@ private:
     std::unique_ptr<BackGround> background;
     std::unique_ptr<FaceYassy> faceyassy;
     std::unique_ptr<UIManager> ui;
-    
+    std::unique_ptr<Title> title;
+
     Button sceneChanger;
 public:
     std::vector<std::unique_ptr<GameObject>> objects;

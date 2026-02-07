@@ -62,7 +62,7 @@ void Player::Update() {
         dieTime -= settings::timeScale;
         if (dieTime < 3.0 && dieAnim) {
             dieAnim = 0;
-            overlayP->PinHole(2000, 1000, 1.0, { 0,0,0,255 });
+            overlayP->PinHole(2000, 1000, 1.1, { 0,0,0,255 });
         }
         return;
     }
@@ -473,7 +473,7 @@ void Player::Spawn() {
     walkVX = 0.0;
     liftVX = 0.0;
 
-    overlayP->FadeOut(1, {0,0,0,255});
+    overlayP->FadeIn(1, {0,0,0,255});
     CAMERA cam = cameraP->GetCam();
     cam.x = x;
     cam.y = y;
