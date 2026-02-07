@@ -4,17 +4,20 @@
 #include "Textures.h"
 #include "OverLay.h"
 #include "Game.h"
+#include "Input.h"
 
 UIManager* Title::uiP = nullptr;
 Textures* Title::texturesP = nullptr;
 OverLay* Title::overlayP = nullptr;
 Game* Title::gameP = nullptr;
+Input* Title::inputP = nullptr;
 
 enum class Phase {
     Loading,
     Logo1,
     Logo2,
-    unc
+    Logo3,
+    YassyStory
 };
 
 Title::Title() :
@@ -28,6 +31,8 @@ Title::Title() :
 void Title::Init() {
     //RegisterButtons();
     last = SDL_GetTicks();
+    timer = 0.0;
+    SDL_SetRenderDrawColor(settings::renderer, 0, 0, 0, 255);
 }
 
 void Title::RegisterButtons() {
@@ -45,8 +50,12 @@ void Title::ChangePhase() {
         phase = Phase::Logo2;
         overlayP->FadeOut(1, { 0,0,0,255 });
     }
-    else if (phase == Phase::Logo2 && timer > 4) {
-        phase = Phase::unc;
+    else if (phase == Phase::Logo2 && timer > 3.9) {
+        phase = Phase::Logo3;
+    }
+    else if (phase == Phase::Logo3 && timer > 5) {
+        phase = Phase::YassyStory;
+        overlayP->FadeIn(1, { 0,0,0,255 });
     }
 }
 
@@ -57,12 +66,13 @@ void Title::Update() {
     timer += delta / 1000.0;
     ChangePhase();
 
-    SDL_Renderer* r = settings::renderer;
     SDL_Rect refresh = { 0,0,settings::baseW,settings::baseH };
-    SDL_SetRenderDrawColor(r, 0,0,0, 255);
-    SDL_RenderFillRect(r, &refresh);
+    SDL_Color white = { 255,255,255,255 };
+    SDL_Color black = { 0,0,0,255 };
 
     if (phase == Phase::Logo1 || phase == Phase::Logo2) {
+        SDL_RenderFillRect(settings::renderer, &refresh);
+        SDL_SetRenderDrawColor(settings::renderer, 0, 0, 0, 255);
         SDL_Rect sy = texturesP->GetTexRect("studio_yassy");
         sy.x = settings::baseW / 2;
         sy.y = settings::baseH / 2;
@@ -70,9 +80,22 @@ void Title::Update() {
         sy.h = sy.h * 8;
         texturesP->DrawImageS("studio_yassy", sy, 0, {});
     }
-    if (phase == Phase::unc) {
-        gameP->ChangeScene(Scene::Platformer);
-        return;
+    if (phase == Phase::Logo3) {
+        SDL_RenderFillRect(settings::renderer, &refresh);
+    }
+    if (phase == Phase::YassyStory) {
+        SDL_SetRenderDrawColor(settings::renderer, 255,255,255, 255);
+        SDL_RenderFillRect(settings::renderer, &refresh);
+        SDL_Rect fullScreen = { settings::baseW / 2, settings::baseH / 2, settings::baseW,settings::baseH };
+        texturesP->DrawImageS("assy", fullScreen, 0, {});
+        texturesP->DrawImageS("title", fullScreen, 0, {});
+        texturesP->DrawTexts("Press any Unco", white, black, { 750,900,1,1 }, 0, {});
+
+        if (inputP->IsAnyKeyPressed()) {
+            Init();
+            phase = Phase::Loading;
+            
+        }
     }
     
 

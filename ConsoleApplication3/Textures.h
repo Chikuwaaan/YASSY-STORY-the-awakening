@@ -11,10 +11,12 @@
 class Camera;
 
 enum class Icons;
+enum class Anchor;
 
 class Textures {
 private:
     TTF_Font* font;
+    TTF_Font* fontb;
     std::map<std::string, SDL_Texture*> map;
     std::map<Icons, SDL_Point> iconProperty;
 public:
@@ -30,7 +32,7 @@ public:
     void DrawSprite(std::string sheet, OBJRECT rect, SDL_Rect src);
     void DrawIcon(Icons icon, SDL_Rect rect);
     void DrawRect(SDL_Color color, OBJRECT rect, bool relative);
-    void DrawTexts(std::string text, SDL_Color color, OBJRECT rect, bool relative, ROTATE rotate);
+    void DrawTexts(std::string text, SDL_Color col1, SDL_Color col2, OBJRECT rect, bool relative, ROTATE rotate);
     void Update();
     void ModTextures();
 };

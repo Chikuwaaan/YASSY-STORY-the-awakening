@@ -5,6 +5,7 @@ class UIManager;
 class Textures;
 class OverLay;
 class Game;
+class Input;
 
 enum class Phase;
 
@@ -22,6 +23,7 @@ public:
     static Textures* texturesP;
     static OverLay* overlayP;
     static Game* gameP;
+    static Input* inputP;
 
     Title();
     void Init();

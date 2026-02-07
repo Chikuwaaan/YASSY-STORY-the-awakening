@@ -108,8 +108,8 @@ void Game::SetupEntities() {
 }
 
 void Game::Run() {
-    //ChangeScene(Scene::Title);
-    ChangeScene(Scene::Platformer);
+    ChangeScene(Scene::Title);
+    //ChangeScene(Scene::Platformer);
     //ChangeScene(Scene::FaceYassy);
     
 
@@ -187,7 +187,6 @@ void Game::Update() {
         }
         level->DrawMap();
         assy->DrawPlayer();
-        textures->DrawTexts("sayyy", { 0,0,0,255 }, { 0,0,10,10 }, 1, {});
 
         objects.erase(
             std::remove_if(objects.begin(), objects.end(),
@@ -271,6 +270,7 @@ void Game::MakeInstance() {
     Button::inputP = input.get();
     Title::overlayP = overlay.get();
     Title::gameP = this;
+    Title::inputP = input.get();
 }
 
 void Game::Quit() {

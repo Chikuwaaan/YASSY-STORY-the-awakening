@@ -2,10 +2,6 @@
 #include "namespace.h"
 #include <iostream>
 
-void Input::GetKey() {
-    keystate = SDL_GetKeyboardState(NULL);
-}
-
 void Input::GetCursor() {
     int x, y;
     Uint32 buttons = SDL_GetMouseState(&x, &y);
@@ -32,7 +28,12 @@ void Input::GetCursor() {
     }
 }
 
+void Input::GetKey() {
+    keystate = SDL_GetKeyboardState(NULL);
+}
+
 void Input::GetEvent() {
+    isAnyKeyPressed = 0;
     event.ESCAPE = 0;
     event.DEL = 0;
     event.F12 = 0;
@@ -48,6 +49,7 @@ void Input::GetEvent() {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
         if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
+            isAnyKeyPressed = 1;
             if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
                 event.ESCAPE = 1;
             }
@@ -88,3 +90,6 @@ void Input::GetEvent() {
     }
 }
 
+bool Input::IsAnyKeyPressed() {
+    return isAnyKeyPressed;
+}

@@ -8,10 +8,33 @@ Camera* Textures::cameraP = nullptr;
 SDL_Renderer* r = settings::renderer;
 namespace fs = std::filesystem;
 
+enum class Anchor {
+    TopLeft,
+    Center
+};
+
 Textures::Textures() {
     LoadTextures("Assets/textures");
-    //SDL_SetTextureAlphaMod(map["circle_mask"], 127);
+
+    //FONTS
+    std::cout << "loading fonts..." << std::endl;
     font = TTF_OpenFont("C:/Windows/Fonts/meiryo.ttc", 50);
+    if (font) {
+        std::cout << "[DEBUG]標準フォントを読み込みました" << std::endl;
+    }
+    fontb = TTF_OpenFont("C:/Windows/Fonts/meiryo.ttc", 50);
+    if (fontb) {
+        std::cout << "[DEBUG]太字フォントを読み込みました" << std::endl;
+        TTF_SetFontOutline(fontb, 5);
+    }
+
+    if (map.count("icons") == 1) {
+        iconProperty[Icons::Back] = { 0,0 };
+        iconProperty[Icons::Next] = { 1,0 };
+        iconProperty[Icons::UO] = { 3,3 };
+        iconProperty[Icons::Clear] = { 0,1 };
+        iconProperty[Icons::uo] = { 3,0 };
+    }
 }
 
 void Textures::LoadTextures(fs::path directoryPath) {
@@ -38,13 +61,7 @@ void Textures::LoadTextures(fs::path directoryPath) {
         }
     }
 
-    if (map.count("icons") == 1) {
-        iconProperty[Icons::Back] = { 0,0 };
-        iconProperty[Icons::Next] = { 1,0 };
-        iconProperty[Icons::UO] = { 3,3 };
-        iconProperty[Icons::Clear] = { 0,1 };
-        iconProperty[Icons::uo] = { 3,0 };
-    }
+    
 
 }
 
@@ -178,24 +195,41 @@ void Textures::DrawRect(SDL_Color color, OBJRECT rect, bool relative) {
     }
 }
 
-void Textures::DrawTexts(std::string text, SDL_Color color, OBJRECT rect, bool relative, ROTATE rotate) {
+void Textures::DrawTexts(std::string text, SDL_Color col1, SDL_Color col2, OBJRECT rect, bool relative, ROTATE rotate) {
     CAMERA camera = cameraP->GetCam();
-    SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), color);
+    SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), col1);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(settings::renderer, surface);
-    SDL_Rect dst;
+    SDL_Surface* surfaceb = TTF_RenderText_Blended(fontb, text.c_str(), col2);
+    SDL_Texture* textureb = SDL_CreateTextureFromSurface(settings::renderer, surfaceb);
+    SDL_Rect dst1;
+    SDL_Rect dst2;
+
     if (relative) {
         double pivotX = settings::baseW / 2.0;
         double pivotY = settings::baseH / 2.0;
-        dst.x = (int)round((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-        dst.y = (int)round(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
-        dst.w = (int)round(surface->w * rect.w * camera.zoom);
-        dst.h = (int)round(surface->h * rect.h * camera.zoom);
+        dst1.x = (int)round((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+        dst1.y = (int)round(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
+        dst1.w = (int)round(surface->w * rect.w * camera.zoom);
+        dst1.h = (int)round(surface->h * rect.h * camera.zoom);
+
+        dst2 = dst1;
+        dst2.w = (int)round(surfaceb->w * rect.w * camera.zoom);
+        dst2.h = (int)round(surfaceb->h * rect.h * camera.zoom);
     }
     else {
-        dst.x = (int)round(rect.x);
-        dst.y = (int)round(rect.y);
-        dst.w = (int)round(surface->w * rect.w);
-        dst.h = (int)round(surface->h * rect.h);
+        dst1.x = (int)round(rect.x);
+        dst1.y = (int)round(rect.y);
+        dst1.w = (int)round(surface->w * rect.w);
+        dst1.h = (int)round(surface->h * rect.h);
+
+        dst2 = dst1;
+        dst2.x += (int)round((dst1.w - (surfaceb->w * rect.w)) / 2);
+        dst2.y += (int)round((dst1.h - (surfaceb->h * rect.h)) / 2);
+        dst2.w = (int)round(surfaceb->w * rect.w);
+        dst2.h = (int)round(surfaceb->h * rect.h);
+        //dst2.w = (int)round((dst1.w - (surfaceb->w * rect.w)) / 2.0 + (surfaceb->w * rect.w));
+        //dst2.h = (int)round((dst1.h - (surfaceb->h * rect.h)) / 2.0 + (surfaceb->h * rect.h));
+
     }
 
     
@@ -213,14 +247,18 @@ void Textures::DrawTexts(std::string text, SDL_Color color, OBJRECT rect, bool r
         else if (rotate.flipX) {
             flip = SDL_FLIP_HORIZONTAL;
         }
-        SDL_RenderCopyEx(settings::renderer, texture, NULL, &dst, rotate.angle, &point, flip);
+        SDL_RenderCopyEx(settings::renderer, textureb, NULL, &dst2, rotate.angle, &point, flip);
+        SDL_RenderCopyEx(settings::renderer, texture, NULL, &dst1, rotate.angle, &point, flip);
     }
     else {
-        SDL_RenderCopy(settings::renderer, texture, NULL, &dst);
+        SDL_RenderCopy(settings::renderer, textureb, NULL, &dst2);
+        SDL_RenderCopy(settings::renderer, texture, NULL, &dst1);
     }
 
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);
+    SDL_DestroyTexture(textureb);
+    SDL_FreeSurface(surfaceb);
 }
 
 void Textures::Update() {
