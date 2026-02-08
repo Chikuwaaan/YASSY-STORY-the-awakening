@@ -145,6 +145,7 @@
     <ClCompile Include="Lift.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="namespace.cpp" />
+    <ClCompile Include="Options.cpp" />
     <ClCompile Include="OverLay.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ScreenShot.cpp" />
@@ -164,9 +165,11 @@
     <ClInclude Include="FaceYassy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="iconProperty.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Lift.h" />
+    <ClInclude Include="Options.h" />
     <ClInclude Include="OverLay.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />

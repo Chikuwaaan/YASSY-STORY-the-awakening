@@ -5,6 +5,7 @@
 #include "OverLay.h"
 #include "Game.h"
 #include "Input.h"
+#include "Options.h"
 
 UIManager* Title::uiP = nullptr;
 Textures* Title::texturesP = nullptr;
@@ -17,11 +18,12 @@ enum class Phase {
     Logo1,
     Logo2,
     Logo3,
-    YassyStory
+    YassyStory,
+    Options
 };
 
 Title::Title() :
-    button1(64, 64, 128, 128)
+    back(64, 64, 128, 128)
 {
     last = 0;
     timer = 0.0;
@@ -29,16 +31,17 @@ Title::Title() :
 }
 
 void Title::Init() {
-    //RegisterButtons();
+    RegisterButtons();
+    options.RegisterButtons();
     last = SDL_GetTicks();
     timer = 0.0;
     SDL_SetRenderDrawColor(settings::renderer, 0, 0, 0, 255);
 }
 
 void Title::RegisterButtons() {
-    uiP->AddButton(&button1);
-    button1.action = []() {
-        std::cout << "‚Û‚¿";
+    uiP->AddButton(&back);
+    back.action = [this]() {
+        phase = Phase::YassyStory;
         };
 }
 
@@ -71,8 +74,8 @@ void Title::Update() {
     SDL_Color black = { 0,0,0,255 };
 
     if (phase == Phase::Logo1 || phase == Phase::Logo2) {
-        SDL_RenderFillRect(settings::renderer, &refresh);
         SDL_SetRenderDrawColor(settings::renderer, 0, 0, 0, 255);
+        SDL_RenderFillRect(settings::renderer, &refresh);
         SDL_Rect sy = texturesP->GetTexRect("studio_yassy");
         sy.x = settings::baseW / 2;
         sy.y = settings::baseH / 2;
@@ -81,21 +84,33 @@ void Title::Update() {
         texturesP->DrawImageS("studio_yassy", sy, 0, {});
     }
     if (phase == Phase::Logo3) {
+        SDL_SetRenderDrawColor(settings::renderer, 0,0,0, 255);
         SDL_RenderFillRect(settings::renderer, &refresh);
     }
-    if (phase == Phase::YassyStory) {
+    if (phase == Phase::YassyStory || phase == Phase::Options) {
         SDL_SetRenderDrawColor(settings::renderer, 255,255,255, 255);
         SDL_RenderFillRect(settings::renderer, &refresh);
         SDL_Rect fullScreen = { settings::baseW / 2, settings::baseH / 2, settings::baseW,settings::baseH };
         texturesP->DrawImageS("assy", fullScreen, 0, {});
         texturesP->DrawImageS("title", fullScreen, 0, {});
-        texturesP->DrawTexts("Press any Unco", white, black, { 750,900,1,1 }, 0, {});
+        if (phase == Phase::YassyStory) {
+            texturesP->DrawTexts("Press any Unco", white, black, { 750,900,1,1 }, 0, {});
+        }
 
         if (inputP->IsAnyKeyPressed()) {
-            Init();
-            phase = Phase::Loading;
+            phase = Phase::Options;
             
         }
+    }
+
+    if (phase == Phase::Options) {
+        options.Show();
+        options.Update();
+        back.state = State::Available;
+    }
+    else {
+        options.Hide();
+        back.state = State::Invisible;
     }
     
 

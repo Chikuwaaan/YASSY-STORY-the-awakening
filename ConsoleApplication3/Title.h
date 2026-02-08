@@ -1,5 +1,6 @@
 #pragma once
 #include "Button.h"
+#include "Options.h"
 
 class UIManager;
 class Textures;
@@ -12,12 +13,14 @@ enum class Phase;
 class Title
 {
 private:
-    Button button1;
+    Button back;
     Uint32 last;
     double timer;
     Phase phase;
     void RegisterButtons();
     void ChangePhase();
+
+    Options options;
 public:
     static UIManager* uiP;
     static Textures* texturesP;

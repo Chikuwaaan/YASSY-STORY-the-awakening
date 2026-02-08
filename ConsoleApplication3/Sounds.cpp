@@ -1,10 +1,21 @@
 #include "Sounds.h"
 #include <iostream>
+#include "namespace.h"
 
 namespace fs = std::filesystem;
 
 Sounds::Sounds() {
     LoadSounds("Assets/sounds");
+}
+
+void Sounds::SetSEVolume(int value) {
+    settings::SE = value;
+    Mix_MasterVolume(settings::SE);
+}
+
+void Sounds::SetBGMVolume(int value) {
+    settings::BGM = value;
+    Mix_VolumeMusic(settings::BGM);
 }
 
 void Sounds::LoadSounds(std::filesystem::path directoryPath) {

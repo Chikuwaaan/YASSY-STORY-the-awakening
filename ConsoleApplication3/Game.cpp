@@ -46,6 +46,7 @@ void Game::ChangeScene(Scene s) {
         ui = std::make_unique<UIManager>();
         Title::uiP = ui.get();
         Title::texturesP = textures.get();
+        Options::uiP = ui.get();
 
         title->Init();
     }
@@ -217,7 +218,7 @@ void Game::InitSystem() {
     TTF_Init();
     IMG_Init(IMG_INIT_PNG);
     
-    SDL_Surface* surface = IMG_Load("Assets/textures/assy.png");
+    SDL_Surface* surface = IMG_Load("Assets/textures/cursor.png");
     SDL_Cursor* cursor = SDL_CreateColorCursor(surface, 0, 0);
     SDL_SetCursor(cursor);
     SDL_FreeSurface(surface);
@@ -231,9 +232,9 @@ void Game::InitSystem() {
     float scaleX = (float)dm.w / settings::baseW;
     float scaleY = (float)dm.h / settings::baseH;
     float scale = (scaleX < scaleY) ? scaleX : scaleY;
-    int winW = (int)(settings::baseW * scale);
-    int winH = (int)(settings::baseH * scale);
-    settings::window = SDL_CreateWindow("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winW, winH, SDL_WINDOW_FULLSCREEN_DESKTOP);
+    settings::winW = (int)(settings::baseW * scale);
+    settings::winH = (int)(settings::baseH * scale);
+    settings::window = SDL_CreateWindow("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, settings::winW, settings::winH, SDL_WINDOW_FULLSCREEN_DESKTOP);
     //settings::window = SDL_CreateWindow("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1600, 900, 0);
     settings::renderer = SDL_CreateRenderer(settings::window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     //| SDL_RENDERER_PRESENTVSYNC
@@ -268,9 +269,12 @@ void Game::MakeInstance() {
     FaceYassy::gameP = this;
     Button::texturesP = textures.get();
     Button::inputP = input.get();
+    Button::soundsP = sounds.get();
     Title::overlayP = overlay.get();
     Title::gameP = this;
     Title::inputP = input.get();
+    Options::soundsP = sounds.get();
+    Options::texturesP = textures.get();
 }
 
 void Game::Quit() {

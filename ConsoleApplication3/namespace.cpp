@@ -8,8 +8,12 @@ namespace settings {
     double timeScale = dt * multiplier;
     int baseW = 1920;
     int baseH = 1080;
+    int winW = 0;
+    int winH = 0;
     SDL_Window* window;
     SDL_Renderer* renderer;
+    int BGM = 127;
+    int SE = 127;
 }
 
 namespace utilities {

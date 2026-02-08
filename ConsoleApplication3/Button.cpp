@@ -3,9 +3,11 @@
 #include "Input.h"
 #include "structs.h"
 #include "iconProperty.h"
+#include "Sounds.h"
 
 Textures* Button::texturesP = nullptr;
 Input* Button::inputP = nullptr;
+Sounds* Button::soundsP = nullptr;
 
 Button::Button(int X, int Y, int W, int H) {
     x = X;
@@ -13,13 +15,19 @@ Button::Button(int X, int Y, int W, int H) {
     w = W;
     h = H;
     color = { 0,0,0,255 };
+    state = State::Invisible;
+
+    icon = Icons::Null;
 }
 
 void Button::Draw() {
-    OBJRECT dst = { (double)x,(double)y,(double)w,(double)h,1 };
-    texturesP->DrawRect(color, dst, 0);
-    SDL_Rect dstS = { x,y,w,h };
-    texturesP->DrawIcon(Icons::uo, dstS);
+    if (state != State::Invisible) {
+        OBJRECT dst = { (double)x,(double)y,(double)w,(double)h,1 };
+        texturesP->DrawImage("button16", dst, 0, {});
+        //texturesP->DrawRect(color, dst, 0);
+        SDL_Rect dstS = { x,y,w,h };
+        texturesP->DrawIcon(icon, dstS);
+    }
 }
 
 bool Button::OnMouse() {
@@ -36,14 +44,15 @@ bool Button::OnMouse() {
 bool Button::CheckPressed() {
     bool on = OnMouse();
     if (on) {
-        color = { 150,150,150,255 };
+        color = { 0,255,0,255 };
     }
     else {
-        color = { 200,200,200,255 };
+        color = { 255,0,0,255 };
     }
 
-    if (on) {
+    if (on && state == State::Available) {
         if (inputP->event.MouseLeft) {
+            soundsP->PlaySE("pochi");
             if (action) {
                 action();
                 return 1;

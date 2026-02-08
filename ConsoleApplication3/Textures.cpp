@@ -29,11 +29,28 @@ Textures::Textures() {
     }
 
     if (map.count("icons") == 1) {
-        iconProperty[Icons::Back] = { 0,0 };
-        iconProperty[Icons::Next] = { 1,0 };
-        iconProperty[Icons::UO] = { 3,3 };
-        iconProperty[Icons::Clear] = { 0,1 };
-        iconProperty[Icons::uo] = { 3,0 };
+        iconProperty[Icons::Null] = { -1,0 };
+        iconProperty[Icons::Zero] = { 0,0 };
+        iconProperty[Icons::One] = { 1,0 };
+        iconProperty[Icons::Two] = { 2,0 };
+        iconProperty[Icons::Three] = { 3,0 };
+        iconProperty[Icons::Four] = { 4,0 };
+        iconProperty[Icons::Five] = { 5,0 };
+        iconProperty[Icons::Six] = { 6,0 };
+        iconProperty[Icons::Seven] = { 7,0 };
+        iconProperty[Icons::Eight] = { 8,0 };
+        iconProperty[Icons::Nine] = { 9,0 };
+
+        iconProperty[Icons::ZeroB] = { 0,1 };
+        iconProperty[Icons::OneB] = { 1,1 };
+        iconProperty[Icons::TwoB] = { 2,1 };
+        iconProperty[Icons::ThreeB] = { 3,1 };
+        iconProperty[Icons::FourB] = { 4,1 };
+        iconProperty[Icons::FiveB] = { 5,1 };
+        iconProperty[Icons::SixB] = { 6,1 };
+        iconProperty[Icons::SevenB] = { 7,1 };
+        iconProperty[Icons::EightB] = { 8,1 };
+        iconProperty[Icons::NineB] = { 9,1 };
     }
 }
 

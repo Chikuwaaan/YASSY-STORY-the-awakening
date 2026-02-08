@@ -10,8 +10,12 @@ namespace settings {
     extern double timeScale;
     extern int baseW;
     extern int baseH;
+    extern int winW;
+    extern int winH;
     extern SDL_Window* window;
     extern SDL_Renderer* renderer;
+    extern int BGM;
+    extern int SE;
 }
 
 namespace utilities {
