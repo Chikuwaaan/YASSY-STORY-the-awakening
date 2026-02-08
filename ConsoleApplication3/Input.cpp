@@ -34,17 +34,7 @@ void Input::GetKey() {
 
 void Input::GetEvent() {
     isAnyKeyPressed = 0;
-    event.ESCAPE = 0;
-    event.DEL = 0;
-    event.F12 = 0;
-    event.Q = 0;
-    event.E = 0;
-    event.MouseWheel = 0;
-    event.MouseLeft = 0;
-    event.MouseMiddle = 0;
-    event.MouseRight = 0;
-    event.MouseX1 = 0;
-    event.MouseX2 = 0;
+    event = {};
 
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
@@ -58,6 +48,12 @@ void Input::GetEvent() {
             }
             if (e.key.keysym.scancode == SDL_SCANCODE_F12) {
                 event.F12 = 1;
+            }
+            if (e.key.keysym.scancode == SDL_SCANCODE_RETURN) {
+                event.RETURN = 1;
+            }
+            if (e.key.keysym.scancode == SDL_SCANCODE_SPACE) {
+                event.SPACE = 1;
             }
             if (e.key.keysym.scancode == SDL_SCANCODE_Q) {
                 event.Q = 1;

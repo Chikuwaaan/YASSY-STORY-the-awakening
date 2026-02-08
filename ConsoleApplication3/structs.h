@@ -18,13 +18,6 @@ struct ROTATE {
     bool flipY;
 };
 
-struct MOUSE {
-    int x;
-    int y;
-    bool left;
-    bool middle;
-    bool right;
-};
 
 struct CAMERA {
 	double x;
@@ -89,18 +82,4 @@ enum class EntityType {
     Lift,
     Zako,
     CheckPoint
-};
-
-struct EVENT {
-    bool ESCAPE;
-    bool DEL;
-    bool F12;
-    bool Q;
-    bool E;
-    int MouseWheel;
-    bool MouseLeft;
-    bool MouseMiddle;
-    bool MouseRight;
-    bool MouseX1;
-    bool MouseX2;
 };

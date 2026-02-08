@@ -16,5 +16,4 @@ void CheckPoint::Touched() {
 }
 
 void CheckPoint::Update() {
-    texturesP->DrawTexts("checks point", { 255,255,255,255 }, {0,0,0,255}, { x, y + 160, 1, 1 }, 1, {});
 }

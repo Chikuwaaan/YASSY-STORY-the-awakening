@@ -94,10 +94,11 @@ void Title::Update() {
         texturesP->DrawImageS("assy", fullScreen, 0, {});
         texturesP->DrawImageS("title", fullScreen, 0, {});
         if (phase == Phase::YassyStory) {
-            texturesP->DrawTexts("Press any Unco", white, black, { 750,900,1,1 }, 0, {});
+            //texturesP->DrawTexts("Press any Unco", white, black, { 750,900,1,1 }, 0);
+            texturesP->DrawTexts("Press Space Key", white, black, { 960,120,1,1 }, 0, Anchor::Center);
         }
 
-        if (inputP->IsAnyKeyPressed()) {
+        if (inputP->event.SPACE) {
             phase = Phase::Options;
             
         }

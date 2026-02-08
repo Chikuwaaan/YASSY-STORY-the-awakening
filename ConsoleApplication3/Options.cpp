@@ -83,7 +83,11 @@ void Options::Update() {
     SDL_Color white = { 255,255,255,255 };
     SDL_Color black = { 0,0,0,255 };
     texturesP->DrawRect({ 117,226,255,255 }, rect, 0);
-    texturesP->DrawTexts("SE volume:", white, black, { 200, 0 , 1, 1 }, 0, {});
+
+    double SEy = settings::baseH / 2 + 200;
+    double BGMy = settings::baseH / 2 - 200;
+    texturesP->DrawTexts("SE volume:", white, black, { 300, SEy, 1, 1 }, 0, Anchor::Left);
+    texturesP->DrawTexts("BGM volume:", white, black, { 300, BGMy, 1, 1 }, 0, Anchor::Left);
 
     int i = 0;
     for (auto& p : SE) {

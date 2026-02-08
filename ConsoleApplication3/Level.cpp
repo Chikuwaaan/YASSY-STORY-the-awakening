@@ -134,12 +134,12 @@ void Level::Editor() {
     SDL_Color color1 = { 255,255,255,255 };
     SDL_Color color2 = { 0,0,0,255 };
     texturesP->DrawImage(blockProperty[editorPalette].tex[0], {1880, 40, 80, 80}, 0 ,{});
-    texturesP->DrawTexts(std::to_string(mouseX), color1, color2, { 1400, 0, 1, 1 }, 0, {});
-    texturesP->DrawTexts(std::to_string((int)(mouseX * blockSize)), color1, color2, { 1400, 50, 1, 1 }, 0, {});
-    texturesP->DrawTexts(std::to_string(mouseY), color1, color2, { 1600, 0, 1, 1 }, 0, {});
-    texturesP->DrawTexts(std::to_string((int)(mouseY * blockSize)), color1, color2, { 1600, 50, 1, 1 }, 0, {});
-    texturesP->DrawTexts(std::to_string((int)(mouseX * blockSize + blockSize / 2)), color1, color2, { 1400, 100, 1, 1 }, 0, {});
-    texturesP->DrawTexts(std::to_string((int)(mouseY * blockSize + blockSize / 2)), color1, color2, { 1600, 100, 1, 1 }, 0, {});
+    texturesP->DrawTexts(std::to_string(mouseX), color1, color2, { 1400, 0, 1, 1 }, 0, Anchor::Center);
+    texturesP->DrawTexts(std::to_string((int)(mouseX * blockSize)), color1, color2, { 1400, 50, 1, 1 }, 0, Anchor::Center);
+    texturesP->DrawTexts(std::to_string(mouseY), color1, color2, { 1600, 0, 1, 1 }, 0, Anchor::Center);
+    texturesP->DrawTexts(std::to_string((int)(mouseY * blockSize)), color1, color2, { 1600, 50, 1, 1 }, 0, Anchor::Center);
+    texturesP->DrawTexts(std::to_string((int)(mouseX * blockSize + blockSize / 2)), color1, color2, { 1400, 100, 1, 1 }, 0, Anchor::Center);
+    texturesP->DrawTexts(std::to_string((int)(mouseY * blockSize + blockSize / 2)), color1, color2, { 1600, 100, 1, 1 }, 0, Anchor::Center);
 
 }
 

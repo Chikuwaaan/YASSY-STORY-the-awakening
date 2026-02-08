@@ -103,10 +103,6 @@ void FaceYassy::Update() {
 
     int mouseX = (int)inputP->mouse.x;
     int mouseY = (int)inputP->mouse.y;
-    SDL_Color color1 = { 255,255,255,255 };
-    SDL_Color color2 = { 0,0,0,255 };
-    texturesP->DrawTexts(std::to_string(mouseX) + " " + std::to_string(mouseY), color1, color2, {0,0,1,1}, 0, {});
-    texturesP->DrawTexts("layer" + std::to_string(layer), color1, color2, { 1500,0,1,1 }, 0, {});
 
     //std::cout << trajectories.size();
 

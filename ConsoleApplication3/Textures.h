@@ -11,7 +11,10 @@
 class Camera;
 
 enum class Icons;
-enum class Anchor;
+enum class Anchor {
+    Center,
+    Left
+};
 
 class Textures {
 private:
@@ -26,13 +29,13 @@ public:
     void LoadTextures(std::filesystem::path directoryPath);
     SDL_Texture* GetTexture(std::string name);
     SDL_Rect GetTexRect(std::string name);
-    SDL_Rect GetDst(OBJRECT rect, bool relative);
+    SDL_Rect GetDst(OBJRECT rect, bool relative, Anchor anchor);
     void DrawImage(std::string texName, OBJRECT rect, bool relative, ROTATE rotate);
     void DrawImageS(std::string texName, SDL_Rect rect, bool relative, ROTATE rotate);
     void DrawSprite(std::string sheet, OBJRECT rect, SDL_Rect src);
     void DrawIcon(Icons icon, SDL_Rect rect);
     void DrawRect(SDL_Color color, OBJRECT rect, bool relative);
-    void DrawTexts(std::string text, SDL_Color col1, SDL_Color col2, OBJRECT rect, bool relative, ROTATE rotate);
+    void DrawTexts(std::string text, SDL_Color col1, SDL_Color col2, OBJRECT rect, bool relative, Anchor anchor);
     void Update();
     void ModTextures();
 };
