@@ -54,6 +54,7 @@ public:
     void Update();
     void InitSystem();
     void MakeInstance(); 
+    void ExitGame();
     void Quit();
 };
 

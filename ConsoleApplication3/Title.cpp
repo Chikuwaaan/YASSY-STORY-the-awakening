@@ -18,16 +18,20 @@ enum class Phase {
     Logo1,
     Logo2,
     Logo3,
-    YassyStory,
+    YassyStory1,
+    YassyStory2,
     Options
 };
 
 Title::Title() :
-    back(224, 204, 128, 128)
+    BTNback(224, 204, 128, 128),
+    BTNstart(960, 540, 512, 128),
+    BTNoptions(960, 340, 512, 128),
+    BTNexitgame(960, 140, 512, 128)
 {
     last = 0;
     timer = 0.0;
-    phase = Phase::YassyStory;
+    phase = Phase::YassyStory1;
 }
 
 void Title::Init() {
@@ -39,10 +43,28 @@ void Title::Init() {
 }
 
 void Title::RegisterButtons() {
-    uiP->AddButton(&back);
-    back.icon = Icons::Back;
-    back.action = [this]() {
-        phase = Phase::YassyStory;
+    uiP->AddButton(&BTNback);
+    BTNback.icon = Icons::Back;
+    BTNback.action = [this]() {
+        phase = Phase::YassyStory2;
+        };
+
+    uiP->AddButton(&BTNstart);
+    BTNstart.text = "START";
+    BTNstart.action = []() {
+        gameP->ChangeScene(Scene::Platformer);
+        };
+
+    uiP->AddButton(&BTNoptions);
+    BTNoptions.text = "OPTIONS";
+    BTNoptions.action = [this]() {
+        phase = Phase::Options;
+        };
+
+    uiP->AddButton(&BTNexitgame);
+    BTNexitgame.text = "EXIT";
+    BTNexitgame.action = []() {
+        gameP->ExitGame();
         };
 }
 
@@ -58,8 +80,10 @@ void Title::ChangePhase() {
         phase = Phase::Logo3;
     }
     else if (phase == Phase::Logo3 && timer > 5) {
-        phase = Phase::YassyStory;
+        phase = Phase::YassyStory1;
         overlayP->FadeIn(1, { 0,0,0,255 });
+        Mix_Music* music = Mix_LoadMUS("Assets/sounds/toilet3.wav");
+        Mix_PlayMusic(music, -1);
     }
 }
 
@@ -88,30 +112,52 @@ void Title::Update() {
         SDL_SetRenderDrawColor(settings::renderer, 0,0,0, 255);
         SDL_RenderFillRect(settings::renderer, &refresh);
     }
-    if (phase == Phase::YassyStory || phase == Phase::Options) {
+    if (phase == Phase::YassyStory1 || phase == Phase::YassyStory2 || phase == Phase::Options) {
         SDL_SetRenderDrawColor(settings::renderer, 255,255,255, 255);
         SDL_RenderFillRect(settings::renderer, &refresh);
         SDL_Rect fullScreen = { settings::baseW / 2, settings::baseH / 2, settings::baseW,settings::baseH };
-        texturesP->DrawImageS("assy", fullScreen, 0, {});
-        texturesP->DrawImageS("title", fullScreen, 0, {});
-        if (phase == Phase::YassyStory) {
-            //texturesP->DrawTexts("Press any Unco", white, black, { 750,900,1,1 }, 0);
+        
+        texturesP->DrawImageS("room", fullScreen, 0, {});
+        if (phase == Phase::YassyStory2 || phase == Phase::Options) {
+            texturesP->DrawImageS("title", { settings::baseW / 2,settings::baseH * 3 / 4 , settings::baseW/2, settings::baseH/2}, 0, {});
+        }
+        else {
+            texturesP->DrawImageS("title", fullScreen, 0, {});
+        }
+
+        if (phase == Phase::YassyStory1) {
             texturesP->DrawTexts("Press Space Key", white, black, { 960,120,1,1 }, 0, Anchor::Center);
         }
 
         if (inputP->event.SPACE) {
-            phase = Phase::Options;
+            phase = Phase::YassyStory2;
             options.Show();
         }
     }
 
+    if (phase == Phase::YassyStory2) {
+        BTNstart.visible = true;
+        BTNoptions.visible = true;
+        BTNexitgame.visible = true;
+
+        BTNstart.state = State::Idle;
+        BTNoptions.state = State::Idle;
+        BTNexitgame.state = State::Idle;
+    }
+    else {
+        BTNstart.visible = false;
+        BTNoptions.visible = false;
+        BTNexitgame.visible = false;
+    }
+
     if (phase == Phase::Options) {
-        back.visible = true;
-        back.state = State::Idle;
+        BTNback.visible = true;
+        BTNback.state = State::Idle;
+        options.Show();
         options.Update();
     }
     else {
-        back.visible = false;
+        BTNback.visible = false;
         options.Hide();
     }
     

@@ -26,6 +26,7 @@ public:
     State state;
     std::function<void()> action;
     Icons icon;
+    std::string text;
     bool visible;
 
     static Textures* texturesP;

@@ -13,7 +13,11 @@ enum class Phase;
 class Title
 {
 private:
-    Button back;
+    Button BTNback;
+    Button BTNstart;
+    Button BTNoptions;
+    Button BTNexitgame;
+
     Uint32 last;
     double timer;
     Phase phase;

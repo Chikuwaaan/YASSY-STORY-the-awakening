@@ -19,28 +19,79 @@ Button::Button(int X, int Y, int W, int H) {
 
     icon = Icons::Null;
     visible = 0;
+    text = "";
 }
 
 void Button::Draw() {
     if (visible) {
-        SDL_Rect dst = { x,y,w,h };
-        Icons button = Icons::Null;
+        bool wide = 0;
+        if (w / h != 1) {
+            wide = 1;
+        }
+        //texturesP->DrawImage("assy", { (double)x, (double)y, (double)w, (double)h }, 0, {});
+        if (wide) {
+            Icons buttonL = Icons::Null;
+            Icons buttonR = Icons::Null;
+            Icons buttonM = Icons::Null;
+            if (state == State::Idle) {
+                buttonL = Icons::ButtonLIdle;
+                buttonR = Icons::ButtonRIdle;
+                buttonM = Icons::ButtonMIdle;
+            }
+            else if (state == State::OnMouse) {
+                buttonL = Icons::ButtonLOnMouse;
+                buttonR = Icons::ButtonROnMouse;
+                buttonM = Icons::ButtonMOnMouse;
+            }
+            else if (state == State::Pressed) {
+                buttonL = Icons::ButtonLPressed;
+                buttonR = Icons::ButtonRPressed;
+                buttonM = Icons::ButtonMPressed;
+            }
+            else if (state == State::Unavailable) {
+                buttonL = Icons::ButtonLUnavailable;
+                buttonR = Icons::ButtonRUnavailable;
+                buttonM = Icons::ButtonMUnavailable;
+            }
 
-        if (state == State::Idle) {
-            button = Icons::ButtonIdle;
+            double a = ((w / h) - 1) / 2.0;
+            int xL = (int)(x - a * h);
+            int xR = (int)(x + a * h);
+            SDL_Rect dstL = { xL,y,h,h };
+            SDL_Rect dstR = { xR,y,h,h };
+            SDL_Rect dstM;
+            dstM.x = x;
+            dstM.y = y;
+            dstM.w = dstR.x - dstL.x;
+            dstM.h = h,
+            texturesP->DrawIcon(buttonL, dstL);
+            texturesP->DrawIcon(buttonR, dstR);
+            texturesP->DrawIcon(buttonM, dstM);
+            texturesP->DrawIcon(icon, {x,y,h,h});
+            if (text != "") {
+                SDL_Color white = { 100,200,255 };
+                SDL_Color black = { 0,73,220,255 };
+                OBJRECT dstT = { (double)x, (double)y, 1,1 };
+                texturesP->DrawTexts(text, white, black, dstT, 0, Anchor::Center);
+            }
         }
-        else if (state == State::OnMouse) {
-            button = Icons::ButtonOnMouse;
+        else {
+            Icons button = Icons::Null;
+            if (state == State::Idle) {
+                button = Icons::ButtonIdle;
+            }
+            else if (state == State::OnMouse) {
+                button = Icons::ButtonOnMouse;
+            }
+            else if (state == State::Pressed) {
+                button = Icons::ButtonPressed;
+            }
+            else if (state == State::Unavailable) {
+                button = Icons::ButtonUnavailable;
+            }
+            texturesP->DrawIcon(button, {x,y,w,h});
+            texturesP->DrawIcon(icon, { x,y,h,h });
         }
-        else if (state == State::Pressed) {
-            button = Icons::ButtonPressed;
-        }
-        else if (state == State::Unavailable) {
-            button = Icons::ButtonUnavailable;
-        }
-
-        texturesP->DrawIcon(button, dst);
-        texturesP->DrawIcon(icon, dst);
     }
 }
 

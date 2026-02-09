@@ -5,6 +5,7 @@ UIManager::UIManager() {
 }
 
 bool UIManager::Update() {
+    IsCursorOnUI();
     for (auto& p : buttons) {
         p->Draw();
     }

@@ -305,6 +305,10 @@ void Game::MakeInstance() {
     Options::texturesP = textures.get();
 }
 
+void Game::ExitGame() {
+    running = 0;
+}
+
 void Game::Quit() {
     SDL_DestroyWindow(settings::window);
     SDL_Quit();
