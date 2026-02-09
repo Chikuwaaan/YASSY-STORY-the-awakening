@@ -67,14 +67,34 @@ void Options::RegisterButtons() {
 }
 
 void Options::Show() {
+    int i = 0;
+    for (auto& p : SE) {
+        p->x = i * 96 + 800;
+        p->y = settings::baseH / 2 + 200;
+        p->w = 64;
+        p->h = 64;
+        p->icon = static_cast<Icons>(i + 11);
+        p->visible = true;
+        i++;
+    }
+    i = 0;
+    for (auto& p : BGM) {
+        p->x = i * 96 + 800;
+        p->y = settings::baseH / 2 - 200;
+        p->w = 64;
+        p->h = 64;
+        p->icon = static_cast<Icons>(i + 11);
+        p->visible = true;
+        i++;
+    }
 }
 
 void Options::Hide() {
     for (auto& p : SE) {
-        p->state = State::Invisible;
+        p->visible = false;
     }
     for (auto& p : BGM) {
-        p->state = State::Invisible;
+        p->visible = false;
     }
 }
 
@@ -91,21 +111,23 @@ void Options::Update() {
 
     int i = 0;
     for (auto& p : SE) {
-        p->x = i * 96 + 800;
-        p->y = settings::baseH / 2 + 200;
-        p->w = 64;
-        p->h = 64;
-        p->icon = static_cast<Icons>(i+11);
-        p->state = State::Available;
+        if (settings::SE / 16.0 == i) {
+            p->state = State::Unavailable;
+        }
+        else {
+            p->state = State::Idle;
+        }
         i++;
     }
     i = 0;
     for (auto& p : BGM) {
-        p->x = i * 96 + 800;
-        p->y = settings::baseH / 2 - 200;
-        p->w = 64;
-        p->h = 64;
-        p->state = State::Available;
+        if (settings::BGM / 16.0 == i) {
+            p->state = State::Unavailable;
+        }
+        else {
+            p->state = State::Idle;
+        }
         i++;
     }
+    uiP->IsCursorOnUI();
 }

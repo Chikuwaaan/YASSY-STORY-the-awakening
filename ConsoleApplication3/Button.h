@@ -10,10 +10,10 @@ class Input;
 class Sounds;
 
 enum class State {
-    Available,
-    Unavailable,
-    Invisible,
-    Pressed
+    Idle,
+    OnMouse,
+    Pressed,
+    Unavailable
 };
 
 class Button
@@ -26,6 +26,7 @@ public:
     State state;
     std::function<void()> action;
     Icons icon;
+    bool visible;
 
     static Textures* texturesP;
     static Input* inputP;
@@ -33,7 +34,7 @@ public:
 
     Button(int X, int Y, int W, int H);
     void Draw();
-    bool OnMouse();
+    bool CheckOnMouse();
     bool CheckPressed();
 };
 

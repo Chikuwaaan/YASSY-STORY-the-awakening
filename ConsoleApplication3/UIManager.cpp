@@ -22,7 +22,7 @@ void UIManager::AddButton(Button* ptr) {
 
 bool UIManager::IsCursorOnUI() {
     for (auto& p : buttons) {
-        if (p->OnMouse()) {
+        if (p->CheckOnMouse()) {
             return 1;
         }
     }

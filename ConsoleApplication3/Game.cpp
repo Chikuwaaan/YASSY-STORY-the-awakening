@@ -223,7 +223,7 @@ void Game::Update() {
         SDL_Color white = { 255,255,255,255 };
         SDL_Color black = { 0,0,0,255 };
         std::string text = std::to_string(x) + "," + std::to_string(y);
-        textures->DrawTexts(text, white, black, { 0,980,1,1 }, 0, Anchor::Left);
+        textures->DrawTexts(text, white, black, { 0,50,1,1 }, 0, Anchor::Left);
 
         if (input->event.RETURN) {
             std::cout << text << std::endl;

@@ -23,11 +23,11 @@ enum class Phase {
 };
 
 Title::Title() :
-    back(64, 64, 128, 128)
+    back(224, 204, 128, 128)
 {
     last = 0;
     timer = 0.0;
-    phase = Phase::Loading;
+    phase = Phase::YassyStory;
 }
 
 void Title::Init() {
@@ -40,6 +40,7 @@ void Title::Init() {
 
 void Title::RegisterButtons() {
     uiP->AddButton(&back);
+    back.icon = Icons::Back;
     back.action = [this]() {
         phase = Phase::YassyStory;
         };
@@ -100,18 +101,18 @@ void Title::Update() {
 
         if (inputP->event.SPACE) {
             phase = Phase::Options;
-            
+            options.Show();
         }
     }
 
     if (phase == Phase::Options) {
-        options.Show();
+        back.visible = true;
+        back.state = State::Idle;
         options.Update();
-        back.state = State::Available;
     }
     else {
+        back.visible = false;
         options.Hide();
-        back.state = State::Invisible;
     }
     
 

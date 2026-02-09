@@ -36,7 +36,6 @@ Textures::Textures() {
         iconProperty[Icons::Seven] = { 7,0 };
         iconProperty[Icons::Eight] = { 8,0 };
         iconProperty[Icons::Nine] = { 9,0 };
-
         iconProperty[Icons::ZeroB] = { 0,1 };
         iconProperty[Icons::OneB] = { 1,1 };
         iconProperty[Icons::TwoB] = { 2,1 };
@@ -47,6 +46,27 @@ Textures::Textures() {
         iconProperty[Icons::SevenB] = { 7,1 };
         iconProperty[Icons::EightB] = { 8,1 };
         iconProperty[Icons::NineB] = { 9,1 };
+
+        iconProperty[Icons::ButtonIdle] = { 14,0 };
+        iconProperty[Icons::ButtonOnMouse] = { 15,0 };
+        iconProperty[Icons::ButtonPressed] = { 14,1 };
+        iconProperty[Icons::ButtonUnavailable] = { 15,1 };
+        iconProperty[Icons::ButtonMIdle] = { 12,0 };
+        iconProperty[Icons::ButtonMOnMouse] = { 13,0 };
+        iconProperty[Icons::ButtonMPressed] = { 12,1 };
+        iconProperty[Icons::ButtonMUnavailable] = { 13,1 };
+        iconProperty[Icons::ButtonLIdle] = { 12,2 };
+        iconProperty[Icons::ButtonLOnMouse] = { 13,2 };
+        iconProperty[Icons::ButtonLPressed] = { 12,3 };
+        iconProperty[Icons::ButtonLUnavailable] = { 13,3 };
+        iconProperty[Icons::ButtonRIdle] = { 14,2 };
+        iconProperty[Icons::ButtonROnMouse] = { 15,2 };
+        iconProperty[Icons::ButtonRPressed] = { 14,3 };
+        iconProperty[Icons::ButtonRUnavailable] = { 15,3 };
+
+
+
+        iconProperty[Icons::Back] = { 0,2 };
     }
 }
 
@@ -232,10 +252,12 @@ void Textures::DrawTexts(std::string text, SDL_Color col1, SDL_Color col2, OBJRE
     SDL_Rect dst1 = GetDst(rect1, relative, anchor);
     OBJRECT rect2;
     rect2 = rect1;
+    if (anchor == Anchor::Left) {
+        rect2.x = rect1.x + (surface->w * rect.w / 2);
+    }
     rect2.w = surfaceb->w * rect.w;
     rect2.h = surfaceb->h * rect.h;
-    SDL_Rect dst2 = GetDst(rect2, relative, anchor);
-
+    SDL_Rect dst2 = GetDst(rect2, relative, Anchor::Center);
 
     SDL_RenderCopy(settings::renderer, textureb, NULL, &dst2);
     SDL_RenderCopy(settings::renderer, texture, NULL, &dst1);
