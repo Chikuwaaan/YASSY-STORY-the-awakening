@@ -55,22 +55,6 @@ struct BLOCKROOM {
 	std::vector<std::vector<uint8_t>> terrain;
 };
 
-struct CHECKFOR {
-    bool a;
-    bool b;
-    bool c;
-    bool d;
-    bool e;
-    bool f;
-    bool g;
-    bool h;
-};
-
-struct BLOCK {
-    CHECKFOR checkFor;
-    std::map<int, std::string> tex;
-};
-
 enum class Scene {
     Title,
     Platformer,

@@ -203,9 +203,9 @@ void Textures::DrawImageS(std::string texName, SDL_Rect Rect, bool relative, ROT
     }
 }
 
-void Textures::DrawSprite(std::string sheet, OBJRECT rect, SDL_Rect src) {
+void Textures::DrawSprite(std::string sheet, OBJRECT rect, SDL_Rect src, bool relative) {
     CAMERA camera = cameraP->GetCam();
-    SDL_Rect dst = GetDst(rect, 0, Anchor::Center);
+    SDL_Rect dst = GetDst(rect, relative, Anchor::Center);
     SDL_RenderCopy(settings::renderer, GetTexture(sheet), &src, &dst);
 }
 
@@ -224,7 +224,7 @@ void Textures::DrawIcon(Icons icon, SDL_Rect rect) {
     src.w = gridSize;
     src.h = gridSize;
 
-    DrawSprite("icons", dst, src);
+    DrawSprite("icons", dst, src, 0);
 }
 
 void Textures::DrawRect(SDL_Color color, OBJRECT rect, bool relative) {

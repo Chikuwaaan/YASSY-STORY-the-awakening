@@ -4,15 +4,22 @@
 #include "Camera.h"
 #include<string>
 #include <map>
+#include <SDL.h>
 
 class Textures;
 class Camera;
 class Game;
 
+enum class CHECKFOR {
+    TopRight,
+    TopLeft,
+    BottomLeft,
+    BottomRight
+};
+
 class Level
 {
 private:
-    std::vector<BLOCK> blockProperty;
     std::vector<BLOCKROOM> rooms;
     int levelW, levelH;
     uint8_t level[32][256];
@@ -31,11 +38,9 @@ public:
 
     void Editor();
     void DrawMap();
-    std::string GetTexName(int block, int mask);
     double GetBlockSize();
-    int CheckAroundTile(int y, int x, CHECKFOR checkFor, int type);
-    
-    bool CheckTile(int y, int x, int type);
+    SDL_Rect CheckAroundTile(int y, int x, CHECKFOR checkFor, int type);
+
     OBJRECT IsTouching2(OBJRECT obj1, bool direction);
     void FixBlockPos(int* x, int* y);
 };

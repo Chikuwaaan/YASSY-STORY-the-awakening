@@ -22,6 +22,7 @@ Level::Level() {
         {1,1,1,1,1,1,1,1,1,1}
 } });
 
+    /*
     blockProperty.push_back({});
     blockProperty.push_back({ {1,1,1,1,0,0,0,0},{
         {0b0000, "1-0000"},{0b0001, "1-0001"},{0b0010, "1-0010"},{0b0011, "1-0011"},
@@ -44,6 +45,7 @@ Level::Level() {
     blockProperty.push_back({ {0,0,0,0,0,0,0,0},{
         {0b0000, "5-0000"}
 } });
+*/
 }
 
 void Level::FileOutput(int n) {
@@ -124,7 +126,7 @@ void Level::Editor() {
         if (editorPalette > 0) editorPalette--;
     }
     if (event.MouseX2) {
-        if (editorPalette < blockProperty.size() - 1) editorPalette++;
+        //if (editorPalette < blockProperty.size() - 1) editorPalette++;
     }
 
     if (mouse.right) {
@@ -136,7 +138,7 @@ void Level::Editor() {
 
     SDL_Color color1 = { 255,255,255,255 };
     SDL_Color color2 = { 0,0,0,255 };
-    texturesP->DrawImage(blockProperty[editorPalette].tex[0], {1880, 40, 80, 80}, 0 ,{});
+    //texturesP->DrawImage(blockProperty[editorPalette].tex[0], {1880, 40, 80, 80}, 0 ,{});
     texturesP->DrawTexts(std::to_string(mouseX), color1, color2, { 1400, 0, 1, 1 }, 0, Anchor::Center);
     texturesP->DrawTexts(std::to_string((int)(mouseX * blockSize)), color1, color2, { 1400, 50, 1, 1 }, 0, Anchor::Center);
     texturesP->DrawTexts(std::to_string(mouseY), color1, color2, { 1600, 0, 1, 1 }, 0, Anchor::Center);
@@ -152,6 +154,15 @@ void Level::DrawMap() {
 
             int blockType = level[y][x];
             if (blockType != 0) {
+                OBJRECT rect1;
+                rect1.x = blockSize * x + blockSize / 2;
+                rect1.y = blockSize * y + blockSize / 2;
+                rect1.w = blockSize / 2;
+                rect1.h = blockSize / 2;
+                SDL_Rect src1 = CheckAroundTile(y, x, CHECKFOR::TopRight, blockType);
+                texturesP->DrawSprite("block", rect1, src1, 1);
+
+                /*
                 int mask = CheckAroundTile(y, x, blockProperty[blockType].checkFor, blockType);
                 std::string tex = GetTexName(blockType, mask);
                 OBJRECT rect;
@@ -170,81 +181,35 @@ void Level::DrawMap() {
                     }
                 }
                 texturesP->DrawImage(tex, rect, 1, {});
+                */
             }
         }
     }
 };
 
-std::string Level::GetTexName(int block, int mask) {
-    if (block >= blockProperty.size()) return "missing";
-
-    if (blockProperty[block].tex.count(mask) == 0) {
-        return "missing";
-    }
-    else {
-        return blockProperty[block].tex[mask];
-    }
-}
-
 double Level::GetBlockSize() {
     return blockSize;
 }
 
-int Level::CheckAroundTile(int y, int x, CHECKFOR checkFor, int type) {
-    int a = 0;
-    int X, Y;
-    
-    X = x + 1;
-    if (X < levelW && checkFor.a) {
-        a += CheckTile(y, X, type) * 1;
-    }
-    Y = y + 1;
-    if (Y < levelH && checkFor.b) {
-        a += CheckTile(Y, x, type) * 2;
-    }
-    X = x - 1;
-    if (X >= 0 && checkFor.c) {
-        a += CheckTile(y, X, type) * 4;
-    }
-    Y = y - 1;
-    if (Y >= 0 && checkFor.d) {
-        a += CheckTile(Y, x, type) * 8;
+SDL_Rect Level::CheckAroundTile(int y, int x, CHECKFOR checkFor, int type) {
+    int size = blockSize / 2;
+    SDL_Rect src = { 0,0,size,size };
+    return src;
+    if (checkFor == CHECKFOR::TopRight) {
+        src.x = 0;
+        src.y = size;
+        //x 10 30 50 70 90
+        if (level[y][x + 1] != type && level[y + 1][x] != type) {
+        }
+        if (level[y][x + 1] == type && level[y + 1][x] != type) {
+            src.x += size;
+        }
     }
 
-    
-    X = x + 1;
-    Y = y + 1;
-    if (X < levelW && Y < levelH && checkFor.e) {
-        a += CheckTile(Y, X, type) * 16;
-    }
-    X = x - 1;
-    Y = y + 1;
-    if (X >= 0 && Y < levelH && checkFor.f) {
-        a += CheckTile(Y, X, type) * 32;
-    }
-    X = x - 1;
-    Y = y - 1;
-    if (X >= 0 && Y >= 0 && checkFor.g) {
-        a += CheckTile(Y, X, type) * 64;
-    }
-    X = x + 1;
-    Y = y - 1;
-    if (X < levelW && Y >= 0 && checkFor.h) {
-        a += CheckTile(Y, X, type) * 128;
-    }
-    
-
-    return a;
+    return src;
 }
 
-bool Level::CheckTile(int y, int x, int type) {
-    if (level[y][x] == type) {
-        return 1;
-    }
-    else {
-        return 0;
-    }
-}
+
 
 OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
     SDL_Color color = { 255,255,255,255 };
