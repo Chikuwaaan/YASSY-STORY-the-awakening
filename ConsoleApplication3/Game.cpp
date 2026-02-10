@@ -109,8 +109,8 @@ void Game::SetupEntities() {
 }
 
 void Game::Run() {
-    ChangeScene(Scene::Title);
-    //ChangeScene(Scene::Platformer);
+    //ChangeScene(Scene::Title);
+    ChangeScene(Scene::Platformer);
     //ChangeScene(Scene::FaceYassy);
     
 
@@ -181,12 +181,18 @@ void Game::Update() {
         }
         pendingObjects.clear();
 
+
         textures->Update();
+        level->DrawMap();
+        std::cout << (int)SDL_GetTicks() << ",";
         camera->Update();
+        std::cout << (int)SDL_GetTicks() << std::endl;
+        
         for (auto& obj : objects) {
             obj->Draw();
         }
-        level->DrawMap();
+        
+        
         assy->DrawPlayer();
 
         objects.erase(

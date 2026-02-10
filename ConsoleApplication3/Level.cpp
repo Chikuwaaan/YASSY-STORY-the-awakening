@@ -154,13 +154,44 @@ void Level::DrawMap() {
 
             int blockType = level[y][x];
             if (blockType != 0) {
+                OBJRECT rect;
+                rect.x = blockSize * x + blockSize / 2;
+                rect.y = blockSize * y + blockSize / 2;
+                rect.w = blockSize;
+                rect.h = blockSize;
+                texturesP->DrawRect({ 0,0,255,255 }, rect, 1);
+
                 OBJRECT rect1;
-                rect1.x = blockSize * x + blockSize / 2;
-                rect1.y = blockSize * y + blockSize / 2;
+                rect1.x = blockSize * x + blockSize * 0.75;
+                rect1.y = blockSize * y + blockSize * 0.75;
                 rect1.w = blockSize / 2;
                 rect1.h = blockSize / 2;
                 SDL_Rect src1 = CheckAroundTile(y, x, CHECKFOR::TopRight, blockType);
                 texturesP->DrawSprite("block", rect1, src1, 1);
+
+                OBJRECT rect2;
+                rect2.x = blockSize * x + blockSize * 0.25;
+                rect2.y = blockSize * y + blockSize * 0.75;
+                rect2.w = blockSize / 2;
+                rect2.h = blockSize / 2;
+                SDL_Rect src2 = CheckAroundTile(y, x, CHECKFOR::TopRight, blockType);
+                texturesP->DrawSprite("block", rect2, src2, 1);
+
+                OBJRECT rect3;
+                rect3.x = blockSize * x + blockSize * 0.25;
+                rect3.y = blockSize * y + blockSize * 0.25;
+                rect3.w = blockSize / 2;
+                rect3.h = blockSize / 2;
+                SDL_Rect src3 = CheckAroundTile(y, x, CHECKFOR::TopRight, blockType);
+                texturesP->DrawSprite("block", rect3, src3, 1);
+
+                OBJRECT rect4;
+                rect4.x = blockSize * x + blockSize * 0.75;
+                rect4.y = blockSize * y + blockSize * 0.25;
+                rect4.w = blockSize / 2;
+                rect4.h = blockSize / 2;
+                SDL_Rect src4 = CheckAroundTile(y, x, CHECKFOR::TopRight, blockType);
+                texturesP->DrawSprite("block", rect4, src4, 1);
 
                 /*
                 int mask = CheckAroundTile(y, x, blockProperty[blockType].checkFor, blockType);
@@ -192,12 +223,11 @@ double Level::GetBlockSize() {
 }
 
 SDL_Rect Level::CheckAroundTile(int y, int x, CHECKFOR checkFor, int type) {
-    int size = blockSize / 2;
+    int size = 10;
     SDL_Rect src = { 0,0,size,size };
-    return src;
     if (checkFor == CHECKFOR::TopRight) {
-        src.x = 0;
-        src.y = size;
+        src.x = size;
+        src.y = 0;
         //x 10 30 50 70 90
         if (level[y][x + 1] != type && level[y + 1][x] != type) {
         }

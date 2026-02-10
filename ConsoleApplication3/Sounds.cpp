@@ -6,6 +6,8 @@ namespace fs = std::filesystem;
 
 Sounds::Sounds() {
     LoadSounds("Assets/sounds");
+    SetSEVolume(settings::SE);
+    SetBGMVolume(settings::BGM);
 }
 
 void Sounds::SetSEVolume(int value) {
