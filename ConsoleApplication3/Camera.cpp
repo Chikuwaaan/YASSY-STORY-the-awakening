@@ -91,6 +91,11 @@ void Camera::Update() {
         camera.zoom += inputP->event.MouseWheel * 0.1;
     }
 
+    camera.x = camera.x + (camera.targetX - camera.x) * settings::timeScale * 8;
+    camera.y = camera.y + (camera.targetY - camera.y) * settings::timeScale * 8;
+    //camera.x = camera.targetX;
+    //camera.y = camera.targetY;
+
     texturesP->DrawRect({ 0,0,255,255 }, { camera.x, camera.y, (double)settings::baseW, (double)settings::baseH }, 1);
     if (drawCameraRoom) {
         for (int i = 0; i < room.size(); i++) {
@@ -108,12 +113,12 @@ void Camera::Update() {
             texturesP->DrawRect({ 0,127,0,255 }, rect, 1);
         }
     }
+
+    OBJRECT rect = { 500,500, 100, 100 };
+    texturesP->DrawRect({ 0,0,0,255 }, rect, 1);
     
 
-    camera.x = camera.x + (camera.targetX - camera.x) * settings::timeScale * 8;
-    camera.y = camera.y + (camera.targetY - camera.y) * settings::timeScale * 8;
-    //camera.x = camera.targetX;
-    //camera.y = camera.targetY;
+    
 
 
 }

@@ -183,17 +183,15 @@ void Game::Update() {
 
 
         textures->Update();
-        level->DrawMap();
-        std::cout << (int)SDL_GetTicks() << ",";
         camera->Update();
-        std::cout << (int)SDL_GetTicks() << std::endl;
+        level->DrawMap();
+        assy->DrawPlayer();
         
         for (auto& obj : objects) {
             obj->Draw();
         }
         
         
-        assy->DrawPlayer();
 
         objects.erase(
             std::remove_if(objects.begin(), objects.end(),

@@ -149,6 +149,7 @@ void Level::Editor() {
 }
 
 void Level::DrawMap() {
+    std::cout << (int)SDL_GetTicks() << ",";
     for (int y = 0; y < levelH; y++) {
         for (int x = 0; x < levelW; x++) {
 
@@ -161,6 +162,7 @@ void Level::DrawMap() {
                 rect.h = blockSize;
                 texturesP->DrawRect({ 0,0,255,255 }, rect, 1);
 
+                
                 OBJRECT rect1;
                 rect1.x = blockSize * x + blockSize * 0.75;
                 rect1.y = blockSize * y + blockSize * 0.75;
@@ -192,30 +194,11 @@ void Level::DrawMap() {
                 rect4.h = blockSize / 2;
                 SDL_Rect src4 = CheckAroundTile(y, x, CHECKFOR::TopRight, blockType);
                 texturesP->DrawSprite("block", rect4, src4, 1);
-
-                /*
-                int mask = CheckAroundTile(y, x, blockProperty[blockType].checkFor, blockType);
-                std::string tex = GetTexName(blockType, mask);
-                OBJRECT rect;
-                rect.x = blockSize * x + blockSize / 2;
-                rect.y = blockSize * y + blockSize / 2;
-                rect.w = blockSize;
-                rect.h = blockSize;
-
-                if (blockType == 4) {
-                    double second = Mix_GetMusicPosition(NULL);
-                    if ((int)floor(second * 140 / 60) % 2) {
-                        tex = tex + 'a';
-                    }
-                    else {
-                        tex = tex + 'b';
-                    }
-                }
-                texturesP->DrawImage(tex, rect, 1, {});
-                */
+                
             }
         }
     }
+    std::cout << (int)SDL_GetTicks() << std::endl;
 };
 
 double Level::GetBlockSize() {
@@ -225,17 +208,44 @@ double Level::GetBlockSize() {
 SDL_Rect Level::CheckAroundTile(int y, int x, CHECKFOR checkFor, int type) {
     int size = 10;
     SDL_Rect src = { 0,0,size,size };
+    bool yoko=0, tate=0, naname=0;
+
     if (checkFor == CHECKFOR::TopRight) {
-        src.x = size;
-        src.y = 0;
-        //x 10 30 50 70 90
-        if (level[y][x + 1] != type && level[y + 1][x] != type) {
+        src = { size,0,size,size };
+        if (x < levelW - 1) {
+            if (level[y][x + 1] == type) {
+                yoko = 1;
+            }
         }
-        if (level[y][x + 1] == type && level[y + 1][x] != type) {
-            src.x += size;
+        if (y < levelH - 1) {
+            if (level[y + 1][x] == type) {
+                tate = 1;
+            }
+        }
+        if (x < levelW - 1 && y < levelH - 1) {
+            if (level[y + 1][x + 1] == type) {
+                naname = 1;
+            }
         }
     }
 
+
+    if (yoko && tate && naname) {
+        src.x += size * 8;
+        return src;
+    }
+    if (yoko && !tate) {
+        src.x += size * 2;
+        return src;
+    }
+    if (!yoko && tate) {
+        src.x += size * 4;
+        return src;
+    }
+    if (yoko && tate) {
+        src.x += size * 6;
+        return src;
+    }
     return src;
 }
 
