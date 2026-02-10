@@ -17,6 +17,13 @@ enum class CHECKFOR {
     BottomRight
 };
 
+struct BLOCK {
+    std::string tex;
+    bool invisible;
+    OBJRECT hitBox;
+    int damage;
+};
+
 class Level
 {
 private:
@@ -30,6 +37,9 @@ public:
     static Input* inputP;
     static Camera* cameraP;
     static Game* gameP;
+
+    std::vector<BLOCK> blockProperty;
+
     Level();
     void FileOutput(int n);
 

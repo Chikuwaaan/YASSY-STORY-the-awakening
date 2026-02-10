@@ -22,6 +22,27 @@ Level::Level() {
         {1,1,1,1,1,1,1,1,1,1}
 } });
 
+    blockProperty.push_back({
+        "null",
+        1,
+        {0,0,blockSize,blockSize},
+        0,
+        });
+    blockProperty.push_back({
+        "block1",
+        0,
+        {0,0,blockSize,blockSize},
+        0
+        });
+    blockProperty.push_back({
+        "block2",
+        0,
+        {0,0,blockSize,blockSize},
+        0
+        });
+    blockProperty.push_back({});
+    blockProperty.push_back({});
+    blockProperty.push_back({});
     /*
     blockProperty.push_back({});
     blockProperty.push_back({ {1,1,1,1,0,0,0,0},{
@@ -155,21 +176,15 @@ void Level::DrawMap() {
 
             int blockType = level[y][x];
             if (blockType != 0) {
-                OBJRECT rect;
-                rect.x = blockSize * x + blockSize / 2;
-                rect.y = blockSize * y + blockSize / 2;
-                rect.w = blockSize;
-                rect.h = blockSize;
-                texturesP->DrawRect({ 0,0,255,255 }, rect, 1);
+                std::string tex = blockProperty[blockType].tex;
 
-                
                 OBJRECT rect1;
                 rect1.x = blockSize * x + blockSize * 0.75;
                 rect1.y = blockSize * y + blockSize * 0.75;
                 rect1.w = blockSize / 2;
                 rect1.h = blockSize / 2;
                 SDL_Rect src1 = CheckAroundTile(y, x, CHECKFOR::TopRight, blockType);
-                texturesP->DrawSprite("block1", rect1, src1, 1);
+                texturesP->DrawSprite(tex, rect1, src1, 1);
 
                 OBJRECT rect2;
                 rect2.x = blockSize * x + blockSize * 0.25;
@@ -177,7 +192,7 @@ void Level::DrawMap() {
                 rect2.w = blockSize / 2;
                 rect2.h = blockSize / 2;
                 SDL_Rect src2 = CheckAroundTile(y, x, CHECKFOR::TopLeft, blockType);
-                texturesP->DrawSprite("block1", rect2, src2, 1);
+                texturesP->DrawSprite(tex, rect2, src2, 1);
 
                 OBJRECT rect3;
                 rect3.x = blockSize * x + blockSize * 0.25;
@@ -185,7 +200,7 @@ void Level::DrawMap() {
                 rect3.w = blockSize / 2;
                 rect3.h = blockSize / 2;
                 SDL_Rect src3 = CheckAroundTile(y, x, CHECKFOR::BottomLeft, blockType);
-                texturesP->DrawSprite("block1", rect3, src3, 1);
+                texturesP->DrawSprite(tex, rect3, src3, 1);
 
                 OBJRECT rect4;
                 rect4.x = blockSize * x + blockSize * 0.75;
@@ -193,8 +208,14 @@ void Level::DrawMap() {
                 rect4.w = blockSize / 2;
                 rect4.h = blockSize / 2;
                 SDL_Rect src4 = CheckAroundTile(y, x, CHECKFOR::BottomRight, blockType);
-                texturesP->DrawSprite("block1", rect4, src4, 1);
+                texturesP->DrawSprite(tex, rect4, src4, 1);
                 
+                OBJRECT rect;
+                rect.x = blockSize * x + blockSize / 2 + blockProperty[blockType].hitBox.x;
+                rect.y = blockSize * y + blockSize / 2 + blockProperty[blockType].hitBox.y;
+                rect.w = blockProperty[blockType].hitBox.w;
+                rect.h = blockProperty[blockType].hitBox.h;
+                texturesP->DrawRect({ 0,0,255,255 }, rect, 1);
             }
         }
     }
@@ -365,10 +386,10 @@ OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
 
             if (blockType) {
                 OBJRECT obj2;
-                obj2.x = (blockX + 0.5) * blockSize;
-                obj2.y = (blockY + 0.5) * blockSize;
-                obj2.w = blockSize;
-                obj2.h = blockSize;
+                obj2.x = (blockX + 0.5) * blockSize + blockProperty[blockType].hitBox.x;
+                obj2.y = (blockY + 0.5) * blockSize + blockProperty[blockType].hitBox.y;
+                obj2.w = blockProperty[blockType].hitBox.w;
+                obj2.h = blockProperty[blockType].hitBox.h;
                 obj2.block = blockType;
                 if (utilities::HitDetection(obj1, obj2)) {
                     return obj2;
