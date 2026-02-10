@@ -77,6 +77,6 @@ namespace utilities {
 namespace platformer {
     double gravity = -2150.0;
     int flames = 0;
-    int level = 3;
+    int level = 1;
 }
 

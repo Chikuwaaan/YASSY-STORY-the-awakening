@@ -169,31 +169,31 @@ void Level::DrawMap() {
                 rect1.w = blockSize / 2;
                 rect1.h = blockSize / 2;
                 SDL_Rect src1 = CheckAroundTile(y, x, CHECKFOR::TopRight, blockType);
-                texturesP->DrawSprite("block", rect1, src1, 1);
+                texturesP->DrawSprite("block1", rect1, src1, 1);
 
                 OBJRECT rect2;
                 rect2.x = blockSize * x + blockSize * 0.25;
                 rect2.y = blockSize * y + blockSize * 0.75;
                 rect2.w = blockSize / 2;
                 rect2.h = blockSize / 2;
-                SDL_Rect src2 = CheckAroundTile(y, x, CHECKFOR::TopRight, blockType);
-                texturesP->DrawSprite("block", rect2, src2, 1);
+                SDL_Rect src2 = CheckAroundTile(y, x, CHECKFOR::TopLeft, blockType);
+                texturesP->DrawSprite("block1", rect2, src2, 1);
 
                 OBJRECT rect3;
                 rect3.x = blockSize * x + blockSize * 0.25;
                 rect3.y = blockSize * y + blockSize * 0.25;
                 rect3.w = blockSize / 2;
                 rect3.h = blockSize / 2;
-                SDL_Rect src3 = CheckAroundTile(y, x, CHECKFOR::TopRight, blockType);
-                texturesP->DrawSprite("block", rect3, src3, 1);
+                SDL_Rect src3 = CheckAroundTile(y, x, CHECKFOR::BottomLeft, blockType);
+                texturesP->DrawSprite("block1", rect3, src3, 1);
 
                 OBJRECT rect4;
                 rect4.x = blockSize * x + blockSize * 0.75;
                 rect4.y = blockSize * y + blockSize * 0.25;
                 rect4.w = blockSize / 2;
                 rect4.h = blockSize / 2;
-                SDL_Rect src4 = CheckAroundTile(y, x, CHECKFOR::TopRight, blockType);
-                texturesP->DrawSprite("block", rect4, src4, 1);
+                SDL_Rect src4 = CheckAroundTile(y, x, CHECKFOR::BottomRight, blockType);
+                texturesP->DrawSprite("block1", rect4, src4, 1);
                 
             }
         }
@@ -228,6 +228,61 @@ SDL_Rect Level::CheckAroundTile(int y, int x, CHECKFOR checkFor, int type) {
             }
         }
     }
+    if (checkFor == CHECKFOR::TopLeft) {
+        src = { 0,0,size,size };
+        if (x > 0) {
+            if (level[y][x - 1] == type) {
+                yoko = 1;
+            }
+        }
+        if (y < levelH - 1) {
+            if (level[y + 1][x] == type) {
+                tate = 1;
+            }
+        }
+        if (x > 0 && y < levelH - 1) {
+            if (level[y + 1][x - 1] == type) {
+                naname = 1;
+            }
+        }
+    }
+    if (checkFor == CHECKFOR::BottomLeft) {
+        src = { 0,size,size,size };
+        if (x > 0) {
+            if (level[y][x - 1] == type) {
+                yoko = 1;
+            }
+        }
+        if (y > 0) {
+            if (level[y - 1][x] == type) {
+                tate = 1;
+            }
+        }
+        if (x > 0 && y > 0) {
+            if (level[y - 1][x - 1] == type) {
+                naname = 1;
+            }
+        }
+    }
+    if (checkFor == CHECKFOR::BottomRight) {
+        src = { size,size,size,size };
+        if (x < levelW - 1) {
+            if (level[y][x + 1] == type) {
+                yoko = 1;
+            }
+        }
+        if (y > 0) {
+            if (level[y - 1][x] == type) {
+                tate = 1;
+            }
+        }
+        if (x < levelW - 1 && y > 0) {
+            if (level[y - 1][x + 1] == type) {
+                naname = 1;
+            }
+        }
+    }
+
 
 
     if (yoko && tate && naname) {
