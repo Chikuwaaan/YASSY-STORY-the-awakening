@@ -32,6 +32,7 @@ private:
     uint8_t level[32][256];
     double blockSize;
     int editorPalette;
+    bool dev;
 public:
     static Textures* texturesP;
     static Input* inputP;

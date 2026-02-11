@@ -113,14 +113,6 @@ void Camera::Update() {
             texturesP->DrawRect({ 0,127,0,255 }, rect, 1);
         }
     }
-
-    OBJRECT rect = { 500,500, 100, 100 };
-    texturesP->DrawRect({ 0,0,0,255 }, rect, 1);
-    
-
-    
-
-
 }
 
 std::vector<CAMERAROOM>* Camera::GetRoom() {

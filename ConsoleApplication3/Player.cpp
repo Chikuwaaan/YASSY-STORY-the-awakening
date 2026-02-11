@@ -175,18 +175,7 @@ void Player::Update() {
     aX = 0.0;
 
     //ƒMƒ~ƒbƒN
-    if (groundBlock == 3) {
-        Die();
-    }
-    else if (headBlock == 3) {
-        Die();
-    }
-    if (rightBlock == 3) {
-        Die();
-    }
-    else if (leftBlock == 3) {
-        Die();
-    }    
+    
 
     if (touchingEntity != nullptr) {
         EntityType type = touchingEntity->GetType();
@@ -290,18 +279,25 @@ void Player::CollideY() {
     groundBlock = 0;
 
     OBJRECT bRect = levelP->IsTouching2(pRect, 0);
-    if (bRect.block && vY < 0.0) {
-        onGround = true;
-        vY = 0.0;
-        y = bRect.y + bRect.h / 2 + h / 2;
-        groundBlock = bRect.block;
+    if (bRect.block) {
+        if (bRect.block && vY < 0.0) {
+            onGround = true;
+            vY = 0.0;
+            y = bRect.y + bRect.h / 2 + h / 2;
+            groundBlock = bRect.block;
+        }
+        if (bRect.block && vY > 0.0) {
+            vY = 0.0;
+            isJumping = 0;
+            y = bRect.y - bRect.h / 2 - h / 2;
+            headBlock = bRect.block;
+        }
+
+        if (levelP->blockProperty[bRect.block].damage) {
+            Die();
+        }
     }
-    if (bRect.block && vY > 0.0) {
-        vY = 0.0;
-        isJumping = 0;
-        y = bRect.y - bRect.h / 2 - h / 2;
-        headBlock = bRect.block;
-    }
+
 
     //entity
     for (auto& p : gameP->objects) {
@@ -371,7 +367,6 @@ void Player::CollideX() {
     OBJRECT bRect = levelP->IsTouching2(pRect, 1);
 
     if (bRect.block) {
-        bRect = levelP->IsTouching2(pRect, 1);
         if (vX > 0.0) {
             if (!liftVX) {
                 walkVX = 0.0;
@@ -387,6 +382,10 @@ void Player::CollideX() {
             vX = 0.0;
             x = bRect.x + 0.5 * w + bRect.w * 0.5;
             leftBlock = bRect.block;
+        }
+
+        if (levelP->blockProperty[bRect.block].damage) {
+            Die();
         }
     }
 

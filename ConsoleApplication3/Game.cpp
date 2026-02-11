@@ -173,7 +173,7 @@ void Game::Update() {
         for (auto& obj : objects) {
             obj->Update();
         }
-        assy->Update();
+        
         textures->Update();
 
         for (auto& p : pendingObjects) {
@@ -185,6 +185,8 @@ void Game::Update() {
         textures->Update();
         camera->Update();
         level->DrawMap();
+        assy->Update();
+        assy->Draw();
         assy->DrawPlayer();
         
         for (auto& obj : objects) {

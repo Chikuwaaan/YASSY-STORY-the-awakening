@@ -14,6 +14,7 @@ Game* Level::gameP = nullptr;
 
 
 Level::Level() {
+    dev = 1;
     editorPalette = 1;
     levelW = 256;
     levelH = 32;
@@ -37,12 +38,27 @@ Level::Level() {
     blockProperty.push_back({
         "block2",
         0,
-        {0,0,blockSize,blockSize},
-        0
+        {0,-30,48,20},
+        1
         });
-    blockProperty.push_back({});
-    blockProperty.push_back({});
-    blockProperty.push_back({});
+    blockProperty.push_back({
+        "block3",
+        0,
+        {30,0,20,48},
+        1
+        });
+    blockProperty.push_back({
+        "block4",
+        0,
+        {0,30,48,20},
+        1
+        });
+    blockProperty.push_back({
+        "block5",
+        0,
+        {-30,0,20,48},
+        1
+        });
     /*
     blockProperty.push_back({});
     blockProperty.push_back({ {1,1,1,1,0,0,0,0},{
@@ -147,7 +163,7 @@ void Level::Editor() {
         if (editorPalette > 0) editorPalette--;
     }
     if (event.MouseX2) {
-        //if (editorPalette < blockProperty.size() - 1) editorPalette++;
+        if (editorPalette < blockProperty.size() - 1) editorPalette++;
     }
 
     if (mouse.right) {
@@ -159,7 +175,7 @@ void Level::Editor() {
 
     SDL_Color color1 = { 255,255,255,255 };
     SDL_Color color2 = { 0,0,0,255 };
-    //texturesP->DrawImage(blockProperty[editorPalette].tex[0], {1880, 40, 80, 80}, 0 ,{});
+    texturesP->DrawSprite(blockProperty[editorPalette].tex, {1880, 40, 80, 80}, {0,0,20,20}, 0);
     texturesP->DrawTexts(std::to_string(mouseX), color1, color2, { 1400, 0, 1, 1 }, 0, Anchor::Center);
     texturesP->DrawTexts(std::to_string((int)(mouseX * blockSize)), color1, color2, { 1400, 50, 1, 1 }, 0, Anchor::Center);
     texturesP->DrawTexts(std::to_string(mouseY), color1, color2, { 1600, 0, 1, 1 }, 0, Anchor::Center);
@@ -170,7 +186,6 @@ void Level::Editor() {
 }
 
 void Level::DrawMap() {
-    std::cout << (int)SDL_GetTicks() << ",";
     for (int y = 0; y < levelH; y++) {
         for (int x = 0; x < levelW; x++) {
 
@@ -210,16 +225,18 @@ void Level::DrawMap() {
                 SDL_Rect src4 = CheckAroundTile(y, x, CHECKFOR::BottomRight, blockType);
                 texturesP->DrawSprite(tex, rect4, src4, 1);
                 
-                OBJRECT rect;
-                rect.x = blockSize * x + blockSize / 2 + blockProperty[blockType].hitBox.x;
-                rect.y = blockSize * y + blockSize / 2 + blockProperty[blockType].hitBox.y;
-                rect.w = blockProperty[blockType].hitBox.w;
-                rect.h = blockProperty[blockType].hitBox.h;
-                texturesP->DrawRect({ 0,0,255,255 }, rect, 1);
+                if (dev) {
+                    OBJRECT rect;
+                    rect.x = blockSize * x + blockSize / 2 + blockProperty[blockType].hitBox.x;
+                    rect.y = blockSize * y + blockSize / 2 + blockProperty[blockType].hitBox.y;
+                    rect.w = blockProperty[blockType].hitBox.w;
+                    rect.h = blockProperty[blockType].hitBox.h;
+                    texturesP->DrawRect({ 0,0,255,255 }, rect, 1);
+                }
+                
             }
         }
     }
-    std::cout << (int)SDL_GetTicks() << std::endl;
 };
 
 double Level::GetBlockSize() {
@@ -331,59 +348,32 @@ OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
     SDL_Color color = { 255,255,255,255 };
 
     int levelX = (int)round((obj1.x - blockSize / 2) / blockSize);
-    int extraX = (int)round((obj1.x) / blockSize);
+    int extraX;
+    if ((obj1.x - blockSize / 2.0) / blockSize > levelX) {
+        extraX = levelX + 1;
+    }
+    else {
+        extraX = levelX - 1;
+    }
+
     int levelY = (int)round((obj1.y - blockSize / 2) / blockSize);
-    int extraY = (int)round((obj1.y) / blockSize);
+    int extraY;
+    if ((obj1.y - blockSize / 2) / blockSize > levelY) {
+        extraY = levelY + 1;
+    }
+    else {
+        extraY = levelY - 1;
+    }
 
     //0=y, 1=x
     if (!direction) {
-        for (int i = -1; i < 2; i += 2) {
+        for (int i = -1; i < 2; i += 1) {
             int blockX = levelX;
             int blockY = levelY + i;
             FixBlockPos(&blockX, &blockY);
             int blockType = level[blockY][blockX];
-            if (blockType == 0) {
-                if (blockX < extraX) {
-                    blockX++;
-                }
-                else if (blockX = extraX) {
-                    blockX--;
-                }
-            }
-            FixBlockPos(&blockX, &blockY);
-            blockType = level[blockY][blockX];
 
-            if (blockType) {
-                OBJRECT obj2;
-                obj2.x = (blockX + 0.5) * blockSize;
-                obj2.y = (blockY + 0.5) * blockSize;
-                obj2.w = blockSize;
-                obj2.h = blockSize;
-                obj2.block = blockType;
-                if (utilities::HitDetection(obj1, obj2)) {
-                    return obj2;
-                }
-            }
-        }
-    }
-
-    else {
-        for (int i = -1; i < 2; i += 2) {
-            int blockX = levelX + i;
-            int blockY = levelY;
-            FixBlockPos(&blockX, &blockY);
-            int blockType = level[blockY][blockX];
-            if (blockType == 0) {
-                if (blockY < extraY) {
-                    blockY++;
-                }
-                else if (blockY = extraY) {
-                    blockY--;
-                }
-            }
-            FixBlockPos(&blockX, &blockY);
-            blockType = level[blockY][blockX];
-
+            //真ん中
             if (blockType) {
                 OBJRECT obj2;
                 obj2.x = (blockX + 0.5) * blockSize + blockProperty[blockType].hitBox.x;
@@ -392,6 +382,64 @@ OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
                 obj2.h = blockProperty[blockType].hitBox.h;
                 obj2.block = blockType;
                 if (utilities::HitDetection(obj1, obj2)) {
+                    if (dev) texturesP->DrawRect({0,255,0,63}, obj2, 1);
+                    return obj2;
+                }
+            }
+
+            //端っこ
+            blockX = extraX;
+            FixBlockPos(&blockX, &blockY);
+            blockType = level[blockY][blockX];
+            if (blockType) {
+                OBJRECT obj2;
+                obj2.x = (blockX + 0.5) * blockSize + blockProperty[blockType].hitBox.x;
+                obj2.y = (blockY + 0.5) * blockSize + blockProperty[blockType].hitBox.y;
+                obj2.w = blockProperty[blockType].hitBox.w;
+                obj2.h = blockProperty[blockType].hitBox.h;
+                obj2.block = blockType;
+                if (utilities::HitDetection(obj1, obj2)) {
+                    if (dev) texturesP->DrawRect({ 0,255,0,63 }, obj2, 1);
+                    return obj2;
+                }
+            }
+        }
+    }
+
+    else {
+        for (int i = -1; i < 2; i += 1) {
+            int blockX = levelX + i;
+            int blockY = levelY;
+            FixBlockPos(&blockX, &blockY);
+            int blockType = level[blockY][blockX];
+
+            //真ん中
+            if (blockType) {
+                OBJRECT obj2;
+                obj2.x = (blockX + 0.5) * blockSize + blockProperty[blockType].hitBox.x;
+                obj2.y = (blockY + 0.5) * blockSize + blockProperty[blockType].hitBox.y;
+                obj2.w = blockProperty[blockType].hitBox.w;
+                obj2.h = blockProperty[blockType].hitBox.h;
+                obj2.block = blockType;
+                if (utilities::HitDetection(obj1, obj2)) {
+                    if (dev) texturesP->DrawRect({ 0,255,0,63 }, obj2, 1);
+                    return obj2;
+                }
+            }
+
+            //端っこ
+            blockY = extraY;
+            FixBlockPos(&blockX, &blockY);
+            blockType = level[blockY][blockX];
+            if (blockType) {
+                OBJRECT obj2;
+                obj2.x = (blockX + 0.5) * blockSize + blockProperty[blockType].hitBox.x;
+                obj2.y = (blockY + 0.5) * blockSize + blockProperty[blockType].hitBox.y;
+                obj2.w = blockProperty[blockType].hitBox.w;
+                obj2.h = blockProperty[blockType].hitBox.h;
+                obj2.block = blockType;
+                if (utilities::HitDetection(obj1, obj2)) {
+                    if (dev) texturesP->DrawRect({ 0,255,0,63 }, obj2, 1);
                     return obj2;
                 }
             }

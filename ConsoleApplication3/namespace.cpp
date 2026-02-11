@@ -26,6 +26,9 @@ namespace utilities {
         double y2 = obj2.y;
         double w2 = obj2.w;
         double h2 = obj2.h;
+
+        if (!(w1 && h1 && w2 && h2)) return 0;
+
         return (x1 - 0.5 * w1 < x2 + 0.5 * w2 &&
             x1 + 0.5 * w1 > x2 - 0.5 * w2 &&
             y1 - 0.5 * h1 < y2 + 0.5 * h2 &&
