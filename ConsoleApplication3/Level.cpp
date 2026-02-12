@@ -14,7 +14,7 @@ Game* Level::gameP = nullptr;
 
 
 Level::Level() {
-    dev = 1;
+    dev = 0;
     editorPalette = 1;
     levelW = 256;
     levelH = 32;
@@ -58,6 +58,12 @@ Level::Level() {
         0,
         {-30,0,20,48},
         1
+        });
+    blockProperty.push_back({
+        "block6",
+        0,
+        {0,0,blockSize,blockSize},
+        0
         });
     /*
     blockProperty.push_back({});

@@ -5,8 +5,6 @@
 #include "Camera.h"
 #include "Textures.h"
 #include "Sounds.h"
-#include "Level.h"
-#include "Player.h"
 #include "Input.h"
 #include "ScreenShot.h"
 #include "OverLay.h"
@@ -15,6 +13,7 @@
 #include "FaceYassy.h"
 #include "Button.h"
 #include "Title.h"
+#include "Platformer.h"
 
 class GameObject;
 class Textures;
@@ -32,23 +31,18 @@ private:
     std::unique_ptr<Camera> camera;
     std::unique_ptr<Textures> textures;
     std::unique_ptr<Sounds> sounds;
-    std::unique_ptr<Level> level;
-    std::unique_ptr<Player> assy;
     std::unique_ptr<Input> input;
     std::unique_ptr<ScreenShot> screenshot;
     std::unique_ptr<OverLay> overlay;
     std::unique_ptr<BackGround> background;
     std::unique_ptr<FaceYassy> faceyassy;
-    std::unique_ptr<UIManager> ui;
     std::unique_ptr<Title> title;
-
-    Button sceneChanger;
+    std::unique_ptr<Platformer> platformer;
 public:
     std::vector<std::unique_ptr<GameObject>> objects;
 
     Game();
     void ChangeScene(Scene s);
-    void SetupEntities();
     void Run();
     void HandleEvent();
     void Update();

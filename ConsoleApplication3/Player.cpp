@@ -11,8 +11,6 @@
 
 Level* Player::levelP = nullptr;
 Camera* Player::cameraP = nullptr;
-Game* Player::gameP = nullptr;
-OverLay* Player::overlayP = nullptr;
 
 Player::Player() {
     onGround = 0;
@@ -46,6 +44,8 @@ Player::Player() {
     dieAnim = 0;
     touchingEntity = nullptr;
     stomping = 0;
+    spawnX = 100;
+    spawnY = 1000;
 }
 
 void Player::SetAX(double acceleration) {
@@ -62,7 +62,7 @@ void Player::Update() {
         dieTime -= settings::timeScale;
         if (dieTime < 3.0 && dieAnim) {
             dieAnim = 0;
-            overlayP->PinHole(2000, 1000, 1.1, { 0,0,0,255 });
+            //overlayP->PinHole(2000, 1000, 1.1, { 0,0,0,255 });
         }
         return;
     }
@@ -298,7 +298,7 @@ void Player::CollideY() {
         }
     }
 
-
+    /*
     //entity
     for (auto& p : gameP->objects) {
         OBJRECT eRect = p->GetRect();
@@ -357,6 +357,7 @@ void Player::CollideY() {
             }
         }
     }
+    */
 }
 
 void Player::CollideX() {
@@ -389,7 +390,7 @@ void Player::CollideX() {
         }
     }
 
-    
+    /*
     for (auto& p : gameP->objects) {
         OBJRECT eRect = p->GetRect();
         bool collision = p->GetCollosion();
@@ -414,9 +415,7 @@ void Player::CollideX() {
             
         }
     }
-    
-
-
+    */
 }
 
 void Player::MoveCameraRoom() {
@@ -472,13 +471,13 @@ void Player::Spawn() {
     walkVX = 0.0;
     liftVX = 0.0;
 
-    overlayP->FadeIn(1, {0,0,0,255});
+    //overlayP->FadeIn(1, {0,0,0,255});
     CAMERA cam = cameraP->GetCam();
     cam.x = x;
     cam.y = y;
     cameraP->SetCam(cam);
 
-    gameP->SetupEntities();
+    //gameP->SetupEntities();
 }
 
 void Player::SetSpawnPoint(double x, double y) {

@@ -3,10 +3,10 @@
 #include<SDL.h>
 #include <random>
 #include "Button.h"
+#include "UIManager.h"
 
 class Input;
 class Textures;
-class UIManager;
 class Game;
 
 class FaceYassy
@@ -25,9 +25,9 @@ private:
 
     void Delete();
 public:
+    UIManager ui;
     static Input* inputP;
     static Textures* texturesP;
-    static UIManager* uiP;
     static Game* gameP;
 
     FaceYassy();

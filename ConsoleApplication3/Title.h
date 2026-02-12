@@ -1,8 +1,8 @@
 #pragma once
 #include "Button.h"
 #include "Options.h"
+#include "UIManager.h"
 
-class UIManager;
 class Textures;
 class OverLay;
 class Game;
@@ -26,7 +26,7 @@ private:
 
     Options options;
 public:
-    static UIManager* uiP;
+    UIManager ui;
     static Textures* texturesP;
     static OverLay* overlayP;
     static Game* gameP;

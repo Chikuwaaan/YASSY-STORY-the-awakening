@@ -1,18 +1,13 @@
 #include <iostream>
 #include "GameObject.h"
 #include "namespace.h"
-#include "structs.h"
 #include "Textures.h"
 #include "Input.h"
-#include "Level.h"
-#include "Player.h"
 
 Textures* GameObject::texturesP = nullptr;
 Sounds* GameObject::soundsP = nullptr;
 Camera* GameObject::cameraP = nullptr;
 Input* GameObject::inputP = nullptr;
-Level* GameObject::levelP = nullptr;
-Player* GameObject::playerP = nullptr;
 
 GameObject::GameObject() {
     type = EntityType::Null;

@@ -1,10 +1,8 @@
 #include "OverLay.h"
 #include "namespace.h"
 #include "Textures.h"
-#include "Player.h"
 
 Textures* OverLay::texturesP = nullptr;
-Player* OverLay::playerP = nullptr;
 
 OverLay::OverLay() {
     pinHole = { 0,0,0,0,{0,0,0,0} };
@@ -12,6 +10,7 @@ OverLay::OverLay() {
     //PinHole(1000, 100, { 0,0,0,255 });
 }
 
+/*
 void OverLay::Update() {
     SDL_Renderer* r = settings::renderer;
     if (pinHole.effect) {
@@ -94,3 +93,9 @@ void OverLay::FadeIn(double speed, SDL_Color color) {
     fade.time = speed;
     fade.color = color;
 }
+*/
+
+void OverLay::Update() {};
+void OverLay::PinHole(double radius, double shrinkSpeed, double waitTime, SDL_Color color) {};
+void OverLay::FadeOut(double speed, SDL_Color color) {};
+void OverLay::FadeIn(double speed, SDL_Color color) {};

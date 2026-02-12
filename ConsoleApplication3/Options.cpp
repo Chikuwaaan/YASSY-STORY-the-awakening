@@ -3,7 +3,6 @@
 #include "Sounds.h"
 #include "Textures.h"
 
-UIManager* Options::uiP = nullptr;
 Sounds* Options::soundsP = nullptr;
 Textures* Options::texturesP = nullptr;
 
@@ -50,7 +49,7 @@ Options::Options() :
 void Options::RegisterButtons() {
     int i = 0;
     for (auto& p : SE) {
-        uiP->AddButton(p);
+        ui.AddButton(p);
         p->action = [i]() {
             soundsP->SetSEVolume(i * 16);
             };
@@ -58,7 +57,7 @@ void Options::RegisterButtons() {
     }
     i = 0;
     for (auto& p : BGM) {
-        uiP->AddButton(p);
+        ui.AddButton(p);
         p->action = [i]() {
             soundsP->SetBGMVolume(i * 16);
             };
@@ -129,5 +128,5 @@ void Options::Update() {
         }
         i++;
     }
-    uiP->IsCursorOnUI();
+    ui.Update();
 }

@@ -7,7 +7,6 @@
 #include "Input.h"
 #include "Options.h"
 
-UIManager* Title::uiP = nullptr;
 Textures* Title::texturesP = nullptr;
 OverLay* Title::overlayP = nullptr;
 Game* Title::gameP = nullptr;
@@ -43,25 +42,25 @@ void Title::Init() {
 }
 
 void Title::RegisterButtons() {
-    uiP->AddButton(&BTNback);
+    ui.AddButton(&BTNback);
     BTNback.icon = Icons::Back;
     BTNback.action = [this]() {
         phase = Phase::YassyStory2;
         };
 
-    uiP->AddButton(&BTNstart);
+    ui.AddButton(&BTNstart);
     BTNstart.text = "START";
     BTNstart.action = []() {
         gameP->ChangeScene(Scene::Platformer);
         };
 
-    uiP->AddButton(&BTNoptions);
+    ui.AddButton(&BTNoptions);
     BTNoptions.text = "OPTIONS";
     BTNoptions.action = [this]() {
         phase = Phase::Options;
         };
 
-    uiP->AddButton(&BTNexitgame);
+    ui.AddButton(&BTNexitgame);
     BTNexitgame.text = "EXIT";
     BTNexitgame.action = []() {
         gameP->ExitGame();
@@ -162,5 +161,5 @@ void Title::Update() {
     }
     
 
-    uiP->Update();
+    ui.Update();
 }

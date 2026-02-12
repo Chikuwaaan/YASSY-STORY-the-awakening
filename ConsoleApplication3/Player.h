@@ -39,10 +39,8 @@ private:
     void CollideY();
     void CollideX();
 public:
-    static Game* gameP;
     static Level* levelP;
     static Camera* cameraP;
-    static OverLay* overlayP;
     Player();
     void SetAX(double acceleration);
     void Update() override;

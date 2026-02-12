@@ -1,8 +1,8 @@
 #pragma once
 #include "Button.h"
 #include <vector>
+#include "UIManager.h"
 
-class UIManager;
 class Sounds;
 class Textures;
 
@@ -31,7 +31,7 @@ private:
     Button BGM8;
     std::vector<Button*> BGM;
 public:
-    static UIManager* uiP;
+    UIManager ui;
     static Sounds* soundsP;
     static Textures* texturesP;
 

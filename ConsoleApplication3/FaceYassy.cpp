@@ -11,7 +11,6 @@
 
 Input* FaceYassy::inputP = nullptr;
 Textures* FaceYassy::texturesP = nullptr;
-UIManager* FaceYassy::uiP = nullptr;
 Game* FaceYassy::gameP = nullptr;
 
 FaceYassy::FaceYassy() :
@@ -117,7 +116,7 @@ void FaceYassy::Update() {
         test.action();
     }
 
-    if (!uiP->IsCursorOnUI()) {
+    if (!ui.IsCursorOnUI()) {
         if (inputP->event.MouseLeft) {
             trajectories[layer].push_back({ mouseX,mouseY });
         }
@@ -182,7 +181,7 @@ void FaceYassy::Output() {
 }
 
 void FaceYassy::RegisterButtons() {
-    uiP->AddButton(&test);
+    ui.AddButton(&test);
     test.action = [this]() {
         this->gameP->ChangeScene(Scene::Platformer);
         };

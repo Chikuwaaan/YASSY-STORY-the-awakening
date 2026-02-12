@@ -25,12 +25,13 @@ private:
     FADE fade;
 public:
     static Textures* texturesP;
-    static Player* playerP;
     OverLay();
+    
     void Update();
 
     void PinHole(double radius, double shrinkSpeed, double waitTime, SDL_Color color);
     void FadeOut(double speed, SDL_Color color);
     void FadeIn(double speed, SDL_Color color);
+    
 };
 

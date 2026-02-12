@@ -136,7 +136,6 @@
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CheckPoint.cpp" />
     <ClCompile Include="FaceYassy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -147,10 +146,10 @@
     <ClCompile Include="namespace.cpp" />
     <ClCompile Include="Options.cpp" />
     <ClCompile Include="OverLay.cpp" />
+    <ClCompile Include="Platformer.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ScreenShot.cpp" />
     <ClCompile Include="Sounds.cpp" />
-    <ClCompile Include="Spikes.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="UIElement.cpp" />
@@ -161,7 +160,6 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="CheckPoint.h" />
     <ClInclude Include="FaceYassy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
@@ -171,12 +169,12 @@
     <ClInclude Include="Lift.h" />
     <ClInclude Include="Options.h" />
     <ClInclude Include="OverLay.h" />
+    <ClInclude Include="Platformer.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="namespace.h" />
     <ClInclude Include="ScreenShot.h" />
     <ClInclude Include="Sounds.h" />
-    <ClInclude Include="Spikes.h" />
     <ClInclude Include="structs.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Title.h" />

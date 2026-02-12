@@ -1,0 +1,45 @@
+#include "Platformer.h"
+#include "Textures.h"
+#include "Camera.h"
+#include "namespace.h"
+#include "GameObject.h"
+
+Textures* Platformer::texturesP = nullptr;
+Camera* Platformer::cameraP = nullptr;
+
+Platformer::Platformer() {
+    player.levelP = &level;
+}
+
+void Platformer::Init() {
+    level.LoadLevel(platformer::level);
+}
+
+void Platformer::Quit() {
+    level.FileOutput(platformer::level);
+}
+
+void Platformer::Update() {
+    OBJRECT screenRect = { (double)settings::baseW / 2, (double)settings::baseH / 2, (double)settings::baseW, (double)settings::baseH, 1 };
+    texturesP->DrawRect({ 255,255,255,255 }, screenRect, 0);
+    cameraP->Update();
+
+    for (auto& obj : objects) {
+        obj.Update();
+    }
+    for (auto& obj : pendingObjects) {
+        objects.push_back(std::move(obj));
+    }
+    objects.erase(
+        std::remove_if(objects.begin(), objects.end(),
+            [](const std::unique_ptr<GameObject>& o)
+            {return o->IsDead(); }),
+        objects.end()
+    );
+    
+    player.Update();
+    level.DrawMap();
+    player.Draw();
+
+    level.Editor();
+}

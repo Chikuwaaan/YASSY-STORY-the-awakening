@@ -9,8 +9,6 @@ class Textures;
 class Sounds;
 class Camera;
 class Input;
-class Level;
-class Player;
 
 
 class GameObject
@@ -29,12 +27,11 @@ public:
     static Sounds* soundsP;
     static Camera* cameraP;
     static Input* inputP;
-    static Level* levelP;
-    static Player* playerP;
 
     virtual void Update() {};
     virtual void Touched() {};
     virtual void Stomped() {};
+    virtual ~GameObject() = default;
     GameObject();
     EntityType GetType();
     bool IsDead();
