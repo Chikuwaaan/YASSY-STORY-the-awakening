@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "namespace.h"
 #include "GameObject.h"
+#include "Lift.h"
 
 Textures* Platformer::texturesP = nullptr;
 Camera* Platformer::cameraP = nullptr;
@@ -24,18 +25,22 @@ void Platformer::Update() {
     texturesP->DrawRect({ 255,255,255,255 }, screenRect, 0);
     cameraP->Update();
 
+    
     for (auto& obj : objects) {
-        obj.Update();
+        obj->Update();
+        obj->Draw();
     }
     for (auto& obj : pendingObjects) {
         objects.push_back(std::move(obj));
     }
+    pendingObjects.clear();
     objects.erase(
         std::remove_if(objects.begin(), objects.end(),
             [](const std::unique_ptr<GameObject>& o)
             {return o->IsDead(); }),
         objects.end()
-    );
+    );    
+    
     
     player.Update();
     level.DrawMap();

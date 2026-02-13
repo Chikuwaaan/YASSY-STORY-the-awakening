@@ -1,5 +1,9 @@
 #pragma once
 #include <vector>
+#include <memory>
+#include <utility>
+#include <type_traits>
+#include <iostream>
 #include "Level.h"
 #include "Player.h"
 
@@ -15,12 +19,19 @@ public:
     static Textures* texturesP;
     static Camera* cameraP;
 
-    std::vector<GameObject> objects;
-    std::vector<GameObject> dyingObjects;
-    std::vector<GameObject> pendingObjects;
+    std::vector<std::unique_ptr<GameObject>> objects;
+    std::vector<std::unique_ptr<GameObject>> dyingObjects;
+    std::vector<std::unique_ptr<GameObject>> pendingObjects;
 
     Platformer();
     void Init();
     void Quit();
     void Update();
+
+    template<typename T, typename... Args>
+    void AddObject(Args&&... args) {
+        objects.push_back(
+            std::make_unique<T>(std::forward<Args>(args)...)
+        );
+    }
 };
