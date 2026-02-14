@@ -33,6 +33,7 @@ private:
     double blockSize;
     int editorPalette;
     bool dev;
+    bool editorMode;
 public:
     static Textures* texturesP;
     static Input* inputP;

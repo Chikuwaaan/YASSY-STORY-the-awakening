@@ -14,6 +14,7 @@ Platformer::Platformer() {
 
 void Platformer::Init() {
     level.LoadLevel(platformer::level);
+    player.Spawn();
 }
 
 void Platformer::Quit() {
@@ -23,6 +24,8 @@ void Platformer::Quit() {
 void Platformer::Update() {
     OBJRECT screenRect = { (double)settings::baseW / 2, (double)settings::baseH / 2, (double)settings::baseW, (double)settings::baseH, 1 };
     texturesP->DrawRect({ 255,255,255,255 }, screenRect, 0);
+    background.Draw();
+
     cameraP->Update();
 
     
@@ -41,9 +44,8 @@ void Platformer::Update() {
         objects.end()
     );    
     
-    
-    player.Update();
     level.DrawMap();
+    player.Update();
     player.Draw();
 
     level.Editor();

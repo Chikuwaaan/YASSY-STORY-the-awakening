@@ -13,12 +13,17 @@ Camera* Level::cameraP = nullptr;
 Game* Level::gameP = nullptr;
 
 
-Level::Level() {
-    dev = 0;
-    editorPalette = 1;
+Level::Level() : 
+    level{ {} }
+{
     levelW = 256;
     levelH = 32;
-    blockSize = 80.0;
+    blockSize = 96.0;
+    dev = 1;
+    editorPalette = 1;
+    editorMode = 1;
+
+
     rooms.push_back({ 0,0,{
         {1,1,1,1,1,1,1,1,1,1}
 } });
@@ -38,25 +43,25 @@ Level::Level() {
     blockProperty.push_back({
         "block2",
         0,
-        {0,-30,48,20},
+        {0,6 * blockSize / (-16),10*blockSize / 16,blockSize / 4},
         1
         });
     blockProperty.push_back({
         "block3",
         0,
-        {30,0,20,48},
+        {6 * blockSize / 16, 0, blockSize / 4, 10 * blockSize / 16,},
         1
         });
     blockProperty.push_back({
         "block4",
         0,
-        {0,30,48,20},
+        {0,6 * blockSize / 16,10 * blockSize / 16,blockSize / 4},
         1
         });
     blockProperty.push_back({
         "block5",
         0,
-        {-30,0,20,48},
+        {6 * blockSize / (-16), 0, blockSize / 4, 10 * blockSize / 16,},
         1
         });
     blockProperty.push_back({
@@ -141,6 +146,8 @@ void Level::LoadMap(int n) {
 }
 
 void Level::Editor() {
+    if (!editorMode) return;
+
     MOUSE mouse = inputP->mouse;
     EVENT event = inputP->event;
     CAMERA camera = cameraP->GetCam();
@@ -181,7 +188,7 @@ void Level::Editor() {
 
     SDL_Color color1 = { 255,255,255,255 };
     SDL_Color color2 = { 0,0,0,255 };
-    texturesP->DrawSprite(blockProperty[editorPalette].tex, {1880, 40, 80, 80}, {0,0,20,20}, 0);
+    texturesP->DrawSprite(blockProperty[editorPalette].tex, {1880, 40, 80, 80}, {0,0,16,16}, 0);
     texturesP->DrawTexts(std::to_string(mouseX), color1, color2, { 1400, 0, 1, 1 }, 0, Anchor::Center);
     texturesP->DrawTexts(std::to_string((int)(mouseX * blockSize)), color1, color2, { 1400, 50, 1, 1 }, 0, Anchor::Center);
     texturesP->DrawTexts(std::to_string(mouseY), color1, color2, { 1600, 0, 1, 1 }, 0, Anchor::Center);
@@ -250,7 +257,7 @@ double Level::GetBlockSize() {
 }
 
 SDL_Rect Level::CheckAroundTile(int y, int x, CHECKFOR checkFor, int type) {
-    int size = 10;
+    int size = 8;
     SDL_Rect src = { 0,0,size,size };
     bool yoko=0, tate=0, naname=0;
 

@@ -175,6 +175,8 @@ void Game::Update() {
         faceyassy->Update();
     }
 
+    overlay->Update();
+
     //DEBUG INFO
     bool showCursorPoint = 1;
     bool showCross = 1;
@@ -274,6 +276,7 @@ void Game::MakeInstance() {
     Level::cameraP = camera.get();
     Level::gameP = this;
     Player::cameraP = camera.get();
+    Player::overlayP = overlay.get();
 }
 
 void Game::ExitGame() {

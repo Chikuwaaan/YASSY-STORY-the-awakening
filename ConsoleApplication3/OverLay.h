@@ -5,6 +5,8 @@ class Textures;
 class Player;
 
 struct PINHOLE {
+    int x;
+    int y;
     bool effect;
     double radius;
     double shrinkSpeed;
@@ -29,7 +31,7 @@ public:
     
     void Update();
 
-    void PinHole(double radius, double shrinkSpeed, double waitTime, SDL_Color color);
+    void PinHole(int x, int y,double radius, double shrinkSpeed, double waitTime, SDL_Color color);
     void FadeOut(double speed, SDL_Color color);
     void FadeIn(double speed, SDL_Color color);
     

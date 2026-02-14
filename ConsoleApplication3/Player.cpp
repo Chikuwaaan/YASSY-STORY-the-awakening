@@ -11,6 +11,7 @@
 
 Level* Player::levelP = nullptr;
 Camera* Player::cameraP = nullptr;
+OverLay* Player::overlayP = nullptr;
 
 Player::Player() {
     onGround = 0;
@@ -455,6 +456,11 @@ void Player::Die() {
     dieTime = 3.0;
     dieAnim = 1;
 
+    //OBJRECT rect = { x,y,w,h };
+    //SDL_Rect dst = texturesP->GetDst(rect, 1, Anchor::Center);
+    overlayP->PinHole(settings::baseW/2, settings::baseH/2, 2000, 1000, 1.1, {0,0,0,255});
+    //overlayP->PinHole((int)x, (int)y, 1000, 1000, 1, { 0,0,0,255 });
+
     Mix_Chunk* se = Mix_LoadWAV("Assets/sounds/die.wav");
     Mix_PlayChannel(-1, se, 0);
     //Mix_Music* music = Mix_LoadMUS("Assets/audio/sanctuary.wav");
@@ -462,6 +468,7 @@ void Player::Die() {
 }
 
 void Player::Spawn() {
+    std::cout << "‚·‚Á‚Û[[‚ñ";
     x = spawnX;
     y = spawnY;
     vX = 0.0;
@@ -471,7 +478,7 @@ void Player::Spawn() {
     walkVX = 0.0;
     liftVX = 0.0;
 
-    //overlayP->FadeIn(1, {0,0,0,255});
+    overlayP->FadeIn(1, {0,0,0,255});
     CAMERA cam = cameraP->GetCam();
     cam.x = x;
     cam.y = y;

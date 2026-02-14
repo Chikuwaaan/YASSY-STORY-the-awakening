@@ -6,6 +6,7 @@
 #include <iostream>
 #include "Level.h"
 #include "Player.h"
+#include "BackGround.h"
 
 class GameObject;
 class Textures;
@@ -15,6 +16,7 @@ class Platformer {
 private:
     Level level;
     Player player;
+    BackGround background;
 public:
     static Textures* texturesP;
     static Camera* cameraP;

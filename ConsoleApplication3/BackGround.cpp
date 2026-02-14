@@ -6,6 +6,13 @@ BackGround::BackGround() {
 }
 
 void BackGround::Draw() {
+    OBJRECT rect;
+    rect.x = settings::baseW / 2;
+    rect.y = settings::baseH / 2;
+    rect.w = settings::baseW;
+    rect.h = settings::baseH;
+    texturesP->DrawImage("select", rect, 0, {});
+    /*
     CAMERA cam = cameraP->GetCam();
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 2; j++) {
@@ -27,5 +34,6 @@ void BackGround::Draw() {
             texturesP->DrawImage(tex, rect, 1, {});
         }
     }
+    */
     return;
 }
