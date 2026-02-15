@@ -61,6 +61,18 @@ void Input::GetEvent() {
             if (e.key.keysym.scancode == SDL_SCANCODE_E) {
                 event.E = 1;
             }
+            if (e.key.keysym.scancode == SDL_SCANCODE_W) {
+                event.Up = 1;
+            }
+            if (e.key.keysym.scancode == SDL_SCANCODE_S) {
+                event.Down = 1;
+            }
+            if (e.key.keysym.scancode == SDL_SCANCODE_A) {
+                event.Left = 1;
+            }
+            if (e.key.keysym.scancode == SDL_SCANCODE_D) {
+                event.Right = 1;
+            }
         }
 
         if (e.type == SDL_MOUSEWHEEL) {

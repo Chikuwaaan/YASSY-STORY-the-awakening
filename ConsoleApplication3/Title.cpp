@@ -23,14 +23,15 @@ enum class Phase {
 };
 
 Title::Title() :
-    BTNback(224, 204, 128, 128),
+    //BTNback(224, 204, 128, 128),
     BTNstart(960, 540, 512, 128),
     BTNoptions(960, 340, 512, 128),
     BTNexitgame(960, 140, 512, 128)
 {
     last = 0;
     timer = 0.0;
-    phase = Phase::YassyStory1;
+    //phase = Phase::YassyStory2;
+    phase = Phase::Loading;
 }
 
 void Title::Init() {
@@ -42,11 +43,13 @@ void Title::Init() {
 }
 
 void Title::RegisterButtons() {
-    ui.AddButton(&BTNback);
-    BTNback.icon = Icons::Back;
-    BTNback.action = [this]() {
-        phase = Phase::YassyStory2;
-        };
+    titleMenu = {
+        {&BTNstart, &BTNoptions, &BTNexitgame},
+        DIRECTION::V,
+        nullptr,
+        nullptr
+    };
+    ui.currentLine = &titleMenu;
 
     ui.AddButton(&BTNstart);
     BTNstart.text = "START";
@@ -58,6 +61,7 @@ void Title::RegisterButtons() {
     BTNoptions.text = "OPTIONS";
     BTNoptions.action = [this]() {
         phase = Phase::Options;
+        ui.currentLine = &(options.lineSE);
         };
 
     ui.AddButton(&BTNexitgame);
@@ -128,9 +132,11 @@ void Title::Update() {
             texturesP->DrawTexts("Press Space Key", white, black, { 960,120,1,1 }, 0, Anchor::Center);
         }
 
-        if (inputP->event.SPACE) {
+    }
+
+    if (phase == Phase::YassyStory1) {
+        if (inputP->event.Q) {
             phase = Phase::YassyStory2;
-            options.Show();
         }
     }
 
@@ -150,13 +156,10 @@ void Title::Update() {
     }
 
     if (phase == Phase::Options) {
-        BTNback.visible = true;
-        BTNback.state = State::Idle;
-        options.Show();
         options.Update();
+        options.Show();
     }
     else {
-        BTNback.visible = false;
         options.Hide();
     }
     

@@ -16,7 +16,6 @@ void Timer::Update() {
 }
 
 void Timer::Reset() {
-    std::cout << "‚è‚¹‚Á‚Æ";
     timer = 0;
 }
 
@@ -25,6 +24,5 @@ double Timer::GetTime() {
     delta = now - last;
     last = now;
     timer += delta / 1000.0;
-    std::cout << timer << std::endl;
     return timer;
 }

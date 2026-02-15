@@ -38,5 +38,9 @@ enum class Icons {
     ButtonROnMouse,
     ButtonRPressed,
     ButtonRUnavailable,
-    Back
+    Back,
+    UICursor1,
+    UICursor2,
+    UICursor3,
+    UICursor4,
 };

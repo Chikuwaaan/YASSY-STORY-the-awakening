@@ -18,6 +18,10 @@ struct EVENT {
     bool SPACE;
     bool Q;
     bool E;
+    bool Up;
+    bool Down;
+    bool Left;
+    bool Right;
     int MouseWheel;
     bool MouseLeft;
     bool MouseMiddle;

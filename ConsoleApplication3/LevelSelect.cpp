@@ -6,20 +6,35 @@
 Textures* LevelSelect::texturesP = nullptr;
 Game* LevelSelect::gameP = nullptr;
 
-LevelSelect::LevelSelect() 
+LevelSelect::LevelSelect() :
+    level1(0, 500, 96, 96),
+    level2(0, 500, 96, 96),
+    level3(0, 500, 192, 96),
+    level4(0, 500, 192, 192),
+    test1(500, 200, 96, 96),
+    test2(1000,200,96,96)
 {
+    lineLevels = { {&level1,&level2,&level3,&level4}, DIRECTION::H, nullptr, &lineTest };
+    lineTest = { {&test1,&test2}, DIRECTION::H, &lineLevels, nullptr };
+    
+
+    selected = 2;
     unlocked = 4;
     RegisterButtons();
 }
 
 void LevelSelect::RegisterButtons() {
     int i = 0;
-    for (i; i < 4; i++) {
-        std::unique_ptr<Button> a;
-        a = std::make_unique<Button>(100 * i, 100, 100, 100);
-        ui.AddButton(a.get());
-        //a->visible = 1;
+    for (auto& p : lineLevels.selectables) {
+        ui.AddButton(p);
+        p->x = i * 300 + 300;
+        i++;
     }
+    for (auto& p : lineTest.selectables) {
+        ui.AddButton(p);
+    }
+    
+    ui.currentLine = &lineLevels;
 }
 
 void LevelSelect::Update() {
@@ -30,6 +45,13 @@ void LevelSelect::Update() {
         TIMER.Reset();
     }
     texturesP->DrawImage("LevelSelect", bg, 0, {});
+
+    int i = 0;
+    for (auto& p : lineLevels.selectables) {
+        p->state = State::Idle;
+
+        i++;
+    }
 
     ui.Update();
 }

@@ -13,7 +13,7 @@ enum class Phase;
 class Title
 {
 private:
-    Button BTNback;
+    LINE titleMenu;
     Button BTNstart;
     Button BTNoptions;
     Button BTNexitgame;

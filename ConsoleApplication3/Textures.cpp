@@ -63,7 +63,10 @@ Textures::Textures() {
         iconProperty[Icons::ButtonROnMouse] = { 15,2 };
         iconProperty[Icons::ButtonRPressed] = { 14,3 };
         iconProperty[Icons::ButtonRUnavailable] = { 15,3 };
-
+        iconProperty[Icons::UICursor1] = { 11,0 };
+        iconProperty[Icons::UICursor2] = { 10,0 };
+        iconProperty[Icons::UICursor3] = { 10,1 };
+        iconProperty[Icons::UICursor4] = { 11,1 };
 
 
         iconProperty[Icons::Back] = { 0,2 };

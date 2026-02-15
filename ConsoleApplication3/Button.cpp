@@ -16,13 +16,15 @@ Button::Button(int X, int Y, int W, int H) {
     h = H;
     color = { 0,0,0,255 };
     state = State::Unavailable;
+    isSelected = 0;
 
     icon = Icons::Null;
-    visible = 0;
+    visible = 1;
     text = "";
 }
 
 void Button::Draw() {
+    if (w == 0 || h == 0) return;
     if (visible) {
         bool wide = 0;
         if (w / h != 1) {
@@ -74,6 +76,20 @@ void Button::Draw() {
                 OBJRECT dstT = { (double)x, (double)y, 1,1 };
                 texturesP->DrawTexts(text, white, black, dstT, 0, Anchor::Center);
             }
+
+            if (isSelected) {
+                dstR.x = dstR.x + h / 8;
+                dstR.y = dstR.y + h / 8;
+                texturesP->DrawIcon(Icons::UICursor1, dstR);
+                dstR.y = dstR.y - h / 4;
+                texturesP->DrawIcon(Icons::UICursor4, dstR);
+
+                dstL.x = dstL.x - h / 8;
+                dstL.y = dstL.y + h / 8;
+                texturesP->DrawIcon(Icons::UICursor2, dstL);
+                dstL.y = dstL.y - h / 4;
+                texturesP->DrawIcon(Icons::UICursor3, dstL);
+            }
         }
         else {
             Icons button = Icons::Null;
@@ -91,6 +107,13 @@ void Button::Draw() {
             }
             texturesP->DrawIcon(button, {x,y,w,h});
             texturesP->DrawIcon(icon, { x,y,h,h });
+
+            if (isSelected) {
+                texturesP->DrawIcon(Icons::UICursor1, { x+w/8,y+h/8,w,h });
+                texturesP->DrawIcon(Icons::UICursor2, { x-w/8,y+h/8,w,h });
+                texturesP->DrawIcon(Icons::UICursor3, { x-w/8,y-h/8,w,h });
+                texturesP->DrawIcon(Icons::UICursor4, { x+w/8,y-h/8,w,h });
+            }
         }
     }
 }
@@ -122,5 +145,17 @@ bool Button::CheckPressed() {
             }
         }
     }
+
+    if (isSelected && state != State::Unavailable && visible) {
+        if (inputP->event.SPACE) {
+            soundsP->PlaySE("pochi");
+
+            if (action) {
+                action();
+                return 1;
+            }
+        }
+    }
+
     return 0;
 }

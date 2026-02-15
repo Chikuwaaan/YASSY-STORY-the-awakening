@@ -24,6 +24,7 @@ private:
 public:
     int x, y, w, h;
     State state;
+    bool isSelected;
     std::function<void()> action;
     Icons icon;
     std::string text;

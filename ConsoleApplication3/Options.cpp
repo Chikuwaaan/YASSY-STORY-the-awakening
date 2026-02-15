@@ -63,6 +63,28 @@ void Options::RegisterButtons() {
             };
         i++;
     }
+
+    lineSE = {
+        SE,
+        DIRECTION::H,
+        nullptr,
+        &lineBGM,
+        []() {},
+        [this]() {
+            this->ui.currentButton = settings::BGM / 16;
+        }
+    };
+    lineBGM = {
+        BGM,
+        DIRECTION::H,
+        &lineSE,
+        nullptr,
+        [this]() {
+            this->ui.currentButton = settings::SE / 16;
+        },
+        [](){}
+    };
+    ui.currentLine = &lineSE;
 }
 
 void Options::Show() {
@@ -101,7 +123,7 @@ void Options::Update() {
     OBJRECT rect = { settings::baseW / 2.0, settings::baseH / 2.0, 1600,800 , 1};
     SDL_Color white = { 255,255,255,255 };
     SDL_Color black = { 0,0,0,255 };
-    texturesP->DrawRect({ 117,226,255,255 }, rect, 0);
+    texturesP->DrawRect({ 255,255,140,255 }, rect, 0);
 
     double SEy = settings::baseH / 2 + 200;
     double BGMy = settings::baseH / 2 - 200;

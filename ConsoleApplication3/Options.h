@@ -9,6 +9,7 @@ class Textures;
 class Options
 {
 private:
+    
     Button SE0;
     Button SE1;
     Button SE2;
@@ -20,6 +21,7 @@ private:
     Button SE8;
     std::vector<Button*> SE;
 
+    LINE lineBGM;
     Button BGM0;
     Button BGM1;
     Button BGM2;
@@ -31,6 +33,8 @@ private:
     Button BGM8;
     std::vector<Button*> BGM;
 public:
+    LINE lineSE;
+
     UIManager ui;
     static Sounds* soundsP;
     static Textures* texturesP;
