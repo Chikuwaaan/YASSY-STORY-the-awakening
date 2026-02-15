@@ -141,6 +141,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LevelSelect.cpp" />
     <ClCompile Include="Lift.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="namespace.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="ScreenShot.cpp" />
     <ClCompile Include="Sounds.cpp" />
     <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="UIElement.cpp" />
     <ClCompile Include="UIManager.cpp" />
@@ -166,6 +168,7 @@
     <ClInclude Include="iconProperty.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="LevelSelect.h" />
     <ClInclude Include="Lift.h" />
     <ClInclude Include="Options.h" />
     <ClInclude Include="OverLay.h" />
@@ -177,6 +180,7 @@
     <ClInclude Include="Sounds.h" />
     <ClInclude Include="structs.h" />
     <ClInclude Include="Textures.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="UIElement.h" />
     <ClInclude Include="UIManager.h" />

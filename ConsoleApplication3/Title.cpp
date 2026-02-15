@@ -51,7 +51,7 @@ void Title::RegisterButtons() {
     ui.AddButton(&BTNstart);
     BTNstart.text = "START";
     BTNstart.action = []() {
-        gameP->ChangeScene(Scene::Platformer);
+        gameP->ChangeScene(Scene::LevelSelect);
         };
 
     ui.AddButton(&BTNoptions);

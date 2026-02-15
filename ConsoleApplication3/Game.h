@@ -14,11 +14,18 @@
 #include "Button.h"
 #include "Title.h"
 #include "Platformer.h"
+#include "LevelSelect.h"
 
 class GameObject;
 class Textures;
 class UIManager;
 
+enum class Scene {
+    Title,
+    Platformer,
+    FaceYassy,
+    LevelSelect
+};
 
 class Game
 {
@@ -38,6 +45,7 @@ private:
     std::unique_ptr<FaceYassy> faceyassy;
     std::unique_ptr<Title> title;
     std::unique_ptr<Platformer> platformer;
+    std::unique_ptr<LevelSelect> levelselect;
 public:
     std::vector<std::unique_ptr<GameObject>> objects;
 

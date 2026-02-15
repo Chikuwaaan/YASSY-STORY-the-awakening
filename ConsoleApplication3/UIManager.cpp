@@ -29,3 +29,14 @@ bool UIManager::IsCursorOnUI() {
     }
     return 0;
 }
+
+void UIManager::AddLine(LINE* line) {
+    elements.push_back(line);
+}
+
+/*
+* 選択カーソル
+* 要素(ボタン)
+* 要素の配置が縦か横か
+* 双方向リスト
+*/

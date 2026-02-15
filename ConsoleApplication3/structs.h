@@ -55,11 +55,6 @@ struct BLOCKROOM {
 	std::vector<std::vector<uint8_t>> terrain;
 };
 
-enum class Scene {
-    Title,
-    Platformer,
-    FaceYassy
-};
 
 enum class EntityType {
     Null,

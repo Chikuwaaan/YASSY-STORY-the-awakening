@@ -34,6 +34,7 @@ void Game::ChangeScene(Scene s) {
     faceyassy.reset();
     title.reset();
     platformer.reset();
+    levelselect.reset();
 
     scene = s;
     if (s == Scene::Title) {
@@ -58,14 +59,18 @@ void Game::ChangeScene(Scene s) {
         Mix_HaltMusic();
         faceyassy->RegisterButtons();
     }
+
+    if (s == Scene::LevelSelect) {
+        levelselect = std::make_unique<LevelSelect>();
+    }
 }
 
 
 void Game::Run() {
     //ChangeScene(Scene::Title);
-    ChangeScene(Scene::Platformer);
+    //ChangeScene(Scene::Platformer);
     //ChangeScene(Scene::FaceYassy);
-    
+    ChangeScene(Scene::LevelSelect);
 
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
@@ -175,6 +180,10 @@ void Game::Update() {
         faceyassy->Update();
     }
 
+    if (scene == Scene::LevelSelect) {
+        levelselect->Update();
+    }
+
     overlay->Update();
 
     //DEBUG INFO
@@ -277,6 +286,8 @@ void Game::MakeInstance() {
     Level::gameP = this;
     Player::cameraP = camera.get();
     Player::overlayP = overlay.get();
+    LevelSelect::texturesP = textures.get();
+    LevelSelect::gameP = this;
 }
 
 void Game::ExitGame() {
