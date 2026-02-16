@@ -5,7 +5,7 @@
 Input* UIManager::inputP = nullptr;
 
 UIManager::UIManager() {
-    buttons = {};
+    lines = {};
 
     currentLine = nullptr;
     currentButton = 0;
@@ -13,14 +13,15 @@ UIManager::UIManager() {
 
 bool UIManager::Update() {
     IsCursorOnUI();
-    for (auto& p : buttons) {
-        p->Draw();
-
-        if (currentLine && p == currentLine->selectables[currentButton]) {
-            p->isSelected = true;
-        }
-        else {
-            p->isSelected = false;
+    for (auto& l : lines) {
+        for (auto& b : l->selectables) {
+            b->Draw();
+            if (currentLine && b == currentLine->selectables[currentButton]) {
+                b->isSelected = true;
+            }
+            else {
+                b->isSelected = false;
+            }
         }
     }
 
@@ -43,24 +44,24 @@ bool UIManager::Update() {
         }
 
         if (switchLine == 1) {
-            if (currentLine->nextAction) {
-                currentLine->nextAction();
-                std::cout << "uo";
-            }
             if (currentLine->next) {
                 currentButton = 0;
+                if (currentLine->nextAction) {
+                    currentLine->nextAction();
+                }
                 currentLine = currentLine->next;
             }
+            
         }
         if (switchLine == -1) {
-            if (currentLine->prevAction) {
-                currentLine->prevAction();
-                std::cout << "UO";
-            }
             if (currentLine->prev) {
                 currentButton = 0;
+                if (currentLine->prevAction) {
+                    currentLine->prevAction();
+                }
                 currentLine = currentLine->prev;
             }
+            
         }
 
         if (switchButton == 1) {
@@ -77,32 +78,35 @@ bool UIManager::Update() {
         }
     }
     
-
-
-    for (auto& p : buttons) {
-        if (p->CheckPressed()) {
-            return 1;
+    for (auto& l : lines) {
+        for (auto& b : l->selectables) {
+            if (b->CheckPressed()) {
+                return 1;
+            }
         }
     }
+
     return 0;
 }
 
-void UIManager::AddButton(Button* ptr) {
-    buttons.push_back(ptr);
+void UIManager::AddLine(LINE* line) {
+    lines.push_back(line);
 }
 
 bool UIManager::IsCursorOnUI() {
-    for (auto& p : buttons) {
-        if (p->CheckOnMouse()) {
-            return 1;
+    for (auto& l : lines) {
+        for (auto& b : l->selectables) {
+            if (b->CheckOnMouse()) {
+                return 1;
+            }
         }
     }
+
     return 0;
 }
 
 /*
-* 選択カーソル
-* 要素(ボタン)
-* 要素の配置が縦か横か
-* 双方向リスト
+* うおうおw
+* うおうおw
+* うおうおうおwww
 */

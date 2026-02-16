@@ -23,15 +23,14 @@ enum class Phase {
 };
 
 Title::Title() :
-    //BTNback(224, 204, 128, 128),
     BTNstart(960, 540, 512, 128),
     BTNoptions(960, 340, 512, 128),
     BTNexitgame(960, 140, 512, 128)
 {
     last = 0;
     timer = 0.0;
-    //phase = Phase::YassyStory2;
-    phase = Phase::Loading;
+    phase = Phase::YassyStory2;
+    //phase = Phase::Loading;
 }
 
 void Title::Init() {
@@ -49,25 +48,26 @@ void Title::RegisterButtons() {
         nullptr,
         nullptr
     };
+    ui.AddLine(&titleMenu);
     ui.currentLine = &titleMenu;
 
-    ui.AddButton(&BTNstart);
     BTNstart.text = "START";
     BTNstart.action = []() {
         gameP->ChangeScene(Scene::LevelSelect);
         };
 
-    ui.AddButton(&BTNoptions);
     BTNoptions.text = "OPTIONS";
     BTNoptions.action = [this]() {
         phase = Phase::Options;
-        ui.currentLine = &(options.lineSE);
         };
 
-    ui.AddButton(&BTNexitgame);
     BTNexitgame.text = "EXIT";
     BTNexitgame.action = []() {
         gameP->ExitGame();
+        };
+
+    options.BTNback.action = [this]() {
+        phase = Phase::YassyStory2;
         };
 }
 

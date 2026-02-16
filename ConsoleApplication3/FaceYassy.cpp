@@ -181,7 +181,7 @@ void FaceYassy::Output() {
 }
 
 void FaceYassy::RegisterButtons() {
-    ui.AddButton(&test);
+    //ui.AddButton(&test);
     test.action = [this]() {
         this->gameP->ChangeScene(Scene::Platformer);
         };

@@ -26,7 +26,8 @@ private:
 public:
     static Input* inputP;
 
-    std::vector<Button*> buttons;
+    //std::vector<Button*> buttons;
+    std::vector<LINE*> lines;
 
     LINE* currentLine;
     int currentButton;
@@ -34,7 +35,7 @@ public:
 
     UIManager();
     bool Update();
-    void AddButton(Button* ptr);
+    void AddLine(LINE* line);
     bool IsCursorOnUI();
 };
 

@@ -24,7 +24,8 @@ Options::Options() :
     BGM5(0, 0, 0, 0),
     BGM6(0, 0, 0, 0),
     BGM7(0, 0, 0, 0),
-    BGM8(0, 0, 0, 0)
+    BGM8(0, 0, 0, 0),
+    BTNback(100,100,192,192)
 {
     SE.push_back(&SE0);
     SE.push_back(&SE1);
@@ -49,7 +50,6 @@ Options::Options() :
 void Options::RegisterButtons() {
     int i = 0;
     for (auto& p : SE) {
-        ui.AddButton(p);
         p->action = [i]() {
             soundsP->SetSEVolume(i * 16);
             };
@@ -57,7 +57,6 @@ void Options::RegisterButtons() {
     }
     i = 0;
     for (auto& p : BGM) {
-        ui.AddButton(p);
         p->action = [i]() {
             soundsP->SetBGMVolume(i * 16);
             };
@@ -78,32 +77,45 @@ void Options::RegisterButtons() {
         BGM,
         DIRECTION::H,
         &lineSE,
-        nullptr,
+        &back,
         [this]() {
             this->ui.currentButton = settings::SE / 16;
         },
         [](){}
     };
+    back = {
+        {&BTNback},
+        DIRECTION::H,
+        &lineBGM,
+        nullptr,
+        [this]() {
+            this->ui.currentButton = settings::BGM / 16;
+        }
+    };
+
+    ui.AddLine(&lineSE);
+    ui.AddLine(&lineBGM);
+    ui.AddLine(&back);
     ui.currentLine = &lineSE;
 }
 
 void Options::Show() {
     int i = 0;
     for (auto& p : SE) {
-        p->x = i * 96 + 800;
+        p->x = i * 112 + 800;
         p->y = settings::baseH / 2 + 200;
-        p->w = 64;
-        p->h = 64;
+        p->w = 96;
+        p->h = 96;
         p->icon = static_cast<Icons>(i + 11);
         p->visible = true;
         i++;
     }
     i = 0;
     for (auto& p : BGM) {
-        p->x = i * 96 + 800;
+        p->x = i * 112 + 800;
         p->y = settings::baseH / 2 - 200;
-        p->w = 64;
-        p->h = 64;
+        p->w = 96;
+        p->h = 96;
         p->icon = static_cast<Icons>(i + 11);
         p->visible = true;
         i++;
@@ -150,5 +162,6 @@ void Options::Update() {
         }
         i++;
     }
+    BTNback.state = State::Idle;
     ui.Update();
 }

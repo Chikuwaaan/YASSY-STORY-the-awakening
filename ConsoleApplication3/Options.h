@@ -32,8 +32,12 @@ private:
     Button BGM7;
     Button BGM8;
     std::vector<Button*> BGM;
+
+    LINE back; 
 public:
     LINE lineSE;
+
+    Button BTNback;
 
     UIManager ui;
     static Sounds* soundsP;

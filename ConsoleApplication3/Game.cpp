@@ -67,8 +67,8 @@ void Game::ChangeScene(Scene s) {
 
 
 void Game::Run() {
-    ChangeScene(Scene::Title);
-    //ChangeScene(Scene::Platformer);
+    //ChangeScene(Scene::Title);
+    ChangeScene(Scene::Platformer);
     //ChangeScene(Scene::FaceYassy);
     //ChangeScene(Scene::LevelSelect);
 

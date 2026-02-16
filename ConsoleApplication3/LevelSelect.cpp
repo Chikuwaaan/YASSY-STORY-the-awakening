@@ -24,14 +24,13 @@ LevelSelect::LevelSelect() :
 }
 
 void LevelSelect::RegisterButtons() {
+    ui.AddLine(&lineLevels);
+    ui.AddLine(&lineTest);
+
     int i = 0;
     for (auto& p : lineLevels.selectables) {
-        ui.AddButton(p);
         p->x = i * 300 + 300;
         i++;
-    }
-    for (auto& p : lineTest.selectables) {
-        ui.AddButton(p);
     }
     
     ui.currentLine = &lineLevels;
