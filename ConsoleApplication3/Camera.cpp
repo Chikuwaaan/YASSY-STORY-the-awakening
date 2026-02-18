@@ -92,7 +92,7 @@ void Camera::Update() {
     }
 
     camera.x = camera.x + (camera.targetX - camera.x) * settings::timeScale * 8;
-    camera.y = camera.y + (camera.targetY - camera.y) * settings::timeScale * 8;
+    camera.y = camera.y + (camera.targetY - camera.y) * settings::timeScale * 4;
     //camera.x = camera.targetX;
     //camera.y = camera.targetY;
 

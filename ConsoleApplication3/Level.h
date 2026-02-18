@@ -19,7 +19,7 @@ enum class CHECKFOR {
 
 struct BLOCK {
     std::string tex;
-    bool invisible;
+    int renderingType;
     OBJRECT hitBox;
     int damage;
 };
@@ -51,7 +51,8 @@ public:
     void Editor();
     void DrawMap();
     double GetBlockSize();
-    SDL_Rect CheckAroundTile(int y, int x, CHECKFOR checkFor, int type);
+    SDL_Rect CheckAroundTile1(int y, int x, CHECKFOR checkFor, int type);
+    SDL_Rect CheckAroundTile2(int y, int x, int type);
 
     OBJRECT IsTouching2(OBJRECT obj1, bool direction);
     void FixBlockPos(int* x, int* y);

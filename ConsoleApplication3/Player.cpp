@@ -22,8 +22,8 @@ Player::Player() {
     moveBody = 0;
     x = 200.0;
     y = 1000.0;
-    w = 40.0;
-    h = 60.0;
+    w = 32.0;
+    h = 64.0;
     aX = 0.0;
     aY = 0.0;
     canJump = 0;

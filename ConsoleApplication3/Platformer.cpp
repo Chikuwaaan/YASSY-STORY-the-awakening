@@ -4,6 +4,10 @@
 #include "namespace.h"
 #include "GameObject.h"
 #include "Lift.h"
+#include "Zako.h"
+
+#include <iostream>
+#include <fstream>
 
 Textures* Platformer::texturesP = nullptr;
 Camera* Platformer::cameraP = nullptr;
@@ -12,9 +16,37 @@ Platformer::Platformer() {
     player.levelP = &level;
 }
 
+void Platformer::LoadEntities() {
+    std::string path = "Levels/";
+    path = path + std::to_string(platformer::level) + "/entities.csv";
+    std::ifstream file(path);
+    std::string line;
+
+    while (std::getline(file, line)) {
+        std::stringstream stream(line);
+        std::string cell;
+
+        std::string objClass;
+        std::getline(stream, objClass, ',');
+
+        std::vector<double> args;
+        while (std::getline(stream, cell, ',')) {
+            args.push_back(std::stod(cell));
+        }
+
+        if (objClass == "Zako") {
+            AddObject<Zako>(args[0], args[1]);
+        }
+        if (objClass == "Lift") {
+            AddObject<Lift>(args[0], args[1], args[2], args[3], args[4], args[5]);
+        }
+    }
+}
+
 void Platformer::Init() {
     level.LoadLevel(platformer::level);
     player.Spawn();
+    LoadEntities();
 }
 
 void Platformer::Quit() {
@@ -46,7 +78,8 @@ void Platformer::Update() {
     
     level.DrawMap();
     player.Update();
-    player.Draw();
+    //player.Draw();
+    player.DrawPlayer();
 
     level.Editor();
 }

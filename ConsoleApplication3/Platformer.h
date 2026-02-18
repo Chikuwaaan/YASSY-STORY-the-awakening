@@ -26,13 +26,16 @@ public:
     std::vector<std::unique_ptr<GameObject>> pendingObjects;
 
     Platformer();
+
+    void LoadEntities();
+
     void Init();
     void Quit();
     void Update();
 
     template<typename T, typename... Args>
     void AddObject(Args&&... args) {
-        objects.push_back(
+        pendingObjects.push_back(
             std::make_unique<T>(std::forward<Args>(args)...)
         );
     }

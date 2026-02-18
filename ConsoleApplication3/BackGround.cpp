@@ -6,12 +6,14 @@ BackGround::BackGround() {
 }
 
 void BackGround::Draw() {
+    CAMERA cam = cameraP->GetCam();
+
     OBJRECT rect;
-    rect.x = settings::baseW / 2;
-    rect.y = settings::baseH / 2;
-    rect.w = settings::baseW;
-    rect.h = settings::baseH;
-    texturesP->DrawImage("select", rect, 0, {});
+    rect.x = settings::baseW / 2 + ((cam.x - settings::baseW / 2) * 0.9);
+    rect.y = settings::baseH / 2 + ((cam.y - settings::baseH / 2) * 0.9);
+    rect.w = settings::baseW * 2;
+    rect.h = settings::baseH * 2;
+    texturesP->DrawImage("bg1", rect, 1, {});
     /*
     CAMERA cam = cameraP->GetCam();
     for (int i = 0; i < 2; i++) {

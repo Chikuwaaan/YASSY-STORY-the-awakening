@@ -19,7 +19,7 @@ Level::Level() :
     levelW = 256;
     levelH = 32;
     blockSize = 96.0;
-    dev = 1;
+    dev = 0;
     editorPalette = 1;
     editorMode = 1;
 
@@ -30,44 +30,50 @@ Level::Level() :
 
     blockProperty.push_back({
         "null",
-        1,
+        0,
         {0,0,blockSize,blockSize},
         0,
         });
     blockProperty.push_back({
         "block1",
-        0,
+        1,
         {0,0,blockSize,blockSize},
         0
         });
     blockProperty.push_back({
         "block2",
-        0,
+        1,
         {0,6 * blockSize / (-16),10*blockSize / 16,blockSize / 4},
         1
         });
     blockProperty.push_back({
         "block3",
-        0,
+        1,
         {6 * blockSize / 16, 0, blockSize / 4, 10 * blockSize / 16,},
         1
         });
     blockProperty.push_back({
         "block4",
-        0,
+        1,
         {0,6 * blockSize / 16,10 * blockSize / 16,blockSize / 4},
         1
         });
     blockProperty.push_back({
         "block5",
-        0,
+        1,
         {6 * blockSize / (-16), 0, blockSize / 4, 10 * blockSize / 16,},
         1
         });
     blockProperty.push_back({
         "block6",
-        0,
+        2,
         {0,0,blockSize,blockSize},
+        0
+        });
+    blockProperty.push_back({
+        "block7",
+        2,
+        {0,0,0,0},
         0
         });
     /*
@@ -201,9 +207,8 @@ void Level::Editor() {
 void Level::DrawMap() {
     for (int y = 0; y < levelH; y++) {
         for (int x = 0; x < levelW; x++) {
-
             int blockType = level[y][x];
-            if (blockType != 0) {
+            if (blockProperty[blockType].renderingType == 1) {
                 std::string tex = blockProperty[blockType].tex;
 
                 OBJRECT rect1;
@@ -211,7 +216,7 @@ void Level::DrawMap() {
                 rect1.y = blockSize * y + blockSize * 0.75;
                 rect1.w = blockSize / 2;
                 rect1.h = blockSize / 2;
-                SDL_Rect src1 = CheckAroundTile(y, x, CHECKFOR::TopRight, blockType);
+                SDL_Rect src1 = CheckAroundTile1(y, x, CHECKFOR::TopRight, blockType);
                 texturesP->DrawSprite(tex, rect1, src1, 1);
 
                 OBJRECT rect2;
@@ -219,7 +224,7 @@ void Level::DrawMap() {
                 rect2.y = blockSize * y + blockSize * 0.75;
                 rect2.w = blockSize / 2;
                 rect2.h = blockSize / 2;
-                SDL_Rect src2 = CheckAroundTile(y, x, CHECKFOR::TopLeft, blockType);
+                SDL_Rect src2 = CheckAroundTile1(y, x, CHECKFOR::TopLeft, blockType);
                 texturesP->DrawSprite(tex, rect2, src2, 1);
 
                 OBJRECT rect3;
@@ -227,7 +232,7 @@ void Level::DrawMap() {
                 rect3.y = blockSize * y + blockSize * 0.25;
                 rect3.w = blockSize / 2;
                 rect3.h = blockSize / 2;
-                SDL_Rect src3 = CheckAroundTile(y, x, CHECKFOR::BottomLeft, blockType);
+                SDL_Rect src3 = CheckAroundTile1(y, x, CHECKFOR::BottomLeft, blockType);
                 texturesP->DrawSprite(tex, rect3, src3, 1);
 
                 OBJRECT rect4;
@@ -235,7 +240,7 @@ void Level::DrawMap() {
                 rect4.y = blockSize * y + blockSize * 0.25;
                 rect4.w = blockSize / 2;
                 rect4.h = blockSize / 2;
-                SDL_Rect src4 = CheckAroundTile(y, x, CHECKFOR::BottomRight, blockType);
+                SDL_Rect src4 = CheckAroundTile1(y, x, CHECKFOR::BottomRight, blockType);
                 texturesP->DrawSprite(tex, rect4, src4, 1);
                 
                 if (dev) {
@@ -248,6 +253,17 @@ void Level::DrawMap() {
                 }
                 
             }
+            else if (blockProperty[blockType].renderingType == 2) {
+                OBJRECT rect;
+                rect.x = blockSize * x + blockSize / 2 + blockProperty[blockType].hitBox.x;
+                rect.y = blockSize * y + blockSize / 2 + blockProperty[blockType].hitBox.y;
+                rect.w = blockSize;
+                rect.h = blockSize;
+
+                std::string tex = blockProperty[blockType].tex;
+                SDL_Rect src = CheckAroundTile2(y, x, blockType);
+                texturesP->DrawSprite(tex, rect, src, 1);
+            }
         }
     }
 };
@@ -256,7 +272,7 @@ double Level::GetBlockSize() {
     return blockSize;
 }
 
-SDL_Rect Level::CheckAroundTile(int y, int x, CHECKFOR checkFor, int type) {
+SDL_Rect Level::CheckAroundTile1(int y, int x, CHECKFOR checkFor, int type) {
     int size = 8;
     SDL_Rect src = { 0,0,size,size };
     bool yoko=0, tate=0, naname=0;
@@ -355,6 +371,32 @@ SDL_Rect Level::CheckAroundTile(int y, int x, CHECKFOR checkFor, int type) {
     return src;
 }
 
+SDL_Rect Level::CheckAroundTile2(int y, int x, int type) {
+    int size = 16;
+    SDL_Rect src = { 0,0,size,size };
+    bool yoko = 0, tate = 0;
+
+    if (x > 0 && x < levelW - 1) {
+        if (level[y][x - 1] == type || type == level[y][x + 1]) {
+            yoko = 1;
+        }
+    }
+    if (y > 0 && y < levelH - 1) {
+        if (level[y - 1][x] == type || type == level[y + 1][x]) {
+            tate = 1;
+        }
+    }
+
+
+    if (yoko) {
+        src.x = size;
+        return src;
+    }if (tate) {
+        src.x = size * 2;
+        return src;
+    }
+    return src;
+}
 
 
 OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
