@@ -6,6 +6,7 @@ class Zako :
 public:
     Zako(double x0, double y0);
     void Update() override;
+    void Touched() override;
     void Stomped() override;
 };
 

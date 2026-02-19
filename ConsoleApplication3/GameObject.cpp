@@ -3,11 +3,15 @@
 #include "namespace.h"
 #include "Textures.h"
 #include "Input.h"
+#include "Platformer.h"
+#include "Player.h"
 
 Textures* GameObject::texturesP = nullptr;
 Sounds* GameObject::soundsP = nullptr;
 Camera* GameObject::cameraP = nullptr;
 Input* GameObject::inputP = nullptr;
+Platformer* GameObject::platformerP = nullptr;
+Player* GameObject::playerP = nullptr;
 
 GameObject::GameObject() {
     type = EntityType::Null;
@@ -17,6 +21,7 @@ GameObject::GameObject() {
     h = 180.0;
     vX = 0.0;
     vY = 0.0;
+    flipX = 0;
     collision = 0;
     dead = 0;
 }

@@ -44,6 +44,8 @@ void Game::ChangeScene(Scene s) {
     }
     if (s == Scene::Platformer) {
         platformer = std::make_unique<Platformer>();
+        GameObject::platformerP = platformer.get();
+
         platformer->Init();
 
         int levelN = platformer::level;
@@ -256,10 +258,7 @@ void Game::MakeInstance() {
     screenshot = std::make_unique<ScreenShot>();
     overlay = std::make_unique<OverLay>();
     
-    GameObject::texturesP = textures.get();
-    GameObject::soundsP = sounds.get();
-    GameObject::inputP = input.get();
-    GameObject::cameraP = camera.get();
+    
     OverLay::texturesP = textures.get();
     FaceYassy::inputP = input.get();
     FaceYassy::texturesP = textures.get();
@@ -289,6 +288,11 @@ void Game::MakeInstance() {
     LevelSelect::texturesP = textures.get();
     LevelSelect::gameP = this;
     UIManager::inputP = input.get();
+    GameObject::texturesP = textures.get();
+    GameObject::soundsP = sounds.get();
+    GameObject::inputP = input.get();
+    GameObject::cameraP = camera.get();
+    
 }
 
 void Game::ExitGame() {

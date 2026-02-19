@@ -14,9 +14,13 @@ Camera* Platformer::cameraP = nullptr;
 
 Platformer::Platformer() {
     player.levelP = &level;
+    GameObject::playerP = &player;
 }
 
 void Platformer::LoadEntities() {
+    objects.clear();
+    dyingObjects.clear();
+    pendingObjects.clear();
     std::string path = "Levels/";
     path = path + std::to_string(platformer::level) + "/entities.csv";
     std::ifstream file(path);
@@ -46,7 +50,6 @@ void Platformer::LoadEntities() {
 void Platformer::Init() {
     level.LoadLevel(platformer::level);
     player.Spawn();
-    LoadEntities();
 }
 
 void Platformer::Quit() {
@@ -78,8 +81,8 @@ void Platformer::Update() {
     
     level.DrawMap();
     player.Update();
-    //player.Draw();
-    player.DrawPlayer();
+    player.Draw();
+    //player.DrawPlayer();
 
     level.Editor();
 }

@@ -299,9 +299,8 @@ void Player::CollideY() {
         }
     }
 
-    /*
     //entity
-    for (auto& p : gameP->objects) {
+    for (auto& p : platformerP->objects) {
         OBJRECT eRect = p->GetRect();
         bool collision = p->GetCollosion();
 
@@ -358,7 +357,6 @@ void Player::CollideY() {
             }
         }
     }
-    */
 }
 
 void Player::CollideX() {
@@ -391,8 +389,7 @@ void Player::CollideX() {
         }
     }
 
-    /*
-    for (auto& p : gameP->objects) {
+    for (auto& p : platformerP->objects) {
         OBJRECT eRect = p->GetRect();
         bool collision = p->GetCollosion();
 
@@ -416,7 +413,6 @@ void Player::CollideX() {
             
         }
     }
-    */
 }
 
 void Player::MoveCameraRoom() {
@@ -452,6 +448,7 @@ void Player::MoveCameraRoom() {
 }
 
 void Player::Die() {
+    std::cout << "die";
     isDead = 1;
     dieTime = 3.0;
     dieAnim = 1;
@@ -468,7 +465,6 @@ void Player::Die() {
 }
 
 void Player::Spawn() {
-    std::cout << "‚·‚Á‚Û[[‚ñ";
     x = spawnX;
     y = spawnY;
     vX = 0.0;
@@ -484,7 +480,7 @@ void Player::Spawn() {
     cam.y = y;
     cameraP->SetCam(cam);
 
-    //gameP->SetupEntities();
+    platformerP->LoadEntities();
 }
 
 void Player::SetSpawnPoint(double x, double y) {

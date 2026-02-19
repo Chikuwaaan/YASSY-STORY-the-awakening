@@ -1,5 +1,6 @@
 #include "Zako.h"
 #include "SDL_mixer.h"
+#include "Player.h"
 
 Zako::Zako(double x0, double y0) {
     texName = "nsfw";
@@ -12,6 +13,10 @@ Zako::Zako(double x0, double y0) {
 
 void Zako::Update() {
 
+}
+
+void Zako::Touched() {
+    playerP->Die();
 }
 
 void Zako::Stomped() {
