@@ -2,40 +2,48 @@
 #include "Textures.h"
 #include "Camera.h"
 
-BackGround::BackGround() {
+BackGround::BackGround(double X, double Y, double size, double camX, double camY, std::string tex) {
+    x0 = X + settings::baseW / 2 * size;
+    y0 = Y + settings::baseH / 2 * size;
+    dx = 0;
+    dy = 0;
+    camX0 = camX;
+    camY0 = camY;
+    texName = tex;
+    type = EntityType::BackGround;
+
+    w = settings::baseW * size;
+    h = settings::baseH * size;
 }
 
 void BackGround::Draw() {
-    CAMERA cam = cameraP->GetCam();
+    
+    texturesP->DrawImage(texName, {x,y,w,h}, 1, {});
+    return;
+}
 
-    OBJRECT rect;
-    rect.x = settings::baseW / 2 + ((cam.x - settings::baseW / 2) * 0.9);
-    rect.y = settings::baseH / 2 + ((cam.y - settings::baseH / 2) * 0.9);
-    rect.w = settings::baseW * 2;
-    rect.h = settings::baseH * 2;
-    texturesP->DrawImage("bg1", rect, 1, {});
-    /*
-    CAMERA cam = cameraP->GetCam();
-    for (int i = 0; i < 2; i++) {
-        for (int j = 0; j < 2; j++) {
-            int bgx = j;
-            int bgy = i;
-            OBJRECT rect;
-            rect.x = ((cam.x - settings::baseW / 2) * 0.8) + (settings::baseW * (bgx + 0.5));
-            rect.y = ((cam.y - settings::baseH / 2) * 0.8) + (settings::baseH * (bgy + 0.5));
-            rect.w = settings::baseW * 4;
-            rect.h = settings::baseH * 4;
-
-            std::string tex;
-            if (i % 2) {
-                tex = "bg_0-1";
-            }
-            else {
-                tex = "bg_0-0";
-            }
-            texturesP->DrawImage(tex, rect, 1, {});
+void BackGround::Update() {
+    bool isCloud = 0;
+    if (texName == "cloud1") {
+        dx = timer.GetTime() * -30;
+        isCloud = 1;
+    }
+    if (texName == "cloud2") {
+        dx = timer.GetTime() * -60;
+        isCloud = 1;
+    }
+    if (texName == "cloud3") {
+        dx = timer.GetTime() * -90;
+        isCloud = 1;
+    }
+    if (1) {
+        if (dx < (settings::baseW * -1)) {
+            timer.Reset();
         }
     }
-    */
-    return;
+
+    CAMERA cam = cameraP->GetCam();
+    x = x0 + dx + (cam.x - camX0) * 0.9;
+    y = y0 + dy +(cam.y - camY0) * 0.9;
+    
 }

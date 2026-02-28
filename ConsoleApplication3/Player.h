@@ -46,6 +46,7 @@ public:
     void SetAX(double acceleration);
     void Update() override;
     void Jump();
+    void Stomp();
     
     void MoveCameraRoom();
     void Die();

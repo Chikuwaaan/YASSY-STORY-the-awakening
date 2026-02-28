@@ -52,8 +52,10 @@ void Game::ChangeScene(Scene s) {
         camera->LoadCameraRoom(levelN);
         camera->Init();
         
+        /*
         Mix_Music* music = Mix_LoadMUS("Assets/sounds/6.ogg");
         Mix_PlayMusic(music, -1);
+        */
     }
 
     if (s == Scene::FaceYassy) {
@@ -201,7 +203,8 @@ void Game::Update() {
         std::string text = std::to_string(x) + "," + std::to_string(y);
         textures->DrawTexts(text, white, black, { 0,50,1,1 }, 0, Anchor::Left);
 
-        if (input->event.RETURN) {
+        //cursor in window
+        if (input->event.F1) {
             std::cout << text << std::endl;
         }
     }
@@ -279,6 +282,8 @@ void Game::MakeInstance() {
     Textures::cameraP = camera.get();
     Platformer::texturesP = textures.get();
     Platformer::cameraP = camera.get();
+    Platformer::inputP = input.get();
+    Platformer::soundsP = sounds.get();
     Level::texturesP = textures.get();
     Level::inputP = input.get();
     Level::cameraP = camera.get();

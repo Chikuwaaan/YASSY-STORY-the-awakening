@@ -136,6 +136,7 @@
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CheckPoint.cpp" />
     <ClCompile Include="FaceYassy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelSelect.cpp" />
     <ClCompile Include="Lift.cpp" />
+    <ClCompile Include="LiftFall.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="namespace.cpp" />
     <ClCompile Include="Options.cpp" />
@@ -162,6 +164,7 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CheckPoint.h" />
     <ClInclude Include="FaceYassy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
@@ -170,6 +173,7 @@
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelSelect.h" />
     <ClInclude Include="Lift.h" />
+    <ClInclude Include="LiftFall.h" />
     <ClInclude Include="Options.h" />
     <ClInclude Include="OverLay.h" />
     <ClInclude Include="Platformer.h" />

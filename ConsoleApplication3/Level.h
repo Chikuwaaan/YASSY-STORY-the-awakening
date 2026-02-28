@@ -29,11 +29,12 @@ class Level
 private:
     std::vector<BLOCKROOM> rooms;
     int levelW, levelH;
-    uint8_t level[32][256];
+    uint8_t level[128][1024];
     double blockSize;
     int editorPalette;
     bool dev;
-    bool editorMode;
+    int mouseX, mouseY;
+    double mouseXC, mouseYC;
 public:
     static Textures* texturesP;
     static Input* inputP;
@@ -48,6 +49,8 @@ public:
     void LoadLevel(int n);
     void LoadMap(int n);
 
+
+    void Update();
     void Editor();
     void DrawMap();
     double GetBlockSize();
@@ -56,5 +59,7 @@ public:
 
     OBJRECT IsTouching2(OBJRECT obj1, bool direction);
     void FixBlockPos(int* x, int* y);
+
+    void GetMouseC(double* x, double* y);
 };
 

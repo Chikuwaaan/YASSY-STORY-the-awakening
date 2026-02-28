@@ -5,16 +5,28 @@
 #include "GameObject.h"
 #include "Lift.h"
 #include "Zako.h"
+#include "Input.h"
+#include "CheckPoint.h"
+#include "BackGround.h"
+#include "SDL_mixer.h"
+#include "Sounds.h"
+#include "LiftFall.h"
 
 #include <iostream>
 #include <fstream>
+#include <variant>
 
 Textures* Platformer::texturesP = nullptr;
 Camera* Platformer::cameraP = nullptr;
+Input* Platformer::inputP = nullptr;
+Sounds* Platformer::soundsP = nullptr;
 
 Platformer::Platformer() {
     player.levelP = &level;
+    GameObject::levelP = &level;
     GameObject::playerP = &player;
+
+    editorMode = 0;
 }
 
 void Platformer::LoadEntities() {
@@ -33,16 +45,52 @@ void Platformer::LoadEntities() {
         std::string objClass;
         std::getline(stream, objClass, ',');
 
-        std::vector<double> args;
+        std::vector<std::variant<double, std::string>> args;
         while (std::getline(stream, cell, ',')) {
-            args.push_back(std::stod(cell));
+            bool digit  = 0;
+            if (std::isdigit(cell[0])) {
+                digit = 1;
+            }
+
+            if (digit) {
+                args.push_back(std::stod(cell));
+            }
+            else {
+                args.push_back(cell);
+            }
         }
 
         if (objClass == "Zako") {
-            AddObject<Zako>(args[0], args[1]);
+            AddObject<Zako>(std::get<double>(args[0]), std::get<double>(args[1]));
         }
         if (objClass == "Lift") {
-            AddObject<Lift>(args[0], args[1], args[2], args[3], args[4], args[5]);
+            AddObject<Lift>(
+                std::get<double>(args[0]),
+                std::get<double>(args[1]),
+                std::get<double>(args[2]),
+                std::get<double>(args[3]),
+                std::get<double>(args[4]),
+                std::get<double>(args[5])
+                );
+        }
+        if (objClass == "LiftFall") {
+            AddObject<LiftFall>(
+                std::get<double>(args[0]),
+                std::get<double>(args[1])
+            );
+        }
+        if (objClass == "CheckPoint") {
+            AddObject<CheckPoint>(std::get<double>(args[0]), std::get<double>(args[1]));
+        }
+        if (objClass == "BackGround") {
+            AddObject<BackGround>(
+                std::get<double>(args[0]),
+                std::get<double>(args[1]),
+                std::get<double>(args[2]),
+                std::get<double>(args[3]),
+                std::get<double>(args[4]),
+                std::get<std::string>(args[5])
+            );
         }
     }
 }
@@ -50,6 +98,7 @@ void Platformer::LoadEntities() {
 void Platformer::Init() {
     level.LoadLevel(platformer::level);
     player.Spawn();
+    soundsP->PlayMusic("cloud_city");
 }
 
 void Platformer::Quit() {
@@ -57,32 +106,67 @@ void Platformer::Quit() {
 }
 
 void Platformer::Update() {
+    EVENT event = inputP->event;
     OBJRECT screenRect = { (double)settings::baseW / 2, (double)settings::baseH / 2, (double)settings::baseW, (double)settings::baseH, 1 };
     texturesP->DrawRect({ 255,255,255,255 }, screenRect, 0);
-    background.Draw();
 
     cameraP->Update();
 
-    
-    for (auto& obj : objects) {
-        obj->Update();
-        obj->Draw();
-    }
-    for (auto& obj : pendingObjects) {
-        objects.push_back(std::move(obj));
-    }
-    pendingObjects.clear();
-    objects.erase(
-        std::remove_if(objects.begin(), objects.end(),
-            [](const std::unique_ptr<GameObject>& o)
-            {return o->IsDead(); }),
-        objects.end()
-    );    
-    
-    level.DrawMap();
-    player.Update();
-    player.Draw();
-    //player.DrawPlayer();
+    if (event.E) {
+        if (editorMode) {
+            editorMode = 0;
+        }
+        else {
+            editorMode = 1;
+        }
+    }  
 
-    level.Editor();
+    if (event.P) {
+        double x, y;
+        level.GetMouseC(&x, &y);
+        player.SetX(x);
+        player.SetY(y);
+    }
+
+    if (!editorMode) {
+        for (auto& obj : objects) {
+            obj->Update();
+            //obj->DrawHitbox();
+        }
+        for (auto& obj : pendingObjects) {
+            objects.push_back(std::move(obj));
+        }
+        pendingObjects.clear();
+        objects.erase(
+            std::remove_if(objects.begin(), objects.end(),
+                [](const std::unique_ptr<GameObject>& o)
+                {return o->IsDead(); }),
+            objects.end()
+        );
+
+        player.Update();
+    }
+
+    for (auto& obj : objects) {
+        EntityType type = obj->GetType();
+        if (type == EntityType::BackGround) {
+            obj->Draw();
+        }
+    }
+    level.Update();
+    level.DrawMap();
+    for (auto& obj : objects) {
+        EntityType type = obj->GetType();
+        if (type != EntityType::BackGround) {
+            obj->Draw();
+        }
+    }
+    
+    player.Draw();
+    player.DrawPlayer();
+
+    if (editorMode) {
+        level.Editor();
+    }
+    cameraP->Draw();
 }

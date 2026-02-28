@@ -55,10 +55,3 @@ struct BLOCKROOM {
 	std::vector<std::vector<uint8_t>> terrain;
 };
 
-
-enum class EntityType {
-    Null,
-    Lift,
-    Zako,
-    CheckPoint
-};

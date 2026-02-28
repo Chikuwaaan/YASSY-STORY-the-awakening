@@ -12,7 +12,7 @@ namespace settings {
     int winH = 0;
     SDL_Window* window;
     SDL_Renderer* renderer;
-    int BGM = 0;
+    int BGM = 128;
     int SE = 128;
 }
 
@@ -80,6 +80,6 @@ namespace utilities {
 namespace platformer {
     double gravity = -2150.0;
     int flames = 0;
-    int level = 4;
+    int level = 0;
 }
 

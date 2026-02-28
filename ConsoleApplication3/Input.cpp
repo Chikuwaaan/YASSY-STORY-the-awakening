@@ -46,6 +46,18 @@ void Input::GetEvent() {
             if (e.key.keysym.scancode == SDL_SCANCODE_DELETE) {
                 event.DEL = 1;
             }
+            if (e.key.keysym.scancode == SDL_SCANCODE_F1) {
+                event.F1 = 1;
+            }
+            if (e.key.keysym.scancode == SDL_SCANCODE_F2) {
+                event.F2 = 1;
+            }
+            if (e.key.keysym.scancode == SDL_SCANCODE_F3) {
+                event.F3 = 1;
+            }
+            if (e.key.keysym.scancode == SDL_SCANCODE_F4) {
+                event.F4 = 1;
+            }
             if (e.key.keysym.scancode == SDL_SCANCODE_F12) {
                 event.F12 = 1;
             }
@@ -60,6 +72,12 @@ void Input::GetEvent() {
             }
             if (e.key.keysym.scancode == SDL_SCANCODE_E) {
                 event.E = 1;
+            }
+            if (e.key.keysym.scancode == SDL_SCANCODE_C) {
+                event.C = 1;
+            }
+            if (e.key.keysym.scancode == SDL_SCANCODE_P) {
+                event.P = 1;
             }
             if (e.key.keysym.scancode == SDL_SCANCODE_W) {
                 event.Up = 1;

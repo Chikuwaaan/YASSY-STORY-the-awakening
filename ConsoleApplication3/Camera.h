@@ -24,6 +24,7 @@ public:
     void SetTargetX(double x);
     void SetTargetY(double y);
     void Update();
+    void Draw();
     std::vector<CAMERAROOM>* GetRoom();
 };
 

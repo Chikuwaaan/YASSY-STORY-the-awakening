@@ -46,10 +46,10 @@ void Camera::LoadCameraRoom(int n) {
         std::getline(stream, cell, ','); room[i].x2 = std::stoi(cell);
         std::getline(stream, cell, ','); room[i].y1 = std::stoi(cell);
         std::getline(stream, cell, ','); room[i].y2 = std::stoi(cell);
-        std::getline(stream, cell, ','); room[i].x3 = std::stoi(cell);
-        std::getline(stream, cell, ','); room[i].x4 = std::stoi(cell);
-        std::getline(stream, cell, ','); room[i].y3 = std::stoi(cell);
-        std::getline(stream, cell, ','); room[i].y4 = std::stoi(cell);
+        std::getline(stream, cell, ','); room[i].x3 = std::stoi(cell) + settings::baseW / 2;
+        std::getline(stream, cell, ','); room[i].x4 = std::stoi(cell) - settings::baseW / 2;
+        std::getline(stream, cell, ','); room[i].y3 = std::stoi(cell) + settings::baseH / 2;
+        std::getline(stream, cell, ','); room[i].y4 = std::stoi(cell) - settings::baseH / 2;
         std::getline(stream, cell, ','); room[i].force = std::stoi(cell);
         i++;
     }
@@ -76,25 +76,36 @@ void Camera::Update() {
     const Uint8* keystate = inputP->keystate;
 
     if (keystate[SDL_SCANCODE_UP]) {
-        camera.offsetY += 4;
+        camera.offsetY += 4 / camera.zoom;
     }
     if (keystate[SDL_SCANCODE_DOWN]) {
-        camera.offsetY -= 4;
+        camera.offsetY -= 4 / camera.zoom;
     }
     if (keystate[SDL_SCANCODE_LEFT]) {
-        camera.offsetX -= 4;
+        camera.offsetX -= 4 / camera.zoom;
     }
     if (keystate[SDL_SCANCODE_RIGHT]) {
-        camera.offsetX += 4;
+        camera.offsetX += 4 / camera.zoom;
     }
     if (inputP->event.MouseWheel) {
         camera.zoom += inputP->event.MouseWheel * 0.1;
+        if (camera.zoom < 0.1) {
+            camera.zoom = 0.1;
+        }
+    }
+    if (inputP->event.C) {
+        camera.offsetX = 0;
+        camera.offsetY = 0;
     }
 
     camera.x = camera.x + (camera.targetX - camera.x) * settings::timeScale * 8;
     camera.y = camera.y + (camera.targetY - camera.y) * settings::timeScale * 4;
-    //camera.x = camera.targetX;
-    //camera.y = camera.targetY;
+    
+}
+
+void Camera::Draw() {
+    std::string text = std::to_string(camera.x) + ',' + std::to_string(camera.y);
+    texturesP->DrawTexts(text, { 255,255,255,255 }, { 0,0,0,255 }, { 50,1000,1,1 }, 0, Anchor::Left);
 
     texturesP->DrawRect({ 0,0,255,255 }, { camera.x, camera.y, (double)settings::baseW, (double)settings::baseH }, 1);
     if (drawCameraRoom) {

@@ -13,11 +13,17 @@ struct MOUSE {
 struct EVENT {
     bool ESCAPE;
     bool DEL;
+    bool F1;
+    bool F2;
+    bool F3;
+    bool F4;
     bool F12;
     bool RETURN;
     bool SPACE;
     bool Q;
     bool E;
+    bool C;
+    bool P;
     bool Up;
     bool Down;
     bool Left;

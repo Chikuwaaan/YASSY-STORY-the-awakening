@@ -16,13 +16,15 @@ Game* Level::gameP = nullptr;
 Level::Level() : 
     level{ {} }
 {
-    levelW = 256;
-    levelH = 32;
+    levelW = 1024;
+    levelH = 128;
     blockSize = 96.0;
     dev = 0;
     editorPalette = 1;
-    editorMode = 1;
-
+    mouseX = 0;
+    mouseY = 0;
+    mouseXC = 0;
+    mouseYC = 0;
 
     rooms.push_back({ 0,0,{
         {1,1,1,1,1,1,1,1,1,1}
@@ -151,18 +153,14 @@ void Level::LoadMap(int n) {
     }
 }
 
-void Level::Editor() {
-    if (!editorMode) return;
-
+void Level::Update() {
     MOUSE mouse = inputP->mouse;
-    EVENT event = inputP->event;
     CAMERA camera = cameraP->GetCam();
-    //int mouseX = (int)((mouse.x + cam.x - settings::baseW / 2 ) / blockSize);
 
     int pivotX = settings::baseW / 2;
     int pivotY = settings::baseH / 2;
-    int mouseX = (int)((mouse.x / camera.zoom + (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) / blockSize);
-    int mouseY = (int)((mouse.y / camera.zoom + (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) / blockSize);
+    mouseX = (int)((mouse.x / camera.zoom + (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) / blockSize);
+    mouseY = (int)((mouse.y / camera.zoom + (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) / blockSize);
     if (mouseX < 0) {
         mouseX = 0;
     }
@@ -175,8 +173,14 @@ void Level::Editor() {
     else if (mouseY >= levelH) {
         mouseY = levelH - 1;
     }
-    
-    
+
+    mouseXC = mouseX * (int)blockSize + (int)blockSize / 2;
+    mouseYC = mouseY * (int)blockSize + (int)blockSize / 2;
+}
+
+void Level::Editor() {
+    MOUSE mouse = inputP->mouse;
+    EVENT event = inputP->event;
 
     if (event.MouseX1) {
         if (editorPalette > 0) editorPalette--;
@@ -192,15 +196,28 @@ void Level::Editor() {
         level[mouseY][mouseX] = editorPalette;
     }
 
+    
+
     SDL_Color color1 = { 255,255,255,255 };
     SDL_Color color2 = { 0,0,0,255 };
-    texturesP->DrawSprite(blockProperty[editorPalette].tex, {1880, 40, 80, 80}, {0,0,16,16}, 0);
-    texturesP->DrawTexts(std::to_string(mouseX), color1, color2, { 1400, 0, 1, 1 }, 0, Anchor::Center);
-    texturesP->DrawTexts(std::to_string((int)(mouseX * blockSize)), color1, color2, { 1400, 50, 1, 1 }, 0, Anchor::Center);
-    texturesP->DrawTexts(std::to_string(mouseY), color1, color2, { 1600, 0, 1, 1 }, 0, Anchor::Center);
-    texturesP->DrawTexts(std::to_string((int)(mouseY * blockSize)), color1, color2, { 1600, 50, 1, 1 }, 0, Anchor::Center);
-    texturesP->DrawTexts(std::to_string((int)(mouseX * blockSize + blockSize / 2)), color1, color2, { 1400, 100, 1, 1 }, 0, Anchor::Center);
-    texturesP->DrawTexts(std::to_string((int)(mouseY * blockSize + blockSize / 2)), color1, color2, { 1600, 100, 1, 1 }, 0, Anchor::Center);
+    texturesP->DrawSprite(blockProperty[editorPalette].tex, {1920-48, 1080-48, blockSize, blockSize}, {0,0,16,16}, 0);
+
+    std::string blockIndex = std::to_string(mouseX) + "," + std::to_string(mouseY);
+    std::string blockPos = std::to_string(mouseX * (int)blockSize) + ',' + std::to_string(mouseY * (int)blockSize);
+    std::string blockCenter = std::to_string(mouseXC) + "," + std::to_string(mouseYC);
+    texturesP->DrawTexts(blockIndex, color1, color2, { 1400, 1030, 1, 1 }, 0, Anchor::Left);
+    texturesP->DrawTexts(blockPos, color1, color2, { 1400, 980, 1, 1 }, 0, Anchor::Left);
+    texturesP->DrawTexts(blockCenter, color1, color2, { 1400, 930, 1, 1 }, 0, Anchor::Left);
+    
+    if (event.F2) {
+        std::cout << blockIndex << std::endl;
+    }
+    if (event.F3) {
+        std::cout << blockPos << std::endl;
+    } 
+    if (event.F4) {
+        std::cout << blockCenter << std::endl;
+    }
 
 }
 
@@ -520,4 +537,9 @@ void Level::FixBlockPos(int* x, int* y) {
     else if (*y >= std::size(level)) {
         *y = std::size(level) - 1;
     }
+}
+
+void Level::GetMouseC(double* x, double* y) {
+    *x = mouseXC;
+    *y = mouseYC;
 }

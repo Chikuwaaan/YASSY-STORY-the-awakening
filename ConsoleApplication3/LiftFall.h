@@ -1,13 +1,14 @@
 #pragma once
 #include "GameObject.h"
-class Zako :
+class LiftFall :
     public GameObject
 {
+private:
+    bool isFalling;
 public:
-    Zako(double x0, double y0);
+    LiftFall(double X, double Y);
     void Update() override;
-    //void Draw() override;
-    void Touched() override;
     void Stomped() override;
+    void Touched() override;
 };
 

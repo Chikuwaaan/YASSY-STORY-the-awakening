@@ -6,20 +6,24 @@
 #include <iostream>
 #include "Level.h"
 #include "Player.h"
-#include "BackGround.h"
 
 class GameObject;
 class Textures;
 class Camera;
+class Input;
+class Sounds;
 
 class Platformer {
 private:
     Level level;
     Player player;
-    BackGround background;
+
+    bool editorMode;
 public:
     static Textures* texturesP;
     static Camera* cameraP;
+    static Input* inputP;
+    static Sounds* soundsP;
 
     std::vector<std::unique_ptr<GameObject>> objects;
     std::vector<std::unique_ptr<GameObject>> dyingObjects;

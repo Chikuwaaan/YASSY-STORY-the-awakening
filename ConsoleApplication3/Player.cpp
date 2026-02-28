@@ -8,6 +8,7 @@
 #include "Textures.h"
 #include "Input.h"
 #include "OverLay.h"
+#include <windows.h>
 
 Level* Player::levelP = nullptr;
 Camera* Player::cameraP = nullptr;
@@ -15,7 +16,7 @@ OverLay* Player::overlayP = nullptr;
 
 Player::Player() {
     onGround = 0;
-    texName = "missing";
+    texName = "head";
     maxSpeed = 480.0;
     minSpeed = 16.0;
     deceleration = 2160.0;
@@ -45,8 +46,8 @@ Player::Player() {
     dieAnim = 0;
     touchingEntity = nullptr;
     stomping = 0;
-    spawnX = 100;
-    spawnY = 1000;
+    spawnX = 912;
+    spawnY = 2832;
 }
 
 void Player::SetAX(double acceleration) {
@@ -71,6 +72,7 @@ void Player::Update() {
         isDead = 0;
         Spawn();
     }
+    
 
     const Uint8* keystate = inputP->keystate;
     if (keystate[SDL_SCANCODE_W]) {
@@ -104,10 +106,7 @@ void Player::Update() {
 
 
     //Y
-    if (vY > 1200) {
-        vY = 1200;
-    }
-    else if (vY < -1200) {
+    if (vY < -1200) {
         vY = -1200;
     }
 
@@ -182,8 +181,6 @@ void Player::Update() {
         EntityType type = touchingEntity->GetType();
         if (stomping) {
             touchingEntity->Stomped();
-            vY = 300;
-            onGround = 1;
         }
         else {
             touchingEntity->Touched();
@@ -258,6 +255,11 @@ void Player::Jump() {
         isJumping = 0;
     }
     */
+}
+
+void Player::Stomp() {
+    vY = 600;
+    onGround = 1;
 }
 
 void Player::CollideY() {
@@ -448,7 +450,18 @@ void Player::MoveCameraRoom() {
 }
 
 void Player::Die() {
-    std::cout << "die";
+    texName = "head_miss";
+    soundsP->PlaySE("die");
+    /*
+    MessageBoxW(
+        NULL,
+        L"Ç÷ÇΩÇ≠ÇªÅH",
+        L"YASSY STORY",
+        MB_ICONSTOP
+    );
+    */
+
+    std::cout << "YOUD IED" << std::endl;
     isDead = 1;
     dieTime = 3.0;
     dieAnim = 1;
@@ -458,13 +471,13 @@ void Player::Die() {
     overlayP->PinHole(settings::baseW/2, settings::baseH/2, 2000, 1000, 1.1, {0,0,0,255});
     //overlayP->PinHole((int)x, (int)y, 1000, 1000, 1, { 0,0,0,255 });
 
-    Mix_Chunk* se = Mix_LoadWAV("Assets/sounds/die.wav");
-    Mix_PlayChannel(-1, se, 0);
+    
     //Mix_Music* music = Mix_LoadMUS("Assets/audio/sanctuary.wav");
     //Mix_PlayMusic(music, -1);
 }
 
 void Player::Spawn() {
+    texName = "head";
     x = spawnX;
     y = spawnY;
     vX = 0.0;
@@ -473,6 +486,7 @@ void Player::Spawn() {
     aY = 0.0;
     walkVX = 0.0;
     liftVX = 0.0;
+    flipX = 0;
 
     overlayP->FadeIn(1, {0,0,0,255});
     CAMERA cam = cameraP->GetCam();
@@ -492,7 +506,7 @@ void Player::DrawPlayer() {
     DrawPart("legL", sin(moveBody) * 16, 30, 50);
     DrawPart("legR", sin(moveBody) * -16, 20, 50);
     DrawPart("body", 0, 0, 0);
-    DrawPart("head", sin(moveBody) * 4, 60, 30);
+    DrawPart(texName, sin(moveBody) * 4, 60, 30);
     DrawPart("armL", sin(moveBody) * -16, 70, 50);
     DrawPart("armR", sin(moveBody) * 16, 55, 50);
 

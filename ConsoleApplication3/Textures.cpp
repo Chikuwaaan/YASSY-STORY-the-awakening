@@ -271,6 +271,34 @@ void Textures::DrawTexts(std::string text, SDL_Color col1, SDL_Color col2, OBJRE
     SDL_FreeSurface(surfaceb);
 }
 
+void Textures::DrawTexts(std::u8string text, SDL_Color col1, SDL_Color col2, OBJRECT rect, bool relative, Anchor anchor) {
+    CAMERA camera = cameraP->GetCam();
+    SDL_Surface* surface = TTF_RenderUTF8_Blended(font, reinterpret_cast<const char*>(text.c_str()), col1);
+    if (!surface) return;
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(settings::renderer, surface);
+    SDL_Surface* surfaceb = TTF_RenderUTF8_Blended(fontb, reinterpret_cast<const char*>(text.c_str()), col2);
+    if (!surfaceb) return;
+    SDL_Texture* textureb = SDL_CreateTextureFromSurface(settings::renderer, surfaceb);
+    OBJRECT rect1 = { rect.x, rect.y, surface->w * rect.w, surface->h * rect.h };
+    SDL_Rect dst1 = GetDst(rect1, relative, anchor);
+    OBJRECT rect2;
+    rect2 = rect1;
+    if (anchor == Anchor::Left) {
+        rect2.x = rect1.x + (surface->w * rect.w / 2);
+    }
+    rect2.w = surfaceb->w * rect.w;
+    rect2.h = surfaceb->h * rect.h;
+    SDL_Rect dst2 = GetDst(rect2, relative, Anchor::Center);
+
+    SDL_RenderCopy(settings::renderer, textureb, NULL, &dst2);
+    SDL_RenderCopy(settings::renderer, texture, NULL, &dst1);
+
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(surface);
+    SDL_DestroyTexture(textureb);
+    SDL_FreeSurface(surfaceb);
+}
+
 void Textures::Update() {
     //ModTextures();
 }

@@ -5,6 +5,7 @@
 #include "structs.h"
 #include "namespace.h"
 
+class Level;
 class Textures;
 class Sounds;
 class Camera;
@@ -12,6 +13,14 @@ class Input;
 class Platformer;
 class Player;
 
+
+enum class EntityType {
+    Null,
+    Lift,
+    Zako,
+    CheckPoint,
+    BackGround
+};
 
 class GameObject
 {
@@ -22,9 +31,16 @@ protected:
     bool flipX;
     EntityType type;
     bool collision;
+
+    int groundBlock, headBlock, rightBlock, leftBlock;
+    GameObject* touchingEntity;
+
+    void CollideY();
+    void CollideX();
 public:
     bool dead;
 
+    static Level* levelP;
     static Textures* texturesP;
     static Sounds* soundsP;
     static Camera* cameraP;
@@ -41,11 +57,14 @@ public:
     bool IsDead();
     void MoveX();
     void MoveY();
+    void SetX(double pos);
+    void SetY(double pos);
     OBJRECT GetRect();
     double GetVX();
     double GetVY();
     bool GetCollosion();
-    void Draw();
+    virtual void Draw();
+    void DrawHitbox();
     void FlipX(bool flip);
 };
 
