@@ -114,7 +114,9 @@ void Player::Update() {
 
     MoveY();
     CollideY();
-
+    if (isDead) {
+        return;
+    }
 
     //X
     if (onGround) {
@@ -175,8 +177,7 @@ void Player::Update() {
     aX = 0.0;
 
     //ギミック
-    
-
+    /*
     if (touchingEntity != nullptr) {
         EntityType type = touchingEntity->GetType();
         if (stomping) {
@@ -186,6 +187,7 @@ void Player::Update() {
             touchingEntity->Touched();
         }
     }
+    */
 
 
 
@@ -206,8 +208,8 @@ void Player::Update() {
 }
 
 void Player::Jump() {
-    if (jumpPressed && coyoteTime < 6 && canJump) {
-        vY = 840.0;
+    if (jumpPressed && coyoteTime < 0.1 && canJump) {
+        vY = 650.0;
         canJump = false;
         onGround = false;
         isJumping = true;
@@ -225,7 +227,7 @@ void Player::Jump() {
     }
 
     if (isJumping && vY > 0 && jumpingTime < 0.5) {
-        gravity = platformer::gravity * 0.42;
+        gravity = platformer::gravity * 0.2;
     }
     else {
         gravity = platformer::gravity;
@@ -269,7 +271,7 @@ void Player::CollideY() {
         isJumping = 0;
     }
     else {
-        coyoteTime++;
+        coyoteTime += settings::timeScale;
     }
 
     touchingEntity = nullptr;
@@ -306,63 +308,101 @@ void Player::CollideY() {
         OBJRECT eRect = p->GetRect();
         bool collision = p->GetCollosion();
 
-        if (collision && utilities::HitDetection(pRect, eRect)) {
-            
-            double v = p->GetVX();
-            if (v > 0) {
-                x += (v + 0.01) * settings::timeScale;
-            }
-            else if (v < 0) {
-                x += (v - 0.01) * settings::timeScale;
-            }
-            pRect = { x,y,w,h };
-            
-        }
-
+        //collisionあるときのリフト
         if (utilities::HitDetection(pRect, eRect)) {
-            touchingEntity = p.get();
-            collision = p->GetCollosion();
-            if ((pRect.y - pRect.h / 2) > eRect.y) {
-                if (collision) {
-                    onGround = true;
-                    y = eRect.y + eRect.h / 2 + h / 2 + 0.01;
+            if (collision) {
+                double v = p->GetVX();
+                if (v > 0) {
+                    x += (v + 0.01) * settings::timeScale;
+                }
+                else if (v < 0) {
+                    x += (v - 0.01) * settings::timeScale;
+                }
+
+                pRect = { x,y,w,h };
+                }
+
+            //秘儀・めり込みもどし
+            if (utilities::HitDetection(pRect, eRect)) {
+                if (pRect.y > eRect.y) {
+                    if (collision) {
+                        onGround = true;
+                        y = eRect.y + eRect.h / 2 + h / 2 + 0.01;
+                        double v = p->GetVY();
+                        if (v < 0) {
+                            vY = v;
+                        }
+                        else if (v > 0) {
+                            vY = v * -1;
+                        }
+                        else if (v == 0) {
+                            vY = v;
+                        }
+                    }
+                    p->Stomped();
+                    p->onStomp = 1;
+                } 
+                else if (pRect.y < eRect.y) {
+                    if (collision) {
+                        double v = p->GetVY();
+                        if (v < 0.0) {
+                            vY = p->GetVY();
+                        }
+                        else {
+                            vY = 0.0;
+                        }
+
+                        if (groundBlock) {
+                            Die();
+                        }
+
+                        isJumping = 0;
+                        y = eRect.y - eRect.h / 2 - h / 2;
+                    }
+                }
+                /*
+                if ((pRect.y - pRect.h / 2) > eRect.y) {
+                    if (collision) {
+                        onGround = true;
+                        y = eRect.y + eRect.h / 2 + h / 2 + 0.01;
+                        double v = p->GetVY();
+                        if (v < 0) {
+                            vY = v;
+                        }
+                        else if (v > 0) {
+                            vY = v * -1;
+                        }
+                    }
+                    else {
+                        if (vY < 0) {
+                            stomping = 1;
+                        }
+                    }
+                }
+                else if (collision && pRect.y < eRect.y) {
                     double v = p->GetVY();
-                    if (v < 0) {
-                        vY = v;
+                    if (v < 0.0) {
+                        vY = p->GetVY();
                     }
-                    else if (v > 0) {
-                        vY = v * -1;
+                    else {
+                        vY = 0.0;
                     }
+
+                    if (groundBlock) {
+                        Die();
+                    }
+
+                    isJumping = 0;
+                    y = eRect.y - eRect.h / 2 - h / 2;
                 }
-                else {
-                    if (vY < 0) {
-                        stomping = 1;
-                    }
-                }
+                */
+
             }
-
-            else if (collision && pRect.y < eRect.y) {
-                double v = p->GetVY();
-                if (v < 0.0) {
-                    vY = p->GetVY();
-                }
-                else {
-                    vY = 0.0;
-                }
-
-                if (groundBlock) {
-                    Die();
-                }
-
-                isJumping = 0;
-                y = eRect.y - eRect.h / 2 - h / 2;
-            }
-        }
+        } 
     }
 }
 
 void Player::CollideX() {
-    SDL_Color color = { 255,255,255,255 };
     rightBlock = 0;
     leftBlock = 0;
     OBJRECT pRect = { x,y,w,h };
@@ -396,7 +436,8 @@ void Player::CollideX() {
         bool collision = p->GetCollosion();
 
         if (utilities::HitDetection(pRect, eRect)) {
-            touchingEntity = p.get();
+            if (!(p->onStomp)) p->Touched();
+            p->onStomp = 0;
             if (collision && pRect.x > eRect.x) {
                 if (!liftVX) {
                     walkVX = 0.0;

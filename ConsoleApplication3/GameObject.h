@@ -31,6 +31,8 @@ protected:
     bool flipX;
     EntityType type;
     bool collision;
+    bool rigid;
+    
 
     int groundBlock, headBlock, rightBlock, leftBlock;
     GameObject* touchingEntity;
@@ -39,6 +41,8 @@ protected:
     void CollideX();
 public:
     bool dead;
+    bool onStomp;
+    bool alwaysLoad;
 
     static Level* levelP;
     static Textures* texturesP;

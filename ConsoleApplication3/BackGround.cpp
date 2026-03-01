@@ -11,6 +11,7 @@ BackGround::BackGround(double X, double Y, double size, double camX, double camY
     camY0 = camY;
     texName = tex;
     type = EntityType::BackGround;
+    alwaysLoad = 1;
 
     w = settings::baseW * size;
     h = settings::baseH * size;

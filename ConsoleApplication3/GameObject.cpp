@@ -25,7 +25,10 @@ GameObject::GameObject() {
     vY = 0.0;
     flipX = 0;
     collision = 0;
+    rigid = 0;
     dead = 0;
+    onStomp = 0;
+    alwaysLoad = 0;
 }
 
 void GameObject::CollideY() {

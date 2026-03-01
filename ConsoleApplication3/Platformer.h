@@ -36,6 +36,7 @@ public:
     void Init();
     void Quit();
     void Update();
+    bool inScreen(std::unique_ptr<GameObject>& p);
 
     template<typename T, typename... Args>
     void AddObject(Args&&... args) {

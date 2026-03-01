@@ -5,10 +5,10 @@
 
 Lift::Lift(double spawnX, double ampX, double velocityX, double spawnY, double ampY, double velocityY) {
     type = EntityType::Lift;
-    h = 1000;
-    w = 400;
+    h = 96;
+    w = 96;
     collision = 1;
-    texName = "summon";
+    texName = "LIFT";
     x = spawnX;
     y = spawnY;
     posX = spawnX;
@@ -18,21 +18,23 @@ Lift::Lift(double spawnX, double ampX, double velocityX, double spawnY, double a
     amplitudeY = ampY;
     vY = velocityY;
 
+    vx0 = velocityX;
+    vy0 = velocityY;
 }
 
 void Lift::Update() {
     if (posX - x > amplitudeX) {
-        vX = vX * -1;
+        vX = vx0;
     }
     else if (x - posX > amplitudeX) {
-        vX = vX * -1;
+        vX = vx0 * -1;
     }
     
     if (posY - y > amplitudeY) {
-        vY = vY * -1;
+        vY = vy0;
     }
     else if (y - posY > amplitudeY) {
-        vY = vY * -1;
+        vY = vy0 * -1;
     }
     
 

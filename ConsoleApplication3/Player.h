@@ -24,7 +24,7 @@ private:
     bool jumpPressed;
     bool isJumping;
     double jumpingTime;
-    int coyoteTime;
+    double coyoteTime;
     double gravity;
     int groundBlock, headBlock, rightBlock, leftBlock;
 

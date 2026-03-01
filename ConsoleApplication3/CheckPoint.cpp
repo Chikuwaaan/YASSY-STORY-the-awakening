@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Textures.h"
 #include "Sounds.h"
+#include "Player.h"
 
 CheckPoint::CheckPoint(double x0, double y0) {
     texName = "cp";
@@ -21,6 +22,10 @@ void CheckPoint::Touched() {
     }
 }
 
+void CheckPoint::Stomped() {
+    Touched();
+}
+
 void CheckPoint::Draw() {
     SDL_Rect src;
     if (!used) {
@@ -29,7 +34,13 @@ void CheckPoint::Draw() {
         src = { 0,0,16,16 };
     }
     else {
-        src = { 16,0,16,16 };
+        OBJRECT pRect = playerP->GetRect();
+        if (pRect.x < x) {
+            src = { 16,0,16,16 };
+        }
+        else {
+            src = { 32,0,16,16 };
+        }
     }
     texturesP->DrawSprite(texName, { x,y,h,h }, src, 1);
 }

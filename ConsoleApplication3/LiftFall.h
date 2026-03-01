@@ -9,6 +9,5 @@ public:
     LiftFall(double X, double Y);
     void Update() override;
     void Stomped() override;
-    void Touched() override;
 };
 

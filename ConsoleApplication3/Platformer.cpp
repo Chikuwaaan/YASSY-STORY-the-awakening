@@ -98,7 +98,7 @@ void Platformer::LoadEntities() {
 void Platformer::Init() {
     level.LoadLevel(platformer::level);
     player.Spawn();
-    soundsP->PlayMusic("cloud_city");
+    //soundsP->PlayMusic("cloud_city");
 }
 
 void Platformer::Quit() {
@@ -129,9 +129,10 @@ void Platformer::Update() {
     }
 
     if (!editorMode) {
-        for (auto& obj : objects) {
-            obj->Update();
-            //obj->DrawHitbox();
+        for (std::unique_ptr<GameObject>& obj : objects) {
+            if (inScreen(obj) || obj->alwaysLoad) {
+                obj->Update();
+            }
         }
         for (auto& obj : pendingObjects) {
             objects.push_back(std::move(obj));
@@ -169,4 +170,17 @@ void Platformer::Update() {
         level.Editor();
     }
     cameraP->Draw();
+}
+
+bool Platformer::inScreen(std::unique_ptr<GameObject>& p) {
+    CAMERA cam = cameraP->GetCam();
+    double edgeR, edgeL;
+    edgeR = cam.x + settings::baseW/2 + 192;
+    edgeL = cam.x - settings::baseW/2 - 192;
+    OBJRECT rect = p->GetRect();
+
+    if (edgeL < rect.x && rect.x < edgeR) {
+        return true;
+    } 
+    return false;
 }

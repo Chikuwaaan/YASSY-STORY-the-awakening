@@ -2,6 +2,7 @@
 #include <iostream>
 
 LiftFall::LiftFall(double X, double Y) {
+    texName = "LIFT";
     x = X;
     y = Y;
     w = 96;
@@ -11,8 +12,8 @@ LiftFall::LiftFall(double X, double Y) {
 }
 
 void LiftFall::Update() {
-    if (isFalling && 0) {
-        vY -= settings::timeScale * 500;
+    if (isFalling) {
+        vY -= settings::timeScale * platformer::gravity * -0.5;
         MoveY();
     }
     if (y <= 0) {
@@ -22,10 +23,4 @@ void LiftFall::Update() {
 
 void LiftFall::Stomped() {
     isFalling = true;
-    std::cout << "uo";
-}
-
-void LiftFall::Touched() {
-    isFalling = true;
-    std::cout << "UO";
 }
