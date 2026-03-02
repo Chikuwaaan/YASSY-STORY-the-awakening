@@ -176,6 +176,12 @@ void Textures::DrawImage(std::string texName, OBJRECT rect, bool relative, ROTAT
     }
 }
 
+void Textures::DrawImageA(std::string texName, OBJRECT rect, bool relative, Anchor anchor) {
+    CAMERA camera = cameraP->GetCam();
+    SDL_Rect dst = GetDst(rect, relative, anchor);
+    SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
+}
+
 void Textures::DrawImageS(std::string texName, SDL_Rect Rect, bool relative, ROTATE rotate) {
     CAMERA camera = cameraP->GetCam();
     OBJRECT rect;

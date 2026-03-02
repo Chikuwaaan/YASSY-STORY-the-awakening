@@ -31,6 +31,7 @@ public:
     SDL_Rect GetTexRect(std::string name);
     SDL_Rect GetDst(OBJRECT rect, bool relative, Anchor anchor);
     void DrawImage(std::string texName, OBJRECT rect, bool relative, ROTATE rotate);
+    void DrawImageA(std::string texName, OBJRECT rect, bool relative, Anchor anchor);
     void DrawImageS(std::string texName, SDL_Rect rect, bool relative, ROTATE rotate);
     void DrawSprite(std::string sheet, OBJRECT rect, SDL_Rect src, bool relative);
     void DrawIcon(Icons icon, SDL_Rect rect);

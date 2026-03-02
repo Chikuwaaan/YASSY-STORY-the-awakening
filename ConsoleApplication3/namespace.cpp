@@ -12,8 +12,8 @@ namespace settings {
     int winH = 0;
     SDL_Window* window;
     SDL_Renderer* renderer;
-    int BGM = 128;
-    int SE = 128;
+    int BGM = 156;
+    int SE = 64;
 }
 
 namespace utilities {

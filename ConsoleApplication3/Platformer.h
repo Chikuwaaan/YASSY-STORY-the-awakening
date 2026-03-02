@@ -13,12 +13,20 @@ class Camera;
 class Input;
 class Sounds;
 
+struct LEVELINFO {
+    std::u8string name;
+    std::string BGM;
+};
+
+
 class Platformer {
 private:
     Level level;
     Player player;
 
     bool editorMode;
+
+    LEVELINFO info;
 public:
     static Textures* texturesP;
     static Camera* cameraP;
@@ -31,6 +39,7 @@ public:
 
     Platformer();
 
+    void LoadLevelInfo();
     void LoadEntities();
 
     void Init();

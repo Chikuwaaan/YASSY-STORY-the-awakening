@@ -93,6 +93,9 @@
     <ClCompile Include="LiftFall.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Toast.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -179,10 +182,36 @@
     <ClInclude Include="LiftFall.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Toast.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="resource1.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="resource2.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ConsoleApplication3.rc">
       <Filter>リソース ファイル</Filter>
     </ResourceCompile>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>リソース ファイル</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Desktop\icon.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="..\..\..\..\desktop\icon2.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="..\..\..\..\desktop\bitmap1.bmp">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\whitestar.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
   </ItemGroup>
 </Project>

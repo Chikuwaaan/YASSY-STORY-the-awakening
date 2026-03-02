@@ -11,6 +11,7 @@
 #include "SDL_mixer.h"
 #include "Sounds.h"
 #include "LiftFall.h"
+#include "Toast.h"
 
 #include <iostream>
 #include <fstream>
@@ -27,6 +28,21 @@ Platformer::Platformer() {
     GameObject::playerP = &player;
 
     editorMode = 0;
+}
+
+void Platformer::LoadLevelInfo() {
+    std::string path = "Levels/";
+    path = path + std::to_string(platformer::level) + "/info.csv";
+    std::ifstream file(path);
+
+    if (!file.is_open()) {
+        std::cout << "[DEBUG]failed to open file: " << path << std::endl;
+    }
+
+    std::string name;
+    std::getline(file, name);
+    info.name = reinterpret_cast<const char8_t*>(name.c_str());
+    std::getline(file, info.BGM);
 }
 
 void Platformer::LoadEntities() {
@@ -98,9 +114,11 @@ void Platformer::LoadEntities() {
 }
 
 void Platformer::Init() {
+    LoadLevelInfo();
     level.LoadLevel(platformer::level);
     player.Spawn();
-    //soundsP->PlayMusic("cloud_city");
+    soundsP->PlayMusic(info.BGM);
+    objects.push_back(std::make_unique<Toast>(info.name));
 }
 
 void Platformer::Quit() {
