@@ -17,6 +17,7 @@ class Player;
 enum class EntityType {
     Null,
     Lift,
+    LiftFall,
     Zako,
     CheckPoint,
     BackGround

@@ -70,13 +70,15 @@ void Platformer::LoadEntities() {
                 std::get<double>(args[2]),
                 std::get<double>(args[3]),
                 std::get<double>(args[4]),
-                std::get<double>(args[5])
+                std::get<double>(args[5]),
+                std::get<double>(args[6])
                 );
         }
         if (objClass == "LiftFall") {
             AddObject<LiftFall>(
                 std::get<double>(args[0]),
-                std::get<double>(args[1])
+                std::get<double>(args[1]),
+                std::get<double>(args[2])
             );
         }
         if (objClass == "CheckPoint") {

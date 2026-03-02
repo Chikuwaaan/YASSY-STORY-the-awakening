@@ -7,8 +7,10 @@ private:
     double posX, posY;
     double amplitudeX, amplitudeY;
     double vx0, vy0;
+    double length;
 public:
-    Lift(double spawnX, double ampX, double velocityX, double spawnY, double ampY, double velocityY);
+    Lift(double spawnX, double ampX, double velocityX, double spawnY, double ampY, double velocityY, double L);
     void Update() override;
+    void Draw() override;
 };
 
