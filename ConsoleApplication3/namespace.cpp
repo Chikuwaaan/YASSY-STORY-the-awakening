@@ -4,7 +4,7 @@
 namespace settings {
     double maxFps = 120.0;
     double dt = 1.0 / maxFps;
-    double multiplier = 1.0;
+    double multiplier = 1;
     double timeScale = dt * multiplier;
     int baseW = 1920;
     int baseH = 1080;

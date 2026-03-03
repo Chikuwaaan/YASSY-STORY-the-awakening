@@ -116,12 +116,14 @@ void Camera::Draw() {
             rect.w = abs(room[i].x1 - room[i].x2);
             rect.h = abs(room[i].y1 - room[i].y2);
             texturesP->DrawRect({ 255,0,0,255 }, rect, 1);
+            texturesP->DrawTexts(std::to_string(i+1), { 255,0,0,255 }, { 255,255,255,255 }, { room[i].x1, room[i].y1,2,2 }, 1, Anchor::Center);
 
             rect.x = (room[i].x3 + room[i].x4) / 2;
             rect.y = (room[i].y3 + room[i].y4) / 2;
             rect.w = abs(room[i].x3 - room[i].x4);
             rect.h = abs(room[i].y3 - room[i].y4);
             texturesP->DrawRect({ 0,127,0,255 }, rect, 1);
+            texturesP->DrawTexts(std::to_string(i+1), { 0,127,0,255 }, { 255,255,255,255 }, { room[i].x3, room[i].y3,2,2 }, 1, Anchor::Center);
         }
     }
 }

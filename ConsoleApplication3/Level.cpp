@@ -204,7 +204,7 @@ void Level::Editor() {
 
     std::string blockIndex = std::to_string(mouseX) + "," + std::to_string(mouseY);
     std::string blockPos = std::to_string(mouseX * (int)blockSize) + ',' + std::to_string(mouseY * (int)blockSize);
-    std::string blockCenter = std::to_string(mouseXC) + "," + std::to_string(mouseYC);
+    std::string blockCenter = std::to_string((int)mouseXC) + "," + std::to_string((int)mouseYC);
     texturesP->DrawTexts(blockIndex, color1, color2, { 1400, 1030, 1, 1 }, 0, Anchor::Left);
     texturesP->DrawTexts(blockPos, color1, color2, { 1400, 980, 1, 1 }, 0, Anchor::Left);
     texturesP->DrawTexts(blockCenter, color1, color2, { 1400, 930, 1, 1 }, 0, Anchor::Left);

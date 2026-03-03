@@ -34,6 +34,7 @@ void LiftFall::Update() {
         collision = 0;
     }
 
+    timer.Update();
     double time = timer.GetTime();
     if (respawning) {
         if (time > 3.0 && !utilities::HitDetection(playerP->GetRect(), {x,y,w,h})) {

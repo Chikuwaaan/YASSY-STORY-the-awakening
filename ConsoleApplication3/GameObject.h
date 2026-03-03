@@ -41,6 +41,8 @@ protected:
     void CollideY();
     void CollideX();
 public:
+    bool visible;
+
     bool dead;
     bool onStomp;
     bool alwaysLoad;

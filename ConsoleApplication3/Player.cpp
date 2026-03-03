@@ -46,8 +46,10 @@ Player::Player() {
     dieAnim = 0;
     touchingEntity = nullptr;
     stomping = 0;
-    spawnX = 912;
-    spawnY = 2832;
+
+    currentCP = 0;
+    spawnX = 0;
+    spawnY = 0;
 }
 
 void Player::SetAX(double acceleration) {
@@ -209,7 +211,7 @@ void Player::Update() {
 
 void Player::Jump() {
     if (jumpPressed && coyoteTime < 0.1 && canJump) {
-        vY = 650.0;
+        vY = 660.0;
         canJump = false;
         onGround = false;
         isJumping = true;
@@ -519,8 +521,7 @@ void Player::Die() {
 
 void Player::Spawn() {
     texName = "head";
-    x = spawnX;
-    y = spawnY;
+    
     vX = 0.0;
     vY = 0.0;
     aX = 0.0;
@@ -530,12 +531,16 @@ void Player::Spawn() {
     flipX = 0;
 
     overlayP->FadeIn(1, {0,0,0,255});
+    
+    platformerP->LoadEntities();
+    x = spawnX;
+    y = spawnY;
+
     CAMERA cam = cameraP->GetCam();
     cam.x = x;
     cam.y = y;
     cameraP->SetCam(cam);
-
-    platformerP->LoadEntities();
+    cameraP->LoadCameraRoom(platformer::level);
 }
 
 void Player::SetSpawnPoint(double x, double y) {
@@ -543,7 +548,7 @@ void Player::SetSpawnPoint(double x, double y) {
     spawnY = y;
 }
 
-void Player::DrawPlayer() {
+void Player::Draw() {
     DrawPart("legL", sin(moveBody) * 16, 30, 50);
     DrawPart("legR", sin(moveBody) * -16, 20, 50);
     DrawPart("body", 0, 0, 0);

@@ -98,7 +98,11 @@ void Platformer::LoadEntities() {
             );
         }
         if (objClass == "CheckPoint") {
-            AddObject<CheckPoint>(std::get<double>(args[0]), std::get<double>(args[1]));
+            AddObject<CheckPoint>(
+                std::get<double>(args[0]),
+                std::get<double>(args[1]),
+                std::get<double>(args[2])
+                );
         }
         if (objClass == "BackGround") {
             AddObject<BackGround>(
@@ -116,6 +120,7 @@ void Platformer::LoadEntities() {
 void Platformer::Init() {
     LoadLevelInfo();
     level.LoadLevel(platformer::level);
+    //cameraP->LoadCameraRoom(platformer::level);
     player.Spawn();
     soundsP->PlayMusic(info.BGM);
     objects.push_back(std::make_unique<Toast>(info.name));
@@ -129,6 +134,7 @@ void Platformer::Update() {
     EVENT event = inputP->event;
     OBJRECT screenRect = { (double)settings::baseW / 2, (double)settings::baseH / 2, (double)settings::baseW, (double)settings::baseH, 1 };
     texturesP->DrawRect({ 255,255,255,255 }, screenRect, 0);
+    
 
     cameraP->Update();
 
@@ -179,17 +185,20 @@ void Platformer::Update() {
     for (auto& obj : objects) {
         EntityType type = obj->GetType();
         if (type != EntityType::BackGround) {
-            obj->Draw();
+            if (obj->visible) {
+                obj->Draw();
+            }
         }
     }
     
     player.Draw();
-    player.DrawPlayer();
 
     if (editorMode) {
         level.Editor();
     }
     cameraP->Draw();
+
+    texturesP->DrawTexts(std::to_string(timer.GetTime()), { 255,255,255,255 }, { 0,0,0,255 }, { 1700,50,1,1 }, 0, Anchor::Center);
 }
 
 bool Platformer::inScreen(std::unique_ptr<GameObject>& p) {

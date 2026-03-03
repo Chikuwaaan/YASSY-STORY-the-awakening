@@ -34,11 +34,13 @@ private:
     GameObject* touchingEntity;
     bool stomping;
 
+    
     double spawnX, spawnY;
 
     void CollideY();
     void CollideX();
 public:
+    int currentCP;
     static Level* levelP;
     static Camera* cameraP;
     static OverLay* overlayP;
@@ -53,7 +55,7 @@ public:
     void Spawn();
     void SetSpawnPoint(double x, double y);
 
-    void DrawPlayer();
+    void Draw() override;
     void DrawPart(std::string tex, double angle, double x, double y);
 };
 

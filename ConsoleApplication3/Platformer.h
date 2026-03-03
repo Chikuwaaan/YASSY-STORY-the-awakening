@@ -6,6 +6,7 @@
 #include <iostream>
 #include "Level.h"
 #include "Player.h"
+#include "Timer.h"
 
 class GameObject;
 class Textures;
@@ -27,6 +28,8 @@ private:
     bool editorMode;
 
     LEVELINFO info;
+
+    Timer timer;
 public:
     static Textures* texturesP;
     static Camera* cameraP;

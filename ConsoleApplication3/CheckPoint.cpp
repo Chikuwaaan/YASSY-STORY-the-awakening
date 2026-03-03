@@ -4,7 +4,7 @@
 #include "Sounds.h"
 #include "Player.h"
 
-CheckPoint::CheckPoint(double x0, double y0) {
+CheckPoint::CheckPoint(double x0, double y0, double Index) {
     texName = "cp";
     x = x0;
     y = y0;
@@ -12,11 +12,28 @@ CheckPoint::CheckPoint(double x0, double y0) {
     h = 96;
 
     used = 0;
+    index = (int)Index;
+
+    if (index == 0) {
+        used = 1;
+        visible = 0;
+    }
+    if (index == playerP->currentCP) {
+        playerP->SetSpawnPoint(x, y);
+    }
+}
+
+void CheckPoint::Update() {
+    if (!used) {
+        if (playerP->currentCP >= index) {
+            used = 1;
+        }
+    }
 }
 
 void CheckPoint::Touched() {
     if (!used) {
-        playerP->SetSpawnPoint(x, y);
+        playerP->currentCP = index;
         used = 1;
         soundsP->PlaySE("cp");
     }

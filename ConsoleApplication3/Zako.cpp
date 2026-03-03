@@ -9,9 +9,9 @@ Zako::Zako(double x0, double y0) {
     type = EntityType::Zako;
     x = x0;
     y = y0;
-    w = 80;
-    h = 80;
-    vX = -100;
+    w = 96;
+    h = 96;
+    vX = -150;
 }
 
 void Zako::Update() {
@@ -21,10 +21,10 @@ void Zako::Update() {
     MoveX();
     CollideX();
     if (leftBlock != 0) {
-        vX = 100;
+        vX = 150;
     }
     else if (rightBlock != 0) {
-        vX = -100;
+        vX = -150;
     }
 }
 

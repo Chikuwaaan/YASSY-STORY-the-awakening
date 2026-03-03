@@ -23,9 +23,12 @@ GameObject::GameObject() {
     h = 180.0;
     vX = 0.0;
     vY = 0.0;
+
     flipX = 0;
     collision = 0;
     rigid = 0;
+
+    visible = 1;
     dead = 0;
     onStomp = 0;
     alwaysLoad = 0;
