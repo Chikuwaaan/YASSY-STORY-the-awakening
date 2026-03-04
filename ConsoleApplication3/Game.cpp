@@ -191,8 +191,8 @@ void Game::Update() {
     overlay->Update();
 
     //DEBUG INFO
-    bool showCursorPoint = 1;
-    bool showCross = 1;
+    bool showCursorPoint = 0;
+    bool showCross = 0;
     if (showCursorPoint) {
         int x, y;
         x = input->mouse.x;

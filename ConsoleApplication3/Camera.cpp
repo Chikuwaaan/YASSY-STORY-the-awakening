@@ -17,7 +17,7 @@ Camera::Camera() {
     camera.targetX = 720.0;
     camera.targetY = 540.0;
     camera.zoom = 1.0;
-    drawCameraRoom = 1;
+    drawCameraRoom = 0;
 }
 
 void Camera::Init() {
@@ -32,6 +32,7 @@ void Camera::Init() {
 }
 
 void Camera::LoadCameraRoom(int n) {
+    room.clear();
     std::string path = "Levels/";
     path = path + std::to_string(n) + "/camera.csv";
     std::ifstream file(path);
