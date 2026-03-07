@@ -78,6 +78,24 @@ Level::Level() :
         {0,0,0,0},
         0
         });
+    blockProperty.push_back({
+        "block8",
+        1,
+        {0,0,blockSize,blockSize},
+        1
+        });
+    blockProperty.push_back({
+        "block9b",
+        1,
+        {0,0,blockSize,blockSize},
+        0
+        });
+    blockProperty.push_back({
+        "block10",
+        1,
+        {0,0,blockSize,blockSize},
+        0
+        });
     /*
     blockProperty.push_back({});
     blockProperty.push_back({ {1,1,1,1,0,0,0,0},{

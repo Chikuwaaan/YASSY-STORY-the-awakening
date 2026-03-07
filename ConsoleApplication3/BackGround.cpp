@@ -2,16 +2,18 @@
 #include "Textures.h"
 #include "Camera.h"
 
-BackGround::BackGround(double X, double Y, double size, double camX, double camY, std::string tex) {
+BackGround::BackGround(double X, double Y, double size, double mul, double camX, double camY, double Layer, std::string tex) {
     x0 = X + settings::baseW / 2 * size;
     y0 = Y + settings::baseH / 2 * size;
     dx = 0;
     dy = 0;
     camX0 = camX;
     camY0 = camY;
+    M = mul;
     texName = tex;
     type = EntityType::BackGround;
     alwaysLoad = 1;
+    layer = (int)Layer;
 
     w = settings::baseW * size;
     h = settings::baseH * size;
@@ -44,7 +46,7 @@ void BackGround::Update() {
     }
 
     CAMERA cam = cameraP->GetCam();
-    x = x0 + dx + (cam.x - camX0) * 0.9;
-    y = y0 + dy +(cam.y - camY0) * 0.9;
+    x = x0 + dx + (cam.x - camX0) * M;
+    y = y0 + dy +(cam.y - camY0) * M;
     
 }

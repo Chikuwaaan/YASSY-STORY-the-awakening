@@ -75,7 +75,7 @@ void Player::Update() {
         Spawn();
     }
     
-
+    EVENT event = inputP->event;
     const Uint8* keystate = inputP->keystate;
     if (keystate[SDL_SCANCODE_W]) {
         jumpPressed = 1;
@@ -93,6 +93,10 @@ void Player::Update() {
         SetAX(2160.0);
         FlipX(false);
     }
+    if (event.Down) {
+        Complete();
+    }
+
     if (keystate[SDL_SCANCODE_M]) {
         maxSpeed = 640.0;
         moveBody += 12 * settings::timeScale;
@@ -546,6 +550,12 @@ void Player::Spawn() {
 void Player::SetSpawnPoint(double x, double y) {
     spawnX = x;
     spawnY = y;
+}
+
+void Player::Complete() {
+    currentCP = 0;
+    platformer::level++;
+    platformerP->Init();
 }
 
 void Player::Draw() {

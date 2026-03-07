@@ -33,7 +33,7 @@ protected:
     EntityType type;
     bool collision;
     bool rigid;
-    
+    int layer;
 
     int groundBlock, headBlock, rightBlock, leftBlock;
     GameObject* touchingEntity;
@@ -70,6 +70,8 @@ public:
     double GetVX();
     double GetVY();
     bool GetCollosion();
+    int GetLayer();
+
     virtual void Draw();
     void DrawHitbox();
     void FlipX(bool flip);

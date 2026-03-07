@@ -105,14 +105,19 @@ void Platformer::LoadEntities() {
                 );
         }
         if (objClass == "BackGround") {
+            /*
             AddObject<BackGround>(
                 std::get<double>(args[0]),
                 std::get<double>(args[1]),
                 std::get<double>(args[2]),
                 std::get<double>(args[3]),
                 std::get<double>(args[4]),
-                std::get<std::string>(args[5])
+                std::get<double>(args[5]),
+                std::get<double>(args[6]),
+                std::get<std::string>(args[7])
             );
+            */
+            objects.push_back(std::make_unique<BackGround>(480, 2496, 1, 1, 1440, 3036, 1, "leaves"));
         }
     }
 }
@@ -173,14 +178,20 @@ void Platformer::Update() {
         player.Update();
     }
 
+    
     for (auto& obj : objects) {
         EntityType type = obj->GetType();
         if (type == EntityType::BackGround) {
-            obj->Draw();
+            if (obj->GetLayer() == -1) {
+                obj->Draw();
+            }
         }
     }
+    
+
     level.Update();
     level.DrawMap();
+
     for (auto& obj : objects) {
         EntityType type = obj->GetType();
         if (type != EntityType::BackGround) {
@@ -191,6 +202,17 @@ void Platformer::Update() {
     }
     
     player.Draw();
+
+    
+    for (auto& obj : objects) {
+        EntityType type = obj->GetType();
+        if (type == EntityType::BackGround) {
+            if (obj->GetLayer() == 1) {
+                obj->Draw();
+            }
+        }
+    }
+    
 
     if (editorMode) {
         level.Editor();

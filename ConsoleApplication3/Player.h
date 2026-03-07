@@ -54,6 +54,7 @@ public:
     void Die();
     void Spawn();
     void SetSpawnPoint(double x, double y);
+    void Complete();
 
     void Draw() override;
     void DrawPart(std::string tex, double angle, double x, double y);

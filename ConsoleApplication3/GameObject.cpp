@@ -27,6 +27,7 @@ GameObject::GameObject() {
     flipX = 0;
     collision = 0;
     rigid = 0;
+    layer = -1;
 
     visible = 1;
     dead = 0;
@@ -198,6 +199,10 @@ double GameObject::GetVY() {
 
 bool GameObject::GetCollosion() {
     return collision;
+}
+
+int GameObject::GetLayer() {
+    return layer;
 }
 
 void GameObject::Draw() {
