@@ -82,7 +82,7 @@ Level::Level() :
         "block8",
         1,
         {0,0,blockSize,blockSize},
-        1
+        2
         });
     blockProperty.push_back({
         "block9b",

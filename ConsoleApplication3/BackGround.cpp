@@ -2,21 +2,24 @@
 #include "Textures.h"
 #include "Camera.h"
 
-BackGround::BackGround(double X, double Y, double size, double mul, double camX, double camY, double Layer, std::string tex) {
-    x0 = X + settings::baseW / 2 * size;
-    y0 = Y + settings::baseH / 2 * size;
+BackGround::BackGround(double X, double Y, double mulX, double mulY, double camX, double camY, double Layer, std::string tex) {
+    int W = 0, H = 0;
+    SDL_QueryTexture(texturesP->GetTexture(tex), NULL, NULL, &W, &H);
+    w = W * 6;
+    h = H * 6;
+    
+    x0 = X + w / 2;
+    y0 = Y + h / 2;
     dx = 0;
     dy = 0;
     camX0 = camX;
     camY0 = camY;
-    M = mul;
+    Mx = mulX;
+    My = mulY;
     texName = tex;
     type = EntityType::BackGround;
     alwaysLoad = 1;
     layer = (int)Layer;
-
-    w = settings::baseW * size;
-    h = settings::baseH * size;
 }
 
 void BackGround::Draw() {
@@ -46,7 +49,7 @@ void BackGround::Update() {
     }
 
     CAMERA cam = cameraP->GetCam();
-    x = x0 + dx + (cam.x - camX0) * M;
-    y = y0 + dy +(cam.y - camY0) * M;
+    x = x0 + dx + (cam.x - camX0) * Mx;
+    y = y0 + dy +(cam.y - camY0) * My;
     
 }

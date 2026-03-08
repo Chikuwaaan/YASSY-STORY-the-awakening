@@ -64,7 +64,7 @@ void Platformer::LoadEntities() {
         std::vector<std::variant<double, std::string>> args;
         while (std::getline(stream, cell, ',')) {
             bool digit  = 0;
-            if (std::isdigit(cell[0])) {
+            if (std::isdigit(cell[0]) || cell[0] == '-') {
                 digit = 1;
             }
 
@@ -105,7 +105,6 @@ void Platformer::LoadEntities() {
                 );
         }
         if (objClass == "BackGround") {
-            /*
             AddObject<BackGround>(
                 std::get<double>(args[0]),
                 std::get<double>(args[1]),
@@ -116,8 +115,8 @@ void Platformer::LoadEntities() {
                 std::get<double>(args[6]),
                 std::get<std::string>(args[7])
             );
-            */
-            objects.push_back(std::make_unique<BackGround>(480, 2496, 1, 1, 1440, 3036, 1, "leaves"));
+            
+            //objects.push_back(std::make_unique<BackGround>(480, 2496, 1, 1, 1440, 3036, 1, "leaves"));
         }
     }
 }

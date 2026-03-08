@@ -9,11 +9,11 @@ private:
     double x0, y0;
     double dx, dy;
     double camX0, camY0;
-    double M;
+    double Mx, My;
     
     Timer timer;
 public:
-    BackGround(double X, double Y, double size, double mul, double camX, double camY, double Layer, std::string tex);
+    BackGround(double X, double Y, double mulX, double mulY, double camX, double camY, double Layer, std::string tex);
     void Draw() override;
     void Update() override;
 };
