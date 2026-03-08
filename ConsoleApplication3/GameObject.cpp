@@ -66,6 +66,10 @@ void GameObject::CollideY() {
             y = bRect.y - bRect.h / 2 - h / 2;
             headBlock = bRect.block;
         }
+
+        if (levelP->blockProperty[bRect.block].damage == 2) {
+            dead = 1;
+        }
     }
 
     //entity
@@ -133,6 +137,10 @@ void GameObject::CollideX() {
             vX = 0.0;
             x = bRect.x + 0.5 * w + bRect.w * 0.5;
             leftBlock = bRect.block;
+        }
+
+        if (levelP->blockProperty[bRect.block].damage == 2) {
+            dead = 1;
         }
     }
 

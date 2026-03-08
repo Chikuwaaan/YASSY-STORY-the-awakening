@@ -16,7 +16,7 @@ CheckPoint::CheckPoint(double x0, double y0, double Index) {
 
     if (index == 0) {
         used = 1;
-        visible = 0;
+        //visible = 0;
     }
     if (index == playerP->currentCP) {
         playerP->SetSpawnPoint(x, y);
