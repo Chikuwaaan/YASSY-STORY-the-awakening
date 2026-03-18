@@ -47,6 +47,8 @@ Player::Player() {
     touchingEntity = nullptr;
     stomping = 0;
 
+    stucking = 0;
+
     currentCP = 0;
     spawnX = 0;
     spawnY = 0;
@@ -86,23 +88,57 @@ void Player::Update() {
     Jump();
 
     if (keystate[SDL_SCANCODE_A]) {
-        SetAX(-2160.0);
+        if (stucking) {
+            if (onGround) {
+                SetAX(-540.0);
+            }
+            else {
+                SetAX(-1080.0);
+            }
+        }
+        else {
+            SetAX(-2160.0);
+        }
+
         FlipX(true);
     }
+
     if (keystate[SDL_SCANCODE_D]) {
-        SetAX(2160.0);
+        if (stucking) {
+            if (onGround) {
+                SetAX(540.0);
+            }
+            else {
+                SetAX(1080.0);
+            }
+        }
+        else {
+            SetAX(2160.0);
+        }
+
         FlipX(false);
     }
     if (event.Down) {
-        Complete();
+        //Complete();
     }
 
     if (keystate[SDL_SCANCODE_M]) {
-        maxSpeed = 640.0;
-        moveBody += 12 * settings::timeScale;
+        if (stucking) {
+            maxSpeed = 320.0;
+            moveBody += 48 * settings::timeScale;
+        }
+        else {
+            maxSpeed = 640.0;
+            moveBody += 12 * settings::timeScale;
+        }
     }
     else {
-        maxSpeed = 480.0;
+        if (stucking) {
+            maxSpeed = 240.0;
+        }
+        else {
+            maxSpeed = 480.0;
+        }
     }
 
     liftVX = 0.0;
@@ -215,7 +251,12 @@ void Player::Update() {
 
 void Player::Jump() {
     if (jumpPressed && coyoteTime < 0.1 && canJump) {
-        vY = 660.0;
+        if (stucking) {
+            vY = 450.0;
+        }
+        else {
+            vY = 660.0;
+        }
         canJump = false;
         onGround = false;
         isJumping = true;
@@ -232,8 +273,11 @@ void Player::Jump() {
         jumpingTime = 0.0;
     }
 
-    if (isJumping && vY > 0 && jumpingTime < 0.5) {
+    if (!stucking && isJumping && vY > 0 && jumpingTime < 0.5) {
         gravity = platformer::gravity * 0.2;
+    }
+    else if (stucking && isJumping && vY > 0 && jumpingTime < 0.3) {
+        gravity = platformer::gravity * 0.4;
     }
     else {
         gravity = platformer::gravity;
@@ -270,6 +314,15 @@ void Player::Stomp() {
     onGround = 1;
 }
 
+void Player::JumpPadded(double amount) {
+    vY = amount;
+    stucking = false;
+}
+
+void Player::Land() {
+
+}
+
 void Player::CollideY() {
     if (onGround) {
         coyoteTime = 0;
@@ -296,6 +349,13 @@ void Player::CollideY() {
             vY = 0.0;
             y = bRect.y + bRect.h / 2 + h / 2;
             groundBlock = bRect.block;
+
+            if (levelP->blockProperty[bRect.block].stuck) {
+                stucking = 1;
+            }
+            else {
+                stucking = 0;
+            }
         }
         if (bRect.block && vY > 0.0) {
             vY = 0.0;

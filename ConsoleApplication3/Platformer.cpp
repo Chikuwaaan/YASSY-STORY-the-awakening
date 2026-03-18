@@ -12,6 +12,8 @@
 #include "Sounds.h"
 #include "LiftFall.h"
 #include "Toast.h"
+#include "ZakoJump.h"
+#include "JumpPad.h"
 
 #include <iostream>
 #include <fstream>
@@ -115,8 +117,18 @@ void Platformer::LoadEntities() {
                 std::get<double>(args[6]),
                 std::get<std::string>(args[7])
             );
-            
-            //objects.push_back(std::make_unique<BackGround>(480, 2496, 1, 1, 1440, 3036, 1, "leaves"));
+        }
+        if (objClass == "ZakoJump") {
+            AddObject<ZakoJump>(
+                std::get<double>(args[0]),
+                std::get<double>(args[1])
+            );
+        }
+        if (objClass == "JumpPad") {
+            AddObject<JumpPad>(
+                std::get<double>(args[0]),
+                std::get<double>(args[1])
+            );
         }
     }
 }
@@ -196,6 +208,7 @@ void Platformer::Update() {
         if (type != EntityType::BackGround) {
             if (obj->visible) {
                 obj->Draw();
+                //obj->DrawHitbox();
             }
         }
     }

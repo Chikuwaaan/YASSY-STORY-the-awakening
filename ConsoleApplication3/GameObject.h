@@ -37,6 +37,7 @@ protected:
 
     int groundBlock, headBlock, rightBlock, leftBlock;
     GameObject* touchingEntity;
+    bool onGround;
 
     void CollideY();
     void CollideX();

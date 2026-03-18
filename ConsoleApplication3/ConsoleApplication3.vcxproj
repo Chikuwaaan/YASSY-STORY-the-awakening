@@ -142,6 +142,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="JumpPad.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelSelect.cpp" />
     <ClCompile Include="Lift.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="UIElement.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="Zako.cpp" />
+    <ClCompile Include="ZakoJump.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
@@ -173,6 +175,7 @@
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="iconProperty.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="JumpPad.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelSelect.h" />
     <ClInclude Include="Lift.h" />
@@ -195,6 +198,7 @@
     <ClInclude Include="UIElement.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="Zako.h" />
+    <ClInclude Include="ZakoJump.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ConsoleApplication3.rc" />

@@ -34,6 +34,7 @@ private:
     GameObject* touchingEntity;
     bool stomping;
 
+    bool stucking;
     
     double spawnX, spawnY;
 
@@ -49,6 +50,8 @@ public:
     void Update() override;
     void Jump();
     void Stomp();
+    void JumpPadded(double amount);
+    void Land();
     
     void MoveCameraRoom();
     void Die();

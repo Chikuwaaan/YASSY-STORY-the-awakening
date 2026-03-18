@@ -16,6 +16,15 @@ enum class Anchor {
     Left
 };
 
+struct ROTATE {
+    bool rotate;
+    double angle;
+    double centerX;
+    double centerY;
+    bool flipX;
+    bool flipY;
+};
+
 class Textures {
 private:
     TTF_Font* font;

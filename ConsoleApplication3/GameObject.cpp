@@ -49,6 +49,7 @@ void GameObject::CollideY() {
 
     touchingEntity = nullptr;
     OBJRECT pRect = { x,y,w,h };
+    onGround = false;
 
     //block
     headBlock = 0;
@@ -57,6 +58,7 @@ void GameObject::CollideY() {
     OBJRECT bRect = levelP->IsTouching2(pRect, 0);
     if (bRect.block) {
         if (bRect.block && vY < 0.0) {
+            onGround = true;
             vY = 0.0;
             y = bRect.y + bRect.h / 2 + h / 2;
             groundBlock = bRect.block;
@@ -95,6 +97,7 @@ void GameObject::CollideY() {
             collision = p->GetCollosion();
             if ((pRect.y - pRect.h / 2) > eRect.y) {
                 if (collision) {
+                    onGround = true;
                     y = eRect.y + eRect.h / 2 + h / 2 + 0.01;
                     double v = p->GetVY();
                     if (v < 0) {

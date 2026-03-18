@@ -22,6 +22,7 @@ struct BLOCK {
     int renderingType;
     OBJRECT hitBox;
     int damage;
+    bool stuck;
 };
 
 class Level
@@ -56,6 +57,7 @@ public:
     double GetBlockSize();
     SDL_Rect CheckAroundTile1(int y, int x, CHECKFOR checkFor, int type);
     SDL_Rect CheckAroundTile2(int y, int x, int type);
+    SDL_Rect CheckAroundTile3(int y, int x, int type);
 
     OBJRECT IsTouching2(OBJRECT obj1, bool direction);
     void FixBlockPos(int* x, int* y);

@@ -94,6 +94,13 @@ Level::Level() :
         "block10",
         1,
         {0,0,blockSize,blockSize},
+        0,
+        1
+        });
+    blockProperty.push_back({
+        "block11",
+        3,
+        {0,0,blockSize,blockSize},
         0
         });
     /*
@@ -299,6 +306,17 @@ void Level::DrawMap() {
                 SDL_Rect src = CheckAroundTile2(y, x, blockType);
                 texturesP->DrawSprite(tex, rect, src, 1);
             }
+            else if (blockProperty[blockType].renderingType == 3) {
+                OBJRECT rect;
+                rect.x = blockSize * x + blockSize / 2 + blockProperty[blockType].hitBox.x;
+                rect.y = blockSize * y + blockSize / 2 + blockProperty[blockType].hitBox.y;
+                rect.w = blockSize;
+                rect.h = blockSize;
+
+                std::string tex = blockProperty[blockType].tex;
+                SDL_Rect src = CheckAroundTile3(y, x, blockType);
+                texturesP->DrawSprite(tex, rect, src, 1);
+            }
         }
     }
 };
@@ -428,6 +446,33 @@ SDL_Rect Level::CheckAroundTile2(int y, int x, int type) {
         return src;
     }if (tate) {
         src.x = size * 2;
+        return src;
+    }
+    return src;
+}
+
+SDL_Rect Level::CheckAroundTile3(int y, int x, int type) {
+    int size = 16;
+    SDL_Rect src = { 0,0,size,size };
+    bool yoko = 0, tate = 0;
+
+    if (x > 0 && x < levelW - 1) {
+        if (level[y][x - 1] == type || type == level[y][x + 1]) {
+            yoko = 1;
+        }
+    }
+    if (y > 0 && y < levelH - 1) {
+        if (level[y - 1][x] == type || type == level[y + 1][x]) {
+            tate = 1;
+        }
+    }
+
+    if (tate) {
+        src.x = size * 2;
+        return src;
+    }
+    if (yoko) {
+        src.x = size;
         return src;
     }
     return src;

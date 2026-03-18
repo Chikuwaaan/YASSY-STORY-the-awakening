@@ -9,14 +9,7 @@ struct POSITION {
     double y;
 };
 
-struct ROTATE {
-    bool rotate;
-    double angle;
-    double centerX;
-    double centerY;
-    bool flipX;
-    bool flipY;
-};
+
 
 
 struct CAMERA {
