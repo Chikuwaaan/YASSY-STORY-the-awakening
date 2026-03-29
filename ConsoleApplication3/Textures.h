@@ -45,6 +45,7 @@ public:
     void DrawSprite(std::string sheet, OBJRECT rect, SDL_Rect src, bool relative);
     void DrawIcon(Icons icon, SDL_Rect rect);
     void DrawRect(SDL_Color color, OBJRECT rect, bool relative);
+    void DrawLine(SDL_Color color, POSITION p1, POSITION p2, bool relative);
     void DrawTexts(std::string text, SDL_Color col1, SDL_Color col2, OBJRECT rect, bool relative, Anchor anchor);
     void DrawTexts(std::u8string text, SDL_Color col1, SDL_Color col2, OBJRECT rect, bool relative, Anchor anchor);
     void Update();

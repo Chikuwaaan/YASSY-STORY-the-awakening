@@ -2,6 +2,7 @@
 #include <string>
 #include "structs.h"
 #include "GameObject.h"
+#include "GameTimer.h"
 
 class Level;
 class Camera;
@@ -28,6 +29,7 @@ private:
     double gravity;
     int groundBlock, headBlock, rightBlock, leftBlock;
 
+    bool stop;
     bool isDead;
     double dieTime;
     bool dieAnim;
@@ -37,6 +39,9 @@ private:
     bool stucking;
     
     double spawnX, spawnY;
+
+    GameTimer timerComplete;
+    bool completing;
 
     void CollideY();
     void CollideX();
@@ -57,6 +62,7 @@ public:
     void Die();
     void Spawn();
     void SetSpawnPoint(double x, double y);
+    void Goal();
     void Complete();
 
     void Draw() override;

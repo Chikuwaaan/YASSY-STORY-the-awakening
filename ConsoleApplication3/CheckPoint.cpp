@@ -44,20 +44,27 @@ void CheckPoint::Stomped() {
 }
 
 void CheckPoint::Draw() {
-    SDL_Rect src;
-    if (!used) {
-        texturesP->DrawTexts(u8"チェック ポイント", { 255,255,255,255 }, { 0,0,0,255 }, { x,y + 80,0.8,0.8 }, 1, Anchor::Center);
-        texturesP->DrawTexts(u8"ス", { 255,255,255,15 }, { 0,0,0,15 }, { x-5,y + 70,0.4,0.4 }, 1, Anchor::Center);
-        src = { 0,0,16,16 };
-    }
-    else {
-        OBJRECT pRect = playerP->GetRect();
-        if (pRect.x < x) {
-            src = { 16,0,16,16 };
+    if (index != 0) {
+        SDL_Rect src;
+        if (!used) {
+            texturesP->DrawTexts(u8"チェック ポイント", { 255,255,255,255 }, { 0,0,0,255 }, { x,y + 80,0.8,0.8 }, 1, Anchor::Center);
+            texturesP->DrawTexts(u8"ス", { 255,255,255,15 }, { 0,0,0,15 }, { x - 5,y + 70,0.4,0.4 }, 1, Anchor::Center);
+            src = { 0,0,16,16 };
         }
         else {
-            src = { 32,0,16,16 };
+            OBJRECT pRect = playerP->GetRect();
+            if (pRect.x < x) {
+                src = { 16,0,16,16 };
+            }
+            else {
+                src = { 32,0,16,16 };
+            }
         }
+        texturesP->DrawSprite(texName, { x,y,h,h }, src, 1);
     }
-    texturesP->DrawSprite(texName, { x,y,h,h }, src, 1);
+    else {
+        OBJRECT rect = { x,y+48,192,192 };
+        texturesP->DrawImage("signR", rect, 1, {});
+    }
+    
 }

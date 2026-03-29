@@ -137,10 +137,14 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CheckPoint.cpp" />
+    <ClCompile Include="Deco.cpp" />
     <ClCompile Include="FaceYassy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTimer.cpp" />
+    <ClCompile Include="Goal.cpp" />
+    <ClCompile Include="Hosi.cpp" />
+    <ClCompile Include="Hossy.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="JumpPad.cpp" />
     <ClCompile Include="Level.cpp" />
@@ -161,6 +165,7 @@
     <ClCompile Include="Toast.cpp" />
     <ClCompile Include="UIElement.cpp" />
     <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="Warp.cpp" />
     <ClCompile Include="Zako.cpp" />
     <ClCompile Include="ZakoJump.cpp" />
   </ItemGroup>
@@ -169,10 +174,14 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CheckPoint.h" />
+    <ClInclude Include="Deco.h" />
     <ClInclude Include="FaceYassy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTimer.h" />
+    <ClInclude Include="Goal.h" />
+    <ClInclude Include="Hosi.h" />
+    <ClInclude Include="Hossy.h" />
     <ClInclude Include="iconProperty.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="JumpPad.h" />
@@ -197,6 +206,7 @@
     <ClInclude Include="Toast.h" />
     <ClInclude Include="UIElement.h" />
     <ClInclude Include="UIManager.h" />
+    <ClInclude Include="Warp.h" />
     <ClInclude Include="Zako.h" />
     <ClInclude Include="ZakoJump.h" />
   </ItemGroup>

@@ -14,6 +14,11 @@
 #include "Toast.h"
 #include "ZakoJump.h"
 #include "JumpPad.h"
+#include "Goal.h"
+#include "Deco.h"
+#include "Warp.h"
+#include "Hossy.h"
+#include "Hosi.h"
 
 #include <iostream>
 #include <fstream>
@@ -130,6 +135,51 @@ void Platformer::LoadEntities() {
                 std::get<double>(args[1])
             );
         }
+        if (objClass == "Goal") {
+            AddObject<Goal>(
+                std::get<double>(args[0]),
+                std::get<double>(args[1]),
+                std::get<double>(args[2]),
+                std::get<double>(args[3])
+            );
+        }
+        if (objClass == "Deco") {
+            AddObject<Deco>(
+                std::get<double>(args[0]),
+                std::get<double>(args[1]),
+                std::get<double>(args[2]),
+                std::get<double>(args[3]),
+                std::get<double>(args[4]),
+                std::get<std::string>(args[5])
+            );
+        }
+        if (objClass == "Warp") {
+            Warp* p0 = AddObject<Warp>(
+                std::get<double>(args[0]),
+                std::get<double>(args[1]),
+                0
+            );
+            Warp* p1 = AddObject<Warp>(
+                std::get<double>(args[2]),
+                std::get<double>(args[3]),
+                1
+            );
+            p0->pair = p1;
+            p1->pair = p0;
+        }
+        if (objClass == "Hossy") {
+            AddObject<Hossy>(
+                std::get<double>(args[0]),
+                std::get<double>(args[1])
+            );
+        }
+        if (objClass == "Hosi") {
+            AddObject<Hosi>(
+                std::get<double>(args[0]),
+                std::get<double>(args[1]),
+                std::get<double>(args[2])
+            );
+        }
     }
 }
 
@@ -163,6 +213,7 @@ void Platformer::Update() {
     }  
 
     if (event.P) {
+        objects.push_back(std::make_unique<Toast>(info.name));
         double x, y;
         level.GetMouseC(&x, &y);
         player.SetX(x);
@@ -208,7 +259,8 @@ void Platformer::Update() {
         if (type != EntityType::BackGround) {
             if (obj->visible) {
                 obj->Draw();
-                //obj->DrawHitbox();
+                if (editorMode) obj->DrawHitbox();
+                
             }
         }
     }

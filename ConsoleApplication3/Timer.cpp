@@ -2,8 +2,8 @@
 #include <iostream>
 
 Timer::Timer() {
-    last = 0;
-    now = 0;
+    last = SDL_GetTicks();
+    now = SDL_GetTicks();
     delta = 0;
     timer = 0;
 }

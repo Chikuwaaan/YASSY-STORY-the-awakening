@@ -41,6 +41,8 @@ Player::Player() {
     headBlock = 0;
     rightBlock = 0;
     leftBlock = 0;
+
+    stop = 0;
     isDead = 0;
     dieTime = 0;
     dieAnim = 0;
@@ -52,6 +54,8 @@ Player::Player() {
     currentCP = 0;
     spawnX = 0;
     spawnY = 0;
+
+    completing = 0;
 }
 
 void Player::SetAX(double acceleration) {
@@ -70,8 +74,23 @@ void Player::Update() {
             dieAnim = 0;
             //overlayP->PinHole(2000, 1000, 1.1, { 0,0,0,255 });
         }
-        return;
+        stop = 1;
     }
+    else {
+        stop = 0;
+    }
+
+    if (completing) {
+        stop = 1;
+        timerComplete.Update();
+        if (timerComplete.GetTime() > 1) {
+            timerComplete.Reset();
+            Complete();
+        }
+    }
+
+    if (stop) return;
+
     if (isDead) {
         isDead = 0;
         Spawn();
@@ -118,8 +137,9 @@ void Player::Update() {
 
         FlipX(false);
     }
+
     if (event.Down) {
-        //Complete();
+        Goal();
     }
 
     if (keystate[SDL_SCANCODE_M]) {
@@ -252,7 +272,7 @@ void Player::Update() {
 void Player::Jump() {
     if (jumpPressed && coyoteTime < 0.1 && canJump) {
         if (stucking) {
-            vY = 450.0;
+            vY = 500.0;
         }
         else {
             vY = 660.0;
@@ -594,6 +614,7 @@ void Player::Spawn() {
     liftVX = 0.0;
     flipX = 0;
 
+    stop = 0;
     overlayP->FadeIn(1, {0,0,0,255});
     
     platformerP->LoadEntities();
@@ -612,7 +633,14 @@ void Player::SetSpawnPoint(double x, double y) {
     spawnY = y;
 }
 
+void Player::Goal() {
+    completing = 1;
+    overlayP->FadeOut(1.1, { 0,0,0,255 });
+}
+
 void Player::Complete() {
+    stop = 0;
+    completing = 0;
     currentCP = 0;
     platformer::level++;
     platformerP->Init();

@@ -51,9 +51,10 @@ public:
     bool inScreen(std::unique_ptr<GameObject>& p);
 
     template<typename T, typename... Args>
-    void AddObject(Args&&... args) {
-        pendingObjects.push_back(
-            std::make_unique<T>(std::forward<Args>(args)...)
-        );
+    T* AddObject(Args&&... args) {
+        std::unique_ptr p = std::make_unique<T>(std::forward<Args>(args)...);
+        T* raw = p.get();
+        pendingObjects.push_back(std::move(p));
+        return raw;
     }
 };

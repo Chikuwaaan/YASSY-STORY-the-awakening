@@ -157,8 +157,15 @@ void Textures::DrawImage(std::string texName, OBJRECT rect, bool relative, ROTAT
 
     if (rotate.rotate) {
         SDL_Point point;
-        point.x = (int)(rotate.centerX * camera.zoom);
-        point.y = (int)(rotate.centerY * camera.zoom);
+        if (relative) {
+            point.x = (int)(rotate.centerX * camera.zoom);
+            point.y = (int)(rotate.centerY * camera.zoom);
+        }
+        else {
+            point.x = (int)rotate.centerX;
+            point.y = (int)rotate.centerY;
+        }
+        
         SDL_RendererFlip flip = SDL_FLIP_NONE;
         if (rotate.flipX && rotate.flipY) {
             flip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
@@ -247,6 +254,17 @@ void Textures::DrawRect(SDL_Color color, OBJRECT rect, bool relative) {
     else {
         SDL_RenderDrawRect(settings::renderer, &dst);
     }
+}
+
+void Textures::DrawLine(SDL_Color color, POSITION p1, POSITION p2, bool relative) {
+    SDL_SetRenderTarget(r, nullptr);
+    OBJRECT rect1 = { p1.x, p1.y, 0, 0 };
+    OBJRECT rect2 = { p2.x, p2.y, 0, 0 };
+    SDL_Rect dst1 = GetDst(rect1, relative, Anchor::Center);
+    SDL_Rect dst2 = GetDst(rect2, relative, Anchor::Center);
+
+    SDL_SetRenderDrawColor(settings::renderer, color.r, color.g, color.b, color.a);
+    SDL_RenderDrawLine(settings::renderer, dst1.x, dst1.y, dst2.x, dst2.y);
 }
 
 void Textures::DrawTexts(std::string text, SDL_Color col1, SDL_Color col2, OBJRECT rect, bool relative, Anchor anchor) {

@@ -12,8 +12,8 @@ namespace settings {
     int winH = 0;
     SDL_Window* window;
     SDL_Renderer* renderer;
-    int BGM = 156;
-    int SE = 64;
+    int BGM = 16;
+    int SE = 16;
 }
 
 namespace utilities {
@@ -75,11 +75,15 @@ namespace utilities {
 
         return rgb;
     }
+
+    double DegreetoRadian(double angle) {
+        return angle / 180 * acos(-1);
+    }
 }
 
 namespace platformer {
     double gravity = -2150.0;
     int flames = 0;
-    int level = 2;
+    int level = 1;
 }
 
