@@ -23,6 +23,7 @@ namespace utilities {
     bool HitDetectionEquals(OBJRECT obj1, OBJRECT obj2);
     SDL_Color HSVtoRGB(double h, double s, double v, int a);
     double DegreetoRadian(double angle);
+    double DistanceSQ(double x1, double y1, double x2, double y2);
 }
 
 namespace platformer {

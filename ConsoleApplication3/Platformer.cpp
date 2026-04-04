@@ -19,6 +19,7 @@
 #include "Warp.h"
 #include "Hossy.h"
 #include "Hosi.h"
+#include "Coin.h"
 
 #include <iostream>
 #include <fstream>
@@ -31,8 +32,10 @@ Sounds* Platformer::soundsP = nullptr;
 
 Platformer::Platformer() {
     player.levelP = &level;
+    Level::playerP = &player;
     GameObject::levelP = &level;
     GameObject::playerP = &player;
+    Coin::managerP = &coinManager;
 
     editorMode = 0;
 }
@@ -180,6 +183,13 @@ void Platformer::LoadEntities() {
                 std::get<double>(args[2])
             );
         }
+        if (objClass == "Coin") {
+            AddObject<Coin>(
+                std::get<double>(args[0]),
+                std::get<double>(args[1]),
+                std::get<double>(args[2])
+            );
+        }
     }
 }
 
@@ -252,7 +262,7 @@ void Platformer::Update() {
     
 
     level.Update();
-    level.DrawMap();
+    level.DrawMap(editorMode);
 
     for (auto& obj : objects) {
         EntityType type = obj->GetType();
@@ -282,6 +292,9 @@ void Platformer::Update() {
         level.Editor();
     }
     cameraP->Draw();
+
+    coinManager.Update();
+    coinManager.Draw();
 
     texturesP->DrawTexts(std::to_string(timer.GetTime()), { 255,255,255,255 }, { 0,0,0,255 }, { 1700,50,1,1 }, 0, Anchor::Center);
 }

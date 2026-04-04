@@ -106,7 +106,7 @@ void Camera::Update() {
 
 void Camera::Draw() {
     std::string text = std::to_string(camera.x) + ',' + std::to_string(camera.y);
-    texturesP->DrawTexts(text, { 255,255,255,255 }, { 0,0,0,255 }, { 50,1000,1,1 }, 0, Anchor::Left);
+    texturesP->DrawTexts(text, { 255,255,255,255 }, { 0,0,0,255 }, { 50,50,1,1 }, 0, Anchor::Left);
 
     texturesP->DrawRect({ 0,0,255,255 }, { camera.x, camera.y, (double)settings::baseW, (double)settings::baseH }, 1);
     if (drawCameraRoom) {

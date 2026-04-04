@@ -7,6 +7,7 @@
 #include "Level.h"
 #include "Player.h"
 #include "Timer.h"
+#include "CoinManager.h"
 
 class GameObject;
 class Textures;
@@ -24,6 +25,7 @@ class Platformer {
 private:
     Level level;
     Player player;
+    CoinManager coinManager;
 
     bool editorMode;
 

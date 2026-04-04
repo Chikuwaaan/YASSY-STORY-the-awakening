@@ -137,6 +137,8 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CheckPoint.cpp" />
+    <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="CoinManager.cpp" />
     <ClCompile Include="Deco.cpp" />
     <ClCompile Include="FaceYassy.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -174,6 +176,8 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CheckPoint.h" />
+    <ClInclude Include="Coin.h" />
+    <ClInclude Include="CoinManager.h" />
     <ClInclude Include="Deco.h" />
     <ClInclude Include="FaceYassy.h" />
     <ClInclude Include="Game.h" />
