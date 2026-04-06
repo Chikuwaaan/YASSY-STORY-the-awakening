@@ -12,15 +12,7 @@ struct POSITION {
 
 
 
-struct CAMERA {
-	double x;
-	double y;
-    double offsetX;
-    double offsetY;
-    double targetX;
-    double targetY;
-	double zoom;
-};
+
 
 struct OBJRECT {
 	double x = 0.0;

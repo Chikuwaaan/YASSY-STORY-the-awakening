@@ -5,6 +5,17 @@
 class Textures;
 class Input;
 
+struct CAMERA {
+    double x;
+    double y;
+    double offsetX;
+    double offsetY;
+    double targetX;
+    double targetY;
+    double zoom;
+    double angle;
+};
+
 class Camera
 {
 private:

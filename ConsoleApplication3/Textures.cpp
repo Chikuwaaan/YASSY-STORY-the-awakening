@@ -130,22 +130,27 @@ SDL_Rect Textures::GetDst(OBJRECT rect, bool relative, Anchor anchor) {
         camera = { settings::baseW / 2.0 , settings::baseH / 2.0 , 0, 0, settings::baseW / 2.0 , settings::baseH / 2.0, 1 };
     }
 
+    double angle = camera.angle * -1;
+    double radian = utilities::DegreetoRadian(angle);
+    double pivotX = settings::baseW / 2.0;
+    double pivotY = settings::baseH / 2.0;
     if (anchor == Anchor::Center) {
-        double pivotX = settings::baseW / 2.0;
-        double pivotY = settings::baseH / 2.0;
         dst.x = (int)round((rect.x - rect.w * 0.5 - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
         dst.y = (int)round(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
         dst.w = (int)round(rect.w * camera.zoom);
         dst.h = (int)round(rect.h * camera.zoom);
     }
     else if (anchor == Anchor::Left) {
-        double pivotX = settings::baseW / 2.0;
-        double pivotY = settings::baseH / 2.0;
         dst.x = (int)round((rect.x - (camera.x - pivotX + camera.offsetX + settings::baseW * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
         dst.y = (int)round(settings::baseH - ((rect.y + rect.h * 0.5) - (camera.y - pivotY + camera.offsetY + settings::baseH * (0.5 - 0.5 / camera.zoom))) * camera.zoom);
         dst.w = (int)round(rect.w * camera.zoom);
         dst.h = (int)round(rect.h * camera.zoom);
     }
+
+    double a = (dst.x - pivotX);
+    double b = (dst.y - pivotY);
+    dst.x = cos(radian) * a - sin(radian) * b + pivotX;
+    dst.y = sin(radian) * a + cos(radian) * b + pivotY;
     
 
     return dst;
@@ -222,7 +227,7 @@ void Textures::DrawImageS(std::string texName, SDL_Rect Rect, bool relative, ROT
 void Textures::DrawSprite(std::string sheet, OBJRECT rect, SDL_Rect src, bool relative) {
     CAMERA camera = cameraP->GetCam();
     SDL_Rect dst = GetDst(rect, relative, Anchor::Center);
-    SDL_RenderCopy(settings::renderer, GetTexture(sheet), &src, &dst);
+    SDL_RenderCopyEx(settings::renderer, GetTexture(sheet), &src, &dst, camera.angle*-1, NULL, SDL_FLIP_NONE);
 }
 
 void Textures::DrawIcon(Icons icon, SDL_Rect rect) {
