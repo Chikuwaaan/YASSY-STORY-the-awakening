@@ -9,8 +9,8 @@ Hosi::Hosi(double X, double Y, double Angle) {
     h = 32;
     texName = "Hossy";
     angle = Angle;
-    vX = cos(utilities::DegreetoRadian(angle)) * 500;
-    vY = sin(utilities::DegreetoRadian(angle)) * 500;
+    vX = cos(utilities::DegreetoRadian(angle)) * 300;
+    vY = sin(utilities::DegreetoRadian(angle)) * 300;
     
 }
 

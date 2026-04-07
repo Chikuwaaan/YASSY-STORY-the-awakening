@@ -3,7 +3,6 @@
 #include "namespace.h"
 #include "Input.h"
 #include "Camera.h"
-#include "Player.h"
 #include <cmath>
 #include <fstream>
 #include <SDL_mixer.h>
@@ -12,7 +11,7 @@ Textures* Level::texturesP = nullptr;
 Input* Level::inputP = nullptr;
 Camera* Level::cameraP = nullptr;
 Game* Level::gameP = nullptr;
-Player* Level::playerP = nullptr;
+
 
 Level::Level() : 
     level{ {} }
@@ -109,14 +108,6 @@ Level::Level() :
         1,
         {0,0,blockSize,blockSize},
         0
-        });
-    blockProperty.push_back({
-        "block13",
-        1,
-        {0,0,blockSize,blockSize},
-        0,
-        0,
-        1
         });
     /*
     blockProperty.push_back({});
@@ -261,26 +252,10 @@ void Level::Editor() {
 
 }
 
-void Level::DrawMap(bool mode) {
+void Level::DrawMap() {
     for (int y = 0; y < levelH; y++) {
         for (int x = 0; x < levelW; x++) {
             int blockType = level[y][x];
-
-            if (!mode) {
-                if (blockProperty[blockType].invisible) {
-                    OBJRECT rectP = playerP->GetRect();
-                    double distance = utilities::DistanceSQ(
-                        blockSize * x + blockSize * 0.5,
-                        blockSize * y + blockSize * 0.5,
-                        rectP.x,
-                        rectP.y
-                    );
-                    if (distance > 160000) continue;
-                    
-                }
-            }
-            
-
             if (blockProperty[blockType].renderingType == 1) {
                 std::string tex = blockProperty[blockType].tex;
 

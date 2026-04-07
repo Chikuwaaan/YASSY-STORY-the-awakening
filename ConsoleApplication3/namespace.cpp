@@ -79,12 +79,6 @@ namespace utilities {
     double DegreetoRadian(double angle) {
         return angle / 180 * acos(-1);
     }
-
-    double DistanceSQ(double x1, double y1, double x2, double y2) {
-        double dx = x2 - x1;
-        double dy = y2 - y1;
-        return dx * dx + dy * dy;
-    }
 }
 
 namespace platformer {
