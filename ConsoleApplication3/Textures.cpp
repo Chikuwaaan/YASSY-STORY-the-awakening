@@ -160,32 +160,27 @@ void Textures::DrawImage(std::string texName, OBJRECT rect, bool relative, ROTAT
     CAMERA camera = cameraP->GetCam();
     SDL_Rect dst = GetDst(rect, relative, Anchor::Center);
 
-    if (rotate.rotate) {
-        SDL_Point point;
-        if (relative) {
-            point.x = (int)(rotate.centerX * camera.zoom);
-            point.y = (int)(rotate.centerY * camera.zoom);
-        }
-        else {
-            point.x = (int)rotate.centerX;
-            point.y = (int)rotate.centerY;
-        }
-        
-        SDL_RendererFlip flip = SDL_FLIP_NONE;
-        if (rotate.flipX && rotate.flipY) {
-            flip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
-        }
-        else if (rotate.flipY) {
-            flip = SDL_FLIP_VERTICAL;
-        }
-        else if (rotate.flipX) {
-            flip = SDL_FLIP_HORIZONTAL;
-        }
-        SDL_RenderCopyEx(settings::renderer, GetTexture(texName), NULL, &dst, rotate.angle, &point, flip);
+    SDL_Point point;
+    if (relative) {
+        point.x = (int)(rotate.centerX * camera.zoom);
+        point.y = (int)(rotate.centerY * camera.zoom);
     }
     else {
-        SDL_RenderCopy(settings::renderer, GetTexture(texName), NULL, &dst);
+        point.x = (int)rotate.centerX;
+        point.y = (int)rotate.centerY;
     }
+
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
+    if (rotate.flipX && rotate.flipY) {
+        flip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
+    }
+    else if (rotate.flipY) {
+        flip = SDL_FLIP_VERTICAL;
+    }
+    else if (rotate.flipX) {
+        flip = SDL_FLIP_HORIZONTAL;
+    }
+    SDL_RenderCopyEx(settings::renderer, GetTexture(texName), NULL, &dst, rotate.angle-camera.angle, &point, flip);
 }
 
 void Textures::DrawImageA(std::string texName, OBJRECT rect, bool relative, Anchor anchor) {

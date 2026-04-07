@@ -647,12 +647,15 @@ void Player::Complete() {
 }
 
 void Player::Draw() {
+    texturesP->DrawImage("assy2", { x,y,w,h }, 1, {0});
+    /*
     DrawPart("legL", sin(moveBody) * 16, 30, 50);
     DrawPart("legR", sin(moveBody) * -16, 20, 50);
     DrawPart("body", 0, 0, 0);
     DrawPart(texName, sin(moveBody) * 4, 60, 30);
     DrawPart("armL", sin(moveBody) * -16, 70, 50);
     DrawPart("armR", sin(moveBody) * 16, 55, 50);
+    */
 
     SDL_Color color = { 255,255,255,255 };
 }

@@ -17,7 +17,7 @@ Camera::Camera() {
     camera.targetX = 720.0;
     camera.targetY = 540.0;
     camera.zoom = 1.0;
-    camera.angle = 30;
+    camera.angle = 0;
     drawCameraRoom = 0;
 }
 
