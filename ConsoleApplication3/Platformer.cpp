@@ -19,6 +19,7 @@
 #include "Warp.h"
 #include "Hossy.h"
 #include "Hosi.h"
+#include "Coin.h"
 
 #include <iostream>
 #include <fstream>
@@ -31,8 +32,10 @@ Sounds* Platformer::soundsP = nullptr;
 
 Platformer::Platformer() {
     player.levelP = &level;
+    Level::playerP = &player;
     GameObject::levelP = &level;
     GameObject::playerP = &player;
+    Coin::managerP = &coinManager;
 
     editorMode = 0;
 }
@@ -70,7 +73,7 @@ void Platformer::LoadEntities() {
 
         std::vector<std::variant<double, std::string>> args;
         while (std::getline(stream, cell, ',')) {
-            bool digit  = 0;
+            bool digit = 0;
             if (std::isdigit(cell[0]) || cell[0] == '-') {
                 digit = 1;
             }
@@ -95,7 +98,7 @@ void Platformer::LoadEntities() {
                 std::get<double>(args[4]),
                 std::get<double>(args[5]),
                 std::get<double>(args[6])
-                );
+            );
         }
         if (objClass == "LiftFall") {
             AddObject<LiftFall>(
@@ -109,7 +112,7 @@ void Platformer::LoadEntities() {
                 std::get<double>(args[0]),
                 std::get<double>(args[1]),
                 std::get<double>(args[2])
-                );
+            );
         }
         if (objClass == "BackGround") {
             AddObject<BackGround>(
@@ -180,6 +183,13 @@ void Platformer::LoadEntities() {
                 std::get<double>(args[2])
             );
         }
+        if (objClass == "Coin") {
+            AddObject<Coin>(
+                std::get<double>(args[0]),
+                std::get<double>(args[1]),
+                std::get<double>(args[2])
+            );
+        }
     }
 }
 
@@ -198,7 +208,7 @@ void Platformer::Quit() {
 
 void Platformer::Update() {
     EVENT event = inputP->event;
-    OBJRECT screenRect = { (double)settings::baseW / 2, (double)settings::baseH / 2, (double)settings::baseW*20, (double)settings::baseH*20, 1};
+    OBJRECT screenRect = { (double)settings::baseW / 2, (double)settings::baseH / 2, (double)settings::baseW, (double)settings::baseH, 1 };
     texturesP->DrawRect({ 255,255,255,255 }, screenRect, 0);
 
     cameraP->Update();
@@ -210,7 +220,7 @@ void Platformer::Update() {
         else {
             editorMode = 1;
         }
-    }  
+    }
 
     if (event.P) {
         objects.push_back(std::make_unique<Toast>(info.name));
@@ -240,7 +250,7 @@ void Platformer::Update() {
         player.Update();
     }
 
-    
+
     for (auto& obj : objects) {
         EntityType type = obj->GetType();
         if (type == EntityType::BackGround) {
@@ -249,10 +259,10 @@ void Platformer::Update() {
             }
         }
     }
-    
+
 
     level.Update();
-    level.DrawMap();
+    level.DrawMap(editorMode);
 
     for (auto& obj : objects) {
         EntityType type = obj->GetType();
@@ -260,14 +270,14 @@ void Platformer::Update() {
             if (obj->visible) {
                 obj->Draw();
                 if (editorMode) obj->DrawHitbox();
-                
+
             }
         }
     }
-    
+
     player.Draw();
 
-    
+
     for (auto& obj : objects) {
         EntityType type = obj->GetType();
         if (type == EntityType::BackGround) {
@@ -276,12 +286,15 @@ void Platformer::Update() {
             }
         }
     }
-    
+
 
     if (editorMode) {
         level.Editor();
     }
     cameraP->Draw();
+
+    coinManager.Update();
+    coinManager.Draw();
 
     texturesP->DrawTexts(std::to_string(timer.GetTime()), { 255,255,255,255 }, { 0,0,0,255 }, { 1700,50,1,1 }, 0, Anchor::Center);
 }
@@ -289,12 +302,12 @@ void Platformer::Update() {
 bool Platformer::inScreen(std::unique_ptr<GameObject>& p) {
     CAMERA cam = cameraP->GetCam();
     double edgeR, edgeL;
-    edgeR = cam.x + settings::baseW/2 + 192;
-    edgeL = cam.x - settings::baseW/2 - 192;
+    edgeR = cam.x + settings::baseW / 2 + 192;
+    edgeL = cam.x - settings::baseW / 2 - 192;
     OBJRECT rect = p->GetRect();
 
     if (edgeL < rect.x && rect.x < edgeR) {
         return true;
-    } 
+    }
     return false;
 }

@@ -5,12 +5,22 @@
 #include "iconProperty.h"
 
 Camera* Textures::cameraP = nullptr;
-SDL_Renderer* r = settings::renderer;
 namespace fs = std::filesystem;
 
 
 Textures::Textures() {
+    Uint32 format = SDL_GetWindowPixelFormat(settings::window);
+    canvas = SDL_CreateTexture(
+        settings::renderer,
+        format,
+        SDL_TEXTUREACCESS_TARGET,
+        1920,
+        1080
+    );
+    SDL_SetRenderTarget(settings::renderer, canvas);
+
     LoadTextures("Assets/textures");
+    
 
     //FONTS
     std::cout << "loading fonts..." << std::endl;
@@ -244,7 +254,7 @@ void Textures::DrawIcon(Icons icon, SDL_Rect rect) {
 }
 
 void Textures::DrawRect(SDL_Color color, OBJRECT rect, bool relative) {
-    SDL_SetRenderTarget(r, nullptr);
+    //SDL_SetRenderTarget(r, nullptr);
     SDL_Rect dst = GetDst(rect, relative, Anchor::Center);
 
     SDL_SetRenderDrawColor(settings::renderer, color.r, color.g, color.b, color.a);
@@ -257,7 +267,7 @@ void Textures::DrawRect(SDL_Color color, OBJRECT rect, bool relative) {
 }
 
 void Textures::DrawLine(SDL_Color color, POSITION p1, POSITION p2, bool relative) {
-    SDL_SetRenderTarget(r, nullptr);
+    //SDL_SetRenderTarget(r, nullptr);
     OBJRECT rect1 = { p1.x, p1.y, 0, 0 };
     OBJRECT rect2 = { p2.x, p2.y, 0, 0 };
     SDL_Rect dst1 = GetDst(rect1, relative, Anchor::Center);
@@ -325,6 +335,12 @@ void Textures::DrawTexts(std::u8string text, SDL_Color col1, SDL_Color col2, OBJ
 
 void Textures::Update() {
     //ModTextures();
+    SDL_Rect dst = { 0,0,1920,1080 };
+    SDL_Point center = { 960,540 };
+    SDL_SetRenderTarget(settings::renderer, NULL);
+    SDL_RenderCopyEx(settings::renderer, canvas, NULL, &dst, 10 * sin(timer.GetTime()), &center, SDL_FLIP_NONE);
+    SDL_RenderPresent(settings::renderer);
+    SDL_SetRenderTarget(settings::renderer, canvas);
 }
 
 void Textures::ModTextures() {

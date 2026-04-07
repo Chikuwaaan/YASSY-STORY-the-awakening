@@ -108,7 +108,6 @@ void Game::Run() {
         }
         accumulator -= settings::dt;
 
-        SDL_RenderPresent(settings::renderer);
     }
 }
 
@@ -189,6 +188,7 @@ void Game::Update() {
     }
 
     overlay->Update();
+    textures->Update();
 
     //DEBUG INFO
     bool showCursorPoint = 0;
@@ -243,9 +243,11 @@ void Game::InitSystem() {
     settings::winH = (int)(settings::baseH * scale);
     settings::window = SDL_CreateWindow("YASSY STORY: awakening", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, settings::winW, settings::winH, SDL_WINDOW_FULLSCREEN_DESKTOP);
     //settings::window = SDL_CreateWindow("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1600, 900, 0);
-    settings::renderer = SDL_CreateRenderer(settings::window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    //| SDL_RENDERER_PRESENTVSYNC
+    settings::renderer = SDL_CreateRenderer(settings::window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
     SDL_RenderSetLogicalSize(settings::renderer, settings::baseW, settings::baseH);
+
+    SDL_RendererInfo info;
+    SDL_GetRendererInfo(settings::renderer, &info);
 
     SDL_DisplayMode disp;
     SDL_GetDesktopDisplayMode(0, &disp);

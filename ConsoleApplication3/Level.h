@@ -9,6 +9,7 @@
 class Textures;
 class Camera;
 class Game;
+class Player;
 
 enum class CHECKFOR {
     TopRight,
@@ -23,6 +24,7 @@ struct BLOCK {
     OBJRECT hitBox;
     int damage;
     bool stuck;
+    bool invisible;
 };
 
 class Level
@@ -41,6 +43,7 @@ public:
     static Input* inputP;
     static Camera* cameraP;
     static Game* gameP;
+    static Player* playerP;
 
     std::vector<BLOCK> blockProperty;
 
@@ -53,7 +56,7 @@ public:
 
     void Update();
     void Editor();
-    void DrawMap();
+    void DrawMap(bool mode);
     double GetBlockSize();
     SDL_Rect CheckAroundTile1(int y, int x, CHECKFOR checkFor, int type);
     SDL_Rect CheckAroundTile2(int y, int x, int type);

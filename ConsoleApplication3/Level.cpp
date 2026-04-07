@@ -3,6 +3,7 @@
 #include "namespace.h"
 #include "Input.h"
 #include "Camera.h"
+#include "Player.h"
 #include <cmath>
 #include <fstream>
 #include <SDL_mixer.h>
@@ -11,9 +12,9 @@ Textures* Level::texturesP = nullptr;
 Input* Level::inputP = nullptr;
 Camera* Level::cameraP = nullptr;
 Game* Level::gameP = nullptr;
+Player* Level::playerP = nullptr;
 
-
-Level::Level() : 
+Level::Level() :
     level{ {} }
 {
     levelW = 1024;
@@ -45,7 +46,7 @@ Level::Level() :
     blockProperty.push_back({
         "block2",
         1,
-        {0,6 * blockSize / (-16),10*blockSize / 16,blockSize / 4},
+        {0,6 * blockSize / (-16),10 * blockSize / 16,blockSize / 4},
         1
         });
     blockProperty.push_back({
@@ -108,6 +109,14 @@ Level::Level() :
         1,
         {0,0,blockSize,blockSize},
         0
+        });
+    blockProperty.push_back({
+        "block13",
+        1,
+        {0,0,blockSize,blockSize},
+        0,
+        0,
+        1
         });
     /*
     blockProperty.push_back({});
@@ -227,11 +236,11 @@ void Level::Editor() {
         level[mouseY][mouseX] = editorPalette;
     }
 
-    
+
 
     SDL_Color color1 = { 255,255,255,255 };
     SDL_Color color2 = { 0,0,0,255 };
-    texturesP->DrawSprite(blockProperty[editorPalette].tex, {1920-48, 1080-48, blockSize, blockSize}, {0,0,16,16}, 0);
+    texturesP->DrawSprite(blockProperty[editorPalette].tex, { 1920 - 48, 1080 - 48, blockSize, blockSize }, { 0,0,16,16 }, 0);
 
     std::string blockIndex = std::to_string(mouseX) + "," + std::to_string(mouseY);
     std::string blockPos = std::to_string(mouseX * (int)blockSize) + ',' + std::to_string(mouseY * (int)blockSize);
@@ -239,23 +248,39 @@ void Level::Editor() {
     texturesP->DrawTexts(blockIndex, color1, color2, { 1400, 1030, 1, 1 }, 0, Anchor::Left);
     texturesP->DrawTexts(blockPos, color1, color2, { 1400, 980, 1, 1 }, 0, Anchor::Left);
     texturesP->DrawTexts(blockCenter, color1, color2, { 1400, 930, 1, 1 }, 0, Anchor::Left);
-    
+
     if (event.F2) {
         std::cout << blockIndex << std::endl;
     }
     if (event.F3) {
         std::cout << blockPos << std::endl;
-    } 
+    }
     if (event.F4) {
         std::cout << blockCenter << std::endl;
     }
 
 }
 
-void Level::DrawMap() {
+void Level::DrawMap(bool mode) {
     for (int y = 0; y < levelH; y++) {
         for (int x = 0; x < levelW; x++) {
             int blockType = level[y][x];
+
+            if (!mode) {
+                if (blockProperty[blockType].invisible) {
+                    OBJRECT rectP = playerP->GetRect();
+                    double distance = utilities::DistanceSQ(
+                        blockSize * x + blockSize * 0.5,
+                        blockSize * y + blockSize * 0.5,
+                        rectP.x,
+                        rectP.y
+                    );
+                    if (distance > 160000) continue;
+
+                }
+            }
+
+
             if (blockProperty[blockType].renderingType == 1) {
                 std::string tex = blockProperty[blockType].tex;
 
@@ -290,7 +315,7 @@ void Level::DrawMap() {
                 rect4.h = blockSize / 2;
                 SDL_Rect src4 = CheckAroundTile1(y, x, CHECKFOR::BottomRight, blockType);
                 texturesP->DrawSprite(tex, rect4, src4, 1);
-                
+
                 if (dev) {
                     OBJRECT rect;
                     rect.x = blockSize * x + blockSize / 2 + blockProperty[blockType].hitBox.x;
@@ -299,7 +324,7 @@ void Level::DrawMap() {
                     rect.h = blockProperty[blockType].hitBox.h;
                     texturesP->DrawRect({ 0,0,255,255 }, rect, 1);
                 }
-                
+
             }
             else if (blockProperty[blockType].renderingType == 2) {
                 OBJRECT rect;
@@ -334,7 +359,7 @@ double Level::GetBlockSize() {
 SDL_Rect Level::CheckAroundTile1(int y, int x, CHECKFOR checkFor, int type) {
     int size = 8;
     SDL_Rect src = { 0,0,size,size };
-    bool yoko=0, tate=0, naname=0;
+    bool yoko = 0, tate = 0, naname = 0;
 
     if (checkFor == CHECKFOR::TopRight) {
         src = { size,0,size,size };
@@ -523,7 +548,7 @@ OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
                 obj2.h = blockProperty[blockType].hitBox.h;
                 obj2.block = blockType;
                 if (utilities::HitDetection(obj1, obj2)) {
-                    if (dev) texturesP->DrawRect({0,255,0,63}, obj2, 1);
+                    if (dev) texturesP->DrawRect({ 0,255,0,63 }, obj2, 1);
                     return obj2;
                 }
             }
@@ -586,8 +611,8 @@ OBJRECT Level::IsTouching2(OBJRECT obj1, bool direction) {
             }
         }
     }
-    
-    
+
+
 
     return { 0,0,0,0,0 };
 }

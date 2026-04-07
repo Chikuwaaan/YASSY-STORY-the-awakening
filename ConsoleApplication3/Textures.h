@@ -7,6 +7,7 @@
 #include <iostream>
 #include <filesystem>
 #include "structs.h"
+#include "Timer.h"
 
 class Camera;
 
@@ -31,6 +32,9 @@ private:
     TTF_Font* fontb;
     std::map<std::string, SDL_Texture*> map;
     std::map<Icons, SDL_Point> iconProperty;
+
+    SDL_Texture* canvas;
+    Timer timer;
 public:
     
     static Camera* cameraP;

@@ -14,7 +14,7 @@ void OverLay::Update() {
     SDL_Renderer* r = settings::renderer;
     if (pinHole.effect) {
         SDL_Texture* texture = SDL_CreateTexture(r, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, settings::baseW, settings::baseH);
-        SDL_SetRenderTarget(r, texture);
+        //SDL_SetRenderTarget(r, texture);
 
         SDL_Rect rect = { 0, 0, settings::baseW, settings::baseH };
         SDL_SetRenderDrawColor(r, pinHole.color.r, pinHole.color.g, pinHole.color.b, pinHole.color.a);
@@ -36,7 +36,7 @@ void OverLay::Update() {
         }
         texturesP->DrawImage("circle_mask", dst, 0, {});
 
-        SDL_SetRenderTarget(r, nullptr);
+        //SDL_SetRenderTarget(r, nullptr);
         SDL_RenderCopy(r, texture, NULL, &rect);
         SDL_DestroyTexture(texture);
     }
