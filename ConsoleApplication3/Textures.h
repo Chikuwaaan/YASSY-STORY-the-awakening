@@ -32,14 +32,13 @@ private:
     TTF_Font* fontb;
     std::map<std::string, SDL_Texture*> map;
     std::map<Icons, SDL_Point> iconProperty;
-
     SDL_Texture* canvas;
     Timer timer;
 public:
-    
     static Camera* cameraP;
     Textures();
     void LoadTextures(std::filesystem::path directoryPath);
+    SDL_Texture* GetCanvas();
     SDL_Texture* GetTexture(std::string name);
     SDL_Rect GetTexRect(std::string name);
     SDL_Rect GetDst(OBJRECT rect, bool relative, Anchor anchor);

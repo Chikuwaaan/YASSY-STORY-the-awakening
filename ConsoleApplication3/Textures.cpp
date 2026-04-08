@@ -111,6 +111,10 @@ void Textures::LoadTextures(fs::path directoryPath) {
 
 }
 
+SDL_Texture* Textures::GetCanvas() {
+    return canvas;
+}
+
 SDL_Texture* Textures::GetTexture(std::string name) {
     if (map.count(name) == 0) {
         return map["missing"];
@@ -338,7 +342,8 @@ void Textures::Update() {
     SDL_Rect dst = { 0,0,1920,1080 };
     SDL_Point center = { 960,540 };
     SDL_SetRenderTarget(settings::renderer, NULL);
-    SDL_RenderCopyEx(settings::renderer, canvas, NULL, &dst, 10 * sin(timer.GetTime()), &center, SDL_FLIP_NONE);
+    //SDL_RenderCopyEx(settings::renderer, canvas, NULL, &dst, 10 * sin(timer.GetTime()), &center, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(settings::renderer, canvas, NULL, &dst, 0, &center, SDL_FLIP_NONE);
     SDL_RenderPresent(settings::renderer);
     SDL_SetRenderTarget(settings::renderer, canvas);
 }

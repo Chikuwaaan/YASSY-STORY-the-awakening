@@ -119,9 +119,11 @@ void Game::HandleEvent() {
 
 void Game::Update() {
     //refresh
-    OBJRECT screenRect = { (double)settings::baseW / 2, (double)settings::baseH / 2, (double)settings::baseW, (double)settings::baseH, 1 };
-    textures->DrawRect({ 255,255,255,255 }, screenRect, 0);
-
+    SDL_Rect screenRect = { 0, 0, settings::baseW, settings::baseH};
+    SDL_SetRenderTarget(settings::renderer, NULL);
+    SDL_SetRenderDrawColor(settings::renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(settings::renderer, &screenRect);
+    SDL_SetRenderTarget(settings::renderer, textures->GetCanvas());
     if (scene == Scene::Title) {
         title->Update();
     }

@@ -413,6 +413,7 @@ void Player::CollideY() {
                 if (pRect.y > eRect.y) {
                     if (collision) {
                         onGround = true;
+                        stucking = 0;
                         y = eRect.y + eRect.h / 2 + h / 2 + 0.01;
                         double v = p->GetVY();
                         if (v < 0) {
