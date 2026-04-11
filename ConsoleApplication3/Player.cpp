@@ -270,7 +270,7 @@ void Player::Update() {
 }
 
 void Player::Jump() {
-    if (jumpPressed && coyoteTime < 0.1 && canJump) {
+    if (jumpPressed && coyoteTime < 0.05 && canJump) {
         if (stucking) {
             vY = 500.0;
         }
@@ -337,6 +337,8 @@ void Player::Stomp() {
 void Player::JumpPadded(double amount) {
     vY = amount;
     stucking = false;
+    isJumping = false;
+    coyoteTime = 1008;
 }
 
 void Player::Land() {
@@ -375,6 +377,12 @@ void Player::CollideY() {
             }
             else {
                 stucking = 0;
+            }
+            if (levelP->blockProperty[bRect.block].conveyor) {
+                liftVX = levelP->blockProperty[bRect.block].conveyor;
+            }
+            else {
+                liftVX = 0;
             }
         }
         if (bRect.block && vY > 0.0) {
@@ -619,6 +627,7 @@ void Player::Spawn() {
     overlayP->FadeIn(1, {0,0,0,255});
     
     platformerP->LoadEntities();
+    platformerP->Spawn();
     x = spawnX;
     y = spawnY;
 
@@ -632,6 +641,10 @@ void Player::Spawn() {
 void Player::SetSpawnPoint(double x, double y) {
     spawnX = x;
     spawnY = y;
+}
+
+void Player::Save() {
+    platformerP->SaveProgress();
 }
 
 void Player::Goal() {

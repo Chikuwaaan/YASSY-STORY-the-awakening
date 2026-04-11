@@ -4,11 +4,13 @@ class CoinManager :
     public GameObject
 {
 private:
-    bool arr[3];
+    std::vector<std::vector<bool>> progress;
 public:
     CoinManager();
     void Update() override;
     void Draw() override;
+    void Refresh();
     void CollectCoin(int index);
+    std::vector<std::vector<bool>> GetProgress();
 };
 

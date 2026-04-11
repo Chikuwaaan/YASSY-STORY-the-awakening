@@ -46,10 +46,13 @@ public:
 
     void LoadLevelInfo();
     void LoadEntities();
+    void SaveProgress();
 
     void Init();
+    void Spawn();
     void Quit();
     void Update();
+
     bool inScreen(std::unique_ptr<GameObject>& p);
 
     template<typename T, typename... Args>

@@ -94,11 +94,10 @@ void FaceYassy::Delete() {
 
 void FaceYassy::Update() {
     SDL_Renderer* r = settings::renderer;
-    SDL_Rect refresh = { 0,0,settings::baseW,settings::baseH };
-    SDL_SetRenderDrawColor(r, 255, 255, 255, 255);
-    SDL_RenderFillRect(r, &refresh);
+    OBJRECT bg = { settings::baseW/2,settings::baseH/2,settings::baseW,settings::baseH };
+    texturesP->DrawImage("rokuyon", bg, 0, {});
 
-    SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(r, 255,255,255, 255);
 
     int mouseX = (int)inputP->mouse.x;
     int mouseY = (int)inputP->mouse.y;
@@ -134,19 +133,27 @@ void FaceYassy::Update() {
         }
     }
     
+    std::cout << mousedx << "," << mousedy << ",";
+    if (mousedx) std::cout << tan((mousedy*0.1) / mousedx);
+    std::cout << std::endl;
+    
+    /*
+    double angle = 0;
+    if (mousedx != 0) {
+        angle = 1 / tan(mousedy / mousedx);
+    }
+    else {
+        angle = 0;
+    }
+    std::cout << angle << std::endl;
+    */
+    
 
-
+    //MOD
     trajectoriesModded.clear();
     for (int i = 0; i < trajectories.size(); i++) {
         trajectoriesModded.push_back({});
         for (int j = 0; j < trajectories[i].size(); j++) {
-            /*
-            std::uniform_int_distribution<int> dist(-5, 5);
-            int dx = dist(gen);
-            int dy = dist(gen);
-            int x = trajectories[i][j].x + dx;
-            int y = trajectories[i][j].y + dy
-            */
             int effect = (abs(trajectories[i][j].x - grabx) * (abs(trajectories[i][j].x - grabx)));
             effect = effect + (abs(trajectories[i][j].y - graby) * (abs(trajectories[i][j].y - graby)));
             effect = effect + 80000;
@@ -156,6 +163,7 @@ void FaceYassy::Update() {
         }
     }
 
+    //DRAW
     for (int i = 0; i < trajectoriesModded.size(); i++) {
         for (int j = 0; j < trajectoriesModded[i].size(); j++) {
             SDL_Point current, next;

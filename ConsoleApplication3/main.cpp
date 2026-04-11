@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include "Game.h"
 #include <windows.h>
+#include <random>
 
 int main(int argc, char* argv[]) {
     /*
@@ -11,7 +12,7 @@ int main(int argc, char* argv[]) {
         MB_ICONQUESTION
     );
     */
-    
+
     Game game;
     game.InitSystem();
     game.MakeInstance();

@@ -5,6 +5,7 @@
 namespace fs = std::filesystem;
 
 Sounds::Sounds() {
+    currentMusic = nullptr;
     LoadSounds("Assets/sounds/SE");
     LoadMusics("Assets/sounds/MUSIC");
     SetSEVolume(settings::SE);
@@ -78,5 +79,15 @@ void Sounds::PlaySE(std::string name) {
 }
 
 void Sounds::PlayMusic(std::string name) {
-    Mix_PlayMusic(MUSIC[name], -1);
+    currentMusic = MUSIC[name];
+    Mix_PlayMusic(currentMusic, -1);
+}
+
+double Sounds::GetMusicPosition() {
+    if (currentMusic) {
+        return Mix_GetMusicPosition(currentMusic);
+    }
+    else {
+        return 0;
+    }
 }

@@ -62,6 +62,7 @@ public:
     void Die();
     void Spawn();
     void SetSpawnPoint(double x, double y);
+    void Save();
     void Goal();
     void Complete();
 

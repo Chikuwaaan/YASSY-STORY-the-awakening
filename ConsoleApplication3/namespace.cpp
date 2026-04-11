@@ -90,6 +90,14 @@ namespace utilities {
 namespace platformer {
     double gravity = -2150.0;
     int flames = 0;
-    int level = 2;
+    int level = 4;
 }
 
+namespace savedata {
+    std::vector<std::vector<bool>> coin = {
+        {0,0,0},
+        {0,0,0},
+        {0,0,0},
+        {0,0,0}
+    };
+}

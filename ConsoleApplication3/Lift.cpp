@@ -20,8 +20,8 @@ Lift::Lift(double spawnX, double ampX, double velocityX, double spawnY, double a
     vY = velocityY;
     length = L;
 
-    vx0 = velocityX;
-    vy0 = velocityY;
+    vx0 = abs(velocityX);
+    vy0 = abs(velocityY);
 }
 
 void Lift::Update() {

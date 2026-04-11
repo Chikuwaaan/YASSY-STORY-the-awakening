@@ -7,6 +7,7 @@
 #include <SDL.h>
 
 class Textures;
+class Sounds;
 class Camera;
 class Game;
 class Player;
@@ -25,6 +26,8 @@ struct BLOCK {
     int damage;
     bool stuck;
     bool invisible;
+    double bpm;
+    double conveyor;
 };
 
 class Level
@@ -40,6 +43,7 @@ private:
     double mouseXC, mouseYC;
 public:
     static Textures* texturesP;
+    static Sounds* soundsP;
     static Input* inputP;
     static Camera* cameraP;
     static Game* gameP;

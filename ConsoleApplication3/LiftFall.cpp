@@ -6,6 +6,7 @@
 LiftFall::LiftFall(double X, double Y, double L) {
     type = EntityType::LiftFall;
     texName = "Lift";
+    alwaysLoad = 1;
     x = X;
     y = Y;
     w = 96 * L;

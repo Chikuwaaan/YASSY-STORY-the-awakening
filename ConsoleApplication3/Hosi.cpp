@@ -1,5 +1,6 @@
 #include "Hosi.h"
 #include <iostream>
+#include "Textures.h"
 #include "Player.h"
 
 Hosi::Hosi(double X, double Y, double Angle) {
@@ -21,6 +22,10 @@ void Hosi::Update() {
     if (timer.GetTime() >= 2) {
         dead = 1;
     }
+}
+
+void Hosi::Draw() {
+    texturesP->DrawImage(texName, { x,y,w * 2,h * 2 }, 1, {});
 }
 
 void Hosi::Touched() {

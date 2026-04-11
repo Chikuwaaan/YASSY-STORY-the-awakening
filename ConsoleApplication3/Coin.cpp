@@ -1,17 +1,43 @@
 #include "Coin.h"
 #include "Textures.h"
 #include "CoinManager.h"
+#include "Sounds.h"
 
 CoinManager* Coin::managerP = nullptr;
 
 Coin::Coin(double X, double Y, double Index) {
     x = X;
     y = Y;
+    vX = random.frandom(-100, 100);
     index = (int)Index;
     texName = "coin";
+    anim = 0;
+    
+    if (savedata::coin[platformer::level-1][index] == 1) {
+        isCollected = 1;
+        managerP->CollectCoin(index);
+    }
+    else {
+        isCollected = 0;
+    }
+
+}
+
+void Coin::Update() {
+    if (anim) {
+        GameTimer.Update();
+        vY += platformer::gravity * settings::timeScale;
+        MoveX();
+        MoveY();
+    }
+    if (GameTimer.GetTime() > 2) {
+        dead = 1;
+    }
 }
 
 void Coin::Draw() {
+    //if (isCollected) return;
+
     int srcX = 0;
     double a;
     a = std::fmod(timer.GetTime(), 1);
@@ -37,8 +63,13 @@ void Coin::Draw() {
 }
 
 void Coin::Touched() {
-    managerP->CollectCoin(index);
-    dead = 1;
+    if (!isCollected) {
+        managerP->CollectCoin(index);
+        isCollected = 1;
+        soundsP->PlaySE("coin");
+        anim = 1;
+        vY = 1000;
+    }
 }
 
 void Coin::Stomped() {

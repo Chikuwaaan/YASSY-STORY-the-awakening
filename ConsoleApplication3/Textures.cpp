@@ -163,8 +163,8 @@ SDL_Rect Textures::GetDst(OBJRECT rect, bool relative, Anchor anchor) {
 
     double a = (dst.x - pivotX);
     double b = (dst.y - pivotY);
-    dst.x = cos(radian) * a - sin(radian) * b + pivotX;
-    dst.y = sin(radian) * a + cos(radian) * b + pivotY;
+    dst.x = (int)(cos(radian) * a - sin(radian) * b + pivotX);
+    dst.y = (int)(sin(radian) * a + cos(radian) * b + pivotY);
     
 
     return dst;
@@ -342,8 +342,17 @@ void Textures::Update() {
     SDL_Rect dst = { 0,0,1920,1080 };
     SDL_Point center = { 960,540 };
     SDL_SetRenderTarget(settings::renderer, NULL);
+    
     //SDL_RenderCopyEx(settings::renderer, canvas, NULL, &dst, 10 * sin(timer.GetTime()), &center, SDL_FLIP_NONE);
     SDL_RenderCopyEx(settings::renderer, canvas, NULL, &dst, 0, &center, SDL_FLIP_NONE);
+    
+    /* ‚¤‚Ë‚¤‚Ë
+    for (int i = 0; i < 1080; i++) {
+        SDL_Rect src = { 0,i,1920,1 };
+        SDL_Rect dst = { cos(i/100.0)*200.0,i,1920,1};
+        SDL_RenderCopyEx(settings::renderer, canvas, &src, &dst, NULL, &center, SDL_FLIP_NONE);
+    }
+    */
     SDL_RenderPresent(settings::renderer);
     SDL_SetRenderTarget(settings::renderer, canvas);
 }

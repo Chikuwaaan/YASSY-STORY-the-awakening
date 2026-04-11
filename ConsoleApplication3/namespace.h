@@ -32,3 +32,6 @@ namespace platformer {
     extern int flames;
 }
 
+namespace savedata {
+    extern std::vector<std::vector<bool>> coin;
+}

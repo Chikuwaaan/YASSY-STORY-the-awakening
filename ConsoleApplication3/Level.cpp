@@ -1,5 +1,6 @@
 #include "Level.h"
 #include "Textures.h"
+#include "Sounds.h"
 #include "namespace.h"
 #include "Input.h"
 #include "Camera.h"
@@ -9,6 +10,7 @@
 #include <SDL_mixer.h>
 
 Textures* Level::texturesP = nullptr;
+Sounds* Level::soundsP = nullptr;
 Input* Level::inputP = nullptr;
 Camera* Level::cameraP = nullptr;
 Game* Level::gameP = nullptr;
@@ -117,6 +119,35 @@ Level::Level() :
         0,
         0,
         1
+        });
+    blockProperty.push_back({
+        "block14",
+        1,
+        {0,0,blockSize,blockSize},
+        0,
+        0,
+        0,
+        140
+        });
+    blockProperty.push_back({
+        "block15",
+        1,
+        {0,0,blockSize,blockSize},
+        0,
+        0,
+        0,
+        2400,
+        480
+        });
+    blockProperty.push_back({
+        "block16",
+        1,
+        {0,0,blockSize,blockSize},
+        0,
+        0,
+        0,
+        2400,
+        -480
         });
     /*
     blockProperty.push_back({});
@@ -434,7 +465,13 @@ SDL_Rect Level::CheckAroundTile1(int y, int x, CHECKFOR checkFor, int type) {
         }
     }
 
-
+    if (blockProperty[type].bpm != 0) {
+        if ((int)(soundsP->GetMusicPosition() * blockProperty[type].bpm / 60) % 2) {
+            src.y += 16;
+        }
+        
+    }
+    
 
     if (yoko && tate && naname) {
         src.x += size * 8;
@@ -452,6 +489,7 @@ SDL_Rect Level::CheckAroundTile1(int y, int x, CHECKFOR checkFor, int type) {
         src.x += size * 6;
         return src;
     }
+    
     return src;
 }
 

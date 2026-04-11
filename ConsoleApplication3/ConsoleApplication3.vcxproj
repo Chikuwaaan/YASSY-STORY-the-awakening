@@ -159,8 +159,10 @@
     <ClCompile Include="OverLay.cpp" />
     <ClCompile Include="Platformer.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Rand.cpp" />
     <ClCompile Include="ScreenShot.cpp" />
     <ClCompile Include="Sounds.cpp" />
+    <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Title.cpp" />
@@ -197,12 +199,14 @@
     <ClInclude Include="OverLay.h" />
     <ClInclude Include="Platformer.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Rand.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="namespace.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="resource2.h" />
     <ClInclude Include="ScreenShot.h" />
     <ClInclude Include="Sounds.h" />
+    <ClInclude Include="Spawner.h" />
     <ClInclude Include="structs.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Timer.h" />

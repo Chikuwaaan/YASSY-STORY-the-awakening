@@ -289,6 +289,7 @@ void Game::MakeInstance() {
     Platformer::inputP = input.get();
     Platformer::soundsP = sounds.get();
     Level::texturesP = textures.get();
+    Level::soundsP = sounds.get();
     Level::inputP = input.get();
     Level::cameraP = camera.get();
     Level::gameP = this;

@@ -2,7 +2,6 @@
 #include "Player.h"
 #include "Textures.h"
 #include "Sounds.h"
-#include "Player.h"
 
 CheckPoint::CheckPoint(double x0, double y0, double Index) {
     texName = "cp";
@@ -34,6 +33,7 @@ void CheckPoint::Update() {
 void CheckPoint::Touched() {
     if (!used) {
         playerP->currentCP = index;
+        playerP->Save();
         used = 1;
         soundsP->PlaySE("cp");
     }

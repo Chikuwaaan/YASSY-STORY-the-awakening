@@ -7,6 +7,8 @@
 
 class Sounds
 {
+private:
+    Mix_Music* currentMusic;
 public:
     Sounds();
     std::map<std::string, Mix_Chunk*> SE;
@@ -17,5 +19,6 @@ public:
     void SetBGMVolume(int value);
     void PlaySE(std::string name);
     void PlayMusic(std::string name);
+    double GetMusicPosition();
 };
 

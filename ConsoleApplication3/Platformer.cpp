@@ -193,6 +193,10 @@ void Platformer::LoadEntities() {
     }
 }
 
+void Platformer::SaveProgress() {
+    savedata::coin = coinManager.GetProgress();
+}
+
 void Platformer::Init() {
     LoadLevelInfo();
     level.LoadLevel(platformer::level);
@@ -200,6 +204,11 @@ void Platformer::Init() {
     player.Spawn();
     soundsP->PlayMusic(info.BGM);
     objects.push_back(std::make_unique<Toast>(info.name));
+}
+
+void Platformer::Spawn() {
+    LoadEntities();
+    coinManager.Refresh();
 }
 
 void Platformer::Quit() {
@@ -223,7 +232,6 @@ void Platformer::Update() {
     }
 
     if (event.P) {
-        objects.push_back(std::make_unique<Toast>(info.name));
         double x, y;
         level.GetMouseC(&x, &y);
         player.SetX(x);

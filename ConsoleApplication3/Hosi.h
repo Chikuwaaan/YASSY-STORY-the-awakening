@@ -10,6 +10,7 @@ private:
 public:
     Hosi(double X, double Y, double Angle);
     void Update() override;
+    void Draw() override;
     void Touched() override;
     void Stomped() override;
 };
