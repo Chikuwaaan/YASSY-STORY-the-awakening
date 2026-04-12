@@ -20,6 +20,7 @@
 #include "Hossy.h"
 #include "Hosi.h"
 #include "Coin.h"
+#include "Spawner.h"
 
 #include <iostream>
 #include <fstream>
@@ -55,6 +56,144 @@ void Platformer::LoadLevelInfo() {
     std::getline(file, info.BGM);
 }
 
+GameObject* Platformer::AddObject(std::string objClass, std::vector<std::variant<double, std::string>> args) {
+    std::unique_ptr<GameObject> p = nullptr;
+
+    if (objClass == "Zako") {
+        p = std::make_unique<Zako>(std::get<double>(args[0]), std::get<double>(args[1]));
+    }
+    if (objClass == "Lift") {
+        p = std::make_unique<Lift>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1]),
+            std::get<double>(args[2]),
+            std::get<double>(args[3]),
+            std::get<double>(args[4]),
+            std::get<double>(args[5]),
+            std::get<double>(args[6])
+        );
+    }
+    if (objClass == "LiftFall") {
+        p = std::make_unique<LiftFall>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1]),
+            std::get<double>(args[2])
+        );
+    }
+    if (objClass == "CheckPoint") {
+        p = std::make_unique<CheckPoint>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1]),
+            std::get<double>(args[2])
+        );
+    }
+    if (objClass == "BackGround") {
+        p = std::make_unique<BackGround>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1]),
+            std::get<double>(args[2]),
+            std::get<double>(args[3]),
+            std::get<double>(args[4]),
+            std::get<double>(args[5]),
+            std::get<double>(args[6]),
+            std::get<std::string>(args[7])
+        );
+    }
+    if (objClass == "ZakoJump") {
+        p = std::make_unique<ZakoJump>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1])
+        );
+    }
+    if (objClass == "JumpPad") {
+        p = std::make_unique<JumpPad>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1])
+        );
+    }
+    if (objClass == "Goal") {
+        p = std::make_unique<Goal>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1]),
+            std::get<double>(args[2]),
+            std::get<double>(args[3])
+        );
+    }
+    if (objClass == "Deco") {
+        p = std::make_unique<Deco>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1]),
+            std::get<double>(args[2]),
+            std::get<double>(args[3]),
+            std::get<double>(args[4]),
+            std::get<std::string>(args[5])
+        );
+    }
+    if (objClass == "Warp") {
+        std::unique_ptr<Warp>
+            p0 = std::make_unique<Warp>(
+                std::get<double>(args[0]),
+                std::get<double>(args[1]),
+                0
+            );
+
+        std::unique_ptr<Warp>
+            p1 = std::make_unique<Warp>(
+                std::get<double>(args[2]),
+                std::get<double>(args[3]),
+                1
+            );
+        
+        p0->pair = p1.get();
+        p1->pair = p0.get();
+        pendingObjects.push_back(std::move(p0));
+        pendingObjects.push_back(std::move(p1));
+    }
+    if (objClass == "Hossy") {
+        p = std::make_unique<Hossy>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1])
+        );
+    }
+    if (objClass == "Hosi") {
+        p = std::make_unique<Hosi>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1]),
+            std::get<double>(args[2])
+        );
+    }
+    if (objClass == "Coin") {
+        p = std::make_unique<Coin>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1]),
+            std::get<double>(args[2])
+        );
+    }
+    if (objClass == "Spawner") {
+        p = std::make_unique<Spawner>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1])
+        );
+    }
+
+    /*
+    if (objClass == ) {
+        p = std::make_unique<>(
+
+        );
+    }
+    */
+
+    if (p) {
+        GameObject* raw = p.get();
+        pendingObjects.push_back(std::move(p));
+        return raw;
+    }
+    else {
+        return nullptr;
+    }
+}
+
 void Platformer::LoadEntities() {
     objects.clear();
     dyingObjects.clear();
@@ -86,6 +225,8 @@ void Platformer::LoadEntities() {
             }
         }
 
+        AddObject(objClass, args);
+        /*
         if (objClass == "Zako") {
             AddObject<Zako>(std::get<double>(args[0]), std::get<double>(args[1]));
         }
@@ -190,6 +331,7 @@ void Platformer::LoadEntities() {
                 std::get<double>(args[2])
             );
         }
+        */
     }
 }
 

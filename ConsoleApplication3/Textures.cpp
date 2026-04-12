@@ -19,6 +19,14 @@ Textures::Textures() {
     );
     SDL_SetRenderTarget(settings::renderer, canvas);
 
+    blur = SDL_CreateTexture(
+        settings::renderer,
+        format,
+        SDL_TEXTUREACCESS_TARGET,
+        1920,
+        1080
+    );
+
     LoadTextures("Assets/textures");
     
 
@@ -343,9 +351,21 @@ void Textures::Update() {
     SDL_Point center = { 960,540 };
     SDL_SetRenderTarget(settings::renderer, NULL);
     
-    //SDL_RenderCopyEx(settings::renderer, canvas, NULL, &dst, 10 * sin(timer.GetTime()), &center, SDL_FLIP_NONE);
     SDL_RenderCopyEx(settings::renderer, canvas, NULL, &dst, 0, &center, SDL_FLIP_NONE);
     
+    //blur
+    if (platformer::level == 3) {
+        SDL_SetRenderTarget(settings::renderer, blur);
+        SDL_RenderCopy(settings::renderer, canvas, NULL, &dst);
+        SDL_SetRenderTarget(settings::renderer, NULL);
+        SDL_SetTextureBlendMode(blur, SDL_BLENDMODE_BLEND);
+        for (int i = 0; i < 360; i += 45) {
+            Blur(i, 10, 10);
+        }
+    }
+    
+    
+    //SDL_RenderCopyEx(settings::renderer, canvas, NULL, &dst, 0, &center, SDL_FLIP_NONE);
     /* ‚¤‚Ë‚¤‚Ë
     for (int i = 0; i < 1080; i++) {
         SDL_Rect src = { 0,i,1920,1 };
@@ -355,6 +375,17 @@ void Textures::Update() {
     */
     SDL_RenderPresent(settings::renderer);
     SDL_SetRenderTarget(settings::renderer, canvas);
+}
+
+void Textures::Blur(double angle, double distance, double alpha) {
+    SDL_SetTextureAlphaMod(blur, alpha);
+    SDL_Point center = { 960,540 };
+    SDL_Rect dst;
+    dst.x = cos(utilities::DegreetoRadian(angle)) * distance;
+    dst.y = sin(utilities::DegreetoRadian(angle)) * distance;
+    dst.w = settings::baseW;
+    dst.h = settings::baseH;
+    SDL_RenderCopyEx(settings::renderer, blur, NULL, &dst, 0, &center, SDL_FLIP_NONE);
 }
 
 void Textures::ModTextures() {

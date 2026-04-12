@@ -33,6 +33,7 @@ private:
     std::map<std::string, SDL_Texture*> map;
     std::map<Icons, SDL_Point> iconProperty;
     SDL_Texture* canvas;
+    SDL_Texture* blur;
     Timer timer;
 public:
     static Camera* cameraP;
@@ -52,5 +53,6 @@ public:
     void DrawTexts(std::string text, SDL_Color col1, SDL_Color col2, OBJRECT rect, bool relative, Anchor anchor);
     void DrawTexts(std::u8string text, SDL_Color col1, SDL_Color col2, OBJRECT rect, bool relative, Anchor anchor);
     void Update();
+    void Blur(double angle, double distance, double alpha);
     void ModTextures();
 };

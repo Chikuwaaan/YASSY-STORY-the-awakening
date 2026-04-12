@@ -1,9 +1,14 @@
 #pragma once
 #include "GameObject.h"
 #include "GameTimer.h"
+
+
 class Spawner :
     public GameObject
 {
+private:
+    GameTimer timer;
 public:
-    Spawner();
+    Spawner(double X, double Y);
+    void Update() override;
 };

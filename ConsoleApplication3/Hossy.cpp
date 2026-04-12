@@ -33,7 +33,7 @@ void Hossy::Update() {
         if (timerExprode.GetTime() >= 0.5) {
             dead = 1;
             for (int i = 18; i < 360; i += 72) {
-                platformerP->AddObject<Hosi>(x, y, i);
+                platformerP->AddObject("Hosi", { x, y, (double)i });
             }
         }
     }

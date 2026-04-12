@@ -8,8 +8,9 @@
 #include "Player.h"
 #include "Timer.h"
 #include "CoinManager.h"
+#include "GameObject.h"
+#include <variant>
 
-class GameObject;
 class Textures;
 class Camera;
 class Input;
@@ -32,6 +33,7 @@ private:
     LEVELINFO info;
 
     Timer timer;
+
 public:
     static Textures* texturesP;
     static Camera* cameraP;
@@ -55,6 +57,7 @@ public:
 
     bool inScreen(std::unique_ptr<GameObject>& p);
 
+    /*
     template<typename T, typename... Args>
     T* AddObject(Args&&... args) {
         std::unique_ptr p = std::make_unique<T>(std::forward<Args>(args)...);
@@ -62,4 +65,7 @@ public:
         pendingObjects.push_back(std::move(p));
         return raw;
     }
+    */
+
+    GameObject* AddObject(std::string objClass, std::vector<std::variant<double, std::string>> args);
 };
