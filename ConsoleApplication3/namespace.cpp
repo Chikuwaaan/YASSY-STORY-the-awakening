@@ -13,7 +13,7 @@ namespace settings {
     SDL_Window* window;
     SDL_Renderer* renderer;
     int BGM = 0;
-    int SE = 0;
+    int SE = 16;
 }
 
 namespace utilities {
