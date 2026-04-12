@@ -29,8 +29,8 @@ Title::Title() :
 {
     last = 0;
     timer = 0.0;
-    phase = Phase::YassyStory2;
-    //phase = Phase::Loading;
+    //phase = Phase::YassyStory2;
+    phase = Phase::Loading;
 }
 
 void Title::Init() {
@@ -129,7 +129,7 @@ void Title::Update() {
         }
 
         if (phase == Phase::YassyStory1) {
-            texturesP->DrawTexts("Press Space Key", white, black, { 960,120,1,1 }, 0, Anchor::Center);
+            texturesP->DrawTexts("Press Q", white, black, { 960,120,1,1 }, 0, Anchor::Center);
         }
 
     }

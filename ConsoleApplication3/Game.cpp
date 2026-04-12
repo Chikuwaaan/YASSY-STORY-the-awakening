@@ -72,9 +72,9 @@ void Game::ChangeScene(Scene s) {
 
 void Game::Run() {
     //ChangeScene(Scene::Title);
-    ChangeScene(Scene::Platformer);
+    //ChangeScene(Scene::Platformer);
     //ChangeScene(Scene::FaceYassy);
-    //ChangeScene(Scene::LevelSelect);
+    ChangeScene(Scene::LevelSelect);
 
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
