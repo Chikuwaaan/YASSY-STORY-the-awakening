@@ -418,9 +418,20 @@ void Platformer::Update() {
         EntityType type = obj->GetType();
         if (type != EntityType::BackGround) {
             if (obj->visible) {
-                obj->Draw();
+                if (obj->GetLayer() == -1) {
+                    obj->Draw();
+                }
                 if (editorMode) obj->DrawHitbox();
-
+            }
+        }
+    }
+    for (auto& obj : objects) {
+        EntityType type = obj->GetType();
+        if (type != EntityType::BackGround) {
+            if (obj->visible) {
+                if (obj->GetLayer() == 1) {
+                    obj->Draw();
+                }
             }
         }
     }
@@ -436,6 +447,7 @@ void Platformer::Update() {
             }
         }
     }
+
 
 
     if (editorMode) {

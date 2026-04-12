@@ -23,6 +23,7 @@ GameObject::GameObject() {
     h = 180.0;
     vX = 0.0;
     vY = 0.0;
+    liftVX = 0.0;
 
     flipX = 0;
     collision = 0;
@@ -62,6 +63,14 @@ void GameObject::CollideY() {
             vY = 0.0;
             y = bRect.y + bRect.h / 2 + h / 2;
             groundBlock = bRect.block;
+
+            if (levelP->blockProperty[bRect.block].conveyor) {
+                liftVX = levelP->blockProperty[bRect.block].conveyor;
+            }
+            else {
+                liftVX = 0;
+            }
+            vX += liftVX;
         }
         if (bRect.block && vY > 0.0) {
             vY = 0.0;

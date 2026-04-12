@@ -29,6 +29,7 @@ protected:
     std::string texName;
     double x, y, w, h;
     double vX, vY;
+    double liftVX;
     bool flipX;
     EntityType type;
     bool collision;

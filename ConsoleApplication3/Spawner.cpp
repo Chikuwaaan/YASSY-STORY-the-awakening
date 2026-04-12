@@ -7,6 +7,7 @@ Spawner::Spawner(double X, double Y) {
     w = 96;
     h = 96;
     layer = 1;
+    texName = "assy";
 }
 
 void Spawner::Update() {

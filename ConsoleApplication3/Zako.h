@@ -3,6 +3,8 @@
 class Zako :
     public GameObject
 {
+private:
+    int direction = -1;
 public:
     Zako(double x0, double y0);
     void Update() override;
