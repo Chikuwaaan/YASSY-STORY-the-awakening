@@ -157,6 +157,7 @@
     <ClCompile Include="namespace.cpp" />
     <ClCompile Include="Options.cpp" />
     <ClCompile Include="OverLay.cpp" />
+    <ClCompile Include="Pause.cpp" />
     <ClCompile Include="Platformer.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rand.cpp" />
@@ -167,7 +168,6 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Toast.cpp" />
-    <ClCompile Include="UIElement.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="Warp.cpp" />
     <ClCompile Include="Zako.cpp" />
@@ -197,6 +197,7 @@
     <ClInclude Include="LiftFall.h" />
     <ClInclude Include="Options.h" />
     <ClInclude Include="OverLay.h" />
+    <ClInclude Include="Pause.h" />
     <ClInclude Include="Platformer.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rand.h" />
@@ -212,7 +213,6 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Toast.h" />
-    <ClInclude Include="UIElement.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="Warp.h" />
     <ClInclude Include="Zako.h" />

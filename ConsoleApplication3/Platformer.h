@@ -9,6 +9,7 @@
 #include "Timer.h"
 #include "CoinManager.h"
 #include "GameObject.h"
+#include "Pause.h"
 #include <variant>
 
 class Textures;
@@ -27,7 +28,9 @@ private:
     Level level;
     Player player;
     CoinManager coinManager;
+    Pause pause;
 
+    bool pausing;
     bool editorMode;
 
     LEVELINFO info;

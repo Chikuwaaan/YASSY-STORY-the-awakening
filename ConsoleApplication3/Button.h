@@ -1,6 +1,6 @@
 #pragma once
 
-#include "UIElement.h"
+#include <string>
 #include "iconProperty.h"
 #include <functional>
 #include <SDL.h>

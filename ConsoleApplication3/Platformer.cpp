@@ -37,8 +37,13 @@ Platformer::Platformer() {
     GameObject::levelP = &level;
     GameObject::playerP = &player;
     Coin::managerP = &coinManager;
-
     editorMode = 0;
+    pausing = 0;
+
+    pause.back = [this]() {
+        pausing = 0;
+        };
+    pause.SetBackButton();
 }
 
 void Platformer::LoadLevelInfo() {
@@ -362,7 +367,7 @@ void Platformer::Update() {
     OBJRECT screenRect = { (double)settings::baseW / 2, (double)settings::baseH / 2, (double)settings::baseW, (double)settings::baseH, 1 };
     texturesP->DrawRect({ 255,255,255,255 }, screenRect, 0);
 
-    cameraP->Update();
+    if (!editorMode && !pausing) cameraP->Update();
 
     if (event.E) {
         if (editorMode) {
@@ -372,15 +377,24 @@ void Platformer::Update() {
             editorMode = 1;
         }
     }
-
     if (event.P) {
         double x, y;
         level.GetMouseC(&x, &y);
         player.SetX(x);
         player.SetY(y);
     }
+    if (event.ESCAPE) {
+        if (pausing) {
+            pausing = 0;
+        }
+        else {
+            pausing = 1;
+        }
+    }
 
-    if (!editorMode) {
+    
+
+    if (!editorMode && !pausing) {
         for (std::unique_ptr<GameObject>& obj : objects) {
             if (inScreen(obj) || obj->alwaysLoad) {
                 obj->Update();
@@ -459,6 +473,10 @@ void Platformer::Update() {
     coinManager.Draw();
 
     texturesP->DrawTexts(std::to_string(timer.GetTime()), { 255,255,255,255 }, { 0,0,0,255 }, { 1700,50,1,1 }, 0, Anchor::Center);
+
+    if (pausing) {
+        pause.Update();
+    }
 }
 
 bool Platformer::inScreen(std::unique_ptr<GameObject>& p) {

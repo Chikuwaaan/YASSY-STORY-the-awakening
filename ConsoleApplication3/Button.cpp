@@ -4,6 +4,7 @@
 #include "structs.h"
 #include "iconProperty.h"
 #include "Sounds.h"
+#include "namespace.h"
 
 Textures* Button::texturesP = nullptr;
 Input* Button::inputP = nullptr;

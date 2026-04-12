@@ -2,6 +2,7 @@
 #include "UIManager.h"
 #include "Sounds.h"
 #include "Textures.h"
+#include "namespace.h"
 
 Sounds* Options::soundsP = nullptr;
 Textures* Options::texturesP = nullptr;

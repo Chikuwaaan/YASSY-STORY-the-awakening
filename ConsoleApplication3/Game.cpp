@@ -11,7 +11,6 @@
 #include "Lift.h"
 #include "Zako.h"
 #include "UIManager.h"
-#include "UIElement.h"
 #include "FaceYassy.h"
 #include "Button.h"
 
@@ -94,7 +93,8 @@ void Game::Run() {
         const Uint8* keystate = input->keystate;
         const EVENT event = input->event;
 
-        if (event.ESCAPE) {
+        
+        if (event.Q) {
             running = 0;
             if (scene == Scene::Platformer) {
                 platformer->Quit();
@@ -103,6 +103,7 @@ void Game::Run() {
                 faceyassy->Output();
             }
         }
+        
         if (event.F12) {
             screenshot->SaveScreenShot();
         }
