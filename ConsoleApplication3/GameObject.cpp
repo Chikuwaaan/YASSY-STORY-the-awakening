@@ -70,7 +70,6 @@ void GameObject::CollideY() {
             else {
                 liftVX = 0;
             }
-            vX += liftVX;
         }
         if (bRect.block && vY > 0.0) {
             vY = 0.0;

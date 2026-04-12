@@ -169,11 +169,11 @@ GameObject* Platformer::AddObject(std::string objClass, std::vector<std::variant
             std::get<double>(args[2])
         );
     }
-    if (objClass == "Spawner") {
-        p = std::make_unique<Spawner>(
-            std::get<double>(args[0]),
-            std::get<double>(args[1])
-        );
+    if (objClass == "SpawnerR") {
+        p = std::make_unique<Spawner>("assy", args);
+    }
+    if (objClass == "SpawnerL") {
+        p = std::make_unique<Spawner>("assy2", args);
     }
 
     /*

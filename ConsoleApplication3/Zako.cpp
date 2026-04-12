@@ -19,6 +19,7 @@ void Zako::Update() {
     vY += platformer::gravity * settings::timeScale;
     MoveY();
     CollideY();
+    vX += liftVX;
     MoveX();
     CollideX();
     if (leftBlock != 0) {

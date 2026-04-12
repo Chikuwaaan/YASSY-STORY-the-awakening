@@ -436,6 +436,7 @@ void Player::CollideY() {
                     }
                     p->Stomped();
                     p->onStomp = 1;
+                    
                 } 
                 else if (pRect.y < eRect.y) {
                     if (collision) {
