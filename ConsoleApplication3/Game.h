@@ -15,6 +15,7 @@
 #include "Title.h"
 #include "Platformer.h"
 #include "LevelSelect.h"
+#include "Save.h"
 
 class GameObject;
 class Textures;
@@ -46,6 +47,7 @@ private:
     std::unique_ptr<Title> title;
     std::unique_ptr<Platformer> platformer;
     std::unique_ptr<LevelSelect> levelselect;
+    std::unique_ptr<Save> save;
 public:
     std::vector<std::unique_ptr<GameObject>> objects;
 

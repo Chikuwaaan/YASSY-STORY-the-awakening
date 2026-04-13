@@ -75,6 +75,8 @@ void Game::Run() {
     //ChangeScene(Scene::FaceYassy);
     //ChangeScene(Scene::LevelSelect);
 
+    save->Load();
+
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
 
@@ -102,6 +104,7 @@ void Game::Run() {
             if (scene == Scene::FaceYassy) {
                 faceyassy->Output();
             }
+            save->Write();
         }
         
         if (event.F12) {
@@ -299,7 +302,7 @@ void Game::MakeInstance() {
     GameObject::soundsP = sounds.get();
     GameObject::inputP = input.get();
     GameObject::cameraP = camera.get();
-    
+    Save::inputP = input.get();
 }
 
 void Game::ExitGame() {

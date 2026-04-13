@@ -161,6 +161,7 @@
     <ClCompile Include="Platformer.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rand.cpp" />
+    <ClCompile Include="Save.cpp" />
     <ClCompile Include="ScreenShot.cpp" />
     <ClCompile Include="Sounds.cpp" />
     <ClCompile Include="Spawner.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="namespace.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="resource2.h" />
+    <ClInclude Include="Save.h" />
     <ClInclude Include="ScreenShot.h" />
     <ClInclude Include="Sounds.h" />
     <ClInclude Include="Spawner.h" />
