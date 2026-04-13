@@ -1,6 +1,8 @@
 #pragma once
 
 #include <SDL.h>
+#include <unordered_map>
+#include <string>
 
 struct MOUSE {
     int x;
@@ -8,6 +10,8 @@ struct MOUSE {
     bool left;
     bool middle;
     bool right;
+    bool x1;
+    bool x2;
 };
 
 struct EVENT {
@@ -36,18 +40,49 @@ struct EVENT {
     bool MouseX2;
 };
 
+enum class InputDevice {
+    Keyboard,
+    MouseButton
+};
+
+struct InputType {
+    InputDevice device;
+    int code;
+    bool on;
+};
+
+enum class Action {
+    Null,
+    HoldUp,
+    HoldDown,
+    HoldLeft,
+    HoldRight,
+    HoldJump,
+    HoldRun
+};
+
 class Input
 {
 private:
     bool isAnyKeyPressed;
-    
+    SDL_Event e;
 public:
+    std::unordered_map<Action, InputType> config;
+    std::unordered_map<Action, InputType> eventConfig;
+
+    Action setting;
     const Uint8* keystate;
     EVENT event;
     MOUSE mouse;
-    void GetCursor();
-    void GetKey();
-    void GetEvent();
+
+    Input();
+    void Update();
+    void InputCursor();
+    void InputKey();
+    void InputEvent();
+
+    void SetConfig(Action action);
+    std::string GetConfigName(Action action);
    
     bool IsAnyKeyPressed();
 };

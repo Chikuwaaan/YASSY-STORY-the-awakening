@@ -94,6 +94,14 @@ namespace platformer {
 }
 
 namespace savedata {
+    InputType Up = { InputDevice::Keyboard, SDL_SCANCODE_W, 0 };
+    InputType Down = { InputDevice::Keyboard, SDL_SCANCODE_S, 0 };
+    InputType Left = { InputDevice::Keyboard, SDL_SCANCODE_A, 0 };
+    InputType Right = { InputDevice::Keyboard, SDL_SCANCODE_D, 0 };
+    InputType Jump = { InputDevice::Keyboard, SDL_SCANCODE_M, 0 };
+    InputType Dash = { InputDevice::Keyboard, SDL_SCANCODE_N, 0 };
+    bool InvertDash;
+
     std::vector<std::vector<bool>> coin = {
         {0,0,0},
         {0,0,0},

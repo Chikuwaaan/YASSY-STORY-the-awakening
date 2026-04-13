@@ -5,6 +5,7 @@
 
 class Sounds;
 class Textures;
+class Input;
 
 class Options
 {
@@ -33,8 +34,20 @@ private:
     Button BGM8;
     std::vector<Button*> BGM;
 
+    LINE config;
+    Button Up;
+    Button Down;
+    Button Left;
+    Button Right;
+    Button Jump;
+    Button Dash;
+    Button Invert;
+    std::vector<Button*> CONFIGS;
+
     LINE back; 
 public:
+    static Input* inputP;
+
     LINE lineSE;
 
     Button BTNback;

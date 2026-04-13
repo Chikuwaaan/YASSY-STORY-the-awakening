@@ -2,7 +2,65 @@
 #include "namespace.h"
 #include <iostream>
 
-void Input::GetCursor() {
+Input::Input() {
+    config = {
+        {Action::HoldUp, {InputDevice::Keyboard, SDL_SCANCODE_W, 0}},
+        {Action::HoldDown, {InputDevice::Keyboard, SDL_SCANCODE_S, 0}},
+        {Action::HoldLeft, {InputDevice::Keyboard, SDL_SCANCODE_A, 0}},
+        {Action::HoldRight, {InputDevice::Keyboard, SDL_SCANCODE_D, 0}},
+        {Action::HoldJump, {InputDevice::Keyboard, SDL_SCANCODE_M, 0}},
+        {Action::HoldRun, {InputDevice::Keyboard, SDL_SCANCODE_N, 0}}
+    };
+
+}
+
+void Input::Update() {
+    InputCursor();
+    InputKey();
+    InputEvent();
+
+    if (setting != Action::Null) return;
+
+    for (auto& [key, value] : config) {
+        value.on = 0;
+
+        if (value.device == InputDevice::Keyboard) {
+            if (keystate[value.code]) {
+                value.on = 1;
+            }
+        }
+
+        if (value.device == InputDevice::MouseButton) {
+            if (value.code == SDL_BUTTON_LEFT) {
+                if (mouse.left) {
+                    value.on = 1;
+                }
+            }
+            if (value.code == SDL_BUTTON_MIDDLE) {
+                if (mouse.middle) {
+                    value.on = 1;
+                }
+            }
+            if (value.code == SDL_BUTTON_RIGHT) {
+                if (mouse.right) {
+                    value.on = 1;
+                }
+            }
+            if (value.code == SDL_BUTTON_X1) {
+                if (mouse.x1) {
+                    value.on = 1;
+                }
+            }
+            if (value.code == SDL_BUTTON_X2) {
+                if (mouse.x2) {
+                    value.on = 1;
+                }
+            }
+        }
+    }
+}
+
+void Input::InputCursor() {
     int x, y;
     Uint32 buttons = SDL_GetMouseState(&x, &y);
     mouse.x = (int)round(x * settings::baseW / settings::winW);
@@ -26,18 +84,46 @@ void Input::GetCursor() {
     else {
         mouse.right = 0;
     }
+    if (buttons & SDL_BUTTON(SDL_BUTTON_X1)) {
+        mouse.x1 = 1;
+    }
+    else {
+        mouse.x1 = 0;
+    }
+    if (buttons & SDL_BUTTON(SDL_BUTTON_X2)) {
+        mouse.x2 = 1;
+    }
+    else {
+        mouse.x2 = 0;
+    }
 }
 
-void Input::GetKey() {
+void Input::InputKey() {
     keystate = SDL_GetKeyboardState(NULL);
 }
 
-void Input::GetEvent() {
+void Input::InputEvent() {
     isAnyKeyPressed = 0;
     event = {};
 
-    SDL_Event e;
     while (SDL_PollEvent(&e)) {
+        //config
+        if (setting != Action::Null) {
+            if (e.type == SDL_KEYDOWN) {
+                config[setting].device = InputDevice::Keyboard;
+                config[setting].code = e.key.keysym.scancode;
+                setting = Action::Null;
+                return;
+            }
+            if (e.type == SDL_MOUSEBUTTONDOWN) {
+                config[setting].device = InputDevice::MouseButton;
+                config[setting].code = e.button.button;
+                setting = Action::Null;
+                return;
+            }
+            if (setting != Action::Null) return;
+        }
+
         if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
             isAnyKeyPressed = 1;
             if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
@@ -114,6 +200,34 @@ void Input::GetEvent() {
             }
         }
     }
+}
+
+void Input::SetConfig(Action action) {
+    setting = action;
+}
+
+std::string Input::GetConfigName(Action action) {
+    if (config[action].device == InputDevice::Keyboard) {
+        return SDL_GetScancodeName((SDL_Scancode)(config[action].code));
+    }
+    else if (config[action].device == InputDevice::MouseButton) {
+        if (config[action].code == SDL_BUTTON_LEFT) {
+            return "MouseLeft";
+        }
+        if (config[action].code == SDL_BUTTON_MIDDLE) {
+            return "MouseMiddle";
+        }
+        if (config[action].code == SDL_BUTTON_RIGHT) {
+            return "MouseRight";
+        }
+        if (config[action].code == SDL_BUTTON_X1) {
+            return "MouseSide1";
+        }
+        if (config[action].code == SDL_BUTTON_X2) {
+            return "MouseSide2";
+        }
+    }
+    return "";
 }
 
 bool Input::IsAnyKeyPressed() {

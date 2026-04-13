@@ -108,6 +108,12 @@ void Button::Draw() {
             }
             texturesP->DrawIcon(button, {x,y,w,h});
             texturesP->DrawIcon(icon, { x,y,h,h });
+            if (text != "") {
+                SDL_Color white = { 100,200,255 };
+                SDL_Color black = { 0,73,220,255 };
+                OBJRECT dstT = { (double)x, (double)y, 1,1 };
+                texturesP->DrawTexts(text, white, black, dstT, 0, Anchor::Center);
+            }
 
             if (isSelected) {
                 texturesP->DrawIcon(Icons::UICursor1, { x+w/8,y+h/8,w,h });

@@ -17,6 +17,8 @@ struct LINE {
     LINE* next;
     std::function<void()> prevAction;
     std::function<void()> nextAction;
+    std::function<void()> beginAction;
+    std::function<void()> endAction;
 };
 
 class UIManager

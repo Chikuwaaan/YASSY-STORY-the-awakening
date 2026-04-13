@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include "structs.h"
+#include "Input.h"
 
 namespace settings {
     extern double maxFps;
@@ -33,5 +34,12 @@ namespace platformer {
 }
 
 namespace savedata {
+    extern InputType Up;
+    extern InputType Down;
+    extern InputType Left;
+    extern InputType Right;
+    extern InputType Jump;
+    extern InputType Dash;
+    extern bool InvertDash;
     extern std::vector<std::vector<bool>> coin;
 }

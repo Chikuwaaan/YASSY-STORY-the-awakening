@@ -70,10 +70,10 @@ void Game::ChangeScene(Scene s) {
 
 
 void Game::Run() {
-    //ChangeScene(Scene::Title);
+    ChangeScene(Scene::Title);
     //ChangeScene(Scene::Platformer);
     //ChangeScene(Scene::FaceYassy);
-    ChangeScene(Scene::LevelSelect);
+    //ChangeScene(Scene::LevelSelect);
 
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
@@ -85,7 +85,7 @@ void Game::Run() {
         if (frameTime > 0.1) frameTime = 0.1;
         settings::timeScale = frameTime * settings::multiplier;
             
-        HandleEvent();
+        input->Update();
         Update();
         
         //textures->DrawTexts(std::to_string(Mix_GetMusicPosition(NULL)), { 0,0,0,255 }, { 0,50,1,1 }, 0, {});
@@ -112,11 +112,6 @@ void Game::Run() {
     }
 }
 
-void Game::HandleEvent() {
-    input->GetKey();
-    input->GetCursor();
-    input->GetEvent();
-}
 
 void Game::Update() {
     //refresh
@@ -280,6 +275,7 @@ void Game::MakeInstance() {
     Title::inputP = input.get();
     Options::soundsP = sounds.get();
     Options::texturesP = textures.get();
+    Options::inputP = input.get();
 
     //NEW
     Camera::texturesP = textures.get();

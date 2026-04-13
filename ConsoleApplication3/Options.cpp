@@ -3,9 +3,11 @@
 #include "Sounds.h"
 #include "Textures.h"
 #include "namespace.h"
+#include "Input.h"
 
 Sounds* Options::soundsP = nullptr;
 Textures* Options::texturesP = nullptr;
+Input* Options::inputP = nullptr;
 
 Options::Options() :
     SE0(0, 0, 0, 0),
@@ -26,6 +28,13 @@ Options::Options() :
     BGM6(0, 0, 0, 0),
     BGM7(0, 0, 0, 0),
     BGM8(0, 0, 0, 0),
+    Up(800, settings::baseH / 2 + 200, 96, 96),
+    Down(800, settings::baseH / 2 + 100, 96, 96),
+    Left(800, settings::baseH / 2 + 000, 96, 96),
+    Right(800, settings::baseH / 2 - 100, 96, 96),
+    Jump(800, settings::baseH / 2 - 200, 96, 96),
+    Dash(800, settings::baseH / 2 - 300, 96, 96),
+    Invert(800, settings::baseH / 2 - 400, 96, 96),
     BTNback(100,100,192,192)
 {
     SE.push_back(&SE0);
@@ -46,6 +55,13 @@ Options::Options() :
     BGM.push_back(&BGM6);
     BGM.push_back(&BGM7);
     BGM.push_back(&BGM8);
+    CONFIGS.push_back(&Up);
+    CONFIGS.push_back(&Down);
+    CONFIGS.push_back(&Left);
+    CONFIGS.push_back(&Right);
+    CONFIGS.push_back(&Jump);
+    CONFIGS.push_back(&Dash);
+    CONFIGS.push_back(&Invert);
 }
 
 void Options::RegisterButtons() {
@@ -63,6 +79,25 @@ void Options::RegisterButtons() {
             };
         i++;
     }
+
+    Up.action = []() {
+        inputP->SetConfig(Action::HoldUp);
+        };
+    Down.action = []() {
+        inputP->SetConfig(Action::HoldDown);
+        };
+    Left.action = []() {
+        inputP->SetConfig(Action::HoldLeft);
+        };
+    Right.action = []() {
+        inputP->SetConfig(Action::HoldRight);
+    };
+    Jump.action = []() {
+        inputP->SetConfig(Action::HoldJump);
+        };
+    Dash.action = []() {
+        inputP->SetConfig(Action::HoldRun);
+        };
 
     lineSE = {
         SE,
@@ -84,6 +119,12 @@ void Options::RegisterButtons() {
         },
         [](){}
     };
+    config = {
+        {&Up, &Down, &Left, &Right, &Jump, &Dash},
+        DIRECTION::V,
+        nullptr,
+        nullptr
+    };
     back = {
         {&BTNback},
         DIRECTION::H,
@@ -96,6 +137,7 @@ void Options::RegisterButtons() {
 
     ui.AddLine(&lineSE);
     ui.AddLine(&lineBGM);
+    ui.AddLine(&config);
     ui.AddLine(&back);
     ui.currentLine = &lineSE;
 }
@@ -104,7 +146,7 @@ void Options::Show() {
     int i = 0;
     for (auto& p : SE) {
         p->x = i * 112 + 800;
-        p->y = settings::baseH / 2 + 200;
+        p->y = settings::baseH / 2 + 400;
         p->w = 96;
         p->h = 96;
         p->icon = static_cast<Icons>(i + 11);
@@ -114,7 +156,7 @@ void Options::Show() {
     i = 0;
     for (auto& p : BGM) {
         p->x = i * 112 + 800;
-        p->y = settings::baseH / 2 - 200;
+        p->y = settings::baseH / 2 + 300;
         p->w = 96;
         p->h = 96;
         p->icon = static_cast<Icons>(i + 11);
@@ -133,15 +175,36 @@ void Options::Hide() {
 }
 
 void Options::Update() {
-    OBJRECT rect = { settings::baseW / 2.0, settings::baseH / 2.0, 1600,800 , 1};
+    OBJRECT rect = { settings::baseW / 2.0, settings::baseH / 2.0, 1600,1000 , 1};
     SDL_Color white = { 255,255,255,255 };
     SDL_Color black = { 0,0,0,255 };
-    texturesP->DrawRect({ 255,255,140,255 }, rect, 0);
+    texturesP->DrawRect({ 255,255,140,127 }, rect, 0);
 
-    double SEy = settings::baseH / 2 + 200;
-    double BGMy = settings::baseH / 2 - 200;
+    double SEy = settings::baseH / 2 + 400;
+    double BGMy = settings::baseH / 2 + 300;
+    double Upy = settings::baseH / 2 + 200;
+    double Downy = settings::baseH / 2 + 100;
+    double Lefty = settings::baseH / 2 + 0;
+    double Righty = settings::baseH / 2 - 100;
+    double Jumpy = settings::baseH / 2 - 200;
+    double Dashy = settings::baseH / 2 - 300;
+    double Inverty = settings::baseH / 2 - 400;
     texturesP->DrawTexts("SE volume:", white, black, { 300, SEy, 1, 1 }, 0, Anchor::Left);
     texturesP->DrawTexts("BGM volume:", white, black, { 300, BGMy, 1, 1 }, 0, Anchor::Left);
+    texturesP->DrawTexts("Up key:", white, black, { 300, Upy, 1, 1 }, 0, Anchor::Left);
+    texturesP->DrawTexts("Down key", white, black, { 300, Downy, 1, 1 }, 0, Anchor::Left);
+    texturesP->DrawTexts("Left key:", white, black, { 300, Lefty, 1, 1 }, 0, Anchor::Left);
+    texturesP->DrawTexts("Right key:", white, black, { 300, Righty, 1, 1 }, 0, Anchor::Left);
+    texturesP->DrawTexts("Jump key:", white, black, { 300, Jumpy, 1, 1 }, 0, Anchor::Left);
+    texturesP->DrawTexts("Dash key:", white, black, { 300, Dashy, 1, 1 }, 0, Anchor::Left);
+    texturesP->DrawTexts("Invert Dash:", white, black, { 300, Inverty, 1, 1 }, 0, Anchor::Left);
+
+    Up.text = inputP->GetConfigName(Action::HoldUp);
+    Down.text = inputP->GetConfigName(Action::HoldDown);
+    Left.text = inputP->GetConfigName(Action::HoldLeft);
+    Right.text = inputP->GetConfigName(Action::HoldRight);
+    Jump.text = inputP->GetConfigName(Action::HoldJump);
+    Dash.text = inputP->GetConfigName(Action::HoldRun);
 
     int i = 0;
     for (auto& p : SE) {
@@ -162,6 +225,9 @@ void Options::Update() {
             p->state = State::Idle;
         }
         i++;
+    }
+    for (auto& p : CONFIGS) {
+        p->state = State::Idle;
     }
     BTNback.state = State::Idle;
     ui.Update();

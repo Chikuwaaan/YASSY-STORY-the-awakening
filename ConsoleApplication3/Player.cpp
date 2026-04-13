@@ -96,9 +96,11 @@ void Player::Update() {
         Spawn();
     }
     
+    
     EVENT event = inputP->event;
     const Uint8* keystate = inputP->keystate;
-    if (keystate[SDL_SCANCODE_W]) {
+    
+    if (inputP->config[Action::HoldJump].on) {
         jumpPressed = 1;
     }
     else {
@@ -106,7 +108,7 @@ void Player::Update() {
     }
     Jump();
 
-    if (keystate[SDL_SCANCODE_A]) {
+    if (inputP->config[Action::HoldLeft].on) {
         if (stucking) {
             if (onGround) {
                 SetAX(-540.0);
@@ -122,7 +124,7 @@ void Player::Update() {
         FlipX(true);
     }
 
-    if (keystate[SDL_SCANCODE_D]) {
+    if (inputP->config[Action::HoldRight].on) {
         if (stucking) {
             if (onGround) {
                 SetAX(540.0);
@@ -142,7 +144,7 @@ void Player::Update() {
         Goal();
     }
 
-    if (keystate[SDL_SCANCODE_M]) {
+    if (inputP->config[Action::HoldRun].on) {
         if (stucking) {
             maxSpeed = 320.0;
             moveBody += 48 * settings::timeScale;
@@ -160,6 +162,7 @@ void Player::Update() {
             maxSpeed = 480.0;
         }
     }
+    
 
     liftVX = 0.0;
 
@@ -398,6 +401,8 @@ void Player::CollideY() {
     }
 
     //entity
+    bool falling = 0;
+    if (vY <= 0) falling = 1;
     for (auto& p : platformerP->objects) {
         OBJRECT eRect = p->GetRect();
         bool collision = p->GetCollosion();
@@ -434,9 +439,10 @@ void Player::CollideY() {
                             vY = v;
                         }
                     }
-                    p->Stomped();
-                    p->onStomp = 1;
-                    
+                    if (falling) {
+                        p->Stomped();
+                        p->onStomp = 1;
+                    }
                 } 
                 else if (pRect.y < eRect.y) {
                     if (collision) {

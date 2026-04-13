@@ -52,7 +52,6 @@ public:
     Game();
     void ChangeScene(Scene s);
     void Run();
-    void HandleEvent();
     void Update();
     void InitSystem();
     void MakeInstance(); 
