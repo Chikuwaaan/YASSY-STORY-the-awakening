@@ -17,6 +17,7 @@ private:
     Button level2;
     Button level3;
     Button level4;
+    Button back;
 public:
     static Textures* texturesP;
     static Game* gameP;

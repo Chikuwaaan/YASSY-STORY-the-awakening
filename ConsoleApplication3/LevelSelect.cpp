@@ -11,9 +11,10 @@ LevelSelect::LevelSelect() :
     level1(396, 0, 768, 192),
     level2(396, 0, 768, 192),
     level3(396, 0, 768, 192),
-    level4(396, 0, 768, 192)
+    level4(396, 0, 768, 192),
+    back(396, 0, 768, 192)
 {
-    lineLevels = { {&level1,&level2,&level3,&level4}, DIRECTION::V, nullptr, nullptr };
+    lineLevels = { {&level1,&level2,&level3,&level4,&back}, DIRECTION::V, nullptr, nullptr };
 
     std::vector<std::string> levelName;
     for (int i = 1; i < 5; i++) {
@@ -49,6 +50,11 @@ LevelSelect::LevelSelect() :
         gameP->ChangeScene(Scene::Platformer);
         };
 
+    back.text = "Back";
+    back.action = []() {
+        gameP->ChangeScene(Scene::Title);
+        };
+
     RegisterButtons();
 }
 
@@ -74,9 +80,11 @@ void LevelSelect::Update() {
     int i = 0;
     for (auto& p : lineLevels.selectables) {
         p->state = State::Idle;
-        p->y = i * -204 + ui.currentButton * 204 + 540;
+        double targetY = i * -204 + ui.currentButton * 204 + 540;
+        p->y = p->y + (targetY - p->y) * settings::timeScale * 8;
         i++;
     }
     ui.Update();
     
+    //camera.x = camera.x + (camera.targetX - camera.x) * settings::timeScale * 8;
 }

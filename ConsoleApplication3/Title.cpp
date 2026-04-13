@@ -135,7 +135,7 @@ void Title::Update() {
     }
 
     if (phase == Phase::YassyStory1) {
-        if (inputP->event.Q) {
+        if (inputP->event.RETURN) {
             phase = Phase::YassyStory2;
         }
     }
