@@ -43,4 +43,7 @@ enum class Icons {
     UICursor2,
     UICursor3,
     UICursor4,
+    UO,
+    On,
+    Off
 };

@@ -39,5 +39,6 @@ public:
     bool Update();
     void AddLine(LINE* line);
     bool IsCursorOnUI();
+    void ChangeCurrentButton(int index);
 };
 

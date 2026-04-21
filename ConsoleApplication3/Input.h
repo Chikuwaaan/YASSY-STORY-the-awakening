@@ -61,6 +61,12 @@ enum class Action {
     HoldRun
 };
 
+enum class Event {
+    Null,
+    Confirm,
+    Back
+};
+
 class Input
 {
 private:
@@ -68,9 +74,10 @@ private:
     SDL_Event e;
 public:
     std::unordered_map<Action, InputType> config;
-    std::unordered_map<Action, InputType> eventConfig;
+    std::unordered_map<Event, InputType> eventConfig;
 
     Action setting;
+    Event eventSetting;
     const Uint8* keystate;
     EVENT event;
     MOUSE mouse;
@@ -81,8 +88,12 @@ public:
     void InputKey();
     void InputEvent();
 
+    bool GetEvent(Event event);
+
     void SetConfig(Action action);
     std::string GetConfigName(Action action);
+    void SetEventConfig(Event event);
+    std::string GetEventConfigName(Event event);
    
     bool IsAnyKeyPressed();
 };

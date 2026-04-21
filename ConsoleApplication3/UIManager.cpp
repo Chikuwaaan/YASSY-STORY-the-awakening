@@ -43,6 +43,7 @@ bool UIManager::Update() {
             if (e.Down) switchButton = 1;
         }
 
+
         if (switchLine == 1) {
             if (currentLine->next) {
                 currentButton = 0;
@@ -68,12 +69,18 @@ bool UIManager::Update() {
             currentButton++;
             if (currentButton >= (int)currentLine->selectables.size()) {
                 currentButton = 0;
+                if (currentLine->endAction) {
+                    currentLine->endAction();
+                }
             }
         }
         if (switchButton == -1) {
             currentButton--;
             if (currentButton < 0) {
                 currentButton = (int)currentLine->selectables.size() - 1;
+                if (currentLine->beginAction) {
+                    currentLine->beginAction();
+                }
             }
         }
     }
@@ -105,8 +112,12 @@ bool UIManager::IsCursorOnUI() {
     return 0;
 }
 
-/*
-* ‚¤‚¨‚¤‚¨w
-* ‚¤‚¨‚¤‚¨w
-* ‚¤‚¨‚¤‚¨‚¤‚¨www
-*/
+void UIManager::ChangeCurrentButton(int index) {
+    currentButton += index;
+    if (currentButton < 0) {
+        currentButton = 0;
+    }
+    else if (currentButton > currentLine->selectables.size()-1) {
+        currentButton = currentLine->selectables.size()-1;
+    }
+}

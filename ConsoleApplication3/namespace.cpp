@@ -90,19 +90,20 @@ namespace utilities {
 namespace platformer {
     double gravity = -2150.0;
     int flames = 0;
-    int level = 1;
+    int level = 5;
 }
 
 namespace savedata {
-    InputType Up = { InputDevice::Keyboard, SDL_SCANCODE_W, 0 };
-    InputType Down = { InputDevice::Keyboard, SDL_SCANCODE_S, 0 };
-    InputType Left = { InputDevice::Keyboard, SDL_SCANCODE_A, 0 };
-    InputType Right = { InputDevice::Keyboard, SDL_SCANCODE_D, 0 };
-    InputType Jump = { InputDevice::Keyboard, SDL_SCANCODE_M, 0 };
-    InputType Dash = { InputDevice::Keyboard, SDL_SCANCODE_N, 0 };
-    bool InvertDash;
+    bool InvertDash = 0;
+    bool Blur = 0;
 
-    std::vector<std::vector<bool>> coin = {
+    std::vector<std::vector<int>> coin = {
+        {0,0,0},
+        {0,0,0},
+        {0,0,0},
+        {0,0,0},
+        {0,0,0},
+        {0,0,0},
         {0,0,0},
         {0,0,0},
         {0,0,0},

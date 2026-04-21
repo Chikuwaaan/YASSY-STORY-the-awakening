@@ -2,12 +2,7 @@
 #include "Textures.h"
 
 CoinManager::CoinManager() {
-    progress = {
-        {0,0,0},
-        {0,0,0},
-        {0,0,0},
-        {0,0,0}
-    };
+    progress = savedata::coin;
 }
 
 void CoinManager::Update() {
@@ -27,6 +22,6 @@ void CoinManager::CollectCoin(int index) {
     progress[platformer::level-1][index] = 1;
 }
 
-std::vector<std::vector<bool>> CoinManager::GetProgress() {
+std::vector<std::vector<int>> CoinManager::GetProgress() {
     return progress;
 }

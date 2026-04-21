@@ -2,10 +2,12 @@
 #include "Textures.h"
 #include "namespace.h"
 #include "Game.h"
+#include "Input.h"
 #include <fstream>
 
 Textures* LevelSelect::texturesP = nullptr;
 Game* LevelSelect::gameP = nullptr;
+Input* LevelSelect::inputP = nullptr;
 
 LevelSelect::LevelSelect() :
     level1(396, 0, 768, 192),
@@ -84,6 +86,15 @@ void LevelSelect::Update() {
         p->y = p->y + (targetY - p->y) * settings::timeScale * 8;
         i++;
     }
+
+    EVENT event = inputP->event;
+    if (event.MouseWheel == 1) {
+        ui.ChangeCurrentButton(-1);
+    }
+    else if (event.MouseWheel == -1) {
+        ui.ChangeCurrentButton(1);
+    }
+
     ui.Update();
     
     //camera.x = camera.x + (camera.targetX - camera.x) * settings::timeScale * 8;

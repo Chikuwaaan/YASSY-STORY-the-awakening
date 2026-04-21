@@ -144,7 +144,7 @@ void Player::Update() {
         Goal();
     }
 
-    if (inputP->config[Action::HoldRun].on) {
+    if (inputP->config[Action::HoldRun].on != savedata::InvertDash) {
         if (stucking) {
             maxSpeed = 320.0;
             moveBody += 48 * settings::timeScale;

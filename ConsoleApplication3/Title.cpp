@@ -25,7 +25,8 @@ enum class Phase {
 Title::Title() :
     BTNstart(960, 540, 512, 128),
     BTNoptions(960, 340, 512, 128),
-    BTNexitgame(960, 140, 512, 128)
+    BTNexitgame(960, 140, 512, 128),
+    BTNface(5,1075,10,10)
 {
     last = 0;
     timer = 0.0;
@@ -49,7 +50,11 @@ void Title::RegisterButtons() {
         nullptr,
         nullptr
     };
+    face = {
+        {&BTNface}
+    };
     ui.AddLine(&titleMenu);
+    ui.AddLine(&face);
     ui.currentLine = &titleMenu;
 
     BTNstart.text = "START";
@@ -65,6 +70,11 @@ void Title::RegisterButtons() {
     BTNexitgame.text = "EXIT";
     BTNexitgame.action = []() {
         gameP->ExitGame();
+        };
+
+    BTNface.icon = Icons::UO;
+    BTNface.action = [this]() {
+        this->gameP->ChangeScene(Scene::FaceYassy);
         };
 
     options.BTNback.action = [this]() {
@@ -145,15 +155,18 @@ void Title::Update() {
         BTNstart.visible = true;
         BTNoptions.visible = true;
         BTNexitgame.visible = true;
+        BTNface.visible = true;
 
         BTNstart.state = State::Idle;
         BTNoptions.state = State::Idle;
         BTNexitgame.state = State::Idle;
+        BTNface.state = State::Idle;
     }
     else {
         BTNstart.visible = false;
         BTNoptions.visible = false;
         BTNexitgame.visible = false;
+        BTNface.visible = false;
     }
 
     if (phase == Phase::Options) {

@@ -11,7 +11,13 @@ Input::Input() {
         {Action::HoldJump, {InputDevice::Keyboard, SDL_SCANCODE_M, 0}},
         {Action::HoldRun, {InputDevice::Keyboard, SDL_SCANCODE_N, 0}}
     };
+    eventConfig = {
+        {Event::Confirm, {InputDevice::Keyboard, SDL_SCANCODE_SPACE, 0}},
+        {Event::Back, {InputDevice::Keyboard, SDL_SCANCODE_ESCAPE, 0}}
+    };
 
+    setting = Action::Null;
+    eventSetting = Event::Null;
 }
 
 void Input::Update() {
@@ -20,6 +26,7 @@ void Input::Update() {
     InputEvent();
 
     if (setting != Action::Null) return;
+    if (eventSetting != Event::Null) return;
 
     for (auto& [key, value] : config) {
         value.on = 0;
@@ -58,6 +65,8 @@ void Input::Update() {
             }
         }
     }
+
+    
 }
 
 void Input::InputCursor() {
@@ -106,6 +115,10 @@ void Input::InputEvent() {
     isAnyKeyPressed = 0;
     event = {};
 
+    for (auto& [key, value] : eventConfig) {
+        value.on = 0;
+    }
+
     while (SDL_PollEvent(&e)) {
         //config
         if (setting != Action::Null) {
@@ -123,6 +136,37 @@ void Input::InputEvent() {
             }
             if (setting != Action::Null) return;
         }
+
+        if (eventSetting != Event::Null) {
+            if (e.type == SDL_KEYDOWN) {
+                eventConfig[eventSetting].device = InputDevice::Keyboard;
+                eventConfig[eventSetting].code = e.key.keysym.scancode;
+                eventSetting = Event::Null;
+                return;
+            }
+            if (e.type == SDL_MOUSEBUTTONDOWN) {
+                eventConfig[eventSetting].device = InputDevice::MouseButton;
+                eventConfig[eventSetting].code = e.button.button;
+                eventSetting = Event::Null;
+                return;
+            }
+            if (eventSetting != Event::Null) return;
+        }
+
+        for (auto& [key, value] : eventConfig) {
+            if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
+                if (value.device == InputDevice::Keyboard && value.code == e.key.keysym.scancode) {
+                    value.on = 1;
+                }
+            }
+            if (e.type == SDL_MOUSEBUTTONDOWN) {
+                if (value.device == InputDevice::MouseButton && value.code == e.button.button) {
+                    value.on = 1;
+                }
+            }
+        }
+        
+
 
         if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
             isAnyKeyPressed = 1;
@@ -202,6 +246,16 @@ void Input::InputEvent() {
     }
 }
 
+bool Input::GetEvent(Event event) {
+    if (eventConfig[event].on) {
+        eventConfig[event].on = 0;
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 void Input::SetConfig(Action action) {
     setting = action;
 }
@@ -228,6 +282,34 @@ std::string Input::GetConfigName(Action action) {
         }
     }
     return "";
+}
+
+std::string Input::GetEventConfigName(Event event) {
+    if (eventConfig[event].device == InputDevice::Keyboard) {
+        return SDL_GetScancodeName((SDL_Scancode)(eventConfig[event].code));
+    }
+    else if (eventConfig[event].device == InputDevice::MouseButton) {
+        if (eventConfig[event].code == SDL_BUTTON_LEFT) {
+            return "MouseLeft";
+        }
+        if (eventConfig[event].code == SDL_BUTTON_MIDDLE) {
+            return "MouseMiddle";
+        }
+        if (eventConfig[event].code == SDL_BUTTON_RIGHT) {
+            return "MouseRight";
+        }
+        if (eventConfig[event].code == SDL_BUTTON_X1) {
+            return "MouseSide1";
+        }
+        if (eventConfig[event].code == SDL_BUTTON_X2) {
+            return "MouseSide2";
+        }
+    }
+    return "";
+}
+
+void Input::SetEventConfig(Event event) {
+    eventSetting = event;
 }
 
 bool Input::IsAnyKeyPressed() {

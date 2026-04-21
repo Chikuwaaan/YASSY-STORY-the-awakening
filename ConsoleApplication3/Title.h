@@ -17,6 +17,8 @@ private:
     Button BTNstart;
     Button BTNoptions;
     Button BTNexitgame;
+    LINE face;
+    Button BTNface;
 
     Uint32 last;
     double timer;

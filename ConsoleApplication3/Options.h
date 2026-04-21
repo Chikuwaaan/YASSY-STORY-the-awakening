@@ -34,15 +34,22 @@ private:
     Button BGM8;
     std::vector<Button*> BGM;
 
-    LINE config;
+    LINE config1;
+    LINE config2;
     Button Up;
     Button Down;
     Button Left;
     Button Right;
     Button Jump;
     Button Dash;
+    Button Confirm;
+    Button Back;
+    std::vector<Button*> CONFIGS1;
+    std::vector<Button*> CONFIGS2;
+
+    LINE sita;
     Button Invert;
-    std::vector<Button*> CONFIGS;
+    Button Blur;
 
     LINE back; 
 public:

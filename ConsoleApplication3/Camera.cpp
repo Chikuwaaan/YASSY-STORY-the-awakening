@@ -29,7 +29,7 @@ void Camera::Init() {
     camera.targetX = 720.0;
     camera.targetY = 540.0;
     camera.zoom = 1.0;
-    drawCameraRoom = 1;
+    drawCameraRoom = 0;
 }
 
 void Camera::LoadCameraRoom(int n) {

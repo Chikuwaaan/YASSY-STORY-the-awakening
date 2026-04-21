@@ -16,6 +16,7 @@ Coin::Coin(double X, double Y, double Index) {
     if (savedata::coin[platformer::level-1][index] == 1) {
         isCollected = 1;
         managerP->CollectCoin(index);
+        dead = 1;
     }
     else {
         isCollected = 0;

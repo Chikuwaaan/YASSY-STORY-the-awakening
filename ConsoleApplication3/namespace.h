@@ -41,5 +41,6 @@ namespace savedata {
     extern InputType Jump;
     extern InputType Dash;
     extern bool InvertDash;
-    extern std::vector<std::vector<bool>> coin;
+    extern bool Blur;
+    extern std::vector<std::vector<int>> coin;
 }

@@ -154,7 +154,7 @@ bool Button::CheckPressed() {
     }
 
     if (isSelected && state != State::Unavailable && visible) {
-        if (inputP->event.SPACE) {
+        if (inputP->GetEvent(Event::Confirm)) {
             soundsP->PlaySE("pochi");
 
             if (action) {

@@ -3,8 +3,10 @@
 #include "Button.h"
 #include "UIManager.h"
 
+
 class Textures;
 class Game;
+class Input;
 
 class LevelSelect
 {
@@ -21,6 +23,7 @@ private:
 public:
     static Textures* texturesP;
     static Game* gameP;
+    static Input* inputP;
 
     LevelSelect();
     void RegisterButtons();

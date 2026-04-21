@@ -99,6 +99,11 @@ void FaceYassy::Update() {
 
     SDL_SetRenderDrawColor(r, 255,255,255, 255);
 
+    if (inputP->eventConfig[Event::Back].on) {
+        gameP->ChangeScene(Scene::Title);
+        return;
+    }
+
     int mouseX = (int)inputP->mouse.x;
     int mouseY = (int)inputP->mouse.y;
 
@@ -133,9 +138,11 @@ void FaceYassy::Update() {
         }
     }
     
+    /*
     std::cout << mousedx << "," << mousedy << ",";
     if (mousedx) std::cout << tan((mousedy*0.1) / mousedx);
     std::cout << std::endl;
+    */
     
     /*
     double angle = 0;

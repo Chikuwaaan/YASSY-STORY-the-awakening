@@ -86,7 +86,9 @@ Textures::Textures() {
         iconProperty[Icons::UICursor3] = { 10,1 };
         iconProperty[Icons::UICursor4] = { 11,1 };
 
-
+        iconProperty[Icons::UO] = { 3,2 };
+        iconProperty[Icons::On] = { 1,3 };
+        iconProperty[Icons::Off] = { 2,3 };
         iconProperty[Icons::Back] = { 0,2 };
     }
 }
@@ -354,7 +356,7 @@ void Textures::Update() {
     SDL_RenderCopyEx(settings::renderer, canvas, NULL, &dst, 0, &center, SDL_FLIP_NONE);
     
     //blur
-    if (platformer::level == 3) {
+    if (savedata::Blur) {
         SDL_SetRenderTarget(settings::renderer, blur);
         SDL_RenderCopy(settings::renderer, canvas, NULL, &dst);
         SDL_SetRenderTarget(settings::renderer, NULL);
