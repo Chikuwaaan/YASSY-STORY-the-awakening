@@ -23,6 +23,8 @@
 #include "Spawner.h"
 #include "Water.h"
 #include "Particle.h"
+#include "Fishy.h"
+#include "Coco.h"
 
 #include <iostream>
 #include <fstream>
@@ -196,6 +198,26 @@ GameObject* Platformer::AddObject(std::string objClass, std::vector<std::variant
             std::get<double>(args[1]),
             std::get<std::string>(args[2])
         );
+    }
+    if (objClass == "Fishy") {
+        p = std::make_unique<Fishy>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1])
+        );
+    }
+    if (objClass == "Coco") {
+        p = std::make_unique<Deco>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1])+240-48,
+            480,
+            480,
+            -1,
+            "palm"
+        );
+        pendingObjects.push_back(std::make_unique<Coco>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1])+288
+        ));
     }
 
     /*

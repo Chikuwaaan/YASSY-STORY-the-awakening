@@ -137,10 +137,12 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CheckPoint.cpp" />
+    <ClCompile Include="Coco.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="CoinManager.cpp" />
     <ClCompile Include="Deco.cpp" />
     <ClCompile Include="FaceYassy.cpp" />
+    <ClCompile Include="Fishy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTimer.cpp" />
@@ -181,10 +183,12 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CheckPoint.h" />
+    <ClInclude Include="Coco.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="CoinManager.h" />
     <ClInclude Include="Deco.h" />
     <ClInclude Include="FaceYassy.h" />
+    <ClInclude Include="Fishy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTimer.h" />
@@ -206,6 +210,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rand.h" />
     <ClInclude Include="namespace.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Save.h" />
     <ClInclude Include="ScreenShot.h" />
     <ClInclude Include="Sounds.h" />
@@ -220,6 +225,12 @@
     <ClInclude Include="Water.h" />
     <ClInclude Include="Zako.h" />
     <ClInclude Include="ZakoJump.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\x64\Release\star.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

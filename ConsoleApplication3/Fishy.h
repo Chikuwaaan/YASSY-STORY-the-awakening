@@ -1,16 +1,14 @@
 #pragma once
 #include "GameObject.h"
-#include "Timer.h"
-
-class Water :
+class Fishy :
     public GameObject
 {
 private:
-    Timer timer;
+    double posX, amplitudeX, vx0;
 public:
-    Water(double X, double Y, double W, double H);
+    Fishy(double X, double Y);
+    void Update() override;
+    void Draw() override;
     void Touched() override;
     void Stomped() override;
-    void Draw() override;
 };
-

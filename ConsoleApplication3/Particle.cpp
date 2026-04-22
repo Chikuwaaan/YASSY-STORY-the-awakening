@@ -4,6 +4,8 @@
 Particle::Particle(double X, double Y, std::string Type) {
     x = X;
     y = Y;
+    w = 6;
+    h = 6;
     
     if (Type == "splash") type = particle::splash;
     if (Type == "mud") type = particle::mud;

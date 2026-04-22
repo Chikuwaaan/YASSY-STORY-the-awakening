@@ -166,7 +166,7 @@ void Player::Update() {
     
 
     liftVX = 0.0;
-    if (watering) {
+    if (watering && (vX || vY)) {
         platformerP->AddObject("Particle", {x, y, "splash"});
     }
     if (stucking && onGround && vX) {
