@@ -50,6 +50,7 @@ Player::Player() {
     stomping = 0;
 
     stucking = 0;
+    watering = 0;
 
     currentCP = 0;
     spawnX = 0;
@@ -165,8 +166,13 @@ void Player::Update() {
     
 
     liftVX = 0.0;
-
-    
+    if (watering) {
+        platformerP->AddObject("Particle", {x, y, "splash"});
+    }
+    if (stucking && onGround && vX) {
+        platformerP->AddObject("Particle", { x, y-32, "mud" });
+    }
+    watering = 0;
 
 
 
@@ -254,7 +260,7 @@ void Player::Update() {
     }
     */
 
-
+    
 
     if (y < -1000.0) {
         Die();
@@ -296,15 +302,29 @@ void Player::Jump() {
         jumpingTime = 0.0;
     }
 
-    if (!stucking && isJumping && vY > 0 && jumpingTime < 0.5) {
-        gravity = platformer::gravity * 0.2;
-    }
-    else if (stucking && isJumping && vY > 0 && jumpingTime < 0.3) {
-        gravity = platformer::gravity * 0.4;
+    if (!watering) {
+        if (!stucking && isJumping && vY > 0 && jumpingTime < 0.5) {
+            gravity = platformer::gravity * 0.2;
+        }
+        else if (stucking && isJumping && vY > 0 && jumpingTime < 0.3) {
+            gravity = platformer::gravity * 0.4;
+        }
+        else {
+            gravity = platformer::gravity;
+        }
     }
     else {
-        gravity = platformer::gravity;
+        if (!stucking && isJumping && vY > 0 && jumpingTime < 0.5) {
+            gravity = platformer::gravity * 0.1;
+        }
+        else if (stucking && isJumping && vY > 0 && jumpingTime < 0.3) {
+            gravity = platformer::gravity * 0.2;
+        }
+        else {
+            gravity = platformer::gravity * 0.5;
+        }
     }
+    
 
     if (!jumpPressed && isJumping) {
             isJumping = false;

@@ -21,6 +21,8 @@
 #include "Hosi.h"
 #include "Coin.h"
 #include "Spawner.h"
+#include "Water.h"
+#include "Particle.h"
 
 #include <iostream>
 #include <fstream>
@@ -179,6 +181,21 @@ GameObject* Platformer::AddObject(std::string objClass, std::vector<std::variant
     }
     if (objClass == "SpawnerL") {
         p = std::make_unique<Spawner>("assy2", args);
+    }
+    if (objClass == "Water") {
+        p = std::make_unique<Water>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1]),
+            std::get<double>(args[2]),
+            std::get<double>(args[3])
+        );
+    }
+    if (objClass == "Particle") {
+        p = std::make_unique<Particle>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1]),
+            std::get<std::string>(args[2])
+        );
     }
 
     /*
@@ -367,7 +384,7 @@ void Platformer::Update() {
     OBJRECT screenRect = { (double)settings::baseW / 2, (double)settings::baseH / 2, (double)settings::baseW, (double)settings::baseH, 1 };
     texturesP->DrawRect({ 255,255,255,255 }, screenRect, 0);
 
-    if (!editorMode && !pausing) cameraP->Update();
+    if (!pausing) cameraP->Update();
 
     if (event.E) {
         if (editorMode) {
@@ -439,26 +456,13 @@ void Platformer::Update() {
             }
         }
     }
-    for (auto& obj : objects) {
-        EntityType type = obj->GetType();
-        if (type != EntityType::BackGround) {
-            if (obj->visible) {
-                if (obj->GetLayer() == 1) {
-                    obj->Draw();
-                }
-            }
-        }
-    }
 
     player.Draw();
 
 
     for (auto& obj : objects) {
-        EntityType type = obj->GetType();
-        if (type == EntityType::BackGround) {
-            if (obj->GetLayer() == 1) {
-                obj->Draw();
-            }
+        if (obj->GetLayer() == 1) {
+            obj->Draw();
         }
     }
 

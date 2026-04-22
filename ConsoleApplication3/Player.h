@@ -38,6 +38,7 @@ private:
 
     bool stucking;
     
+    
     double spawnX, spawnY;
 
     GameTimer timerComplete;
@@ -46,6 +47,8 @@ private:
     void CollideY();
     void CollideX();
 public:
+    bool watering;
+
     int currentCP;
     static Level* levelP;
     static Camera* cameraP;

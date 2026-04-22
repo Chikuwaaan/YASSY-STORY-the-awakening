@@ -157,6 +157,7 @@
     <ClCompile Include="namespace.cpp" />
     <ClCompile Include="Options.cpp" />
     <ClCompile Include="OverLay.cpp" />
+    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Pause.cpp" />
     <ClCompile Include="Platformer.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="Toast.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="Warp.cpp" />
+    <ClCompile Include="Water.cpp" />
     <ClCompile Include="Zako.cpp" />
     <ClCompile Include="ZakoJump.cpp" />
   </ItemGroup>
@@ -198,6 +200,7 @@
     <ClInclude Include="LiftFall.h" />
     <ClInclude Include="Options.h" />
     <ClInclude Include="OverLay.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="Pause.h" />
     <ClInclude Include="Platformer.h" />
     <ClInclude Include="Player.h" />
@@ -217,18 +220,13 @@
     <ClInclude Include="Toast.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="Warp.h" />
+    <ClInclude Include="Water.h" />
     <ClInclude Include="Zako.h" />
     <ClInclude Include="ZakoJump.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ConsoleApplication3.rc" />
     <ResourceCompile Include="Resource.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\..\..\desktop\bitmap1.bmp" />
-    <Image Include="..\..\..\..\Desktop\icon.ico" />
-    <Image Include="..\..\..\..\desktop\icon2.ico" />
-    <Image Include="..\..\..\..\Desktop\whitestar.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
