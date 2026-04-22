@@ -205,10 +205,7 @@
     <ClInclude Include="Platformer.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rand.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="namespace.h" />
-    <ClInclude Include="resource1.h" />
-    <ClInclude Include="resource2.h" />
     <ClInclude Include="Save.h" />
     <ClInclude Include="ScreenShot.h" />
     <ClInclude Include="Sounds.h" />
@@ -223,10 +220,6 @@
     <ClInclude Include="Water.h" />
     <ClInclude Include="Zako.h" />
     <ClInclude Include="ZakoJump.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="ConsoleApplication3.rc" />
-    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
