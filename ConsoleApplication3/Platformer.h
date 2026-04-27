@@ -16,6 +16,7 @@ class Textures;
 class Camera;
 class Input;
 class Sounds;
+class Save;
 
 struct LEVELINFO {
     std::u8string name;
@@ -42,6 +43,7 @@ public:
     static Camera* cameraP;
     static Input* inputP;
     static Sounds* soundsP;
+    static Save* saveP;
 
     std::vector<std::unique_ptr<GameObject>> objects;
     std::vector<std::unique_ptr<GameObject>> dyingObjects;
@@ -51,10 +53,10 @@ public:
 
     void LoadLevelInfo();
     void LoadEntities();
-    void SaveProgress();
 
     void Init();
     void Spawn();
+    void Save();
     void Quit();
     void Update();
 

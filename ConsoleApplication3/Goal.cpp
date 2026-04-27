@@ -10,7 +10,6 @@ Goal::Goal(double X, double Y, double W, double H) {
 
 void Goal::Touched() {
     playerP->Goal();
-    playerP->Save();
 }
 
 void Goal::Stomped() {

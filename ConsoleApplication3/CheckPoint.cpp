@@ -18,6 +18,8 @@ CheckPoint::CheckPoint(double x0, double y0, double Index) {
 
     if (index == 0) {
         used = 1;
+        //platformer::CP = index;
+        //saveP->WriteProgress();
     }
     if (index == platformer::CP) {
         playerP->SetSpawnPoint(x, y);
@@ -35,7 +37,6 @@ void CheckPoint::Update() {
 void CheckPoint::Touched() {
     if (!used) {
         platformer::CP = index;
-        playerP->Save();
         used = 1;
         soundsP->PlaySE("cp");
         saveP->WriteProgress();

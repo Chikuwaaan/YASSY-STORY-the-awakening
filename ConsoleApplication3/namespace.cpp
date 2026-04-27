@@ -90,8 +90,10 @@ namespace utilities {
 namespace platformer {
     double gravity = -2150.0;
     int flames = 0;
+
     int level = 1;
     int CP = 0;
+    int coin[3] = { 0,0,0 };
 }
 
 namespace savedata {

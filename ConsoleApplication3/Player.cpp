@@ -672,10 +672,6 @@ void Player::SetSpawnPoint(double x, double y) {
     spawnY = y;
 }
 
-void Player::Save() {
-    platformerP->SaveProgress();
-}
-
 void Player::Goal() {
     completing = 1;
     overlayP->FadeOut(1.1, { 0,0,0,255 });
@@ -686,6 +682,7 @@ void Player::Complete() {
     completing = 0;
     platformer::CP = 0;
     platformer::level++;
+    platformerP->Save();
     platformerP->Init();
 }
 

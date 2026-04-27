@@ -25,6 +25,7 @@
 #include "Particle.h"
 #include "Fishy.h"
 #include "Coco.h"
+#include "Save.h"
 
 #include <iostream>
 #include <fstream>
@@ -34,6 +35,7 @@ Textures* Platformer::texturesP = nullptr;
 Camera* Platformer::cameraP = nullptr;
 Input* Platformer::inputP = nullptr;
 Sounds* Platformer::soundsP = nullptr;
+Save* Platformer::saveP = nullptr;
 
 Platformer::Platformer() {
     player.levelP = &level;
@@ -389,12 +391,11 @@ void Platformer::LoadEntities() {
     }
 }
 
-void Platformer::SaveProgress() {
-    savedata::coin = coinManager.GetProgress();
-}
 
 void Platformer::Init() {
+    saveP->LoadProgress();
     LoadLevelInfo();
+    std::cout << platformer::level;
     level.LoadLevel(platformer::level);
     //cameraP->LoadCameraRoom(platformer::level);
     player.Spawn();
@@ -403,8 +404,12 @@ void Platformer::Init() {
 }
 
 void Platformer::Spawn() {
+    saveP->LoadProgress();
     LoadEntities();
-    coinManager.Refresh();
+}
+
+void Platformer::Save() {
+    saveP->WriteProgress();
 }
 
 void Platformer::Quit() {

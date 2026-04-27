@@ -115,6 +115,24 @@ void Save::WriteOptions() {
 * coin2
 */
 
+void Save::LoadProgress() {
+    std::string path = "Save/";
+    path = path + std::to_string(savedata::slot) + "/current.bin";
+    std::ifstream current(path);
+    if (!current.is_open()) return;
+
+    int format;
+    current.read((char*)&format, sizeof(int));
+
+    if (format == 1) {
+        current.read((char*)&platformer::level, sizeof(int));
+        current.read((char*)&platformer::CP, sizeof(int));
+        current.read((char*)&platformer::coin[0], sizeof(int));
+        current.read((char*)&platformer::coin[1], sizeof(int));
+        current.read((char*)&platformer::coin[2], sizeof(int));
+    }
+}
+
 void Save::WriteProgress() {
     std::string path = "Save/";
     path = path + std::to_string(savedata::slot) + "/current.bin";
@@ -126,6 +144,10 @@ void Save::WriteProgress() {
     current.write((char*)&currentLevel, sizeof(int));
     int currentCP = platformer::CP;
     current.write((char*)&currentCP, sizeof(int));
+
+    current.write((char*)&(platformer::coin[0]), sizeof(int));
+    current.write((char*)&(platformer::coin[1]), sizeof(int));
+    current.write((char*)&(platformer::coin[2]), sizeof(int));
 
     current.close();
 }

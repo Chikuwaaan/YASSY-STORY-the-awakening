@@ -28,10 +28,12 @@ namespace utilities {
 }
 
 namespace platformer {
-    extern int level;
-    extern int CP;
     extern double gravity;
     extern int flames;
+
+    extern int level;
+    extern int CP;
+    extern int coin[3];
 }
 
 namespace savedata {
