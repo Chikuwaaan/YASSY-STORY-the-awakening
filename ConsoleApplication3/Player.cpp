@@ -53,7 +53,6 @@ Player::Player() {
     stucking = 0;
     watering = 0;
 
-    currentCP = 0;
     spawnX = 0;
     spawnY = 0;
 
@@ -685,7 +684,7 @@ void Player::Goal() {
 void Player::Complete() {
     stop = 0;
     completing = 0;
-    currentCP = 0;
+    platformer::CP = 0;
     platformer::level++;
     platformerP->Init();
 }

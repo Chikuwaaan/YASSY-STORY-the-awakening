@@ -29,17 +29,13 @@ namespace utilities {
 
 namespace platformer {
     extern int level;
+    extern int CP;
     extern double gravity;
     extern int flames;
 }
 
 namespace savedata {
-    extern InputType Up;
-    extern InputType Down;
-    extern InputType Left;
-    extern InputType Right;
-    extern InputType Jump;
-    extern InputType Dash;
+    extern int slot;
     extern bool InvertDash;
     extern bool Blur;
     extern std::vector<std::vector<int>> coin;

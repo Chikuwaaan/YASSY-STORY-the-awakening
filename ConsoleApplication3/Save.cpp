@@ -3,35 +3,48 @@
 #include <string>
 #include "namespace.h"
 #include "Input.h"
+#include "Sounds.h"
 #include <iostream>
 
 Input* Save::inputP = nullptr;
+Sounds* Save::soundsP = nullptr;
 
 Save::Save() {
 
 }
 
-void Save::Load() {
+void Save::LoadOptions() {
     std::ifstream option("Save/option.txt");
-    int device, code;
     if (option.is_open()) {
-        for (int i = 1; i <= 6; i++) {
-            option >> device;
-            option >> code;
-            inputP->config[(Action)i].device = (InputDevice)device;
-            inputP->config[(Action)i].code = code;
+        int format;
+        option >> format;
+
+        if (format == 1) {
+            option >> settings::BGM;
+            option >> settings::SE;
+            soundsP->SetBGMVolume(settings::BGM);
+            soundsP->SetSEVolume(settings::SE);
+
+            int device, code;
+            for (int i = 1; i <= 6; i++) {
+                option >> device;
+                option >> code;
+                inputP->config[(Action)i].device = (InputDevice)device;
+                inputP->config[(Action)i].code = code;
+            }
+            for (int i = 1; i <= 2; i++) {
+                option >> device;
+                option >> code;
+                inputP->eventConfig[(Event)i].device = (InputDevice)device;
+                inputP->eventConfig[(Event)i].code = code;
+            }
+            option >> savedata::InvertDash;
+            option >> savedata::Blur;
         }
-        for (int i = 1; i <= 2; i++) {
-            option >> device;
-            option >> code;
-            inputP->eventConfig[(Event)i].device = (InputDevice)device;
-            inputP->eventConfig[(Event)i].code = code;
-        }
-        option >> savedata::InvertDash;
-        option >> savedata::Blur;
     }
     option.close();
 
+    /*
     std::ifstream progress("Save/progress.bin");
     if (progress.is_open()) {
         int version = 0;
@@ -45,15 +58,17 @@ void Save::Load() {
             }
         }
     }
-    
-
-
-    std::cout << "[DEBUG]loaded!" << std::endl;
+    */
 }
 
-void Save::Write() {
+void Save::WriteOptions() {
+    WriteProgress();
+
     std::ofstream option("Save/option.txt");
     if (option.is_open()) {
+        option << 1 << std::endl;
+        option << settings::BGM << std::endl;
+        option << settings::SE << std::endl;
         option << (int)inputP->config[Action::HoldUp].device << std::endl;
         option << (int)inputP->config[Action::HoldUp].code << std::endl;
         option << (int)inputP->config[Action::HoldDown].device << std::endl;
@@ -75,6 +90,7 @@ void Save::Write() {
     }
     option.close();
 
+    /*
     std::ofstream progress("Save/progress.bin", std::ios::binary);
     int version = 1;
 
@@ -86,6 +102,30 @@ void Save::Write() {
             progress.write((char*)&coin, sizeof(int));
         }
     }
+    */
+}
 
-    std::cout << "[DEBUG]saved!" << std::endl;
+
+/* current
+* format version
+* 今のレベル
+* 今のcp
+* coin0
+* coin1
+* coin2
+*/
+
+void Save::WriteProgress() {
+    std::string path = "Save/";
+    path = path + std::to_string(savedata::slot) + "/current.bin";
+    std::ofstream current(path, std::ios::binary);
+
+    int format = 1;
+    current.write((char*)&format, sizeof(int));
+    int currentLevel = platformer::level;
+    current.write((char*)&currentLevel, sizeof(int));
+    int currentCP = platformer::CP;
+    current.write((char*)&currentCP, sizeof(int));
+
+    current.close();
 }

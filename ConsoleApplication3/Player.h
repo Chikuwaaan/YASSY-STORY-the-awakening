@@ -50,7 +50,6 @@ public:
     double vYreserve;
     bool watering;
 
-    int currentCP;
     static Level* levelP;
     static Camera* cameraP;
     static OverLay* overlayP;

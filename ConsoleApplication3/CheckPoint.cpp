@@ -2,6 +2,9 @@
 #include "Player.h"
 #include "Textures.h"
 #include "Sounds.h"
+#include "Save.h"
+
+Save* CheckPoint::saveP = nullptr;
 
 CheckPoint::CheckPoint(double x0, double y0, double Index) {
     texName = "cp";
@@ -15,27 +18,27 @@ CheckPoint::CheckPoint(double x0, double y0, double Index) {
 
     if (index == 0) {
         used = 1;
-        //visible = 0;
     }
-    if (index == playerP->currentCP) {
+    if (index == platformer::CP) {
         playerP->SetSpawnPoint(x, y);
     }
 }
 
 void CheckPoint::Update() {
-    if (!used) {
-        if (playerP->currentCP >= index) {
-            used = 1;
+    if (used) {
+        if (!utilities::HitDetection(playerP->GetRect(), { x,y,w,h })) {
+            used = 0;
         }
     }
 }
 
 void CheckPoint::Touched() {
     if (!used) {
-        playerP->currentCP = index;
+        platformer::CP = index;
         playerP->Save();
         used = 1;
         soundsP->PlaySE("cp");
+        saveP->WriteProgress();
     }
 }
 

@@ -91,9 +91,11 @@ namespace platformer {
     double gravity = -2150.0;
     int flames = 0;
     int level = 1;
+    int CP = 0;
 }
 
 namespace savedata {
+    int slot = 1;
     bool InvertDash = 0;
     bool Blur = 0;
 

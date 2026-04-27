@@ -13,6 +13,7 @@
 #include "UIManager.h"
 #include "FaceYassy.h"
 #include "Button.h"
+#include "CheckPoint.h"
 
 Game::Game() 
 {
@@ -70,12 +71,12 @@ void Game::ChangeScene(Scene s) {
 
 
 void Game::Run() {
-    ChangeScene(Scene::Title);
-    //ChangeScene(Scene::Platformer);
+    //ChangeScene(Scene::Title);
+    ChangeScene(Scene::Platformer);
     //ChangeScene(Scene::FaceYassy);
     //ChangeScene(Scene::LevelSelect);
 
-    save->Load();
+    save->LoadOptions();
 
     double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
@@ -104,7 +105,7 @@ void Game::Run() {
             if (scene == Scene::FaceYassy) {
                 faceyassy->Output();
             }
-            save->Write();
+            save->WriteOptions();
         }
         
         if (event.F12) {
@@ -305,6 +306,8 @@ void Game::MakeInstance() {
     GameObject::inputP = input.get();
     GameObject::cameraP = camera.get();
     Save::inputP = input.get();
+    Save::soundsP = sounds.get();
+    CheckPoint::saveP = save.get();
 }
 
 void Game::ExitGame() {
