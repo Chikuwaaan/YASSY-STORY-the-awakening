@@ -71,9 +71,9 @@ void Game::ChangeScene(Scene s) {
 
 void Game::Run() {
     //ChangeScene(Scene::Title);
-    ChangeScene(Scene::Platformer);
+    //ChangeScene(Scene::Platformer);
     //ChangeScene(Scene::FaceYassy);
-    //ChangeScene(Scene::LevelSelect);
+    ChangeScene(Scene::LevelSelect);
 
     save->Load();
 
@@ -192,8 +192,8 @@ void Game::Update() {
     textures->Update();
 
     //DEBUG INFO
-    bool showCursorPoint = 0;
-    bool showCross = 0;
+    bool showCursorPoint = 1;
+    bool showCross = 1;
     if (showCursorPoint) {
         int x, y;
         x = input->mouse.x;

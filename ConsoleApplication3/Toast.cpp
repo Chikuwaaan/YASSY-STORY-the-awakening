@@ -8,6 +8,7 @@ Toast::Toast(std::u8string Text) {
     w = 1920;
     h = 192;
     alwaysLoad = 1;
+    layer = 2;
     phase = PHASE::appear;
 }
 

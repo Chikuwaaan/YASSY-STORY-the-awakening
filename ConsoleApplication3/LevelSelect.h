@@ -11,7 +11,8 @@ class Input;
 class LevelSelect
 {
 private:
-    Timer timerBG;
+    Timer timer;
+    Timer timer2;
     UIManager ui;
 
     LINE lineLevels;
@@ -19,6 +20,7 @@ private:
     Button level2;
     Button level3;
     Button level4;
+    Button level5;
     Button back;
 public:
     static Textures* texturesP;

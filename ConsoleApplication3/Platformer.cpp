@@ -497,6 +497,11 @@ void Platformer::Update() {
             obj->Draw();
         }
     }
+    for (auto& obj : objects) {
+        if (obj->GetLayer() == 2) {
+            obj->Draw();
+        }
+    }
 
 
 
