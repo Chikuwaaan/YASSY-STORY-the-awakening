@@ -7,10 +7,20 @@
 class Textures;
 class Game;
 class Input;
+class OverLay;
+
+enum class PhaseLevelSelect {
+    SelectSlot0,
+    SelectSlot1,
+    SelectLevel0,
+    SelectLevel1
+};
 
 class LevelSelect
 {
 private:
+    PhaseLevelSelect phase;
+
     Timer timer;
     Timer timer2;
     UIManager ui;
@@ -26,6 +36,7 @@ public:
     static Textures* texturesP;
     static Game* gameP;
     static Input* inputP;
+    static OverLay* overlayP;
 
     LevelSelect();
     void RegisterButtons();

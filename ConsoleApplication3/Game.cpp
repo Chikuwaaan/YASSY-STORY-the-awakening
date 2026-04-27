@@ -70,10 +70,10 @@ void Game::ChangeScene(Scene s) {
 
 
 void Game::Run() {
-    //ChangeScene(Scene::Title);
+    ChangeScene(Scene::Title);
     //ChangeScene(Scene::Platformer);
     //ChangeScene(Scene::FaceYassy);
-    ChangeScene(Scene::LevelSelect);
+    //ChangeScene(Scene::LevelSelect);
 
     save->Load();
 
@@ -298,6 +298,7 @@ void Game::MakeInstance() {
     LevelSelect::texturesP = textures.get();
     LevelSelect::gameP = this;
     LevelSelect::inputP = input.get();
+    LevelSelect::overlayP = overlay.get();
     UIManager::inputP = input.get();
     GameObject::texturesP = textures.get();
     GameObject::soundsP = sounds.get();

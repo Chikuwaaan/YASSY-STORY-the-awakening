@@ -30,8 +30,8 @@ Title::Title() :
 {
     last = 0;
     timer = 0.0;
-    phase = Phase::Options;
-    //phase = Phase::YassyStory2;
+    //phase = Phase::Options;
+    phase = Phase::YassyStory2;
     //phase = Phase::Loading;
 }
 
@@ -60,6 +60,7 @@ void Title::RegisterButtons() {
     BTNstart.text = "START";
     BTNstart.action = []() {
         gameP->ChangeScene(Scene::LevelSelect);
+        overlayP->FadeOut(1,{0,0,0,255});
         };
 
     BTNoptions.text = "OPTIONS";
@@ -140,7 +141,7 @@ void Title::Update() {
         }
 
         if (phase == Phase::YassyStory1) {
-            texturesP->DrawTexts("Press Q", white, black, { 960,120,1,1 }, 0, Anchor::Center);
+            texturesP->DrawTexts("Press ENTER", white, black, { 960,120,1,1 }, 0, Anchor::Center);
         }
 
     }
