@@ -21,7 +21,7 @@ LiftFall::LiftFall(double X, double Y, double L) {
 
 void LiftFall::Update() {
     if (isFalling) {
-        vY -= settings::timeScale * platformer::gravity * -0.5;
+        vY += settings::timeScale * platformer::gravity * 0.5;
         MoveY();
     }
 

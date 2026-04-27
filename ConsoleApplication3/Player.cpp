@@ -15,6 +15,7 @@ Camera* Player::cameraP = nullptr;
 OverLay* Player::overlayP = nullptr;
 
 Player::Player() {
+    vYreserve = 0;
     onGround = 0;
     texName = "head";
     maxSpeed = 480.0;
@@ -185,6 +186,11 @@ void Player::Update() {
 
     MoveY();
     CollideY();
+    if (vYreserve) {
+        vY = vYreserve;
+    }
+    vYreserve = 0;
+    
     if (isDead) {
         return;
     }
@@ -353,12 +359,12 @@ void Player::Jump() {
 }
 
 void Player::Stomp() {
-    vY = 600;
+    vYreserve = 600;
     onGround = 1;
 }
 
 void Player::JumpPadded(double amount) {
-    vY = amount;
+    vYreserve = amount;
     stucking = false;
     isJumping = false;
     coyoteTime = 1008;
@@ -421,8 +427,6 @@ void Player::CollideY() {
     }
 
     //entity
-    bool falling = 0;
-    if (vY <= 0) falling = 1;
     for (auto& p : platformerP->objects) {
         OBJRECT eRect = p->GetRect();
         bool collision = p->GetCollosion();
@@ -437,7 +441,6 @@ void Player::CollideY() {
                 else if (v < 0) {
                     x += (v - 0.01) * settings::timeScale;
                 }
-
                 pRect = { x,y,w,h };
                 }
 
@@ -459,7 +462,7 @@ void Player::CollideY() {
                             vY = v;
                         }
                     }
-                    if (falling) {
+                    if (vY - p->GetVY() <= 0) {
                         p->Stomped();
                         p->onStomp = 1;
                     }

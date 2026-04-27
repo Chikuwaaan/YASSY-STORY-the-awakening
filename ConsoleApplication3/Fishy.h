@@ -5,8 +5,10 @@ class Fishy :
 {
 private:
     double posX, amplitudeX, vx0;
+    double y0;
+    int type;
 public:
-    Fishy(double X, double Y);
+    Fishy(double X, double Y, double Type);
     void Update() override;
     void Draw() override;
     void Touched() override;

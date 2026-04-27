@@ -202,22 +202,32 @@ GameObject* Platformer::AddObject(std::string objClass, std::vector<std::variant
     if (objClass == "Fishy") {
         p = std::make_unique<Fishy>(
             std::get<double>(args[0]),
-            std::get<double>(args[1])
+            std::get<double>(args[1]),
+            std::get<double>(args[2])
         );
     }
     if (objClass == "Coco") {
-        p = std::make_unique<Deco>(
+        pendingObjects.push_back(std::make_unique<Deco>(
             std::get<double>(args[0]),
             std::get<double>(args[1])+240-48,
             480,
             480,
             -1,
             "palm"
-        );
-        pendingObjects.push_back(std::make_unique<Coco>(
-            std::get<double>(args[0]),
-            std::get<double>(args[1])+288
         ));
+        int n = (int)std::get<double>(args[2]);
+        if (n > 0) {
+            pendingObjects.push_back(std::make_unique<Coco>(
+                std::get<double>(args[0]) - 30,
+                std::get<double>(args[1]) + 288
+            ));
+            if (n > 1) {
+                pendingObjects.push_back(std::make_unique<Coco>(
+                    std::get<double>(args[0]) + 30,
+                    std::get<double>(args[1]) + 288
+                ));
+            }
+        }
     }
 
     /*

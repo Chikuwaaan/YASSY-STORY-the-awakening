@@ -47,6 +47,7 @@ private:
     void CollideY();
     void CollideX();
 public:
+    double vYreserve;
     bool watering;
 
     int currentCP;
