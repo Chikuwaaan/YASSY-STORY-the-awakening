@@ -26,6 +26,7 @@
 #include "Fishy.h"
 #include "Coco.h"
 #include "Save.h"
+#include "Game.h"
 
 #include <iostream>
 #include <fstream>
@@ -36,6 +37,7 @@ Camera* Platformer::cameraP = nullptr;
 Input* Platformer::inputP = nullptr;
 Sounds* Platformer::soundsP = nullptr;
 Save* Platformer::saveP = nullptr;
+Game* Platformer::gameP = nullptr;
 
 Platformer::Platformer() {
     player.levelP = &level;
@@ -45,6 +47,7 @@ Platformer::Platformer() {
     Coin::managerP = &coinManager;
     editorMode = 0;
     pausing = 0;
+    completed = 0;
 
     pause.back = [this]() {
         pausing = 0;
@@ -301,6 +304,11 @@ void Platformer::Spawn() {
     LoadEntities();
 }
 
+void Platformer::Complete() {
+    //Save();
+    completed = 1;
+}
+
 void Platformer::Save() {
     saveP->WriteProgress();
 }
@@ -361,6 +369,10 @@ void Platformer::Update() {
         player.Update();
     }
 
+    if (completed) {
+        gameP->ChangeScene(Scene::Title);
+        return;
+    }
 
     for (auto& obj : objects) {
         EntityType type = obj->GetType();

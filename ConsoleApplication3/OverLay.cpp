@@ -83,7 +83,7 @@ void OverLay::PinHole(int x, int y,double radius, double shrinkSpeed, double wai
 void OverLay::FadeOut(double speed, SDL_Color color) {
     fade.effect = -1;
     fade.speed = speed;
-    fade.time = speed;
+    fade.time = speed + settings::timeScale;
     fade.color = color;
 }
 

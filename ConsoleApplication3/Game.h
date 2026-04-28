@@ -16,6 +16,7 @@
 #include "Platformer.h"
 #include "LevelSelect.h"
 #include "Save.h"
+#include "Timer.h"
 
 class GameObject;
 class Textures;
@@ -33,6 +34,8 @@ class Game
 private:
     bool running;
     Scene scene;
+    Scene sceneReserve;
+    Timer timer;
 
     std::vector<std::unique_ptr<GameObject>> dyingObjects;
     std::vector<std::unique_ptr<GameObject>> pendingObjects;
@@ -48,6 +51,8 @@ private:
     std::unique_ptr<Platformer> platformer;
     std::unique_ptr<LevelSelect> levelselect;
     std::unique_ptr<Save> save;
+
+    void SceneChanging();
 public:
     std::vector<std::unique_ptr<GameObject>> objects;
 

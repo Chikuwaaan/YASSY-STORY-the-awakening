@@ -26,3 +26,7 @@ double Timer::GetTime() {
     timer += delta / 1000.0;
     return timer;
 }
+
+void Timer::SetTime(double time) {
+    timer += time;
+}

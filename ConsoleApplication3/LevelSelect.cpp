@@ -84,13 +84,6 @@ void LevelSelect::Update() {
     }
     texturesP->DrawImage("LevelSelect", bg, 0, {});
 
-    if (phase == PhaseLevelSelect::SelectSlot0) {
-        if (timer2.GetTime() > 0.9) {
-            overlayP->FadeIn(1, {0,0,0,255});
-            phase = PhaseLevelSelect::SelectSlot1;
-        }
-    }
-
     if (phase == PhaseLevelSelect::SelectLevel1) {
         std::string thumbnail = "thumbnail";
         thumbnail = thumbnail + std::to_string(ui.currentButton + 1);

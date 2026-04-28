@@ -246,6 +246,11 @@ void Input::InputEvent() {
     }
 }
 
+void Input::Poll() {
+    SDL_Event e;
+    SDL_PollEvent(&e);
+}
+
 bool Input::GetEvent(Event event) {
     if (eventConfig[event].on) {
         eventConfig[event].on = 0;

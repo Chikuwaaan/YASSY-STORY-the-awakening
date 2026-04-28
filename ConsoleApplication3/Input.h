@@ -87,6 +87,7 @@ public:
     void InputCursor();
     void InputKey();
     void InputEvent();
+    void Poll();
 
     bool GetEvent(Event event);
 

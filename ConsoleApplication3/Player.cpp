@@ -661,6 +661,10 @@ void Player::Spawn() {
     y = spawnY;
 
     cameraP->LoadCameraRoom(platformer::level);
+    CAMERA cam = cameraP->GetCam();
+    cam.x = cam.targetX;
+    cam.y = cam.targetY;
+    cameraP->SetCam(cam);
 }
 
 void Player::SetSpawnPoint(double x, double y) {
@@ -679,7 +683,8 @@ void Player::Complete() {
     platformer::CP = 0;
     platformer::level++;
     platformerP->Save();
-    platformerP->Init();
+    platformerP->Complete();
+    //platformerP->Init();
 }
 
 void Player::Draw() {

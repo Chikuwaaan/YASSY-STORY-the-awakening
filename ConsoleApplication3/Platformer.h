@@ -17,6 +17,7 @@ class Camera;
 class Input;
 class Sounds;
 class Save;
+class Game;
 
 struct LEVELINFO {
     std::u8string name;
@@ -33,6 +34,7 @@ private:
 
     bool pausing;
     bool editorMode;
+    bool completed;
 
     LEVELINFO info;
 
@@ -44,6 +46,7 @@ public:
     static Input* inputP;
     static Sounds* soundsP;
     static Save* saveP;
+    static Game* gameP;
 
     std::vector<std::unique_ptr<GameObject>> objects;
     std::vector<std::unique_ptr<GameObject>> dyingObjects;
@@ -56,6 +59,7 @@ public:
 
     void Init();
     void Spawn();
+    void Complete();
     void Save();
     void Quit();
     void Update();
