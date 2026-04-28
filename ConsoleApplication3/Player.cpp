@@ -642,6 +642,7 @@ void Player::Die() {
 }
 
 void Player::Spawn() {
+    std::cout << "[ƒXƒ|[ƒ“]" << std::endl;
     texName = "head";
     
     vX = 0.0;
@@ -655,15 +656,10 @@ void Player::Spawn() {
     stop = 0;
     overlayP->FadeIn(1, {0,0,0,255});
     
-    platformerP->LoadEntities();
     platformerP->Spawn();
     x = spawnX;
     y = spawnY;
 
-    CAMERA cam = cameraP->GetCam();
-    cam.x = x;
-    cam.y = y;
-    cameraP->SetCam(cam);
     cameraP->LoadCameraRoom(platformer::level);
 }
 

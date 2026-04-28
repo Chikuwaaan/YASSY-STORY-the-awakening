@@ -3,6 +3,7 @@
 #include "Textures.h"
 #include "Sounds.h"
 #include "Save.h"
+#include "Camera.h"
 
 Save* CheckPoint::saveP = nullptr;
 
@@ -22,7 +23,14 @@ CheckPoint::CheckPoint(double x0, double y0, double Index) {
         //saveP->WriteProgress();
     }
     if (index == platformer::CP) {
+        CAMERA cam = cameraP->GetCam();
+        cam.targetX = x;
+        cam.targetY = y;
+        cam.x = x;
+        cam.y = y;
+        cameraP->SetCam(cam);
         playerP->SetSpawnPoint(x, y);
+        std::cout << "ƒJƒƒ‰‚ðC³";
     }
 }
 

@@ -1,4 +1,4 @@
-#include "Platformer.h"
+﻿#include "Platformer.h"
 #include "Textures.h"
 #include "Camera.h"
 #include "namespace.h"
@@ -282,112 +282,6 @@ void Platformer::LoadEntities() {
         }
 
         AddObject(objClass, args);
-        /*
-        if (objClass == "Zako") {
-            AddObject<Zako>(std::get<double>(args[0]), std::get<double>(args[1]));
-        }
-        if (objClass == "Lift") {
-            AddObject<Lift>(
-                std::get<double>(args[0]),
-                std::get<double>(args[1]),
-                std::get<double>(args[2]),
-                std::get<double>(args[3]),
-                std::get<double>(args[4]),
-                std::get<double>(args[5]),
-                std::get<double>(args[6])
-            );
-        }
-        if (objClass == "LiftFall") {
-            AddObject<LiftFall>(
-                std::get<double>(args[0]),
-                std::get<double>(args[1]),
-                std::get<double>(args[2])
-            );
-        }
-        if (objClass == "CheckPoint") {
-            AddObject<CheckPoint>(
-                std::get<double>(args[0]),
-                std::get<double>(args[1]),
-                std::get<double>(args[2])
-            );
-        }
-        if (objClass == "BackGround") {
-            AddObject<BackGround>(
-                std::get<double>(args[0]),
-                std::get<double>(args[1]),
-                std::get<double>(args[2]),
-                std::get<double>(args[3]),
-                std::get<double>(args[4]),
-                std::get<double>(args[5]),
-                std::get<double>(args[6]),
-                std::get<std::string>(args[7])
-            );
-        }
-        if (objClass == "ZakoJump") {
-            AddObject<ZakoJump>(
-                std::get<double>(args[0]),
-                std::get<double>(args[1])
-            );
-        }
-        if (objClass == "JumpPad") {
-            AddObject<JumpPad>(
-                std::get<double>(args[0]),
-                std::get<double>(args[1])
-            );
-        }
-        if (objClass == "Goal") {
-            AddObject<Goal>(
-                std::get<double>(args[0]),
-                std::get<double>(args[1]),
-                std::get<double>(args[2]),
-                std::get<double>(args[3])
-            );
-        }
-        if (objClass == "Deco") {
-            AddObject<Deco>(
-                std::get<double>(args[0]),
-                std::get<double>(args[1]),
-                std::get<double>(args[2]),
-                std::get<double>(args[3]),
-                std::get<double>(args[4]),
-                std::get<std::string>(args[5])
-            );
-        }
-        if (objClass == "Warp") {
-            Warp* p0 = AddObject<Warp>(
-                std::get<double>(args[0]),
-                std::get<double>(args[1]),
-                0
-            );
-            Warp* p1 = AddObject<Warp>(
-                std::get<double>(args[2]),
-                std::get<double>(args[3]),
-                1
-            );
-            p0->pair = p1;
-            p1->pair = p0;
-        }
-        if (objClass == "Hossy") {
-            AddObject<Hossy>(
-                std::get<double>(args[0]),
-                std::get<double>(args[1])
-            );
-        }
-        if (objClass == "Hosi") {
-            AddObject<Hosi>(
-                std::get<double>(args[0]),
-                std::get<double>(args[1]),
-                std::get<double>(args[2])
-            );
-        }
-        if (objClass == "Coin") {
-            AddObject<Coin>(
-                std::get<double>(args[0]),
-                std::get<double>(args[1]),
-                std::get<double>(args[2])
-            );
-        }
-        */
     }
 }
 
@@ -395,7 +289,6 @@ void Platformer::LoadEntities() {
 void Platformer::Init() {
     saveP->LoadProgress();
     LoadLevelInfo();
-    std::cout << platformer::level;
     level.LoadLevel(platformer::level);
     //cameraP->LoadCameraRoom(platformer::level);
     player.Spawn();
