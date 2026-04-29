@@ -19,7 +19,7 @@ LevelSelect::LevelSelect() :
     level5(396, 0, 768, 192),
     back(396, 0, 768, 192)
 {
-    phase = PhaseLevelSelect::SelectSlot0;
+    phase = PhaseLevelSelect::SelectLevel;
     lineLevels = { {&level1,&level2,&level3,&level4,&level5,&back}, DIRECTION::V, nullptr, nullptr };
 
     std::vector<std::string> levelName;
@@ -84,7 +84,7 @@ void LevelSelect::Update() {
     }
     texturesP->DrawImage("LevelSelect", bg, 0, {});
 
-    if (phase == PhaseLevelSelect::SelectLevel1) {
+    if (phase == PhaseLevelSelect::SelectLevel) {
         std::string thumbnail = "thumbnail";
         thumbnail = thumbnail + std::to_string(ui.currentButton + 1);
         texturesP->DrawImage(thumbnail, { 1600,540,512,512 }, 0, {});

@@ -249,6 +249,7 @@ void Input::InputEvent() {
 void Input::Poll() {
     SDL_Event e;
     SDL_PollEvent(&e);
+    mouse = {};
 }
 
 bool Input::GetEvent(Event event) {

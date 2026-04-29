@@ -10,10 +10,8 @@ class Input;
 class OverLay;
 
 enum class PhaseLevelSelect {
-    SelectSlot0,
-    SelectSlot1,
-    SelectLevel0,
-    SelectLevel1
+    SelectSlot,
+    SelectLevel
 };
 
 class LevelSelect
