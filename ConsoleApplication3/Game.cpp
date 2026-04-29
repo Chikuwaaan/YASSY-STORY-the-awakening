@@ -272,7 +272,7 @@ void Game::MakeInstance() {
     LevelSelect::texturesP = textures.get();
     LevelSelect::gameP = this;
     LevelSelect::inputP = input.get();
-    LevelSelect::overlayP = overlay.get();
+    LevelSelect::saveP = save.get();
     UIManager::inputP = input.get();
     GameObject::texturesP = textures.get();
     GameObject::soundsP = sounds.get();

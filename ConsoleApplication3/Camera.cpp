@@ -104,7 +104,7 @@ void Camera::Update() {
     camera.x = camera.x + (camera.targetX - camera.x) * settings::timeScale * 8;
     camera.y = camera.y + (camera.targetY - camera.y) * settings::timeScale * 4;
     
-    std::cout << camera.x << "," << camera.y << std::endl;
+    //std::cout << camera.x << "," << camera.y << std::endl;
 }
 
 void Camera::Draw() {

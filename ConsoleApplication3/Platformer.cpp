@@ -290,11 +290,10 @@ void Platformer::LoadEntities() {
 
 
 void Platformer::Init() {
-    saveP->LoadProgress();
+    player.Spawn();
     LoadLevelInfo();
     level.LoadLevel(platformer::level);
     //cameraP->LoadCameraRoom(platformer::level);
-    player.Spawn();
     soundsP->PlayMusic(info.BGM);
     objects.push_back(std::make_unique<Toast>(info.name));
 }
@@ -305,8 +304,8 @@ void Platformer::Spawn() {
 }
 
 void Platformer::Complete() {
-    //Save();
     completed = 1;
+    gameP->ChangeScene(Scene::Title);
 }
 
 void Platformer::Save() {
@@ -370,7 +369,7 @@ void Platformer::Update() {
     }
 
     if (completed) {
-        gameP->ChangeScene(Scene::Title);
+        //gameP->ChangeScene(Scene::Title);
         return;
     }
 

@@ -3,15 +3,18 @@
 #include "namespace.h"
 #include "Game.h"
 #include "Input.h"
-#include "OverLay.h"
+#include "Save.h"
 #include <fstream>
 
 Textures* LevelSelect::texturesP = nullptr;
 Game* LevelSelect::gameP = nullptr;
 Input* LevelSelect::inputP = nullptr;
-OverLay* LevelSelect::overlayP = nullptr;
+Save* LevelSelect::saveP = nullptr;
 
 LevelSelect::LevelSelect() :
+    slot1(200, 540, 300, 300),
+    slot2(500, 540, 300, 300),
+    slot3(800, 540, 300, 300),
     level1(396, 0, 768, 192),
     level2(396, 0, 768, 192),
     level3(396, 0, 768, 192),
@@ -19,9 +22,41 @@ LevelSelect::LevelSelect() :
     level5(396, 0, 768, 192),
     back(396, 0, 768, 192)
 {
-    phase = PhaseLevelSelect::SelectLevel;
+    phase = PhaseLevelSelect::SelectSlot;
+    lineSlot = { {&slot1, &slot2, &slot3}, DIRECTION::H, nullptr, nullptr};
     lineLevels = { {&level1,&level2,&level3,&level4,&level5,&back}, DIRECTION::V, nullptr, nullptr };
 
+    //SLOT
+    slot1.text = "1";
+    slot1.action = [this]() {
+        savedata::slot = 1;
+        saveP->LoadProgress();
+        if (platformer::level != 0) {
+            gameP->ChangeScene(Scene::Platformer);
+            return;
+        }
+        phase = PhaseLevelSelect::SelectLevel;
+        };
+    slot2.action = [this]() {
+        savedata::slot = 2;
+        saveP->LoadProgress();
+        if (platformer::level != 0) {
+            gameP->ChangeScene(Scene::Platformer);
+            return;
+        }
+        phase = PhaseLevelSelect::SelectLevel;
+        };
+    slot3.action = [this]() {
+        savedata::slot = 3;
+        saveP->LoadProgress();
+        if (platformer::level != 0) {
+            gameP->ChangeScene(Scene::Platformer);
+            return;
+        }
+        phase = PhaseLevelSelect::SelectLevel;
+        };
+
+    //LEVEL
     std::vector<std::string> levelName;
     for (int i = 1; i < 6; i++) {
         std::string path = "Levels/";
@@ -71,8 +106,10 @@ LevelSelect::LevelSelect() :
 }
 
 void LevelSelect::RegisterButtons() {
-    ui.AddLine(&lineLevels);
-    ui.currentLine = &lineLevels;
+    UIslot.AddLine(&lineSlot);
+    UIslot.currentLine = &lineSlot;
+    UIlevel.AddLine(&lineLevels);
+    UIlevel.currentLine = &lineLevels;
 }
 
 void LevelSelect::Update() {
@@ -84,16 +121,25 @@ void LevelSelect::Update() {
     }
     texturesP->DrawImage("LevelSelect", bg, 0, {});
 
+    if (phase == PhaseLevelSelect::SelectSlot) {
+        slot1.state = State::Idle;
+        slot2.state = State::Idle;
+        slot3.state = State::Idle;
+        UIslot.Update();
+    }
+
     if (phase == PhaseLevelSelect::SelectLevel) {
+        
+
         std::string thumbnail = "thumbnail";
-        thumbnail = thumbnail + std::to_string(ui.currentButton + 1);
+        thumbnail = thumbnail + std::to_string(UIlevel.currentButton + 1);
         texturesP->DrawImage(thumbnail, { 1600,540,512,512 }, 0, {});
         texturesP->DrawImage("whitestar", { 1100,540,400,400 }, 0, {});
 
         double time2 = timer2.GetTime();
         for (int i = 0; i < 5; i++) {
             double size;
-            if (ui.currentButton == i) {
+            if (UIlevel.currentButton == i) {
                 size = 100 + sin(time2 * 4) * 20;
             }
             else {
@@ -108,7 +154,7 @@ void LevelSelect::Update() {
                 size },
                 0,
                 {});
-            if (ui.currentButton == i) {
+            if (UIlevel.currentButton == i) {
                 texturesP->DrawImage("Bface",
                     {
                     1100 + cos(utilities::DegreetoRadian(i * -72 + 90)) * 200,
@@ -121,26 +167,26 @@ void LevelSelect::Update() {
         }
 
         for (int i = 0; i < 3; i++) {
-            texturesP->DrawSprite("coinmanager", { 1600.0 - 96 + 96 * i,236,96,96 }, { 16 * savedata::coin[ui.currentButton][i],0,16,16 }, 0);
+            texturesP->DrawSprite("coinmanager", { 1600.0 - 96 + 96 * i,236,96,96 }, { 16 * savedata::coin[UIlevel.currentButton][i],0,16,16 }, 0);
         }
 
         int i = 0;
         for (auto& p : lineLevels.selectables) {
             p->state = State::Idle;
-            double targetY = i * -204 + ui.currentButton * 204 + 540;
+            double targetY = i * -204 + UIlevel.currentButton * 204 + 540;
             p->y = (int)(p->y + (targetY - p->y) * settings::timeScale * 8);
             i++;
         }
 
         EVENT event = inputP->event;
         if (event.MouseWheel == 1) {
-            ui.ChangeCurrentButton(-1);
+            UIlevel.ChangeCurrentButton(-1);
         }
         else if (event.MouseWheel == -1) {
-            ui.ChangeCurrentButton(1);
+            UIlevel.ChangeCurrentButton(1);
         }
 
-        ui.Update();
+        UIlevel.Update();
     }
     
 }

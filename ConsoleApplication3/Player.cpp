@@ -81,6 +81,7 @@ void Player::Update() {
         stop = 0;
     }
 
+    /*
     if (completing) {
         stop = 1;
         timerComplete.Update();
@@ -89,6 +90,7 @@ void Player::Update() {
             Complete();
         }
     }
+    */
 
     if (stop) return;
 
@@ -673,15 +675,20 @@ void Player::SetSpawnPoint(double x, double y) {
 }
 
 void Player::Goal() {
+    if (completing) return;
+    stop = 0;
+    platformer::CP = 0;
+    platformer::level = 0;
+    platformerP->Save();
+    platformerP->Complete();
     completing = 1;
-    overlayP->FadeOut(1.1, { 0,0,0,255 });
 }
 
 void Player::Complete() {
     stop = 0;
     completing = 0;
     platformer::CP = 0;
-    platformer::level++;
+    //platformer::level++;
     platformerP->Save();
     platformerP->Complete();
     //platformerP->Init();

@@ -116,6 +116,7 @@ void Save::WriteOptions() {
 */
 
 void Save::LoadProgress() {
+    std::cout << "LoadProgress" << std::endl;
     std::string path = "Save/";
     path = path + std::to_string(savedata::slot) + "/current.bin";
     std::ifstream current(path);
@@ -125,7 +126,9 @@ void Save::LoadProgress() {
     current.read((char*)&format, sizeof(int));
 
     if (format == 1) {
-        current.read((char*)&platformer::level, sizeof(int));
+        int a;
+        current.read((char*)&a, sizeof(int));
+        if (a != 0) platformer::level = a;
         current.read((char*)&platformer::CP, sizeof(int));
         current.read((char*)&platformer::coin[0], sizeof(int));
         current.read((char*)&platformer::coin[1], sizeof(int));

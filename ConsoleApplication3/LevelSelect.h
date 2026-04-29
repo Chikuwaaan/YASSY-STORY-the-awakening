@@ -7,7 +7,7 @@
 class Textures;
 class Game;
 class Input;
-class OverLay;
+class Save;
 
 enum class PhaseLevelSelect {
     SelectSlot,
@@ -21,8 +21,14 @@ private:
 
     Timer timer;
     Timer timer2;
-    UIManager ui;
 
+    UIManager UIslot;
+    LINE lineSlot;
+    Button slot1;
+    Button slot2;
+    Button slot3;
+
+    UIManager UIlevel;
     LINE lineLevels;
     Button level1;
     Button level2;
@@ -34,7 +40,7 @@ public:
     static Textures* texturesP;
     static Game* gameP;
     static Input* inputP;
-    static OverLay* overlayP;
+    static Save* saveP;
 
     LevelSelect();
     void RegisterButtons();
