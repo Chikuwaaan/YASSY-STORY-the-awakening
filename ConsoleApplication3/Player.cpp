@@ -644,7 +644,6 @@ void Player::Die() {
 }
 
 void Player::Spawn() {
-    std::cout << "[ƒXƒ|[ƒ“]" << std::endl;
     texName = "head";
     
     vX = 0.0;
@@ -686,7 +685,6 @@ void Player::Goal() {
     platformer::coin[0] = 0;
     platformer::coin[1] = 0;
     platformer::coin[2] = 0;
-    std::cout << platformer::coin[0] << platformer::coin[1] << platformer::coin[2] << std::endl;
     
     platformer::CP = 0;
     platformer::level = 0;

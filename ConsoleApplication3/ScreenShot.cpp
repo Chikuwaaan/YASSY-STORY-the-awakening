@@ -17,5 +17,5 @@ void ScreenShot::SaveScreenShot() {
     IMG_SavePNG(surface, "screenshot.png");
     SDL_FreeSurface(surface);
 
-    std::cout << "スクリーンショットを保存しました" << std::endl;
+    std::cout << "[DEBUG]スクリーンショットを保存しました" << std::endl;
 }

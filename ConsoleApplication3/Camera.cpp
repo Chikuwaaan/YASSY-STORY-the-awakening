@@ -19,7 +19,6 @@ Camera::Camera() {
     camera.zoom = 1.0;
     camera.angle = 0;
     drawCameraRoom = 0;
-    std::cout << "カメラをリセット";
 }
 
 void Camera::Init() {

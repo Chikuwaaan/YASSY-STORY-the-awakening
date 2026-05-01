@@ -30,7 +30,6 @@ CheckPoint::CheckPoint(double x0, double y0, double Index) {
         cam.y = y;
         cameraP->SetCam(cam);
         playerP->SetSpawnPoint(x, y);
-        std::cout << "ƒJƒƒ‰‚ðC³";
     }
 }
 

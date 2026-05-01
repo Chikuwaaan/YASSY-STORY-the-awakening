@@ -14,9 +14,7 @@ Coin::Coin(double X, double Y, double Index) {
     anim = 0;
     
     if (savedata::coin[platformer::level-1][index] == 1) {
-        isCollected = 1;
-        managerP->CollectCoin(index);
-        dead = 1;
+        platformer::coin[index] = 2;
     }
     else {
         isCollected = 0;
@@ -40,6 +38,7 @@ void Coin::Draw() {
     //if (isCollected) return;
 
     int srcX = 0;
+    int srcY = 0;
     double a;
     a = std::fmod(timer.GetTime(), 1);
 
@@ -60,7 +59,11 @@ void Coin::Draw() {
         //color = { 0,0,0,255 };
     }
 
-    texturesP->DrawSprite(texName, { x,y,192,192 }, { srcX,0,32,32 }, 1);
+    if (platformer::coin[index] == 2) {
+        srcY = 32;
+    }
+
+    texturesP->DrawSprite(texName, { x,y,192,192 }, { srcX,srcY,32,32 }, 1);
 }
 
 void Coin::Touched() {

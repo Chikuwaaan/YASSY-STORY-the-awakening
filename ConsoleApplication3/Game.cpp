@@ -65,6 +65,7 @@ void Game::SceneChanging() {
 
     if (sceneReserve == Scene::LevelSelect) {
         levelselect = std::make_unique<LevelSelect>();
+        sounds->PlayMusic("the_snippet");
     }
     overlay->FadeIn(1.0, { 0,0,0,255 });
 }

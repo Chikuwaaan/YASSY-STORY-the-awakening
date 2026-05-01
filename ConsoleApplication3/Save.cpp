@@ -114,7 +114,6 @@ void Save::WriteOptions() {
 */
 
 void Save::LoadProgress() {
-    std::cout << "LoadProgress" << std::endl;
     std::string path = "Save/";
     path = path + std::to_string(savedata::slot) + "/current.bin";
     std::ifstream current(path);
