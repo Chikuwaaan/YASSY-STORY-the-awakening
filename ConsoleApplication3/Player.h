@@ -28,6 +28,7 @@ private:
     double coyoteTime;
     double gravity;
     int groundBlock, headBlock, rightBlock, leftBlock;
+    bool initCam;
 
     bool stop;
     bool isDead;

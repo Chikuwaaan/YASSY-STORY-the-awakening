@@ -42,6 +42,7 @@ Player::Player() {
     headBlock = 0;
     rightBlock = 0;
     leftBlock = 0;
+    initCam = true;
 
     stop = 0;
     isDead = 0;
@@ -605,11 +606,12 @@ void Player::MoveCameraRoom() {
                     camera.targetY = (*room)[i].y4;
                 }
 
-            if ((*room)[i].force) {
+            if ((*room)[i].force || initCam) {
                 if (camera.x < (*room)[i].x3) camera.x = (*room)[i].x3;
                 if (camera.x > (*room)[i].x4) camera.x = (*room)[i].x4;
                 if (camera.y < (*room)[i].y3) camera.y = (*room)[i].y3;
                 if (camera.y > (*room)[i].y4) camera.y = (*room)[i].y4;
+                if (initCam) initCam = false;
             }
         }
     }

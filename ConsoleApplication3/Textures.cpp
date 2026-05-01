@@ -126,6 +126,8 @@ SDL_Texture* Textures::GetCanvas() {
 }
 
 SDL_Texture* Textures::GetTexture(std::string name) {
+    if (name == "NULL") return nullptr;
+
     if (map.count(name) == 0) {
         return map["missing"];
     }

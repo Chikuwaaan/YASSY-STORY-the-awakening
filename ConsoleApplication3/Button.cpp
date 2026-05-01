@@ -21,6 +21,7 @@ Button::Button(int X, int Y, int W, int H) {
 
     icon = Icons::Null;
     visible = 1;
+    texName = "NULL";
     text = "";
 }
 
@@ -28,7 +29,7 @@ void Button::Draw() {
     if (w == 0 || h == 0) return;
     if (visible) {
         bool wide = 0;
-        if (w / h != 1) {
+        if (w > h) {
             wide = 1;
         }
         //texturesP->DrawImage("assy", { (double)x, (double)y, (double)w, (double)h }, 0, {});
@@ -123,6 +124,8 @@ void Button::Draw() {
             }
         }
     }
+
+    texturesP->DrawImage(texName, {(double)x,(double)y,(double)w,(double)h}, 0, {});
 }
 
 bool Button::CheckOnMouse() {

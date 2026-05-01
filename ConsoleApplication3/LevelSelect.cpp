@@ -12,9 +12,9 @@ Input* LevelSelect::inputP = nullptr;
 Save* LevelSelect::saveP = nullptr;
 
 LevelSelect::LevelSelect() :
-    slot1(200, 540, 300, 300),
-    slot2(500, 540, 300, 300),
-    slot3(800, 540, 300, 300),
+    slot1(420, 540, 480, 960),
+    slot2(960, 540, 480, 960),
+    slot3(1500, 540, 480, 960),
     level1(396, 0, 768, 192),
     level2(396, 0, 768, 192),
     level3(396, 0, 768, 192),
@@ -27,7 +27,7 @@ LevelSelect::LevelSelect() :
     lineLevels = { {&level1,&level2,&level3,&level4,&level5,&back}, DIRECTION::V, nullptr, nullptr };
 
     //SLOT
-    slot1.text = "1";
+    slot1.texName = "slot1";
     slot1.action = [this]() {
         savedata::slot = 1;
         saveP->LoadProgress();
@@ -37,6 +37,7 @@ LevelSelect::LevelSelect() :
         }
         phase = PhaseLevelSelect::SelectLevel;
         };
+    slot2.texName = "slot2";
     slot2.action = [this]() {
         savedata::slot = 2;
         saveP->LoadProgress();
@@ -46,6 +47,7 @@ LevelSelect::LevelSelect() :
         }
         phase = PhaseLevelSelect::SelectLevel;
         };
+    slot3.texName = "slot3";
     slot3.action = [this]() {
         savedata::slot = 3;
         saveP->LoadProgress();
@@ -131,6 +133,15 @@ void LevelSelect::Update() {
         slot2.state = State::Idle;
         slot3.state = State::Idle;
         UIslot.Update();
+
+        SDL_Color color1 = { 255,255,255,255 };
+        SDL_Color color2 = { 0,73,220,255 };
+        texturesP->DrawImage("zero_percent", { 420,540,480,960 }, 0, {});
+        texturesP->DrawTexts(u8"ヤッシィ１号", color1, color2, { 420,800,1.5,1.5 }, 0, Anchor::Center);
+        texturesP->DrawImage("zero_percent", { 960,540,480,960 }, 0, {});
+        texturesP->DrawTexts(u8"ヤッシィ２号", color1, color2, { 960,800,1.5,1.5 }, 0, Anchor::Center);
+        texturesP->DrawImage("zero_percent", { 1500,540,480,960 }, 0, {});
+        texturesP->DrawTexts(u8"ヤッシィ３号", color1, color2, { 1500,800,1.5,1.5 }, 0, Anchor::Center);
     }
 
     if (phase == PhaseLevelSelect::SelectLevel) {

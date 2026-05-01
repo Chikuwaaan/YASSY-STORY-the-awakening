@@ -27,6 +27,7 @@ public:
     bool isSelected;
     std::function<void()> action;
     Icons icon;
+    std::string texName;
     std::string text;
     bool visible;
 
