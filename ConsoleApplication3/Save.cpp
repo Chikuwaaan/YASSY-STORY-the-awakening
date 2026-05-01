@@ -114,6 +114,11 @@ void Save::WriteOptions() {
 */
 
 void Save::LoadProgress() {
+    LoadCurrent();
+    LoadProg();
+}
+
+void Save::LoadCurrent() {
     std::string path = "Save/";
     path = path + std::to_string(savedata::slot) + "/current.bin";
     std::ifstream current(path);
@@ -131,6 +136,28 @@ void Save::LoadProgress() {
         current.read((char*)&platformer::coin[1], sizeof(int));
         current.read((char*)&platformer::coin[2], sizeof(int));
     }
+    current.close();
+}
+
+void Save::LoadProg() {
+    std::string path = "Save/";
+    path = path + std::to_string(savedata::slot) + "/progress.bin";
+    std::ifstream file(path);
+    if (!file.is_open()) return;
+
+    int format;
+    file.read((char*)&format, sizeof(int));
+
+    if (format == 1) {
+        for (int i = 0; i < 10; i++) {
+            file.read((char*)&savedata::completedLevel[i], sizeof(int));
+
+            for (int j = 0; j < 3; j++) {
+                file.read((char*)&savedata::coin[i][j], sizeof(int));
+            }
+        }
+    }
+    file.close();
 }
 
 void Save::WriteProgress() {

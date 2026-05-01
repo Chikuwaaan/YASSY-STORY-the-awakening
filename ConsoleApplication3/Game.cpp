@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <SDL_image.h>
@@ -23,7 +23,7 @@ Game::Game()
     timer.SetTime(1.0);
 }
 
-/*ƒŠƒZƒbƒg‚µ‚È‚¢ƒCƒ“ƒXƒ^ƒ“ƒX«
+/*ãƒªã‚»ãƒƒãƒˆã—ãªã„ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹â†“
 * camera
 * textures
 * sounds
@@ -226,7 +226,7 @@ void Game::InitSystem() {
 
     SDL_DisplayMode disp;
     SDL_GetDesktopDisplayMode(0, &disp);
-    std::cout << "[DEBUG]ƒŠƒtƒŒƒbƒVƒ…ƒŒ[ƒgF" << disp.refresh_rate << std::endl;
+    std::cout << disp.refresh_rate << std::endl;
 }
 
 

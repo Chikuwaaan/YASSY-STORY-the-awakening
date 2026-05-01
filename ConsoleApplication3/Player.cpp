@@ -1,4 +1,4 @@
-#include "Player.h"
+Ôªø#include "Player.h"
 #include "namespace.h"
 #include "Level.h"
 #include "Camera.h"
@@ -254,7 +254,7 @@ void Player::Update() {
     CollideX();
     aX = 0.0;
 
-    //ÉMÉ~ÉbÉN
+    //„ÇÆ„Éü„ÉÉ„ÇØ
     /*
     if (touchingEntity != nullptr) {
         EntityType type = touchingEntity->GetType();
@@ -432,7 +432,7 @@ void Player::CollideY() {
         OBJRECT eRect = p->GetRect();
         bool collision = p->GetCollosion();
 
-        //collisionÇ†ÇÈÇ∆Ç´ÇÃÉäÉtÉg
+        //collision„ÅÇ„Çã„Å®„Åç„ÅÆ„É™„Éï„Éà
         if (utilities::HitDetection(pRect, eRect)) {
             if (collision) {
                 double v = p->GetVX();
@@ -445,7 +445,7 @@ void Player::CollideY() {
                 pRect = { x,y,w,h };
                 }
 
-            //îÈãVÅEÇﬂÇËçûÇ›Ç‡Ç«Çµ
+            //ÁßòÂÑÄ„Éª„ÇÅ„ÇäËæº„Åø„ÇÇ„Å©„Åó
             if (utilities::HitDetection(pRect, eRect)) {
                 if (pRect.y > eRect.y) {
                     if (collision) {
@@ -622,7 +622,7 @@ void Player::Die() {
     /*
     MessageBoxW(
         NULL,
-        L"Ç÷ÇΩÇ≠ÇªÅH",
+        L"„Å∏„Åü„Åè„ÅùÔºü",
         L"YASSY STORY",
         MB_ICONSTOP
     );
