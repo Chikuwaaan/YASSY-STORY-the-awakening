@@ -62,8 +62,6 @@ void Save::LoadOptions() {
 }
 
 void Save::WriteOptions() {
-    WriteProgress();
-
     std::ofstream option("Save/option.txt");
     if (option.is_open()) {
         option << 1 << std::endl;
@@ -137,6 +135,10 @@ void Save::LoadProgress() {
 }
 
 void Save::WriteProgress() {
+    std::filesystem::create_directories("Save/1");
+    std::filesystem::create_directories("Save/2");
+    std::filesystem::create_directories("Save/3");
+
     std::string path = "Save/";
     path = path + std::to_string(savedata::slot) + "/current.bin";
     std::ofstream current(path, std::ios::binary);

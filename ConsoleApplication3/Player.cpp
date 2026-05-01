@@ -677,8 +677,21 @@ void Player::SetSpawnPoint(double x, double y) {
 void Player::Goal() {
     if (completing) return;
     stop = 0;
+
+    for (int i = 0; i < 3; i++) {
+        if (savedata::coin[platformer::level-1][i] | platformer::coin[i]) {
+            savedata::coin[platformer::level-1][i] = 1;
+        }
+    }
+    platformer::coin[0] = 0;
+    platformer::coin[1] = 0;
+    platformer::coin[2] = 0;
+    std::cout << platformer::coin[0] << platformer::coin[1] << platformer::coin[2] << std::endl;
+    
     platformer::CP = 0;
     platformer::level = 0;
+    
+
     platformerP->Save();
     platformerP->Complete();
     completing = 1;
