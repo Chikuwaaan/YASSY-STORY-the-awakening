@@ -64,6 +64,11 @@ LevelSelect::LevelSelect() :
         std::ifstream file(path);
         std::string name;
         std::getline(file, name);
+
+        if (savedata::completedLevel[i - 1] == 1) {
+            //name = "*" + name;
+        }
+
         levelName.push_back(name);
     }
     
@@ -129,8 +134,6 @@ void LevelSelect::Update() {
     }
 
     if (phase == PhaseLevelSelect::SelectLevel) {
-        
-
         std::string thumbnail = "thumbnail";
         thumbnail = thumbnail + std::to_string(UIlevel.currentButton + 1);
         texturesP->DrawImage(thumbnail, { 1600,540,512,512 }, 0, {});
@@ -175,6 +178,16 @@ void LevelSelect::Update() {
             p->state = State::Idle;
             double targetY = i * -204 + UIlevel.currentButton * 204 + 540;
             p->y = (int)(p->y + (targetY - p->y) * settings::timeScale * 8);
+
+            if (savedata::completedLevel[i] == 1) {
+                texturesP->DrawImage("whitestar", { 820,p->y + 75.0,50,50 }, 0, {});
+            }
+            for (int j = 0; j < 3; j++) {
+                OBJRECT dst = { 820,p->y + 25.0 - j * 50,50,50 };
+                SDL_Rect src = { savedata::coin[i][j]*16, 0, 16,16 };
+                texturesP->DrawSprite("coinmanager", dst, src, 0);
+            }
+
             i++;
         }
 

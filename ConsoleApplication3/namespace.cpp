@@ -113,4 +113,8 @@ namespace savedata {
         {0,0,0},
         {0,0,0}
     };
+
+    std::vector<int> completedLevel = {
+        0,0,0,0,0,0,0,0,0,0
+    };
 }

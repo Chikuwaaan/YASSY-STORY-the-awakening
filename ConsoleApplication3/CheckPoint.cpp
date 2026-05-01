@@ -1,4 +1,4 @@
-#include "CheckPoint.h"
+ï»¿#include "CheckPoint.h"
 #include "Player.h"
 #include "Textures.h"
 #include "Sounds.h"
@@ -58,8 +58,8 @@ void CheckPoint::Draw() {
     if (index != 0) {
         SDL_Rect src;
         if (!used) {
-            texturesP->DrawTexts(u8"ƒ`ƒFƒbƒN ƒ|ƒCƒ“ƒg", { 255,255,255,255 }, { 0,0,0,255 }, { x,y + 80,0.8,0.8 }, 1, Anchor::Center);
-            texturesP->DrawTexts(u8"ƒX", { 255,255,255,15 }, { 0,0,0,15 }, { x - 5,y + 70,0.4,0.4 }, 1, Anchor::Center);
+            texturesP->DrawTexts(u8"ãƒã‚§ãƒƒã‚¯ ãƒã‚¤ãƒ³ãƒˆ", { 255,255,255,255 }, { 0,0,0,255 }, { x,y + 80,0.8,0.8 }, 1, Anchor::Center);
+            texturesP->DrawTexts(u8"ã‚¹", { 255,255,255,15 }, { 0,0,0,15 }, { x - 5,y + 70,0.4,0.4 }, 1, Anchor::Center);
             src = { 0,0,16,16 };
         }
         else {

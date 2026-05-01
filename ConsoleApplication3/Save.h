@@ -6,7 +6,10 @@ class Sounds;
 class Save
 {
 private:
-
+    void LoadCurrent();
+    void LoadProg();
+    void WriteCurrent();
+    void WriteProg();
 public:
     static Input* inputP;
     static Sounds* soundsP;

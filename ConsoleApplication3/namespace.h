@@ -40,5 +40,7 @@ namespace savedata {
     extern int slot;
     extern bool InvertDash;
     extern bool Blur;
+
     extern std::vector<std::vector<int>> coin;
+    extern std::vector<int> completedLevel;
 }

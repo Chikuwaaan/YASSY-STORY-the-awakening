@@ -138,6 +138,11 @@ void Save::WriteProgress() {
     std::filesystem::create_directories("Save/2");
     std::filesystem::create_directories("Save/3");
 
+    WriteCurrent();
+    WriteProg();
+}
+
+void Save::WriteCurrent() {
     std::string path = "Save/";
     path = path + std::to_string(savedata::slot) + "/current.bin";
     std::ofstream current(path, std::ios::binary);
@@ -154,4 +159,25 @@ void Save::WriteProgress() {
     current.write((char*)&(platformer::coin[2]), sizeof(int));
 
     current.close();
+}
+
+void Save::WriteProg() {
+    std::string path = "Save/";
+    path = path + std::to_string(savedata::slot) + "/progress.bin";
+    std::ofstream progress(path, std::ios::binary);
+
+    int format = 1;
+    progress.write((char*)&format, sizeof(int));
+
+    for (int i = 0; i < 10; i++) {
+        int completed = savedata::completedLevel[i];
+        progress.write((char*)&completed, sizeof(int));
+
+        for (int j = 0; j < 3; j++) {
+            int coin = savedata::coin[i][j];
+            progress.write((char*)&coin, sizeof(int));
+        }
+    }
+
+    progress.close();
 }

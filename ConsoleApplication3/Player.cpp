@@ -686,6 +686,8 @@ void Player::Goal() {
     platformer::coin[1] = 0;
     platformer::coin[2] = 0;
     
+    savedata::completedLevel[platformer::level - 1] = 1;
+
     platformer::CP = 0;
     platformer::level = 0;
     
@@ -699,10 +701,8 @@ void Player::Complete() {
     stop = 0;
     completing = 0;
     platformer::CP = 0;
-    //platformer::level++;
     platformerP->Save();
     platformerP->Complete();
-    //platformerP->Init();
 }
 
 void Player::Draw() {
