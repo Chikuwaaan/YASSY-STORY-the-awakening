@@ -656,6 +656,7 @@ void Player::Spawn() {
     liftVX = 0.0;
     flipX = 0;
 
+    initCam = 1;
     stop = 0;
     overlayP->FadeIn(1, {0,0,0,255});
     

@@ -110,6 +110,7 @@ LevelSelect::LevelSelect() :
         };
 
     RegisterButtons();
+    GetPercent();
 }
 
 void LevelSelect::RegisterButtons() {
@@ -136,12 +137,22 @@ void LevelSelect::Update() {
 
         SDL_Color color1 = { 255,255,255,255 };
         SDL_Color color2 = { 0,73,220,255 };
+        std::string textPercent;
+
+        textPercent = std::to_string(percent[0]) + "%";
         texturesP->DrawImage("zero_percent", { 420,540,480,960 }, 0, {});
         texturesP->DrawTexts(u8"ヤッシィ１号", color1, color2, { 420,800,1.5,1.5 }, 0, Anchor::Center);
+        texturesP->DrawTexts(textPercent, color1, color2, {420,300,1.5,1.5}, 0, Anchor::Center);
+
+        textPercent = std::to_string(percent[1]) + "%";
         texturesP->DrawImage("zero_percent", { 960,540,480,960 }, 0, {});
         texturesP->DrawTexts(u8"ヤッシィ２号", color1, color2, { 960,800,1.5,1.5 }, 0, Anchor::Center);
+        texturesP->DrawTexts(textPercent, color1, color2, { 960,300,1.5,1.5 }, 0, Anchor::Center);
+
+        textPercent = std::to_string(percent[2]) + "%";
         texturesP->DrawImage("zero_percent", { 1500,540,480,960 }, 0, {});
         texturesP->DrawTexts(u8"ヤッシィ３号", color1, color2, { 1500,800,1.5,1.5 }, 0, Anchor::Center);
+        texturesP->DrawTexts(textPercent, color1, color2, { 1500,300,1.5,1.5 }, 0, Anchor::Center);
     }
 
     if (phase == PhaseLevelSelect::SelectLevel) {
@@ -213,4 +224,28 @@ void LevelSelect::Update() {
         UIlevel.Update();
     }
     
+}
+
+void LevelSelect::GetPercent() {
+    for (int i = 0; i < 3; i++) {
+        int slot = i+1;
+        savedata::slot = slot;
+        saveP->LoadProgress();
+
+        double per = 0.0;
+        for (auto& p : savedata::completedLevel) {
+            if (p == 1) {
+                per += 0.1;
+            }
+        }
+        for (auto& p : savedata::coin) {
+            for (auto& q : p) {
+                if (q == 1) {
+                    per += 0.1 / 3;
+                }
+            }
+        }
+
+        percent[i] = (int)round(per * 100);
+    }
 }
