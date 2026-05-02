@@ -98,7 +98,7 @@ void Textures::LoadTextures(fs::path directoryPath) {
         if (entry.is_regular_file()) {
             std::string ext = entry.path().extension().string();
 
-            if (ext == ".png") {
+            if (ext == ".png" || ext == ".jpg") {
                 std::string filePath = entry.path().string();
                 std::string key = entry.path().stem().string();
                 const char* c = filePath.c_str();

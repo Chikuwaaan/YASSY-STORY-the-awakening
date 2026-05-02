@@ -5,7 +5,8 @@
 
 enum class particle {
     splash,
-    mud
+    mud,
+    assy
 };
 
 struct point {

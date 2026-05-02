@@ -1,8 +1,12 @@
 #include "Pause.h"
 #include "Textures.h"
 #include "namespace.h"
+#include "Game.h"
+#include "Save.h"
 
 Textures* Pause::texturesP = nullptr;
+Game* Pause::gameP = nullptr;
+Save* Pause::saveP = nullptr;
 
 Pause::Pause() :
     resumeB(0, 690, 1920, 192),
@@ -38,6 +42,19 @@ Pause::Pause() :
         };
     optionsB.action = [this]() {
         option = 1;
+        };
+    saveNquitB.action = [this]() {
+        platformer::level = 0;
+        gameP->ChangeScene(Scene::Title);
+        };
+    mapB.action = [this]() {
+        platformer::level = 0;
+        platformer::CP = 0;
+        platformer::coin[0] = 0;
+        platformer::coin[1] = 0;
+        platformer::coin[2] = 0;
+        saveP->WriteProgress(savedata::slot);
+        gameP->ChangeScene(Scene::LevelSelect);
         };
     options.BTNback.action = [this]() {
         option = 0;

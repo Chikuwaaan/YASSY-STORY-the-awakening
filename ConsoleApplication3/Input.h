@@ -72,6 +72,7 @@ class Input
 private:
     bool isAnyKeyPressed;
     SDL_Event e;
+    bool on;
 public:
     std::unordered_map<Action, InputType> config;
     std::unordered_map<Event, InputType> eventConfig;
@@ -87,7 +88,7 @@ public:
     void InputCursor();
     void InputKey();
     void InputEvent();
-    void Poll();
+    void TurnInput(bool On);
 
     bool GetEvent(Event event);
 

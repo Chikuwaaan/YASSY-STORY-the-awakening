@@ -113,14 +113,14 @@ void Save::WriteOptions() {
 * coin2
 */
 
-void Save::LoadProgress() {
-    LoadCurrent();
-    LoadProg();
+void Save::LoadProgress(int slot) {
+    LoadCurrent(slot);
+    LoadProg(slot);
 }
 
-void Save::LoadCurrent() {
+void Save::LoadCurrent(int slot) {
     std::string path = "Save/";
-    path = path + std::to_string(savedata::slot) + "/current.bin";
+    path = path + std::to_string(slot) + "/current.bin";
     std::ifstream current(path);
     if (!current.is_open()) {
         platformer::CP = 0;
@@ -145,9 +145,9 @@ void Save::LoadCurrent() {
     current.close();
 }
 
-void Save::LoadProg() {
+void Save::LoadProg(int slot) {
     std::string path = "Save/";
-    path = path + std::to_string(savedata::slot) + "/progress.bin";
+    path = path + std::to_string(slot) + "/progress.bin";
     std::ifstream file(path);
     if (!file.is_open()) {
         for (int i = 0; i < 10; i++) {
@@ -172,18 +172,18 @@ void Save::LoadProg() {
     file.close();
 }
 
-void Save::WriteProgress() {
+void Save::WriteProgress(int slot) {
     std::filesystem::create_directories("Save/1");
     std::filesystem::create_directories("Save/2");
     std::filesystem::create_directories("Save/3");
 
-    WriteCurrent();
-    WriteProg();
+    WriteCurrent(slot);
+    WriteProg(slot);
 }
 
-void Save::WriteCurrent() {
+void Save::WriteCurrent(int slot) {
     std::string path = "Save/";
-    path = path + std::to_string(savedata::slot) + "/current.bin";
+    path = path + std::to_string(slot) + "/current.bin";
     std::ofstream current(path, std::ios::binary);
 
     int format = 1;
@@ -200,9 +200,9 @@ void Save::WriteCurrent() {
     current.close();
 }
 
-void Save::WriteProg() {
+void Save::WriteProg(int slot) {
     std::string path = "Save/";
-    path = path + std::to_string(savedata::slot) + "/progress.bin";
+    path = path + std::to_string(slot) + "/progress.bin";
     std::ofstream progress(path, std::ios::binary);
 
     int format = 1;

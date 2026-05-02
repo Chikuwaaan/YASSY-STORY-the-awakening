@@ -59,14 +59,21 @@ void Game::SceneChanging() {
 
     if (sceneReserve == Scene::FaceYassy) {
         faceyassy = std::make_unique<FaceYassy>();
-        Mix_HaltMusic();
         faceyassy->RegisterButtons();
+    }
+
+    if (sceneReserve == Scene::SlotSelect) {
+        levelselect = std::make_unique<LevelSelect>();
+        levelselect->phase = PhaseLevelSelect::SelectSlot;
+        sounds->PlayMusic("the_snippet");
     }
 
     if (sceneReserve == Scene::LevelSelect) {
         levelselect = std::make_unique<LevelSelect>();
+        levelselect->phase = PhaseLevelSelect::SelectLevel;
         sounds->PlayMusic("the_snippet");
     }
+
     overlay->FadeIn(1.0, { 0,0,0,255 });
 }
 
@@ -78,8 +85,8 @@ void Game::ChangeScene(Scene s) {
 
 
 void Game::Run() {
-    //ChangeScene(Scene::Title);
-    ChangeScene(Scene::Platformer);
+    ChangeScene(Scene::Title);
+    //ChangeScene(Scene::Platformer);
     //ChangeScene(Scene::FaceYassy);
     //ChangeScene(Scene::LevelSelect);
     timer.SetTime(1.0);
@@ -96,11 +103,12 @@ void Game::Run() {
         if (frameTime > 0.1) frameTime = 0.1;
         settings::timeScale = frameTime * settings::multiplier;
         
+        input->Update();
         if (timer.GetTime() < 1.0) {
-            input->Poll();
+            input->TurnInput(false);
         }
         else {
-            input->Update();
+            input->TurnInput(true);
         }
         Update();
         
@@ -109,7 +117,6 @@ void Game::Run() {
         const Uint8* keystate = input->keystate;
         const EVENT event = input->event;
 
-        
         if (event.Q) {
             running = 0;
             if (scene == Scene::Platformer) {
@@ -131,6 +138,7 @@ void Game::Run() {
 
 
 void Game::Update() {
+    std::cout << platformer::level;
     //refresh
     SDL_Rect screenRect = { 0, 0, settings::baseW, settings::baseH};
     SDL_SetRenderTarget(settings::renderer, NULL);
@@ -156,7 +164,7 @@ void Game::Update() {
         faceyassy->Update();
     }
 
-    if (scene == Scene::LevelSelect) {
+    if (scene == Scene::SlotSelect || scene == Scene::LevelSelect) {
         levelselect->Update();
     }
 
@@ -249,6 +257,7 @@ void Game::MakeInstance() {
     Title::overlayP = overlay.get();
     Title::gameP = this;
     Title::inputP = input.get();
+    Title::soundsP = sounds.get();
     Options::soundsP = sounds.get();
     Options::texturesP = textures.get();
     Options::inputP = input.get();
@@ -283,6 +292,8 @@ void Game::MakeInstance() {
     Save::soundsP = sounds.get();
     CheckPoint::saveP = save.get();
     Pause::texturesP = textures.get();
+    Pause::gameP = this;
+    Pause::saveP = save.get();
 }
 
 void Game::ExitGame() {

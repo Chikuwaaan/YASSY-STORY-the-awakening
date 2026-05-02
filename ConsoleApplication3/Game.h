@@ -26,6 +26,7 @@ enum class Scene {
     Title,
     Platformer,
     FaceYassy,
+    SlotSelect,
     LevelSelect
 };
 

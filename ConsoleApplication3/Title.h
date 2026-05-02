@@ -7,6 +7,7 @@ class Textures;
 class OverLay;
 class Game;
 class Input;
+class Sounds;
 
 enum class Phase;
 
@@ -33,6 +34,7 @@ public:
     static OverLay* overlayP;
     static Game* gameP;
     static Input* inputP;
+    static Sounds* soundsP;
 
     Title();
     void Init();

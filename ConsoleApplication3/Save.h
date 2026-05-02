@@ -6,10 +6,10 @@ class Sounds;
 class Save
 {
 private:
-    void LoadCurrent();
-    void LoadProg();
-    void WriteCurrent();
-    void WriteProg();
+    void LoadCurrent(int slot);
+    void LoadProg(int slot);
+    void WriteCurrent(int slot);
+    void WriteProg(int slot);
 public:
     static Input* inputP;
     static Sounds* soundsP;
@@ -18,7 +18,7 @@ public:
     void LoadOptions();
     void WriteOptions();
 
-    void LoadProgress();
-    void WriteProgress();
+    void LoadProgress(int slot);
+    void WriteProgress(int slot);
 };
 

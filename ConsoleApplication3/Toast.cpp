@@ -13,6 +13,7 @@ Toast::Toast(std::u8string Text) {
 }
 
 void Toast::Update() {
+    timer.Update();
     if (phase == PHASE::appear) {
         x = 1920 - timer.GetTime() * 1000;
         if (x < 960) {

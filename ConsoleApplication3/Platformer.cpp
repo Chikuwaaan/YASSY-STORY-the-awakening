@@ -294,7 +294,7 @@ void Platformer::Init() {
 }
 
 void Platformer::Spawn() {
-    saveP->LoadProgress();
+    saveP->LoadProgress(savedata::slot);
     LoadEntities();
 }
 
@@ -304,7 +304,7 @@ void Platformer::Complete() {
 }
 
 void Platformer::Save() {
-    saveP->WriteProgress();
+    saveP->WriteProgress(savedata::slot);
 }
 
 void Platformer::Quit() {

@@ -4,6 +4,7 @@
 #include "Sounds.h"
 #include "Save.h"
 #include "Camera.h"
+#include "Platformer.h"
 
 Save* CheckPoint::saveP = nullptr;
 
@@ -46,7 +47,8 @@ void CheckPoint::Touched() {
         platformer::CP = index;
         used = 1;
         soundsP->PlaySE("cp");
-        saveP->WriteProgress();
+        platformerP->AddObject("Particle", { x, y, "assy" });
+        saveP->WriteProgress(savedata::slot);
     }
 }
 

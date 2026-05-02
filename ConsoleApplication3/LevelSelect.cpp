@@ -30,7 +30,7 @@ LevelSelect::LevelSelect() :
     slot1.texName = "slot1";
     slot1.action = [this]() {
         savedata::slot = 1;
-        saveP->LoadProgress();
+        saveP->LoadProgress(1);
         if (platformer::level != 0) {
             gameP->ChangeScene(Scene::Platformer);
             return;
@@ -40,7 +40,7 @@ LevelSelect::LevelSelect() :
     slot2.texName = "slot2";
     slot2.action = [this]() {
         savedata::slot = 2;
-        saveP->LoadProgress();
+        saveP->LoadProgress(2);
         if (platformer::level != 0) {
             gameP->ChangeScene(Scene::Platformer);
             return;
@@ -50,7 +50,7 @@ LevelSelect::LevelSelect() :
     slot3.texName = "slot3";
     slot3.action = [this]() {
         savedata::slot = 3;
-        saveP->LoadProgress();
+        saveP->LoadProgress(3);
         if (platformer::level != 0) {
             gameP->ChangeScene(Scene::Platformer);
             return;
@@ -228,9 +228,7 @@ void LevelSelect::Update() {
 
 void LevelSelect::GetPercent() {
     for (int i = 0; i < 3; i++) {
-        int slot = i+1;
-        savedata::slot = slot;
-        saveP->LoadProgress();
+        saveP->LoadProgress(i+1);
 
         double per = 0.0;
         for (auto& p : savedata::completedLevel) {
@@ -248,4 +246,10 @@ void LevelSelect::GetPercent() {
 
         percent[i] = (int)round(per * 100);
     }
+    platformer::level = 0;
+    platformer::CP = 0;
+    platformer::coin[0] = 0;
+    platformer::coin[1] = 0;
+    platformer::coin[2] = 0;
 }
+//ここでslotが3になっちゃってる！

@@ -17,8 +17,6 @@ enum class PhaseLevelSelect {
 class LevelSelect
 {
 private:
-    PhaseLevelSelect phase;
-
     Timer timer;
     Timer timer2;
 
@@ -44,6 +42,8 @@ public:
     static Game* gameP;
     static Input* inputP;
     static Save* saveP;
+
+    PhaseLevelSelect phase;
 
     LevelSelect();
     void RegisterButtons();

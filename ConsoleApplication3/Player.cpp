@@ -487,43 +487,6 @@ void Player::CollideY() {
                         y = eRect.y - eRect.h / 2 - h / 2;
                     }
                 }
-                /*
-                if ((pRect.y - pRect.h / 2) > eRect.y) {
-                    if (collision) {
-                        onGround = true;
-                        y = eRect.y + eRect.h / 2 + h / 2 + 0.01;
-                        double v = p->GetVY();
-                        if (v < 0) {
-                            vY = v;
-                        }
-                        else if (v > 0) {
-                            vY = v * -1;
-                        }
-                    }
-                    else {
-                        if (vY < 0) {
-                            stomping = 1;
-                        }
-                    }
-                }
-                else if (collision && pRect.y < eRect.y) {
-                    double v = p->GetVY();
-                    if (v < 0.0) {
-                        vY = p->GetVY();
-                    }
-                    else {
-                        vY = 0.0;
-                    }
-
-                    if (groundBlock) {
-                        Die();
-                    }
-
-                    isJumping = 0;
-                    y = eRect.y - eRect.h / 2 - h / 2;
-                }
-                */
-
             }
         } 
     }

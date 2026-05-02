@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "GameTimer.h"
 #include "Timer.h"
 
 enum class PHASE {
@@ -13,7 +14,7 @@ class Toast :
 {
 private:
     PHASE phase;
-    Timer timer;
+    GameTimer timer;
     Timer star;
 
     std::u8string text;

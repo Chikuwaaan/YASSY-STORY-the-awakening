@@ -5,6 +5,8 @@
 #include <functional>
 
 class Textures;
+class Game;
+class Save;
 
 class Pause
 {
@@ -23,6 +25,8 @@ private:
     std::vector<std::u8string> description;
 public:
     static Textures* texturesP;
+    static Game* gameP;
+    static Save* saveP;
 
     bool on;
 

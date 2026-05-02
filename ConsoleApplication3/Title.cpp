@@ -6,11 +6,13 @@
 #include "Game.h"
 #include "Input.h"
 #include "Options.h"
+#include "Sounds.h"
 
 Textures* Title::texturesP = nullptr;
 OverLay* Title::overlayP = nullptr;
 Game* Title::gameP = nullptr;
 Input* Title::inputP = nullptr;
+Sounds* Title::soundsP = nullptr;
 
 enum class Phase {
     Loading,
@@ -31,8 +33,8 @@ Title::Title() :
     last = 0;
     timer = 0.0;
     //phase = Phase::Options;
-    phase = Phase::YassyStory2;
-    //phase = Phase::Loading;
+    //phase = Phase::YassyStory2;
+    phase = Phase::Loading;
 }
 
 void Title::Init() {
@@ -59,7 +61,7 @@ void Title::RegisterButtons() {
 
     BTNstart.text = "START";
     BTNstart.action = []() {
-        gameP->ChangeScene(Scene::LevelSelect);
+        gameP->ChangeScene(Scene::SlotSelect);
         overlayP->FadeOut(1,{0,0,0,255});
         };
 
@@ -97,8 +99,7 @@ void Title::ChangePhase() {
     else if (phase == Phase::Logo3 && timer > 5) {
         phase = Phase::YassyStory1;
         overlayP->FadeIn(1, { 0,0,0,255 });
-        Mix_Music* music = Mix_LoadMUS("Assets/sounds/toilet3.wav");
-        Mix_PlayMusic(music, -1);
+        soundsP->PlayMusic("toilet3");
     }
 }
 
@@ -132,7 +133,7 @@ void Title::Update() {
         SDL_RenderFillRect(settings::renderer, &refresh);
         SDL_Rect fullScreen = { settings::baseW / 2, settings::baseH / 2, settings::baseW,settings::baseH };
         
-        texturesP->DrawImageS("room", fullScreen, 0, {});
+        texturesP->DrawImageS("IMG_20260206_233135", fullScreen, 0, {});
         if (phase == Phase::YassyStory2 || phase == Phase::Options) {
             texturesP->DrawImageS("title", { settings::baseW / 2,settings::baseH * 3 / 4 , settings::baseW/2, settings::baseH/2}, 0, {});
         }

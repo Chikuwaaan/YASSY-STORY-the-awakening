@@ -18,6 +18,7 @@ Input::Input() {
 
     setting = Action::Null;
     eventSetting = Event::Null;
+    on = true;
 }
 
 void Input::Update() {
@@ -27,6 +28,7 @@ void Input::Update() {
 
     if (setting != Action::Null) return;
     if (eventSetting != Event::Null) return;
+    if (!on) return;
 
     for (auto& [key, value] : config) {
         value.on = 0;
@@ -70,11 +72,16 @@ void Input::Update() {
 }
 
 void Input::InputCursor() {
+    if (!on) {
+        mouse = {};
+        mouse.x = -1;
+        mouse.y = -1;
+        return;
+    }
     int x, y;
     Uint32 buttons = SDL_GetMouseState(&x, &y);
     mouse.x = (int)round(x * settings::baseW / settings::winW);
     mouse.y = settings::baseH - (int)round(y * settings::baseH / settings::winH) - 1;
-
     if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) {
         mouse.left = 1;
     }
@@ -108,12 +115,21 @@ void Input::InputCursor() {
 }
 
 void Input::InputKey() {
+    if (!on) {
+        //keystate = {};
+        //return;
+    }
     keystate = SDL_GetKeyboardState(NULL);
 }
 
 void Input::InputEvent() {
     isAnyKeyPressed = 0;
     event = {};
+
+    if (!on) {
+        SDL_PollEvent(&e);
+        return;
+    }
 
     for (auto& [key, value] : eventConfig) {
         value.on = 0;
@@ -246,10 +262,9 @@ void Input::InputEvent() {
     }
 }
 
-void Input::Poll() {
-    SDL_Event e;
-    SDL_PollEvent(&e);
-    mouse = {};
+
+void Input::TurnInput(bool On) {
+    on = On;
 }
 
 bool Input::GetEvent(Event event) {
