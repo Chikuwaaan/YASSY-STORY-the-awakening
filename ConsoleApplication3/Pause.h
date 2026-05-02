@@ -9,6 +9,7 @@ class Textures;
 class Pause
 {
 private:
+    bool option;
     Options options;
 
     UIManager pausingUI;
@@ -23,10 +24,10 @@ private:
 public:
     static Textures* texturesP;
 
-    std::function<void()> back;
+    bool on;
+
     Pause();
     void Init();
     void Update();
-    void SetBackButton();
 };
 

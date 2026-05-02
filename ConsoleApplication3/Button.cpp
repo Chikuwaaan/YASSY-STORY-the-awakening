@@ -118,7 +118,7 @@ void Button::Draw() {
     }
 
     texturesP->DrawImage(texName, { (double)x,(double)y,(double)w,(double)h }, 0, {});
-    if (text != "") {
+    if (text != "" && visible) {
         OBJRECT dstT = { (double)x, (double)y, textSize, textSize };
         texturesP->DrawTexts(text, color1, color2, dstT, 0, Anchor::Center);
     }

@@ -10,6 +10,8 @@ Pause::Pause() :
     saveNquitB(0, 294, 1920, 192),
     mapB(0, 96, 1920, 192)
 {
+    option = 0;
+    on = 0;
     buttonTargetX = { -300, -200, -100, 0 };
     buttonText = {"Resume", "Options", "Save and Quit", "Return to Map"};
     description = {
@@ -31,6 +33,15 @@ Pause::Pause() :
         p->color2 = { 0,0,0,255 };
         p->textSize = 1.5;
     }
+    resumeB.action = [this]() {
+        on = 0;
+        };
+    optionsB.action = [this]() {
+        option = 1;
+        };
+    options.BTNback.action = [this]() {
+        option = 0;
+        };
 
     options.RegisterButtons();
 }
@@ -43,7 +54,13 @@ void Pause::Init() {
 }
 
 void Pause::Update() {
+    if (!on) return;
     texturesP->DrawRect({0,0,0,127}, {960,540,1920,1980,1}, 0);
+    if (option) {
+        options.Show();
+        options.Update();
+        return;
+    }
 
     int i = 0;
     for (auto& p : pausingLINE.selectables) {
@@ -67,12 +84,4 @@ void Pause::Update() {
         }
         i++;
     }
-    /*
-    options.Show();
-    options.Update();
-    */
-}
-
-void Pause::SetBackButton() {
-    options.BTNback.action = back;
 }

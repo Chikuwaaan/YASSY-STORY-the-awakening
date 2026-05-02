@@ -48,11 +48,6 @@ Platformer::Platformer() {
     editorMode = 0;
     pausing = 0;
     completed = 0;
-
-    pause.back = [this]() {
-        pausing = 0;
-        };
-    pause.SetBackButton();
 }
 
 void Platformer::LoadLevelInfo() {
@@ -338,18 +333,15 @@ void Platformer::Update() {
         player.SetY(y);
     }
     if (event.ESCAPE) {
-        if (pausing) {
-            pausing = 0;
-        }
-        else {
+        if (!pause.on) {
             pause.Init();
-            pausing = 1;
+            pause.on = 1;
         }
     }
 
     
 
-    if (!editorMode && !pausing) {
+    if (!editorMode && !pause.on) {
         for (std::unique_ptr<GameObject>& obj : objects) {
             if (inScreen(obj) || obj->alwaysLoad) {
                 obj->Update();
@@ -425,9 +417,7 @@ void Platformer::Update() {
 
     texturesP->DrawTexts(std::to_string(timer.GetTime()), { 255,255,255,255 }, { 0,0,0,255 }, { 1700,50,1,1 }, 0, Anchor::Center);
 
-    if (pausing) {
-        pause.Update();
-    }
+    pause.Update();
 }
 
 bool Platformer::inScreen(std::unique_ptr<GameObject>& p) {
