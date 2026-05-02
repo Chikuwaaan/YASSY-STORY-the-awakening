@@ -342,6 +342,7 @@ void Platformer::Update() {
             pausing = 0;
         }
         else {
+            pause.Init();
             pausing = 1;
         }
     }

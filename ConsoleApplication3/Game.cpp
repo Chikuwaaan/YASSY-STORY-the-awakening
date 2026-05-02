@@ -78,11 +78,11 @@ void Game::ChangeScene(Scene s) {
 
 
 void Game::Run() {
-    ChangeScene(Scene::Title);
-    timer.SetTime(1.0);
-    //ChangeScene(Scene::Platformer);
+    //ChangeScene(Scene::Title);
+    ChangeScene(Scene::Platformer);
     //ChangeScene(Scene::FaceYassy);
     //ChangeScene(Scene::LevelSelect);
+    timer.SetTime(1.0);
 
     save->LoadOptions();
 
@@ -282,6 +282,7 @@ void Game::MakeInstance() {
     Save::inputP = input.get();
     Save::soundsP = sounds.get();
     CheckPoint::saveP = save.get();
+    Pause::texturesP = textures.get();
 }
 
 void Game::ExitGame() {

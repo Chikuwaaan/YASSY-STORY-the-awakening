@@ -15,19 +15,23 @@ Button::Button(int X, int Y, int W, int H) {
     y = Y;
     w = W;
     h = H;
-    color = { 0,0,0,255 };
     state = State::Unavailable;
     isSelected = 0;
 
     icon = Icons::Null;
     visible = 1;
+    alpha = 1;
     texName = "NULL";
     text = "";
+    color1 = { 100,200,255 };
+    color2 = { 0,73,220,255 };
+    textSize = 1.0;
 }
 
 void Button::Draw() {
     if (w == 0 || h == 0) return;
-    if (visible) {
+
+    if (visible && alpha) {
         bool wide = 0;
         if (w > h) {
             wide = 1;
@@ -72,12 +76,6 @@ void Button::Draw() {
             texturesP->DrawIcon(buttonR, dstR);
             texturesP->DrawIcon(buttonM, dstM);
             texturesP->DrawIcon(icon, {x,y,h,h});
-            if (text != "") {
-                SDL_Color white = { 100,200,255 };
-                SDL_Color black = { 0,73,220,255 };
-                OBJRECT dstT = { (double)x, (double)y, 1,1 };
-                texturesP->DrawTexts(text, white, black, dstT, 0, Anchor::Center);
-            }
 
             if (isSelected) {
                 dstR.x = dstR.x + h / 8;
@@ -109,12 +107,6 @@ void Button::Draw() {
             }
             texturesP->DrawIcon(button, {x,y,w,h});
             texturesP->DrawIcon(icon, { x,y,h,h });
-            if (text != "") {
-                SDL_Color white = { 100,200,255 };
-                SDL_Color black = { 0,73,220,255 };
-                OBJRECT dstT = { (double)x, (double)y, 1,1 };
-                texturesP->DrawTexts(text, white, black, dstT, 0, Anchor::Center);
-            }
 
             if (isSelected) {
                 texturesP->DrawIcon(Icons::UICursor1, { x+w/8,y+h/8,w,h });
@@ -125,7 +117,11 @@ void Button::Draw() {
         }
     }
 
-    texturesP->DrawImage(texName, {(double)x,(double)y,(double)w,(double)h}, 0, {});
+    texturesP->DrawImage(texName, { (double)x,(double)y,(double)w,(double)h }, 0, {});
+    if (text != "") {
+        OBJRECT dstT = { (double)x, (double)y, textSize, textSize };
+        texturesP->DrawTexts(text, color1, color2, dstT, 0, Anchor::Center);
+    }
 }
 
 bool Button::CheckOnMouse() {

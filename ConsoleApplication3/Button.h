@@ -19,8 +19,6 @@ enum class State {
 class Button
 {
 private:
-    SDL_Color color;
-    
 public:
     int x, y, w, h;
     State state;
@@ -30,6 +28,11 @@ public:
     std::string texName;
     std::string text;
     bool visible;
+    bool alpha;
+
+    SDL_Color color1;
+    SDL_Color color2;
+    double textSize;
 
     static Textures* texturesP;
     static Input* inputP;
