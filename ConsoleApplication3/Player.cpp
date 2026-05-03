@@ -652,12 +652,11 @@ void Player::Goal() {
     platformer::coin[1] = 0;
     platformer::coin[2] = 0;
     
-    savedata::completedLevel[platformer::level - 1] = 1;
+    savedata::completedLevel[platformer::level - 1] = 2;
 
     platformer::CP = 0;
     platformer::level = 0;
     
-
     platformerP->Save();
     platformerP->Complete();
     completing = 1;

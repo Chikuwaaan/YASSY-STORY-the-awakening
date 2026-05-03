@@ -36,6 +36,7 @@ private:
     Button back;
 
     int percent[3];
+    std::vector<int> availableLevels;
 public:
     static Textures* texturesP;
     static Game* gameP;
@@ -47,6 +48,7 @@ public:
     LevelSelect();
     void RegisterButtons();
     void Update();
+    void Init();
     void GetPercent();
 };
 

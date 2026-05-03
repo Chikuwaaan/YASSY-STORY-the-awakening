@@ -22,9 +22,9 @@ LevelSelect::LevelSelect() :
     level5(396, 0, 768, 192),
     back(396, 0, 768, 192)
 {
+    saveP->LoadProgress(savedata::slot);
     phase = PhaseLevelSelect::SelectSlot;
-    lineSlot = { {&slot1, &slot2, &slot3}, DIRECTION::H, nullptr, nullptr};
-    lineLevels = { {&level1,&level2,&level3,&level4,&level5,&back}, DIRECTION::V, nullptr, nullptr };
+    Init();
 
     //SLOT
     slot1.texName = "slot1";
@@ -36,6 +36,7 @@ LevelSelect::LevelSelect() :
             return;
         }
         phase = PhaseLevelSelect::SelectLevel;
+        Init();
         };
     slot2.texName = "slot2";
     slot2.action = [this]() {
@@ -46,6 +47,7 @@ LevelSelect::LevelSelect() :
             return;
         }
         phase = PhaseLevelSelect::SelectLevel;
+        Init();
         };
     slot3.texName = "slot3";
     slot3.action = [this]() {
@@ -56,6 +58,7 @@ LevelSelect::LevelSelect() :
             return;
         }
         phase = PhaseLevelSelect::SelectLevel;
+        Init();
         };
 
     //LEVEL
@@ -66,11 +69,6 @@ LevelSelect::LevelSelect() :
         std::ifstream file(path);
         std::string name;
         std::getline(file, name);
-
-        if (savedata::completedLevel[i - 1] == 1) {
-            //name = "*" + name;
-        }
-
         levelName.push_back(name);
     }
     
@@ -110,7 +108,6 @@ LevelSelect::LevelSelect() :
         };
 
     RegisterButtons();
-    saveP->LoadProgress(savedata::slot);
 }
 
 void LevelSelect::RegisterButtons() {
@@ -159,32 +156,25 @@ void LevelSelect::Update() {
         SDL_Color color1 = { 255,255,255,255 };
         SDL_Color color2 = { 0,73,220,255 };
         std::string thumbnail = "thumbnail";
-        thumbnail = thumbnail + std::to_string(UIlevel.currentButton + 1);
+        thumbnail = thumbnail + std::to_string(availableLevels[UIlevel.currentButton] + 1);
         texturesP->DrawTexts(u8"やっしー　号", color1, color2, {1600,950,2,2}, 0, Anchor::Center);
         texturesP->DrawTexts(std::to_string(savedata::slot), color1, color2, {1740,950,3,3}, 0, Anchor::Center);
         texturesP->DrawImage(thumbnail, { 1600,540,512,512 }, 0, {});
         texturesP->DrawImage("whitestar", { 1100,540,400,400 }, 0, {});
 
         double time2 = timer2.GetTime();
-        for (int i = 0; i < 5; i++) {
-            double size;
-            if (UIlevel.currentButton == i) {
-                size = 100 + sin(time2 * 4) * 20;
-            }
-            else {
-                size = 100;
-            }
 
-            texturesP->DrawImage("Bhead",
-                {
-                1100 + cos(utilities::DegreetoRadian(i * -72 + 90)) * 200,
-                540 + sin(utilities::DegreetoRadian(i * -72 + 90)) * 200,
-                size,
-                size },
-                0,
-                {});
-            if (UIlevel.currentButton == i) {
-                texturesP->DrawImage("Bface",
+        for (auto& i : availableLevels) {
+            if (0 <= i && i < 5) {
+                double size;
+                if (availableLevels[UIlevel.currentButton] == i) {
+                    size = 100 + sin(time2 * 4) * 20;
+                }
+                else {
+                    size = 100;
+                }
+
+                texturesP->DrawImage("Bhead",
                     {
                     1100 + cos(utilities::DegreetoRadian(i * -72 + 90)) * 200,
                     540 + sin(utilities::DegreetoRadian(i * -72 + 90)) * 200,
@@ -192,11 +182,23 @@ void LevelSelect::Update() {
                     size },
                     0,
                     {});
+                if (availableLevels[UIlevel.currentButton] == i) {
+                    texturesP->DrawImage("Bface",
+                        {
+                        1100 + cos(utilities::DegreetoRadian(i * -72 + 90)) * 200,
+                        540 + sin(utilities::DegreetoRadian(i * -72 + 90)) * 200,
+                        size,
+                        size },
+                        0,
+                        {});
+                }
             }
         }
 
-        for (int i = 0; i < 3; i++) {
-            texturesP->DrawSprite("coinmanager", { 1600.0 - 96 + 96 * i,236,96,96 }, { 16 * savedata::coin[UIlevel.currentButton][i],0,16,16 }, 0);
+        if (availableLevels[UIlevel.currentButton] != 1007) {
+            for (int i = 0; i < 3; i++) {
+                texturesP->DrawSprite("coinmanager", { 1600.0 - 96 + 96 * i,236,96,96 }, { 16 * savedata::coin[UIlevel.currentButton][i],0,16,16 }, 0);
+            }
         }
 
         int i = 0;
@@ -205,7 +207,9 @@ void LevelSelect::Update() {
             double targetY = i * -204 + UIlevel.currentButton * 204 + 540;
             p->y = (int)(p->y + (targetY - p->y) * settings::timeScale * 8);
 
-            if (savedata::completedLevel[i] == 1) {
+            if (availableLevels[i] == 1007) break;
+
+            if (savedata::completedLevel[i] == 2) {
                 texturesP->DrawImage("whitestar", { 820,p->y + 75.0,50,50 }, 0, {});
             }
             for (int j = 0; j < 3; j++) {
@@ -227,7 +231,29 @@ void LevelSelect::Update() {
 
         UIlevel.Update();
     }
-    
+}
+
+void LevelSelect::Init() {
+    lineSlot = { {&slot1, &slot2, &slot3}, DIRECTION::H, nullptr, nullptr };
+    lineLevels = { {}, DIRECTION::V, nullptr, nullptr };
+
+    for (int i = 0; i < 4; i++) {
+        if (savedata::completedLevel[i] == 2) {
+            if (savedata::completedLevel[i + 1] == 0) {
+                savedata::completedLevel[i + 1] = 1;
+            }
+        }
+    }
+    availableLevels = {};
+    std::vector<Button*> levels = { &level1,&level2,&level3,&level4,&level5 };
+    for (int i = 0; i < 5; i++) {
+        if (savedata::completedLevel[i] != 0) {
+            availableLevels.push_back(i);
+            lineLevels.selectables.push_back(levels[i]);
+        }
+    }
+    availableLevels.push_back(1007);
+    lineLevels.selectables.push_back(&back);
 }
 
 void LevelSelect::GetPercent() {
@@ -236,7 +262,7 @@ void LevelSelect::GetPercent() {
 
         double per = 0.0;
         for (auto& p : savedata::completedLevel) {
-            if (p == 1) {
+            if (p == 2) {
                 per += 0.1;
             }
         }
@@ -255,5 +281,7 @@ void LevelSelect::GetPercent() {
     platformer::coin[0] = 0;
     platformer::coin[1] = 0;
     platformer::coin[2] = 0;
+
+    saveP->LoadProgress(savedata::slot);
 }
 //ここでslotが3になっちゃってる！

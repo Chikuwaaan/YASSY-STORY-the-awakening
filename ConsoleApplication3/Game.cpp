@@ -66,6 +66,7 @@ void Game::SceneChanging() {
         levelselect = std::make_unique<LevelSelect>();
         levelselect->phase = PhaseLevelSelect::SelectSlot;
         levelselect->GetPercent();
+        levelselect->Init();
         sounds->PlayMusic("the_snippet");
     }
 
@@ -140,6 +141,7 @@ void Game::Run() {
 
 void Game::Update() {
     std::cout << platformer::level;
+
     //refresh
     SDL_Rect screenRect = { 0, 0, settings::baseW, settings::baseH};
     SDL_SetRenderTarget(settings::renderer, NULL);

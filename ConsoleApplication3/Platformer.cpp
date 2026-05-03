@@ -300,7 +300,7 @@ void Platformer::Spawn() {
 
 void Platformer::Complete() {
     completed = 1;
-    gameP->ChangeScene(Scene::Title);
+    gameP->ChangeScene(Scene::LevelSelect);
 }
 
 void Platformer::Save() {

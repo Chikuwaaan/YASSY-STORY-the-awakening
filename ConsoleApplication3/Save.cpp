@@ -130,6 +130,13 @@ void Save::LoadCurrent(int slot) {
         platformer::coin[2] = 0;
         return;
     }
+    else {
+        platformer::level = 0;
+        platformer::CP = 0;
+        platformer::coin[0] = 0;
+        platformer::coin[1] = 0;
+        platformer::coin[2] = 0;
+    }
 
     int format;
     current.read((char*)&format, sizeof(int));
@@ -150,11 +157,33 @@ void Save::LoadProg(int slot) {
     std::string path = "Save/";
     path = path + std::to_string(slot) + "/progress.bin";
     std::ifstream file(path);
+
     if (!file.is_open()) {
+        std::cout << "UOUO" << std::endl;
+
+        savedata::coin = {
+        {0,0,0},
+        {0,0,0},
+        {0,0,0},
+        {0,0,0},
+        {0,0,0},
+        {0,0,0},
+        {0,0,0},
+        {0,0,0},
+        {0,0,0},
+        {0,0,0}
+        };
+
+        savedata::completedLevel = {
+        1,0,0,0,0,0,0,0,0,0
+        };
+        /*
         for (int i = 0; i < 10; i++) {
             savedata::completedLevel[i] = 0;
             savedata::coin[i] = { 0,0,0 };
         }
+        savedata::completedLevel[0] = 1;
+        */
         return;
     }
 
