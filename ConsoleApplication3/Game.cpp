@@ -65,6 +65,7 @@ void Game::SceneChanging() {
     if (sceneReserve == Scene::SlotSelect) {
         levelselect = std::make_unique<LevelSelect>();
         levelselect->phase = PhaseLevelSelect::SelectSlot;
+        levelselect->GetPercent();
         sounds->PlayMusic("the_snippet");
     }
 
@@ -294,6 +295,7 @@ void Game::MakeInstance() {
     Pause::texturesP = textures.get();
     Pause::gameP = this;
     Pause::saveP = save.get();
+    Pause::inputP = input.get();
 }
 
 void Game::ExitGame() {

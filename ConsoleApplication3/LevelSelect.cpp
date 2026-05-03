@@ -1,4 +1,4 @@
-#include "LevelSelect.h"
+﻿#include "LevelSelect.h"
 #include "Textures.h"
 #include "namespace.h"
 #include "Game.h"
@@ -110,7 +110,7 @@ LevelSelect::LevelSelect() :
         };
 
     RegisterButtons();
-    GetPercent();
+    saveP->LoadProgress(savedata::slot);
 }
 
 void LevelSelect::RegisterButtons() {
@@ -156,8 +156,12 @@ void LevelSelect::Update() {
     }
 
     if (phase == PhaseLevelSelect::SelectLevel) {
+        SDL_Color color1 = { 255,255,255,255 };
+        SDL_Color color2 = { 0,73,220,255 };
         std::string thumbnail = "thumbnail";
         thumbnail = thumbnail + std::to_string(UIlevel.currentButton + 1);
+        texturesP->DrawTexts(u8"やっしー　号", color1, color2, {1600,950,2,2}, 0, Anchor::Center);
+        texturesP->DrawTexts(std::to_string(savedata::slot), color1, color2, {1740,950,3,3}, 0, Anchor::Center);
         texturesP->DrawImage(thumbnail, { 1600,540,512,512 }, 0, {});
         texturesP->DrawImage("whitestar", { 1100,540,400,400 }, 0, {});
 

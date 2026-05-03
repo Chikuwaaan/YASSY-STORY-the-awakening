@@ -33,8 +33,8 @@ Title::Title() :
     last = 0;
     timer = 0.0;
     //phase = Phase::Options;
-    //phase = Phase::YassyStory2;
-    phase = Phase::Loading;
+    phase = Phase::YassyStory2;
+    //phase = Phase::Loading;
 }
 
 void Title::Init() {

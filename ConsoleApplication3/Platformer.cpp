@@ -332,12 +332,14 @@ void Platformer::Update() {
         player.SetX(x);
         player.SetY(y);
     }
-    if (event.ESCAPE) {
-        if (!pause.on) {
+
+    if (!pause.on) {
+        if (inputP->GetEvent(Event::Back)) {
             pause.Init();
             pause.on = 1;
         }
     }
+    
 
     
 

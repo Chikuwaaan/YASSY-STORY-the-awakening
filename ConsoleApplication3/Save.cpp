@@ -1,4 +1,4 @@
-#include "Save.h"
+﻿#include "Save.h"
 #include <fstream>
 #include <string>
 #include "namespace.h"
@@ -114,6 +114,7 @@ void Save::WriteOptions() {
 */
 
 void Save::LoadProgress(int slot) {
+    std::cout << "ロードしました" << slot << std::endl;
     LoadCurrent(slot);
     LoadProg(slot);
 }

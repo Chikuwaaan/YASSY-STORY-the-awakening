@@ -1,12 +1,14 @@
-#include "Pause.h"
+﻿#include "Pause.h"
 #include "Textures.h"
 #include "namespace.h"
 #include "Game.h"
 #include "Save.h"
+#include "Input.h"
 
 Textures* Pause::texturesP = nullptr;
 Game* Pause::gameP = nullptr;
 Save* Pause::saveP = nullptr;
+Input* Pause::inputP = nullptr;
 
 Pause::Pause() :
     resumeB(0, 690, 1920, 192),
@@ -27,6 +29,7 @@ Pause::Pause() :
 
     pausingLINE = { { &resumeB, &optionsB, &saveNquitB, &mapB }, DIRECTION::V, nullptr, nullptr};
     pausingUI.AddLine(&pausingLINE);
+    pausingUI.currentLine = &pausingLINE;
 
     Init();
 
@@ -71,6 +74,10 @@ void Pause::Init() {
 }
 
 void Pause::Update() {
+    if (!option) {
+        if (inputP->GetEvent(Event::Back)) on = 0;
+    }
+
     if (!on) return;
     texturesP->DrawRect({0,0,0,127}, {960,540,1920,1980,1}, 0);
     if (option) {
@@ -79,9 +86,10 @@ void Pause::Update() {
         return;
     }
 
+
     int i = 0;
     for (auto& p : pausingLINE.selectables) {
-        if (p->state == State::OnMouse) {
+        if (pausingUI.currentButton == i) {
             p->x = (int)(p->x + (buttonTargetX[i]+192 - p->x) * settings::timeScale * 8);
         }
         else {
@@ -97,7 +105,10 @@ void Pause::Update() {
     for (auto& p : pausingLINE.selectables) {
         texturesP->DrawTexts(buttonText[i], p->color1, p->color2, { (double)p->x + 300, (double)p->y, p->textSize, p->textSize }, 0, Anchor::Left);
         if (p->state == State::OnMouse) {
-            texturesP->DrawTexts(description[i], {255,255,255,255}, {0,0,0,255}, {960,50,0.8,0.8}, 0, Anchor::Left);
+            pausingUI.currentButton = i;
+        }
+        if (pausingUI.currentButton == i) {
+            texturesP->DrawTexts(description[i], { 255,255,255,255 }, { 0,0,0,255 }, { 960,50,0.8,0.8 }, 0, Anchor::Left);
         }
         i++;
     }

@@ -38,7 +38,7 @@ Options::Options() :
     Back(1460, settings::baseH / 2 - 100, 96, 96),
     Invert(800, settings::baseH / 2 - 200, 96, 96),
     Blur(800, settings::baseH / 2 - 300, 96, 96),
-    BTNback(100,100,192,192)
+    BTNback(96,96,192,192)
 {
     SE.push_back(&SE0);
     SE.push_back(&SE1);
@@ -124,6 +124,7 @@ void Options::RegisterButtons() {
             savedata::Blur = 1;
         }
         };
+    BTNback.icon = Icons::Back;
 
     lineSE = {
         SE,
@@ -245,6 +246,11 @@ void Options::Hide() {
 }
 
 void Options::Update() {
+    if (inputP->GetEvent(Event::Back)) {
+        BTNback.action();
+        return;
+    }
+
     OBJRECT rect = { settings::baseW / 2.0, settings::baseH / 2.0, 1600,1000 , 1};
     SDL_Color white = { 255,255,255,255 };
     SDL_Color black = { 0,0,0,255 };

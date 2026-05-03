@@ -36,7 +36,6 @@ private:
     Button back;
 
     int percent[3];
-    void GetPercent();
 public:
     static Textures* texturesP;
     static Game* gameP;
@@ -48,5 +47,6 @@ public:
     LevelSelect();
     void RegisterButtons();
     void Update();
+    void GetPercent();
 };
 

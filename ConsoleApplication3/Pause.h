@@ -7,6 +7,7 @@
 class Textures;
 class Game;
 class Save;
+class Input;
 
 class Pause
 {
@@ -27,6 +28,7 @@ public:
     static Textures* texturesP;
     static Game* gameP;
     static Save* saveP;
+    static Input* inputP;
 
     bool on;
 
