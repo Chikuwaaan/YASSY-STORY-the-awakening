@@ -131,7 +131,6 @@ void Save::LoadCurrent(int slot) {
         return;
     }
     else {
-        platformer::level = 0;
         platformer::CP = 0;
         platformer::coin[0] = 0;
         platformer::coin[1] = 0;

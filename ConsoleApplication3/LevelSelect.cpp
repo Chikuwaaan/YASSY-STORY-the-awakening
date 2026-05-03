@@ -281,7 +281,5 @@ void LevelSelect::GetPercent() {
     platformer::coin[0] = 0;
     platformer::coin[1] = 0;
     platformer::coin[2] = 0;
-
-    saveP->LoadProgress(savedata::slot);
 }
 //ここでslotが3になっちゃってる！
