@@ -15,6 +15,7 @@ struct MOUSE {
 };
 
 struct EVENT {
+    bool Quit;
     bool ESCAPE;
     bool DEL;
     bool F1;

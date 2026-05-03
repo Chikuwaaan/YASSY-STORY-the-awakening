@@ -17,9 +17,11 @@ private:
     LINE titleMenu;
     Button BTNstart;
     Button BTNoptions;
+    Button BTNcredits;
     Button BTNexitgame;
     LINE face;
     Button BTNface;
+    Button BTNback;
 
     Uint32 last;
     double timer;
@@ -30,6 +32,7 @@ private:
     Options options;
 public:
     UIManager ui;
+    UIManager uiCredits;
     static Textures* texturesP;
     static OverLay* overlayP;
     static Game* gameP;

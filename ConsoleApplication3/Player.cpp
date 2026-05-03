@@ -144,10 +144,6 @@ void Player::Update() {
         FlipX(false);
     }
 
-    if (event.Down) {
-        Goal();
-    }
-
     if (inputP->config[Action::HoldRun].on != savedata::InvertDash) {
         if (stucking) {
             maxSpeed = 320.0;

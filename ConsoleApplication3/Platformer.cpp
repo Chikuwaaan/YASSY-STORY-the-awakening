@@ -318,6 +318,7 @@ void Platformer::Update() {
 
     if (!pausing) cameraP->Update();
 
+    /* [DEBUG]
     if (event.E) {
         if (editorMode) {
             editorMode = 0;
@@ -332,6 +333,7 @@ void Platformer::Update() {
         player.SetX(x);
         player.SetY(y);
     }
+    */
 
     if (!pause.on) {
         if (inputP->GetEvent(Event::Back)) {

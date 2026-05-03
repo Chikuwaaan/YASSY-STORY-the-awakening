@@ -182,7 +182,9 @@ void Input::InputEvent() {
             }
         }
         
-
+        if (e.type == SDL_QUIT) {
+            event.Quit = 1;
+        }
 
         if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
             isAnyKeyPressed = 1;

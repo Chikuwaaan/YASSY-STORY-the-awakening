@@ -119,7 +119,7 @@ void Game::Run() {
         const Uint8* keystate = input->keystate;
         const EVENT event = input->event;
 
-        if (event.Q) {
+        if (event.Quit) {
             running = 0;
             if (scene == Scene::Platformer) {
                 platformer->Quit();
@@ -177,31 +177,12 @@ void Game::Update() {
     
 
     //DEBUG INFO
-    bool showCursorPoint = 1;
-    bool showCross = 1;
-    if (showCursorPoint) {
-        int x, y;
-        x = input->mouse.x;
-        y = input->mouse.y;
-
-        SDL_Color white = { 255,255,255,255 };
-        SDL_Color black = { 0,0,0,255 };
-        std::string text = std::to_string(x) + "," + std::to_string(y);
-        textures->DrawTexts(text, white, black, { 0,50,1,1 }, 0, Anchor::Left);
-
-        //cursor in window
-        if (input->event.F1) {
-            std::cout << text << std::endl;
-        }
-    }
-    if (showCross) {
-        int x, y;
-        x = input->mouse.x;
-        y = settings::baseH - input->mouse.y - 1;
-        SDL_SetRenderDrawColor(settings::renderer, 0,0,0,255);
-        SDL_RenderDrawLine(settings::renderer, x, y-2000, x, y+2000);
-        SDL_RenderDrawLine(settings::renderer, x-2000, y, x+2000, y);
-
+    int x, y;
+    x = input->mouse.x;
+    y = input->mouse.y;
+    std::string text = std::to_string(x) + "," + std::to_string(y);
+    if (input->event.F1) {
+        std::cout << text << std::endl;
     }
 }
 
