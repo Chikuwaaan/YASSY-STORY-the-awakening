@@ -32,7 +32,7 @@ void Save::LoadOptions() {
                 inputP->config[(Action)i].device = (InputDevice)device;
                 inputP->config[(Action)i].code = code;
             }
-            for (int i = 1; i <= 2; i++) {
+            for (int i = 1; i <= 6; i++) {
                 option >> device;
                 option >> code;
                 inputP->eventConfig[(Event)i].device = (InputDevice)device;
@@ -62,6 +62,7 @@ void Save::LoadOptions() {
 }
 
 void Save::WriteOptions() {
+    std::filesystem::create_directories("Save");
     std::ofstream option("Save/option.txt");
     if (option.is_open()) {
         option << 1 << std::endl;
@@ -83,6 +84,14 @@ void Save::WriteOptions() {
         option << (int)inputP->eventConfig[Event::Confirm].code << std::endl;
         option << (int)inputP->eventConfig[Event::Back].device << std::endl;
         option << (int)inputP->eventConfig[Event::Back].code << std::endl;
+        option << (int)inputP->eventConfig[Event::Up].device << std::endl;
+        option << (int)inputP->eventConfig[Event::Up].code << std::endl;
+        option << (int)inputP->eventConfig[Event::Down].device << std::endl;
+        option << (int)inputP->eventConfig[Event::Down].code << std::endl;
+        option << (int)inputP->eventConfig[Event::Left].device << std::endl;
+        option << (int)inputP->eventConfig[Event::Left].code << std::endl;
+        option << (int)inputP->eventConfig[Event::Right].device << std::endl;
+        option << (int)inputP->eventConfig[Event::Right].code << std::endl;
         option << savedata::InvertDash << std::endl;
         option << savedata::Blur << std::endl;
     }

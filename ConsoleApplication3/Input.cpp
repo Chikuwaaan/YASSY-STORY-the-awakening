@@ -13,7 +13,11 @@ Input::Input() {
     };
     eventConfig = {
         {Event::Confirm, {InputDevice::Keyboard, SDL_SCANCODE_SPACE, 0}},
-        {Event::Back, {InputDevice::Keyboard, SDL_SCANCODE_ESCAPE, 0}}
+        {Event::Back, {InputDevice::Keyboard, SDL_SCANCODE_ESCAPE, 0}},
+        {Event::Up, {InputDevice::Keyboard, SDL_SCANCODE_W, 0}},
+        {Event::Down, {InputDevice::Keyboard, SDL_SCANCODE_S, 0}},
+        {Event::Left, {InputDevice::Keyboard, SDL_SCANCODE_A, 0}},
+        {Event::Right, {InputDevice::Keyboard, SDL_SCANCODE_D, 0}}
     };
 
     setting = Action::Null;
@@ -137,36 +141,37 @@ void Input::InputEvent() {
 
     while (SDL_PollEvent(&e)) {
         //config
+        bool changed = 0;
         if (setting != Action::Null) {
             if (e.type == SDL_KEYDOWN) {
                 config[setting].device = InputDevice::Keyboard;
                 config[setting].code = e.key.keysym.scancode;
                 setting = Action::Null;
-                return;
+                changed = 1;
             }
             if (e.type == SDL_MOUSEBUTTONDOWN) {
                 config[setting].device = InputDevice::MouseButton;
                 config[setting].code = e.button.button;
                 setting = Action::Null;
-                return;
+                changed = 1;
             }
-            if (setting != Action::Null) return;
         }
-
         if (eventSetting != Event::Null) {
             if (e.type == SDL_KEYDOWN) {
                 eventConfig[eventSetting].device = InputDevice::Keyboard;
                 eventConfig[eventSetting].code = e.key.keysym.scancode;
                 eventSetting = Event::Null;
-                return;
+                changed = 1;
             }
             if (e.type == SDL_MOUSEBUTTONDOWN) {
                 eventConfig[eventSetting].device = InputDevice::MouseButton;
                 eventConfig[eventSetting].code = e.button.button;
                 eventSetting = Event::Null;
-                return;
+                changed = 1;
             }
-            if (eventSetting != Event::Null) return;
+        }
+        if (setting != Action::Null || eventSetting != Event::Null || changed) {
+            return;
         }
 
         for (auto& [key, value] : eventConfig) {

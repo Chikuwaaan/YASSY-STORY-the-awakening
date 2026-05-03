@@ -120,14 +120,7 @@ void Game::Run() {
         const EVENT event = input->event;
 
         if (event.Quit) {
-            running = 0;
-            if (scene == Scene::Platformer) {
-                platformer->Quit();
-            }
-            if (scene == Scene::FaceYassy) {
-                faceyassy->Output();
-            }
-            save->WriteOptions();
+            ExitGame();
         }
         
         if (event.F12) {
@@ -283,6 +276,14 @@ void Game::MakeInstance() {
 
 void Game::ExitGame() {
     running = 0;
+    running = 0;
+    if (scene == Scene::Platformer) {
+        platformer->Quit();
+    }
+    if (scene == Scene::FaceYassy) {
+        faceyassy->Output();
+    }
+    save->WriteOptions();
 }
 
 void Game::Quit() {

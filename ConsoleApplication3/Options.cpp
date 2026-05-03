@@ -86,15 +86,19 @@ void Options::RegisterButtons() {
 
     Up.action = []() {
         inputP->SetConfig(Action::HoldUp);
+        inputP->SetEventConfig(Event::Up);
         };
     Down.action = []() {
         inputP->SetConfig(Action::HoldDown);
+        inputP->SetEventConfig(Event::Down);
         };
     Left.action = []() {
         inputP->SetConfig(Action::HoldLeft);
+        inputP->SetEventConfig(Event::Left);
         };
     Right.action = []() {
         inputP->SetConfig(Action::HoldRight);
+        inputP->SetEventConfig(Event::Right);
     };
     Jump.action = []() {
         inputP->SetConfig(Action::HoldJump);

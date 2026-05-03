@@ -26,21 +26,20 @@ bool UIManager::Update() {
     }
 
     if (currentLine) {
-        EVENT e = inputP->event;
         int switchLine = 0;
         int switchButton = 0;
 
         if (currentLine->direction == DIRECTION::H) {
-            if (e.Right) switchButton = 1;
-            if (e.Left) switchButton = -1;
-            if (e.Up) switchLine = -1;
-            if (e.Down) switchLine = 1;
+            if (inputP->GetEvent(Event::Right)) switchButton = 1;
+            if (inputP->GetEvent(Event::Left)) switchButton = -1;
+            if (inputP->GetEvent(Event::Up)) switchLine = -1;
+            if (inputP->GetEvent(Event::Down)) switchLine = 1;
         }
         else if (currentLine->direction == DIRECTION::V) {
-            if (e.Right) switchLine = 1;
-            if (e.Left) switchLine = -1;
-            if (e.Up) switchButton = -1;
-            if (e.Down) switchButton = 1;
+            if (inputP->GetEvent(Event::Right)) switchLine = 1;
+            if (inputP->GetEvent(Event::Left)) switchLine = -1;
+            if (inputP->GetEvent(Event::Up)) switchButton = -1;
+            if (inputP->GetEvent(Event::Down)) switchButton = 1;
         }
 
 

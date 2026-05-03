@@ -65,7 +65,11 @@ enum class Action {
 enum class Event {
     Null,
     Confirm,
-    Back
+    Back,
+    Up,
+    Down,
+    Left,
+    Right
 };
 
 class Input
