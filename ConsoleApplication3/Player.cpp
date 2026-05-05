@@ -673,10 +673,7 @@ void Player::Draw() {
     DrawPart(texName, sin(moveBody) * 4, 60, 30);
     DrawPart("armL", sin(moveBody) * -16, 70, 50);
     DrawPart("armR", sin(moveBody) * 16, 55, 50);
-
-    SDL_Color color = { 255,255,255,255 };
 }
-
 
 void Player::DrawPart(std::string tex, double angle, double X,double Y) {
     OBJRECT rect;
@@ -693,4 +690,25 @@ void Player::DrawPart(std::string tex, double angle, double X,double Y) {
     }
     point.y = Y;
     texturesP->DrawImage(tex, rect, 1, {1, angle, point.x, point.y, flipX});
+}
+
+void Player::DrawA() {
+    DrawPartA("legL", sin(moveBody) * 16, 30, 50);
+    DrawPartA("legR", sin(moveBody) * -16, 20, 50);
+    DrawPartA("body", 0, 0, 0);
+    DrawPartA("head", sin(moveBody) * 4, 60, 30);
+    DrawPartA("armL", sin(moveBody) * -16, 70, 50);
+    DrawPartA("armR", sin(moveBody) * 16, 55, 50);
+}
+
+void Player::DrawPartA(std::string tex, double angle, double X, double Y) {
+    OBJRECT rect;
+    rect.x = (int)x + 20 + flipX * -40;
+    rect.y = (int)y + 10;
+    rect.w = 110;
+    rect.h = 110;
+    OBJRECT point;
+    point.x = rect.w - X;
+    point.y = Y;
+    texturesP->DrawImage(tex, rect, 0, { 1, angle, point.x, point.y, flipX });
 }

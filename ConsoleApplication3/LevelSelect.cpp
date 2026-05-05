@@ -4,7 +4,9 @@
 #include "Game.h"
 #include "Input.h"
 #include "Save.h"
+#include "Rand.h"
 #include <fstream>
+#include <filesystem>
 
 Textures* LevelSelect::texturesP = nullptr;
 Game* LevelSelect::gameP = nullptr;
@@ -12,9 +14,9 @@ Input* LevelSelect::inputP = nullptr;
 Save* LevelSelect::saveP = nullptr;
 
 LevelSelect::LevelSelect() :
-    slot1(420, 540, 480, 960),
-    slot2(960, 540, 480, 960),
-    slot3(1500, 540, 480, 960),
+    slot1(420, 440, 480, 720),
+    slot2(960, 440, 480, 720),
+    slot3(1500, 440, 480, 720),
     level1(396, 0, 768, 192),
     level2(396, 0, 768, 192),
     level3(396, 0, 768, 192),
@@ -22,9 +24,19 @@ LevelSelect::LevelSelect() :
     level5(396, 0, 768, 192),
     back(396, 0, 768, 192)
 {
+    assy.SetX(1880);
+    assy.SetY(950);
+    assy.FlipX(1);
+
     saveP->LoadProgress(savedata::slot);
     phase = PhaseLevelSelect::SelectSlot;
     Init();
+    percent[0] = 0;
+    percent[1] = 0;
+    percent[2] = 0;
+    isSavedataExisting[0] = 0;
+    isSavedataExisting[1] = 0;
+    isSavedataExisting[2] = 0;
 
     //SLOT
     slot1.texName = "slot1";
@@ -134,31 +146,42 @@ void LevelSelect::Update() {
 
         SDL_Color color1 = { 255,255,255,255 };
         SDL_Color color2 = { 0,73,220,255 };
-        std::string textPercent;
+        std::string textPercent1 = std::to_string(percent[0]) + "%";
+        std::string textPercent2 = std::to_string(percent[1]) + "%";
+        std::string textPercent3 = std::to_string(percent[2]) + "%";
+        std::u8string textName1 = isSavedataExisting[0] ? u8"ヤッシィ１号" : u8"NEW☆GAME";
+        std::u8string textName2 = isSavedataExisting[1] ? u8"ヤッシィ２号" : u8"NEW☆GAME";
+        std::u8string textName3 = isSavedataExisting[2] ? u8"ヤッシィ３号" : u8"NEW☆GAME";
 
-        textPercent = std::to_string(percent[0]) + "%";
-        texturesP->DrawImage("zero_percent", { 420,540,480,960 }, 0, {});
-        texturesP->DrawTexts(u8"ヤッシィ１号", color1, color2, { 420,800,1.5,1.5 }, 0, Anchor::Center);
-        texturesP->DrawTexts(textPercent, color1, color2, {420,300,1.5,1.5}, 0, Anchor::Center);
+        int angle = random.random(0,359);
+        texturesP->DrawImage("assy", { 960 - 750,1000,100,100 }, 0, { 1,angle * 1.0,50,50});
+        angle = random.random(0, 359);
+        texturesP->DrawImage("assy", { 960 + 750,1000,100,100 }, 0, { 1,angle * 1.0,50,50 });
+        texturesP->DrawTexts("*Select Your Saved Game*", color1, color2, {960,1000,2,2}, 0, Anchor::Center);
+        
+        texturesP->DrawImage("zero_percent", { 420,440,480,720 }, 0, {});
+        texturesP->DrawTexts(textName1, color1, color2, { 420,700,1.5,1.5 }, 0, Anchor::Center);
+        texturesP->DrawTexts(textPercent1, color1, color2, {420,200,1.5,1.5}, 0, Anchor::Center);
 
-        textPercent = std::to_string(percent[1]) + "%";
-        texturesP->DrawImage("zero_percent", { 960,540,480,960 }, 0, {});
-        texturesP->DrawTexts(u8"ヤッシィ２号", color1, color2, { 960,800,1.5,1.5 }, 0, Anchor::Center);
-        texturesP->DrawTexts(textPercent, color1, color2, { 960,300,1.5,1.5 }, 0, Anchor::Center);
+        texturesP->DrawImage("zero_percent", { 960,440,480,720 }, 0, {});
+        texturesP->DrawTexts(textName2, color1, color2, { 960,700,1.5,1.5 }, 0, Anchor::Center);
+        texturesP->DrawTexts(textPercent2, color1, color2, { 960,200,1.5,1.5 }, 0, Anchor::Center);
 
-        textPercent = std::to_string(percent[2]) + "%";
-        texturesP->DrawImage("zero_percent", { 1500,540,480,960 }, 0, {});
-        texturesP->DrawTexts(u8"ヤッシィ３号", color1, color2, { 1500,800,1.5,1.5 }, 0, Anchor::Center);
-        texturesP->DrawTexts(textPercent, color1, color2, { 1500,300,1.5,1.5 }, 0, Anchor::Center);
+        texturesP->DrawImage("zero_percent", { 1500,440,480,720 }, 0, {});
+        texturesP->DrawTexts(textName3, color1, color2, { 1500,700,1.5,1.5 }, 0, Anchor::Center);
+        texturesP->DrawTexts(textPercent3, color1, color2, { 1500,200,1.5,1.5 }, 0, Anchor::Center);
     }
 
     if (phase == PhaseLevelSelect::SelectLevel) {
+        assy.DrawA();
+        assy.moveBody += 0.1;
+
         SDL_Color color1 = { 255,255,255,255 };
         SDL_Color color2 = { 0,73,220,255 };
         std::string thumbnail = "thumbnail";
         thumbnail = thumbnail + std::to_string(availableLevels[UIlevel.currentButton] + 1);
-        texturesP->DrawTexts(u8"やっしー　号", color1, color2, {1600,950,2,2}, 0, Anchor::Center);
-        texturesP->DrawTexts(std::to_string(savedata::slot), color1, color2, {1740,950,3,3}, 0, Anchor::Center);
+        texturesP->DrawTexts(u8"やっしー　号", color1, color2, {1500,950,2,2}, 0, Anchor::Center);
+        texturesP->DrawTexts(std::to_string(savedata::slot), color1, color2, {1640,950,3,3}, 0, Anchor::Center);
         texturesP->DrawImage(thumbnail, { 1600,540,512,512 }, 0, {});
         texturesP->DrawImage("whitestar", { 1100,540,400,400 }, 0, {});
 
@@ -257,6 +280,16 @@ void LevelSelect::Init() {
 }
 
 void LevelSelect::GetPercent() {
+    namespace fs = std::filesystem;
+    for (int i = 0; i < 3; i++) {
+        std::string path = "Save/";
+        path = path + std::to_string(i+1) + "/progress.bin";
+        if (fs::exists(path)) {
+            isSavedataExisting[i] = 1;
+        }
+    }
+    
+
     for (int i = 0; i < 3; i++) {
         saveP->LoadProgress(i+1);
 

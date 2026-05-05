@@ -2,6 +2,8 @@
 #include "Timer.h"
 #include "Button.h"
 #include "UIManager.h"
+#include "Rand.h"
+#include "Player.h"
 
 
 class Textures;
@@ -19,6 +21,7 @@ class LevelSelect
 private:
     Timer timer;
     Timer timer2;
+    Rand random;
 
     UIManager UIslot;
     LINE lineSlot;
@@ -36,7 +39,10 @@ private:
     Button back;
 
     int percent[3];
+    bool isSavedataExisting[3];
     std::vector<int> availableLevels;
+
+    Player assy;
 public:
     static Textures* texturesP;
     static Game* gameP;

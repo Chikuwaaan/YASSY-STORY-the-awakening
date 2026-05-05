@@ -175,7 +175,7 @@ void Title::Update() {
 
         BTNstart.state = State::Idle;
         BTNoptions.state = State::Idle;
-        //BTNcredits.state = State::Idle;
+        BTNcredits.state = State::Idle;
         BTNexitgame.state = State::Idle;
     }
     else {

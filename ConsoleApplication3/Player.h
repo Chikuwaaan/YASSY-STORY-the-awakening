@@ -17,7 +17,6 @@ private:
     double maxSpeed;
     double minSpeed;
     double deceleration;
-    double moveBody;
     double walkVX;
     double liftVX, liftVY;
     double aX, aY;
@@ -50,6 +49,7 @@ private:
 public:
     double vYreserve;
     bool watering;
+    double moveBody;
 
     static Level* levelP;
     static Camera* cameraP;
@@ -71,5 +71,7 @@ public:
 
     void Draw() override;
     void DrawPart(std::string tex, double angle, double x, double y);
+    void DrawA();
+    void DrawPartA(std::string tex, double angle, double x, double y);
 };
 

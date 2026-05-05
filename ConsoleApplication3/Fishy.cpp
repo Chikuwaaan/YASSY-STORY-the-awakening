@@ -77,13 +77,7 @@ void Fishy::Touched() {
 }
 
 void Fishy::Stomped() {
-    if (type == 1) {
-        Touched();
-    }
-    else if (type == 2) {
-        dead = 1;
-        soundsP->PlaySE("1kill");
-        playerP->Stomp();
-    }
-    
+    dead = 1;
+    soundsP->PlaySE("1kill");
+    playerP->Stomp();
 }

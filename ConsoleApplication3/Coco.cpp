@@ -48,4 +48,6 @@ void Coco::Touched() {
 
 void Coco::Stomped() {
     dead = 1;
+    soundsP->PlaySE("1kill");
+    playerP->Stomp();
 }

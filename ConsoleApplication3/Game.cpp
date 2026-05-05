@@ -133,7 +133,6 @@ void Game::Run() {
 
 
 void Game::Update() {
-    std::cout << platformer::level;
 
     //refresh
     SDL_Rect screenRect = { 0, 0, settings::baseW, settings::baseH};
