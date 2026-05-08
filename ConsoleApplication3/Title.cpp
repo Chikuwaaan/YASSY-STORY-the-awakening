@@ -197,6 +197,7 @@ void Title::Update() {
         OBJRECT fullScreen = { settings::baseW / 2, settings::baseH / 2, settings::baseW,settings::baseH, 1 };
         texturesP->DrawImage("assy", fullScreen, 0, {});
         texturesP->DrawRect({255,255,255,200}, fullScreen, 0);
+        texturesP->DrawImage("yassy_art1", { 1800,120,320,240 }, 0, {});
 
         uiCredits.Update();
         BTNface.state = State::Idle;

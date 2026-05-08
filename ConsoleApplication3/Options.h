@@ -50,6 +50,7 @@ private:
     LINE sita;
     Button Invert;
     Button Blur;
+    Button Eye;
 
     LINE back; 
 public:

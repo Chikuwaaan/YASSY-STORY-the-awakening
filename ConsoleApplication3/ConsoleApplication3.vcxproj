@@ -140,7 +140,9 @@
     <ClCompile Include="Coco.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="CoinManager.cpp" />
+    <ClCompile Include="Complete.cpp" />
     <ClCompile Include="Deco.cpp" />
+    <ClCompile Include="Eye.cpp" />
     <ClCompile Include="FaceYassy.cpp" />
     <ClCompile Include="Fishy.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -186,7 +188,9 @@
     <ClInclude Include="Coco.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="CoinManager.h" />
+    <ClInclude Include="Complete.h" />
     <ClInclude Include="Deco.h" />
+    <ClInclude Include="Eye.h" />
     <ClInclude Include="FaceYassy.h" />
     <ClInclude Include="Fishy.h" />
     <ClInclude Include="Game.h" />

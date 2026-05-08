@@ -14,7 +14,10 @@ Level* Player::levelP = nullptr;
 Camera* Player::cameraP = nullptr;
 OverLay* Player::overlayP = nullptr;
 
-Player::Player() {
+Player::Player() : 
+    eye1(10),
+    eye2(10)
+{
     vYreserve = 0;
     onGround = 0;
     texName = "head";
@@ -673,6 +676,18 @@ void Player::Draw() {
     DrawPart(texName, sin(moveBody) * 4, 60, 30);
     DrawPart("armL", sin(moveBody) * -16, 70, 50);
     DrawPart("armR", sin(moveBody) * 16, 55, 50);
+
+    if (!savedata::Eye) return;
+    eye1.SetX(x + 25 - flipX * 50);
+    eye1.SetY(y + 45);
+    eye1.Update(vX, vY);
+    eye1.Draw();
+    eye2.SetX(x + 45 - flipX * 90);
+    eye2.SetY(y + 42);
+    eye2.Update(vX, vY);
+    eye2.Draw();
+    //eye2.Update();
+    //eye2.Draw();
 }
 
 void Player::DrawPart(std::string tex, double angle, double X,double Y) {

@@ -7,6 +7,8 @@
 #include "Game.h"
 #include "namespace.h"
 #include "GameObject.h"
+#include "Pause.h"
+#include "Complete.h"
 
 #include "Lift.h"
 #include "Zako.h"
@@ -87,15 +89,14 @@ void Game::ChangeScene(Scene s) {
 
 
 void Game::Run() {
-    ChangeScene(Scene::Title);
-    //ChangeScene(Scene::Platformer);
+    //ChangeScene(Scene::Title);
+    ChangeScene(Scene::Platformer);
     //ChangeScene(Scene::FaceYassy);
     //ChangeScene(Scene::LevelSelect);
     timer.SetTime(1.0);
 
     save->LoadOptions();
 
-    double accumulator = 0.0;
     double lastTime = SDL_GetTicks() / 1000.0;
 
     while (running) {
@@ -126,7 +127,6 @@ void Game::Run() {
         if (event.F12) {
             screenshot->SaveScreenShot();
         }
-        accumulator -= settings::dt;
 
     }
 }
@@ -271,6 +271,7 @@ void Game::MakeInstance() {
     Pause::gameP = this;
     Pause::saveP = save.get();
     Pause::inputP = input.get();
+    Complete::texturesP = textures.get();
 }
 
 void Game::ExitGame() {

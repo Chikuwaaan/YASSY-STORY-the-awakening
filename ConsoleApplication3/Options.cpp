@@ -1,4 +1,4 @@
-#include "Options.h"
+﻿#include "Options.h"
 #include "UIManager.h"
 #include "Sounds.h"
 #include "Textures.h"
@@ -38,6 +38,7 @@ Options::Options() :
     Back(1460, settings::baseH / 2 - 100, 96, 96),
     Invert(800, settings::baseH / 2 - 200, 96, 96),
     Blur(800, settings::baseH / 2 - 300, 96, 96),
+    Eye(800, settings::baseH / 2 - 400, 96, 96),
     BTNback(96,96,192,192)
 {
     SE.push_back(&SE0);
@@ -128,6 +129,14 @@ void Options::RegisterButtons() {
             savedata::Blur = 1;
         }
         };
+    Eye.action = []() {
+        if (savedata::Eye) {
+            savedata::Eye = 0;
+        }
+        else {
+            savedata::Eye = 1;
+        }
+        };
     BTNback.icon = Icons::Back;
 
     lineSE = {
@@ -183,7 +192,7 @@ void Options::RegisterButtons() {
         }
     };
     sita = {
-        {&Invert, &Blur},
+        {&Invert, &Blur, &Eye},
         DIRECTION::V,
         nullptr,
         nullptr,
@@ -272,6 +281,7 @@ void Options::Update() {
     double Backy = settings::baseH / 2 - 100;
     double Inverty = settings::baseH / 2 - 200;
     double Blury = settings::baseH / 2 - 300;
+    double Eyey = settings::baseH / 2 - 400;
     texturesP->DrawTexts("SE volume:", white, black, { 300, SEy, 1, 1 }, 0, Anchor::Left);
     texturesP->DrawTexts("BGM volume:", white, black, { 300, BGMy, 1, 1 }, 0, Anchor::Left);
     texturesP->DrawTexts("Up key:", white, black, { 300, Upy, 1, 1 }, 0, Anchor::Left);
@@ -284,6 +294,7 @@ void Options::Update() {
     texturesP->DrawTexts("Back key:", white, black, { 960, Backy, 1, 1 }, 0, Anchor::Left);
     texturesP->DrawTexts("Invert Dash:", white, black, { 300, Inverty, 1, 1 }, 0, Anchor::Left);
     texturesP->DrawTexts("Blur:", white, black, { 300, Blury, 1, 1 }, 0, Anchor::Left);
+    texturesP->DrawTexts(u8"めだまシール:", white, black, { 300, Eyey, 1, 1 }, 0, Anchor::Left);
 
     Up.text = inputP->GetConfigName(Action::HoldUp);
     Down.text = inputP->GetConfigName(Action::HoldDown);
@@ -334,6 +345,13 @@ void Options::Update() {
     }
     else {
         Blur.icon = Icons::Off;
+    }
+    Eye.state = State::Idle;
+    if (savedata::Eye) {
+        Eye.icon = Icons::On;
+    }
+    else {
+        Eye.icon = Icons::Off;
     }
 
     BTNback.state = State::Idle;

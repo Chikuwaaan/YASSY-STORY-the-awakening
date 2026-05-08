@@ -3,6 +3,7 @@
 #include "structs.h"
 #include "GameObject.h"
 #include "GameTimer.h"
+#include "Eye.h"
 
 class Level;
 class Camera;
@@ -43,6 +44,9 @@ private:
 
     GameTimer timerComplete;
     bool completing;
+
+    Eye eye1;
+    Eye eye2;
 
     void CollideY();
     void CollideX();

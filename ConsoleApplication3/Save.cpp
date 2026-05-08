@@ -40,6 +40,7 @@ void Save::LoadOptions() {
             }
             option >> savedata::InvertDash;
             option >> savedata::Blur;
+            option >> savedata::Eye;
         }
     }
     option.close();
@@ -94,6 +95,7 @@ void Save::WriteOptions() {
         option << (int)inputP->eventConfig[Event::Right].code << std::endl;
         option << savedata::InvertDash << std::endl;
         option << savedata::Blur << std::endl;
+        option << savedata::Eye << std::endl;
     }
     option.close();
 

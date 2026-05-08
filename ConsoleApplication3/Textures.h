@@ -8,6 +8,7 @@
 #include <filesystem>
 #include "structs.h"
 #include "Timer.h"
+#include "Rand.h"
 
 class Camera;
 
@@ -35,6 +36,7 @@ private:
     SDL_Texture* canvas;
     SDL_Texture* blur;
     Timer timer;
+    Rand random;
 public:
     static Camera* cameraP;
     Textures();

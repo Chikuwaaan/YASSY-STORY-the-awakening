@@ -138,22 +138,20 @@ void FaceYassy::Update() {
         }
     }
     
-    /*
-    std::cout << mousedx << "," << mousedy << ",";
-    if (mousedx) std::cout << tan((mousedy*0.1) / mousedx);
-    std::cout << std::endl;
-    */
+    
+    //std::cout << std::atan2((double)mousedy, (double)mousedx) * 180.0 / M_PI << std::endl;
     
     /*
     double angle = 0;
     if (mousedx != 0) {
-        angle = 1 / tan(mousedy / mousedx);
+        angle = tan(mousedy / mousedx);
     }
     else {
         angle = 0;
     }
     std::cout << angle << std::endl;
     */
+    
     
 
     //MOD

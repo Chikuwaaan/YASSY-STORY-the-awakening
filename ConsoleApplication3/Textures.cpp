@@ -354,7 +354,11 @@ void Textures::Update() {
     SDL_Rect dst = { 0,0,1920,1080 };
     SDL_Point center = { 960,540 };
     SDL_SetRenderTarget(settings::renderer, NULL);
-    
+
+    /*
+    dst.x = random.random(-10, 10);
+    dst.y = random.random(-10, 10);
+    */
     SDL_RenderCopyEx(settings::renderer, canvas, NULL, &dst, 0, &center, SDL_FLIP_NONE);
     
     //blur
@@ -368,15 +372,14 @@ void Textures::Update() {
         }
     }
     
-    
-    //SDL_RenderCopyEx(settings::renderer, canvas, NULL, &dst, 0, &center, SDL_FLIP_NONE);
-    /* ‚¤‚Ë‚¤‚Ë
+    /*‚¤‚Ë
     for (int i = 0; i < 1080; i++) {
         SDL_Rect src = { 0,i,1920,1 };
-        SDL_Rect dst = { cos(i/100.0)*200.0,i,1920,1};
+        SDL_Rect dst = { cos(i/100.0 + timer.GetTime())*100.0,i,1920,1};
         SDL_RenderCopyEx(settings::renderer, canvas, &src, &dst, NULL, &center, SDL_FLIP_NONE);
     }
     */
+    
     SDL_RenderPresent(settings::renderer);
     SDL_SetRenderTarget(settings::renderer, canvas);
 }

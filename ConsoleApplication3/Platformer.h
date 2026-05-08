@@ -6,10 +6,11 @@
 #include <iostream>
 #include "Level.h"
 #include "Player.h"
-#include "Timer.h"
 #include "CoinManager.h"
 #include "GameObject.h"
 #include "Pause.h"
+#include "Complete.h"
+#include "GameTimer.h"
 #include <variant>
 
 class Textures;
@@ -18,6 +19,7 @@ class Input;
 class Sounds;
 class Save;
 class Game;
+class Complete;
 
 struct LEVELINFO {
     std::u8string name;
@@ -31,15 +33,14 @@ private:
     Player player;
     CoinManager coinManager;
     Pause pause;
+    Complete complete;
+    GameTimer timer;
 
     bool pausing;
     bool editorMode;
     bool completed;
 
     LEVELINFO info;
-
-    Timer timer;
-
 public:
     static Textures* texturesP;
     static Camera* cameraP;

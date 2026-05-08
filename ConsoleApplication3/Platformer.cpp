@@ -300,7 +300,8 @@ void Platformer::Spawn() {
 
 void Platformer::Complete() {
     completed = 1;
-    gameP->ChangeScene(Scene::LevelSelect);
+    complete.SetClearTime(timer.GetTime());
+    soundsP->PlaySE("Complete");
 }
 
 void Platformer::Save() {
@@ -314,114 +315,115 @@ void Platformer::Quit() {
 void Platformer::Update() {
     EVENT event = inputP->event;
     OBJRECT screenRect = { (double)settings::baseW / 2, (double)settings::baseH / 2, (double)settings::baseW, (double)settings::baseH, 1 };
-    texturesP->DrawRect({ 255,255,255,255 }, screenRect, 0);
+    texturesP->DrawRect({ 0,0,0,255 }, screenRect, 0);
 
     if (!pausing) cameraP->Update();
 
-    //[DEBUG]cheat mode
+    if (!completed) {
+        timer.Update();
 
-    if (event.E) {
-        if (editorMode) {
-            editorMode = 0;
-        }
-        else {
-            editorMode = 1;
-        }
-    }
-    if (event.P) {
-        double x, y;
-        level.GetMouseC(&x, &y);
-        player.SetX(x);
-        player.SetY(y);
-    }
+        //[DEBUG]cheat mode
 
-    if (!pause.on) {
-        if (inputP->GetEvent(Event::Back)) {
-            pause.Init();
-            pause.on = 1;
-        }
-    }
-    
-
-    
-
-    if (!editorMode && !pause.on) {
-        for (std::unique_ptr<GameObject>& obj : objects) {
-            if (inScreen(obj) || obj->alwaysLoad) {
-                obj->Update();
+        if (event.E) {
+            if (editorMode) {
+                editorMode = 0;
+            }
+            else {
+                editorMode = 1;
             }
         }
-        for (auto& obj : pendingObjects) {
-            objects.push_back(std::move(obj));
+        if (event.P) {
+            double x, y;
+            level.GetMouseC(&x, &y);
+            player.SetX(x);
+            player.SetY(y);
         }
-        pendingObjects.clear();
-        objects.erase(
-            std::remove_if(objects.begin(), objects.end(),
-                [](const std::unique_ptr<GameObject>& o)
-                {return o->IsDead(); }),
-            objects.end()
-        );
 
-        player.Update();
-    }
-
-    if (completed) {
-        //gameP->ChangeScene(Scene::Title);
-        return;
-    }
-
-    for (auto& obj : objects) {
-        EntityType type = obj->GetType();
-        if (type == EntityType::BackGround) {
-            if (obj->GetLayer() == -1) {
-                obj->Draw();
+        if (!pause.on) {
+            if (inputP->GetEvent(Event::Back)) {
+                pause.Init();
+                pause.on = 1;
             }
         }
-    }
 
 
-    level.Update();
-    level.DrawMap(editorMode);
 
-    for (auto& obj : objects) {
-        EntityType type = obj->GetType();
-        if (type != EntityType::BackGround) {
-            if (obj->visible) {
+
+        if (!editorMode && !pause.on) {
+            for (std::unique_ptr<GameObject>& obj : objects) {
+                if (inScreen(obj) || obj->alwaysLoad) {
+                    obj->Update();
+                }
+            }
+            for (auto& obj : pendingObjects) {
+                objects.push_back(std::move(obj));
+            }
+            pendingObjects.clear();
+            objects.erase(
+                std::remove_if(objects.begin(), objects.end(),
+                    [](const std::unique_ptr<GameObject>& o)
+                    {return o->IsDead(); }),
+                objects.end()
+            );
+
+            player.Update();
+        }
+
+        for (auto& obj : objects) {
+            EntityType type = obj->GetType();
+            if (type == EntityType::BackGround) {
                 if (obj->GetLayer() == -1) {
                     obj->Draw();
                 }
-                if (editorMode) obj->DrawHitbox();
             }
         }
-    }
-
-    player.Draw();
 
 
-    for (auto& obj : objects) {
-        if (obj->GetLayer() == 1) {
-            obj->Draw();
+        level.Update();
+        level.DrawMap(editorMode);
+
+        for (auto& obj : objects) {
+            EntityType type = obj->GetType();
+            if (type != EntityType::BackGround) {
+                if (obj->visible) {
+                    if (obj->GetLayer() == -1) {
+                        obj->Draw();
+                    }
+                    if (editorMode) obj->DrawHitbox();
+                }
+            }
         }
-    }
-    for (auto& obj : objects) {
-        if (obj->GetLayer() == 2) {
-            obj->Draw();
+
+        player.Draw();
+
+
+        for (auto& obj : objects) {
+            if (obj->GetLayer() == 1) {
+                obj->Draw();
+            }
         }
+        for (auto& obj : objects) {
+            if (obj->GetLayer() == 2) {
+                obj->Draw();
+            }
+        }
+
+
+
+        if (editorMode) {
+            level.Editor();
+        }
+        cameraP->Draw();
+
+        coinManager.Update();
+        coinManager.Draw();
+
+        pause.Update();
     }
-
-
-
-    if (editorMode) {
-        level.Editor();
+ else {
+     complete.Update();
     }
-    cameraP->Draw();
-
-    coinManager.Update();
-    coinManager.Draw();
-
-    texturesP->DrawTexts(std::to_string(timer.GetTime()), { 255,255,255,255 }, { 0,0,0,255 }, { 1700,50,1,1 }, 0, Anchor::Center);
-
-    pause.Update();
+    
 }
 
 bool Platformer::inScreen(std::unique_ptr<GameObject>& p) {
