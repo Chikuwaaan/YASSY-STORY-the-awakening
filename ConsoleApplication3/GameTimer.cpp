@@ -16,3 +16,7 @@ void GameTimer::Reset() {
 double GameTimer::GetTime() {
     return timer;
 }
+
+void GameTimer::SetTime(double sec) {
+    timer = sec;
+}

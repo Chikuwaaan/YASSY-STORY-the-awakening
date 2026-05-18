@@ -90,6 +90,10 @@ Textures::Textures() {
         iconProperty[Icons::On] = { 1,3 };
         iconProperty[Icons::Off] = { 2,3 };
         iconProperty[Icons::Back] = { 0,2 };
+        iconProperty[Icons::Left] = { 4,2 };
+        iconProperty[Icons::Right] = { 5,2 };
+        iconProperty[Icons::Up] = { 6,2 };
+        iconProperty[Icons::Down] = { 7,2 };
     }
 }
 

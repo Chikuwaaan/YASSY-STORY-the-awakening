@@ -133,7 +133,6 @@ void Game::Run() {
 
 
 void Game::Update() {
-
     //refresh
     SDL_Rect screenRect = { 0, 0, settings::baseW, settings::baseH};
     SDL_SetRenderTarget(settings::renderer, NULL);
@@ -259,6 +258,7 @@ void Game::MakeInstance() {
     LevelSelect::gameP = this;
     LevelSelect::inputP = input.get();
     LevelSelect::saveP = save.get();
+    LevelSelect::soundsP = sounds.get();
     UIManager::inputP = input.get();
     GameObject::texturesP = textures.get();
     GameObject::soundsP = sounds.get();

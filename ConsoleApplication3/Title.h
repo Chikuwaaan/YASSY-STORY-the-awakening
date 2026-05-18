@@ -28,6 +28,7 @@ private:
     Phase phase;
     void RegisterButtons();
     void ChangePhase();
+    bool music;
 
     Options options;
 public:

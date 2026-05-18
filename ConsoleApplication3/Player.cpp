@@ -375,6 +375,10 @@ void Player::Land() {
 
 }
 
+bool Player::IsDead() {
+    return isDead;
+}
+
 void Player::CollideY() {
     if (onGround) {
         coyoteTime = 0;
@@ -583,28 +587,11 @@ void Player::MoveCameraRoom() {
 void Player::Die() {
     texName = "head_miss";
     soundsP->PlaySE("die");
-    /*
-    MessageBoxW(
-        NULL,
-        L"へたくそ？",
-        L"YASSY STORY",
-        MB_ICONSTOP
-    );
-    */
-
-    std::cout << "YOUD IED" << std::endl;
+    platformer::death++;
     isDead = 1;
     dieTime = 3.0;
     dieAnim = 1;
-
-    //OBJRECT rect = { x,y,w,h };
-    //SDL_Rect dst = texturesP->GetDst(rect, 1, Anchor::Center);
     overlayP->PinHole(settings::baseW/2, settings::baseH/2, 2000, 1000, 1.1, {0,0,0,255});
-    //overlayP->PinHole((int)x, (int)y, 1000, 1000, 1, { 0,0,0,255 });
-
-    
-    //Mix_Music* music = Mix_LoadMUS("Assets/audio/sanctuary.wav");
-    //Mix_PlayMusic(music, -1);
 }
 
 void Player::Spawn() {
@@ -642,31 +629,10 @@ void Player::Goal() {
     if (completing) return;
     stop = 0;
 
-    for (int i = 0; i < 3; i++) {
-        if (savedata::coin[platformer::level-1][i] | platformer::coin[i]) {
-            savedata::coin[platformer::level-1][i] = 1;
-        }
-    }
-    platformer::coin[0] = 0;
-    platformer::coin[1] = 0;
-    platformer::coin[2] = 0;
-    
-    savedata::completedLevel[platformer::level - 1] = 2;
-
-    platformer::CP = 0;
-    platformer::level = 0;
-    
-    platformerP->Save();
     platformerP->Complete();
+    platformerP->Save();
     completing = 1;
-}
-
-void Player::Complete() {
-    stop = 0;
-    completing = 0;
-    platformer::CP = 0;
-    platformerP->Save();
-    platformerP->Complete();
+    std::cout << "GOAL";
 }
 
 void Player::Draw() {
@@ -678,13 +644,23 @@ void Player::Draw() {
     DrawPart("armR", sin(moveBody) * 16, 55, 50);
 
     if (!savedata::Eye) return;
+    double vx, vy;
+    if (isDead) {
+        vx = 0;
+        vy = 0;
+    }
+    else {
+        vx = vX;
+        vy = vY;
+    }
+
     eye1.SetX(x + 25 - flipX * 50);
     eye1.SetY(y + 45);
-    eye1.Update(vX, vY);
+    eye1.Update(vx, vy);
     eye1.Draw();
     eye2.SetX(x + 45 - flipX * 90);
     eye2.SetY(y + 42);
-    eye2.Update(vX, vY);
+    eye2.Update(vx, vy);
     eye2.Draw();
     //eye2.Update();
     //eye2.Draw();

@@ -38,6 +38,7 @@ Title::Title() :
     //phase = Phase::Options;
     phase = Phase::YassyStory2;
     //phase = Phase::Loading;
+    music = 0;
 }
 
 void Title::Init() {
@@ -60,6 +61,8 @@ void Title::RegisterButtons() {
     };
     ui.AddLine(&titleMenu);
     uiCredits.AddLine(&face);
+    uiCredits.currentLine = &face;
+    uiCredits.currentButton = 1;
     ui.currentLine = &titleMenu;
 
     BTNstart.text = "START";
@@ -122,6 +125,11 @@ void Title::Update() {
     last = now;
     timer += delta / 1000.0;
     ChangePhase();
+
+    if (!music && (phase == Phase::YassyStory1 || phase == Phase::YassyStory2)) {
+        soundsP->PlayMusic("alpha");
+        music = 1;
+    }
 
     SDL_Rect fullScreen = { settings::baseW / 2, settings::baseH / 2, settings::baseW,settings::baseH };
     SDL_Rect refresh = { 0,0,settings::baseW,settings::baseH };

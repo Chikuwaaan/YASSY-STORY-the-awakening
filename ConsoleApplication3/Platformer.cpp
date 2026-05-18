@@ -285,12 +285,14 @@ void Platformer::LoadEntities() {
 
 
 void Platformer::Init() {
+    saveP->LoadCurrent(savedata::slot, 1);
+    timer.SetTime(platformer::time);
     player.Spawn();
     LoadLevelInfo();
     level.LoadLevel(platformer::level);
-    //cameraP->LoadCameraRoom(platformer::level);
     soundsP->PlayMusic(info.BGM);
     objects.push_back(std::make_unique<Toast>(info.name));
+    timer.SetTime(platformer::time);
 }
 
 void Platformer::Spawn() {
@@ -300,8 +302,32 @@ void Platformer::Spawn() {
 
 void Platformer::Complete() {
     completed = 1;
-    complete.SetClearTime(timer.GetTime());
     soundsP->PlaySE("Complete");
+    Mix_HaltMusic();
+
+    for (int i = 0; i < 3; i++) {
+        if (savedata::coin[platformer::level - 1][i] | platformer::coin[i]) {
+            savedata::coin[platformer::level - 1][i] = 1;
+        }
+    }
+    platformer::coin[0] = 0;
+    platformer::coin[1] = 0;
+    platformer::coin[2] = 0;
+
+    double time = timer.GetTime();
+    complete.SetClearTime(time);
+    complete.SetBestTime(savedata::time[platformer::level - 1]);
+    complete.levelName = info.name;
+    if (savedata::time[platformer::level - 1] > time || savedata::completedLevel[platformer::level-1] != 2) {
+        savedata::time[platformer::level - 1] = time;
+    }
+    complete.SetDeaths(platformer::death);
+    
+    savedata::completedLevel[platformer::level - 1] = 2;
+    platformer::CP = 0;
+    platformer::level = 0;
+    platformer::time = 0;
+    platformer::death = 0;
 }
 
 void Platformer::Save() {
@@ -313,6 +339,7 @@ void Platformer::Quit() {
 }
 
 void Platformer::Update() {
+    //std::cout << platformer::death << "," << timer.GetTime() << std::endl;
     EVENT event = inputP->event;
     OBJRECT screenRect = { (double)settings::baseW / 2, (double)settings::baseH / 2, (double)settings::baseW, (double)settings::baseH, 1 };
     texturesP->DrawRect({ 0,0,0,255 }, screenRect, 0);
@@ -321,6 +348,7 @@ void Platformer::Update() {
 
     if (!completed) {
         timer.Update();
+        platformer::time = timer.GetTime();
 
         //[DEBUG]cheat mode
 
@@ -341,8 +369,10 @@ void Platformer::Update() {
 
         if (!pause.on) {
             if (inputP->GetEvent(Event::Back)) {
-                pause.Init();
-                pause.on = 1;
+                if (!player.IsDead()) {
+                    pause.Init();
+                    pause.on = 1;
+                }
             }
         }
 
@@ -422,6 +452,10 @@ void Platformer::Update() {
     }
  else {
      complete.Update();
+     if (complete.finish) {
+         gameP->ChangeScene(Scene::LevelSelect);
+         complete.finish = 0;
+     }
     }
     
 }

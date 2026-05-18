@@ -94,6 +94,8 @@ namespace platformer {
     int level = 6;
     int CP = 0;
     int coin[3] = { 0,0,0 };
+    double time = 0;
+    int death = 0;
 }
 
 namespace savedata {
@@ -117,5 +119,9 @@ namespace savedata {
 
     std::vector<int> completedLevel = {
         1,0,0,0,0,0,0,0,0,0
+    };
+
+    std::vector<double> time = {
+        0,0,0,0,0,0,0,0,0,0
     };
 }

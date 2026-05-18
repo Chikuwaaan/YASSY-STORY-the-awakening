@@ -34,6 +34,8 @@ namespace platformer {
     extern int level;
     extern int CP;
     extern int coin[3];
+    extern double time;
+    extern int death;
 }
 
 namespace savedata {
@@ -44,4 +46,5 @@ namespace savedata {
 
     extern std::vector<std::vector<int>> coin;
     extern std::vector<int> completedLevel;
+    extern std::vector<double> time;
 }

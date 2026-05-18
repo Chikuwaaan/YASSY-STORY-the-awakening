@@ -8,5 +8,6 @@ public:
     void Update();
     void Reset();
     double GetTime();
+    void SetTime(double sec);
 };
 

@@ -126,27 +126,25 @@ void Save::WriteOptions() {
 
 void Save::LoadProgress(int slot) {
     std::cout << "ロードしました" << slot << std::endl;
-    LoadCurrent(slot);
+    LoadCurrent(slot, 0);
     LoadProg(slot);
 }
 
-void Save::LoadCurrent(int slot) {
+void Save::LoadCurrent(int slot, bool Init) {
     std::string path = "Save/";
     path = path + std::to_string(slot) + "/current.bin";
     std::ifstream current(path);
-    if (!current.is_open()) {
-        platformer::CP = 0;
-        platformer::coin[0] = 0;
-        platformer::coin[1] = 0;
-        platformer::coin[2] = 0;
-        return;
+
+    platformer::CP = 0;
+    platformer::coin[0] = 0;
+    platformer::coin[1] = 0;
+    platformer::coin[2] = 0;
+    if (Init) {
+        platformer::time = 0;
+        platformer::death = 0;
     }
-    else {
-        platformer::CP = 0;
-        platformer::coin[0] = 0;
-        platformer::coin[1] = 0;
-        platformer::coin[2] = 0;
-    }
+
+    if (!current.is_open()) return;
 
     int format;
     current.read((char*)&format, sizeof(int));
@@ -159,6 +157,16 @@ void Save::LoadCurrent(int slot) {
         current.read((char*)&platformer::coin[0], sizeof(int));
         current.read((char*)&platformer::coin[1], sizeof(int));
         current.read((char*)&platformer::coin[2], sizeof(int));
+
+        double time;
+        int death;
+        current.read((char*)&time, sizeof(double));
+        current.read((char*)&death, sizeof(int));
+        if (Init) {
+            platformer::time = time;
+            platformer::death = death;
+            std::cout << "OWO";
+        }
     }
     current.close();
 }
@@ -169,8 +177,6 @@ void Save::LoadProg(int slot) {
     std::ifstream file(path);
 
     if (!file.is_open()) {
-        std::cout << "UOUO" << std::endl;
-
         savedata::coin = {
         {0,0,0},
         {0,0,0},
@@ -185,15 +191,13 @@ void Save::LoadProg(int slot) {
         };
 
         savedata::completedLevel = {
-        1,0,0,0,0,0,0,0,0,0
+            1,0,0,0,0,0,0,0,0,0
         };
-        /*
-        for (int i = 0; i < 10; i++) {
-            savedata::completedLevel[i] = 0;
-            savedata::coin[i] = { 0,0,0 };
-        }
-        savedata::completedLevel[0] = 1;
-        */
+
+        savedata::time = {
+            0,0,0,0,0,0,0,0,0,0
+        };
+
         return;
     }
 
@@ -203,6 +207,7 @@ void Save::LoadProg(int slot) {
     if (format == 1) {
         for (int i = 0; i < 10; i++) {
             file.read((char*)&savedata::completedLevel[i], sizeof(int));
+            file.read((char*)&savedata::time[i], sizeof(double));
 
             for (int j = 0; j < 3; j++) {
                 file.read((char*)&savedata::coin[i][j], sizeof(int));
@@ -237,6 +242,9 @@ void Save::WriteCurrent(int slot) {
     current.write((char*)&(platformer::coin[1]), sizeof(int));
     current.write((char*)&(platformer::coin[2]), sizeof(int));
 
+    current.write((char*)&(platformer::time), sizeof(double));
+    current.write((char*)&(platformer::death), sizeof(int));
+
     current.close();
 }
 
@@ -251,6 +259,8 @@ void Save::WriteProg(int slot) {
     for (int i = 0; i < 10; i++) {
         int completed = savedata::completedLevel[i];
         progress.write((char*)&completed, sizeof(int));
+        double time = savedata::time[i];
+        progress.write((char*)&time, sizeof(double));
 
         for (int j = 0; j < 3; j++) {
             int coin = savedata::coin[i][j];

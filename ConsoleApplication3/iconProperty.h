@@ -45,5 +45,9 @@ enum class Icons {
     UICursor4,
     UO,
     On,
-    Off
+    Off,
+    Left,
+    Right,
+    Up,
+    Down
 };

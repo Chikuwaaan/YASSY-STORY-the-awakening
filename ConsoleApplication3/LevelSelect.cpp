@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Save.h"
 #include "Rand.h"
+#include "Sounds.h"
 #include <fstream>
 #include <filesystem>
 
@@ -12,6 +13,7 @@ Textures* LevelSelect::texturesP = nullptr;
 Game* LevelSelect::gameP = nullptr;
 Input* LevelSelect::inputP = nullptr;
 Save* LevelSelect::saveP = nullptr;
+Sounds* LevelSelect::soundsP = nullptr;
 
 LevelSelect::LevelSelect() :
     slot1(420, 440, 480, 720),
@@ -28,6 +30,7 @@ LevelSelect::LevelSelect() :
     assy.SetY(950);
     assy.FlipX(1);
 
+    soundsP->PlayMusic("f");
     saveP->LoadProgress(savedata::slot);
     phase = PhaseLevelSelect::SelectSlot;
     Init();
@@ -218,10 +221,14 @@ void LevelSelect::Update() {
             }
         }
 
+        //サムネイルの下
         if (availableLevels[UIlevel.currentButton] != 1007) {
             for (int i = 0; i < 3; i++) {
                 texturesP->DrawSprite("coinmanager", { 1600.0 - 96 + 96 * i,236,96,96 }, { 16 * savedata::coin[UIlevel.currentButton][i],0,16,16 }, 0);
             }
+            std::string text = "Best Time:";
+            text = text + std::format("{:.3f}", savedata::time[UIlevel.currentButton]);
+            texturesP->DrawTexts(text, color1, color2, { 1600,100,1,1 }, 0, Anchor::Center);
         }
 
         int i = 0;
@@ -240,7 +247,6 @@ void LevelSelect::Update() {
                 SDL_Rect src = { savedata::coin[i][j]*16, 0, 16,16 };
                 texturesP->DrawSprite("coinmanager", dst, src, 0);
             }
-
             i++;
         }
 

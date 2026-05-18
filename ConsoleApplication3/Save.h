@@ -6,7 +6,6 @@ class Sounds;
 class Save
 {
 private:
-    void LoadCurrent(int slot);
     void LoadProg(int slot);
     void WriteCurrent(int slot);
     void WriteProg(int slot);
@@ -18,6 +17,7 @@ public:
     void LoadOptions();
     void WriteOptions();
 
+    void LoadCurrent(int slot, bool Init);
     void LoadProgress(int slot);
     void WriteProgress(int slot);
 };

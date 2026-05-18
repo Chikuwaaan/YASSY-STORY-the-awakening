@@ -10,6 +10,7 @@ class Textures;
 class Game;
 class Input;
 class Save;
+class Sounds;
 
 enum class PhaseLevelSelect {
     SelectSlot,
@@ -48,6 +49,7 @@ public:
     static Game* gameP;
     static Input* inputP;
     static Save* saveP;
+    static Sounds* soundsP;
 
     PhaseLevelSelect phase;
 
