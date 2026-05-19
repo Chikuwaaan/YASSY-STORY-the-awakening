@@ -144,6 +144,7 @@
     <ClCompile Include="Deco.cpp" />
     <ClCompile Include="Eye.cpp" />
     <ClCompile Include="FaceYassy.cpp" />
+    <ClCompile Include="Fan.cpp" />
     <ClCompile Include="Fishy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="Deco.h" />
     <ClInclude Include="Eye.h" />
     <ClInclude Include="FaceYassy.h" />
+    <ClInclude Include="Fan.h" />
     <ClInclude Include="Fishy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />

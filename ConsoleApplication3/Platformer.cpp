@@ -25,6 +25,8 @@
 #include "Particle.h"
 #include "Fishy.h"
 #include "Coco.h"
+#include "Fan.h"
+
 #include "Save.h"
 #include "Game.h"
 
@@ -48,6 +50,7 @@ Platformer::Platformer() {
     editorMode = 0;
     pausing = 0;
     completed = 0;
+    autoScroll = 192;
 }
 
 void Platformer::LoadLevelInfo() {
@@ -79,7 +82,8 @@ GameObject* Platformer::AddObject(std::string objClass, std::vector<std::variant
             std::get<double>(args[3]),
             std::get<double>(args[4]),
             std::get<double>(args[5]),
-            std::get<double>(args[6])
+            std::get<double>(args[6]),
+            std::get<double>(args[7])
         );
     }
     if (objClass == "LiftFall") {
@@ -229,7 +233,13 @@ GameObject* Platformer::AddObject(std::string objClass, std::vector<std::variant
             }
         }
     }
-
+    if (objClass == "Fan") {
+        p = std::make_unique<Fan>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1]),
+            std::get<double>(args[2])
+        );
+    }
     /*
     if (objClass == ) {
         p = std::make_unique<>(
@@ -257,6 +267,7 @@ void Platformer::LoadEntities() {
     std::ifstream file(path);
     std::string line;
 
+
     while (std::getline(file, line)) {
         std::stringstream stream(line);
         std::string cell;
@@ -280,6 +291,13 @@ void Platformer::LoadEntities() {
         }
 
         AddObject(objClass, args);
+    }
+
+    if (autoScroll != 0) {
+        double x = player.GetSpawnX();
+        double y = player.GetSpawnY();
+        AddObject("Lift", { x - 960, 99999.0, 192.0, y, 0.0, 0.0, 1.0, 1080.0 });
+        AddObject("Lift", { x + 960, 99999.0, 192.0, y, 0.0, 0.0, 1.0, 1080.0 });
     }
 }
 
@@ -339,18 +357,18 @@ void Platformer::Quit() {
 }
 
 void Platformer::Update() {
-    //std::cout << platformer::death << "," << timer.GetTime() << std::endl;
     EVENT event = inputP->event;
     OBJRECT screenRect = { (double)settings::baseW / 2, (double)settings::baseH / 2, (double)settings::baseW, (double)settings::baseH, 1 };
     texturesP->DrawRect({ 0,0,0,255 }, screenRect, 0);
 
-    if (!pausing) cameraP->Update();
+    if (!pausing) {
+        cameraP->Update();
+    }
 
     if (!completed) {
         timer.Update();
         platformer::time = timer.GetTime();
-
-        //[DEBUG]cheat mode
+        if(!pause.on) scrollTimer.Update();
 
         if (event.E) {
             if (editorMode) {

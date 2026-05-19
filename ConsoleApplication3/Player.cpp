@@ -67,10 +67,11 @@ void Player::SetAX(double acceleration) {
     aX += acceleration;
 }
 
+void Player::AddVY(double amount) {
+    vY += amount;
+}
 
 void Player::Update() {
-    cameraP->SetTargetX(x);
-    cameraP->SetTargetY(y);
     MoveCameraRoom();
 
     if (dieTime > 0) {
@@ -552,6 +553,14 @@ void Player::CollideX() {
 }
 
 void Player::MoveCameraRoom() {
+    if (platformerP->autoScroll != 0.0 && 0) {
+        cameraP->SetTargetX(platformerP->scrollTimer.GetTime() * 96 * 2);
+    }
+    else {
+        cameraP->SetTargetX(x);
+    }
+    cameraP->SetTargetY(y);
+
     std::vector<CAMERAROOM>* room = cameraP->GetRoom();
     CAMERA camera = cameraP->GetCam();
 
@@ -623,6 +632,14 @@ void Player::Spawn() {
 void Player::SetSpawnPoint(double x, double y) {
     spawnX = x;
     spawnY = y;
+}
+
+double Player::GetSpawnX() {
+    return spawnX;
+}
+
+double Player::GetSpawnY() {
+    return spawnY;
 }
 
 void Player::Goal() {

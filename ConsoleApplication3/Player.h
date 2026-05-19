@@ -60,6 +60,7 @@ public:
     static OverLay* overlayP;
     Player();
     void SetAX(double acceleration);
+    void AddVY(double amount);
     void Update() override;
     void Jump();
     void Stomp();
@@ -71,6 +72,8 @@ public:
     void Die();
     void Spawn();
     void SetSpawnPoint(double x, double y);
+    double GetSpawnX();
+    double GetSpawnY();
     void Goal();
 
     void Draw() override;

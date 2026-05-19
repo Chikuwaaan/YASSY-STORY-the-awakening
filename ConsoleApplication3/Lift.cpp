@@ -4,9 +4,9 @@
 #include "namespace.h"
 #include "Textures.h"
 
-Lift::Lift(double spawnX, double ampX, double velocityX, double spawnY, double ampY, double velocityY, double L) {
+Lift::Lift(double spawnX, double ampX, double velocityX, double spawnY, double ampY, double velocityY, double L, double H) {
     type = EntityType::Lift;
-    h = 96;
+    h = H;
     w = 96 * L;
     collision = 1;
     texName = "Lift";
@@ -44,7 +44,7 @@ void Lift::Update() {
     MoveX();
     MoveY();
 }
-
+/*
 void Lift::Draw() {
     int srcY = 64;
     double a = (length - 1) / 2.0;
@@ -66,3 +66,4 @@ void Lift::Draw() {
         texturesP->DrawSprite(texName, dstM, { 16,srcY,16,16 }, 1);
     }
 }
+*/
