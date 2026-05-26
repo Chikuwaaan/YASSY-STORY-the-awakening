@@ -56,6 +56,8 @@ Pause::Pause() :
         platformer::coin[0] = 0;
         platformer::coin[1] = 0;
         platformer::coin[2] = 0;
+        platformer::time = 0;
+        platformer::death = 0;
         saveP->WriteProgress(savedata::slot);
         gameP->ChangeScene(Scene::LevelSelect);
         };

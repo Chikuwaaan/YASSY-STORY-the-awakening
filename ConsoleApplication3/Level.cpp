@@ -155,6 +155,12 @@ Level::Level() :
         {0,0,blockSize,blockSize},
         0
         });
+    blockProperty.push_back({
+        "block18",
+        1,
+        {0,0,blockSize,blockSize},
+        0
+        });
     /*
     blockProperty.push_back({});
     blockProperty.push_back({ {1,1,1,1,0,0,0,0},{

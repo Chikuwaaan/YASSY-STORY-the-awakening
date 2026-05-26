@@ -63,7 +63,7 @@ void Complete::Update() {
     text2 = text2 + std::format("{:.3f}", clearTime);
     std::string text3 = "Best Time:";
     text3 = text3 + std::format("{:.3f}", bestTime);
-    std::string text4 = "Deaths:";
+    std::string text4 = "Death:";
     text4 = text4 + std::to_string(deaths);
     texturesP->DrawTexts(text1, { 100,200,255,255 }, { 0,73,220,255 }, { 960, y[0], 3, 3 }, 0, Anchor::Center);
     texturesP->DrawTexts(levelName, { 255,255,255,255 }, { 0,0,128,255 }, { 960, y[0]-100, 2, 2 }, 0, Anchor::Center);

@@ -107,6 +107,7 @@ void Camera::Update() {
 }
 
 void Camera::Draw() {
+    return;
     std::string current = std::to_string(camera.x) + ',' + std::to_string(camera.y);
     texturesP->DrawTexts(current, { 255,255,255,255 }, { 0,0,0,255 }, { 50,1000,1,1 }, 0, Anchor::Left);
     std::string target = std::to_string(camera.targetX) + ',' + std::to_string(camera.targetY);

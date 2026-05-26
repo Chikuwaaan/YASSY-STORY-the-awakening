@@ -12,5 +12,6 @@ public:
     void Update() override;
     void Touched();
     void Stomped();
+    void Draw() override;
 };
 

@@ -131,6 +131,7 @@ void Save::LoadProgress(int slot) {
 }
 
 void Save::LoadCurrent(int slot, bool Init) {
+    std::cout << "a";
     std::string path = "Save/";
     path = path + std::to_string(slot) + "/current.bin";
     std::ifstream current(path);
@@ -140,6 +141,7 @@ void Save::LoadCurrent(int slot, bool Init) {
     platformer::coin[1] = 0;
     platformer::coin[2] = 0;
     if (Init) {
+        std::cout << "b";
         platformer::time = 0;
         platformer::death = 0;
     }

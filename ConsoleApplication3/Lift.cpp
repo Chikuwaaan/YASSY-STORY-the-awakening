@@ -3,6 +3,7 @@
 #include "Lift.h"
 #include "namespace.h"
 #include "Textures.h"
+#include "Platformer.h"
 
 Lift::Lift(double spawnX, double ampX, double velocityX, double spawnY, double ampY, double velocityY, double L, double H) {
     type = EntityType::Lift;
@@ -43,6 +44,8 @@ void Lift::Update() {
     //std::cout << vX << " " << vY << std::endl;
     MoveX();
     MoveY();
+
+    if (platformerP->autoScroll == 0.0 && h > w) dead = 1;
 }
 /*
 void Lift::Draw() {

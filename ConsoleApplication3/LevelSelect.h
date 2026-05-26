@@ -37,6 +37,8 @@ private:
     Button level3;
     Button level4;
     Button level5;
+    Button level6;
+    Button level7;
     Button back;
 
     int percent[3];

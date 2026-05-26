@@ -24,6 +24,8 @@ LevelSelect::LevelSelect() :
     level3(396, 0, 768, 192),
     level4(396, 0, 768, 192),
     level5(396, 0, 768, 192),
+    level6(396, 0, 768, 192),
+    level7(396, 0, 768, 192),
     back(396, 0, 768, 192)
 {
     assy.SetX(1880);
@@ -78,7 +80,7 @@ LevelSelect::LevelSelect() :
 
     //LEVEL
     std::vector<std::string> levelName;
-    for (int i = 1; i < 6; i++) {
+    for (int i = 1; i <= 7; i++) {
         std::string path = "Levels/";
         path = path + std::to_string(i) + "/info.csv";
         std::ifstream file(path);
@@ -117,6 +119,18 @@ LevelSelect::LevelSelect() :
         gameP->ChangeScene(Scene::Platformer);
         };
 
+    level6.text = levelName[5];
+    level6.action = []() {
+        platformer::level = 6;
+        gameP->ChangeScene(Scene::Platformer);
+        };
+
+    level7.text = levelName[6];
+    level7.action = []() {
+        platformer::level = 7;
+        gameP->ChangeScene(Scene::Platformer);
+        };
+
     back.text = "Back";
     back.action = []() {
         gameP->ChangeScene(Scene::Title);
@@ -149,12 +163,14 @@ void LevelSelect::Update() {
 
         SDL_Color color1 = { 255,255,255,255 };
         SDL_Color color2 = { 0,73,220,255 };
+        SDL_Color color3 = { 255,37,87,255 };
         std::string textPercent1 = std::to_string(percent[0]) + "%";
         std::string textPercent2 = std::to_string(percent[1]) + "%";
         std::string textPercent3 = std::to_string(percent[2]) + "%";
         std::u8string textName1 = isSavedataExisting[0] ? u8"ヤッシィ１号" : u8"NEW☆GAME";
         std::u8string textName2 = isSavedataExisting[1] ? u8"ヤッシィ２号" : u8"NEW☆GAME";
         std::u8string textName3 = isSavedataExisting[2] ? u8"ヤッシィ３号" : u8"NEW☆GAME";
+        std::u8string zenkuri = u8"全クリ";
 
         int angle = random.random(0,359);
         texturesP->DrawImage("assy", { 960 - 750,1000,100,100 }, 0, { 1,angle * 1.0,50,50});
@@ -165,14 +181,17 @@ void LevelSelect::Update() {
         texturesP->DrawImage("zero_percent", { 420,440,480,720 }, 0, {});
         texturesP->DrawTexts(textName1, color1, color2, { 420,700,1.5,1.5 }, 0, Anchor::Center);
         texturesP->DrawTexts(textPercent1, color1, color2, {420,200,1.5,1.5}, 0, Anchor::Center);
+        if (percent[0] == 1008) texturesP->DrawTexts(zenkuri, color1, color3, {420,450,2,2}, 0, Anchor::Center);
 
         texturesP->DrawImage("zero_percent", { 960,440,480,720 }, 0, {});
         texturesP->DrawTexts(textName2, color1, color2, { 960,700,1.5,1.5 }, 0, Anchor::Center);
         texturesP->DrawTexts(textPercent2, color1, color2, { 960,200,1.5,1.5 }, 0, Anchor::Center);
+        if (percent[1] == 1008) texturesP->DrawTexts(zenkuri, color1, color3, { 960,450,2,2 }, 0, Anchor::Center);
 
         texturesP->DrawImage("zero_percent", { 1500,440,480,720 }, 0, {});
         texturesP->DrawTexts(textName3, color1, color2, { 1500,700,1.5,1.5 }, 0, Anchor::Center);
         texturesP->DrawTexts(textPercent3, color1, color2, { 1500,200,1.5,1.5 }, 0, Anchor::Center);
+        if (percent[2] == 1008) texturesP->DrawTexts(zenkuri, color1, color3, { 1500,450,2,2 }, 0, Anchor::Center);
     }
 
     if (phase == PhaseLevelSelect::SelectLevel) {
@@ -181,15 +200,16 @@ void LevelSelect::Update() {
 
         SDL_Color color1 = { 255,255,255,255 };
         SDL_Color color2 = { 0,73,220,255 };
+        SDL_Color color3 = { 255,37,87,255 };
         std::string thumbnail = "thumbnail";
         thumbnail = thumbnail + std::to_string(availableLevels[UIlevel.currentButton] + 1);
         texturesP->DrawTexts(u8"やっしー　号", color1, color2, {1500,950,2,2}, 0, Anchor::Center);
         texturesP->DrawTexts(std::to_string(savedata::slot), color1, color2, {1640,950,3,3}, 0, Anchor::Center);
         texturesP->DrawImage(thumbnail, { 1600,540,512,512 }, 0, {});
         texturesP->DrawImage("whitestar", { 1100,540,400,400 }, 0, {});
+        if (savedata::completedLevel[4] == 2) texturesP->DrawTexts(u8"GAME CLEAR!", color1, color3, { 1500,850,1,1 }, 0, Anchor::Center);
 
         double time2 = timer2.GetTime();
-
         for (auto& i : availableLevels) {
             if (0 <= i && i < 5) {
                 double size;
@@ -218,6 +238,16 @@ void LevelSelect::Update() {
                         0,
                         {});
                 }
+            }
+            if ((i == 5 || i== 6) && availableLevels[UIlevel.currentButton] == i) {
+                double size;
+                if (availableLevels[UIlevel.currentButton] == i) {
+                    size = 400 + sin(time2 * 4) * 50;
+                }
+                else {
+                    size = 400;
+                }
+                texturesP->DrawImage("Bface", { 1100,540,size,size }, 0, {});
             }
         }
 
@@ -273,9 +303,23 @@ void LevelSelect::Init() {
             }
         }
     }
+
+    bool six = 1;
+    for (int i = 0; i < 4; i++) {
+        if (savedata::completedLevel[i] != 2) six = 0;
+        if (savedata::coin[i][0] != 1 || savedata::coin[i][1] != 1 || savedata::coin[i][2] != 1) six = 0;
+    }
+    if (six && savedata::completedLevel[5] == 0) savedata::completedLevel[5] = 1;
+
+    if (savedata::completedLevel[5] == 2) {
+        if (savedata::completedLevel[6] == 0) {
+            savedata::completedLevel[6] = 1;
+        }
+    }
+
     availableLevels = {};
-    std::vector<Button*> levels = { &level1,&level2,&level3,&level4,&level5 };
-    for (int i = 0; i < 5; i++) {
+    std::vector<Button*> levels = { &level1,&level2,&level3,&level4,&level5,&level6,&level7 };
+    for (int i = 0; i < 7; i++) {
         if (savedata::completedLevel[i] != 0) {
             availableLevels.push_back(i);
             lineLevels.selectables.push_back(levels[i]);
@@ -299,18 +343,32 @@ void LevelSelect::GetPercent() {
     for (int i = 0; i < 3; i++) {
         saveP->LoadProgress(i+1);
 
+        int j = 0;
         double per = 0.0;
         for (auto& p : savedata::completedLevel) {
             if (p == 2) {
-                per += 0.1;
+                if (j < 5) {
+                    per += 0.1;
+                }
+                else {
+                    per += 4.54 / 4;
+                }
             }
+            j++;
         }
+        j = 0;
         for (auto& p : savedata::coin) {
             for (auto& q : p) {
                 if (q == 1) {
-                    per += 0.1 / 3;
+                    if (j < 5) {
+                        per += 0.1 / 3;
+                    }
+                    else {
+                        per += 4.54 / 4;
+                    }
                 }
             }
+            j++;
         }
 
         percent[i] = (int)round(per * 100);
@@ -321,4 +379,3 @@ void LevelSelect::GetPercent() {
     platformer::coin[1] = 0;
     platformer::coin[2] = 0;
 }
-//ここでslotが3になっちゃってる！

@@ -53,7 +53,7 @@ public:
     std::vector<std::unique_ptr<GameObject>> dyingObjects;
     std::vector<std::unique_ptr<GameObject>> pendingObjects;
 
-    GameTimer scrollTimer;
+    double scrollPos;
     double autoScroll;
 
     Platformer();

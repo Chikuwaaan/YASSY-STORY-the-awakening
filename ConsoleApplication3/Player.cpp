@@ -69,6 +69,9 @@ void Player::SetAX(double acceleration) {
 
 void Player::AddVY(double amount) {
     vY += amount;
+    if (amount >= 0) {
+        jumpingTime = 1;
+    }
 }
 
 void Player::Update() {
@@ -448,6 +451,9 @@ void Player::CollideY() {
                     x += (v - 0.01) * settings::timeScale;
                 }
                 pRect = { x,y,w,h };
+
+                OBJRECT bRect = levelP->IsTouching2(pRect, 1);
+                if (bRect.block) Die();
                 }
 
             //秘儀・めり込みもどし
@@ -502,6 +508,7 @@ void Player::CollideX() {
     OBJRECT pRect = { x,y,w,h };
     OBJRECT bRect = levelP->IsTouching2(pRect, 1);
 
+
     if (bRect.block) {
         if (vX > 0.0) {
             if (!liftVX) {
@@ -553,8 +560,13 @@ void Player::CollideX() {
 }
 
 void Player::MoveCameraRoom() {
-    if (platformerP->autoScroll != 0.0 && 0) {
-        cameraP->SetTargetX(platformerP->scrollTimer.GetTime() * 96 * 2);
+    if (platformerP->autoScroll != 0.0) {
+        cameraP->SetTargetX(platformerP->scrollPos);
+        CAMERA cam = cameraP->GetCam();
+        cam.x = platformerP->scrollPos;
+        cameraP->SetCam(cam);
+
+        if (cam.x >= 54048) platformerP->autoScroll = 0.0;
     }
     else {
         cameraP->SetTargetX(x);

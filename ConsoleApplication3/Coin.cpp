@@ -16,7 +16,7 @@ Coin::Coin(double X, double Y, double Index) {
     if (platformer::coin[index] == 1) {
         dead = 1;
     }
-    if (savedata::coin[platformer::level-1][index] == 1) {
+    if (savedata::coin[platformer::level-1][index] == 1 && platformer::coin[index] != 1) {
         platformer::coin[index] = 2;
     }
     else {

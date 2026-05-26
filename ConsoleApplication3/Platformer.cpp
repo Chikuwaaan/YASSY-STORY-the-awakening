@@ -50,7 +50,7 @@ Platformer::Platformer() {
     editorMode = 0;
     pausing = 0;
     completed = 0;
-    autoScroll = 192;
+    autoScroll = 0;
 }
 
 void Platformer::LoadLevelInfo() {
@@ -296,8 +296,9 @@ void Platformer::LoadEntities() {
     if (autoScroll != 0) {
         double x = player.GetSpawnX();
         double y = player.GetSpawnY();
-        AddObject("Lift", { x - 960, 99999.0, 192.0, y, 0.0, 0.0, 1.0, 1080.0 });
-        AddObject("Lift", { x + 960, 99999.0, 192.0, y, 0.0, 0.0, 1.0, 1080.0 });
+        AddObject("Lift", { x - 1008-96, 99999.0, autoScroll, y, 0.0, 0.0, 1.0, 1080.0*4 });
+        AddObject("Lift", { x + 1008+96, 99999.0, autoScroll, y, 0.0, 0.0, 1.0, 1080.0*4 });
+        scrollPos = x;
     }
 }
 
@@ -315,6 +316,15 @@ void Platformer::Init() {
 
 void Platformer::Spawn() {
     saveP->LoadProgress(savedata::slot);
+    if (platformer::level == 6) {
+        autoScroll = 96 * 2;
+    }
+    else if (platformer::level == 7){
+        autoScroll = 96 * 5;
+    }
+    else {
+        autoScroll = 0;
+    }
     LoadEntities();
 }
 
@@ -365,10 +375,11 @@ void Platformer::Update() {
         cameraP->Update();
     }
 
+    //std::cout << timer.GetTime() << std::endl;
     if (!completed) {
         timer.Update();
         platformer::time = timer.GetTime();
-        if(!pause.on) scrollTimer.Update();
+        if (!pause.on && !editorMode) scrollPos += settings::timeScale * autoScroll;
 
         if (event.E) {
             if (editorMode) {
