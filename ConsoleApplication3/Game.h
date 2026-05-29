@@ -23,6 +23,7 @@ class Textures;
 class UIManager;
 
 enum class Scene {
+    Loading,
     Title,
     Platformer,
     FaceYassy,

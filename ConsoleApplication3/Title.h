@@ -9,7 +9,7 @@ class Game;
 class Input;
 class Sounds;
 
-enum class Phase;
+enum class TitlePhase;
 
 class Title
 {
@@ -25,12 +25,14 @@ private:
 
     Uint32 last;
     double timer;
-    Phase phase;
+    TitlePhase phase;
     void RegisterButtons();
     void ChangePhase();
     bool music;
 
     Options options;
+
+    static bool uo;
 public:
     UIManager ui;
     UIManager uiCredits;

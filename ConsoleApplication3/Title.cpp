@@ -13,8 +13,9 @@ OverLay* Title::overlayP = nullptr;
 Game* Title::gameP = nullptr;
 Input* Title::inputP = nullptr;
 Sounds* Title::soundsP = nullptr;
+bool Title::uo = 0;
 
-enum class Phase {
+enum class TitlePhase {
     Loading,
     Logo1,
     Logo2,
@@ -35,10 +36,15 @@ Title::Title() :
 {
     last = 0;
     timer = 0.0;
-    //phase = Phase::Options;
-    phase = Phase::YassyStory2;
-    //phase = Phase::Loading;
     music = 0;
+
+    if (!uo) {
+        uo = 1;
+        phase = TitlePhase::Loading;
+    }
+    else {
+        phase = TitlePhase::YassyStory2;
+    }
 }
 
 void Title::Init() {
@@ -73,12 +79,12 @@ void Title::RegisterButtons() {
 
     BTNoptions.text = "OPTIONS";
     BTNoptions.action = [this]() {
-        phase = Phase::Options;
+        phase = TitlePhase::Options;
         };
 
     BTNcredits.text = "CREDITS";
     BTNcredits.action = [this]() {
-        phase = Phase::Credits;
+        phase = TitlePhase::Credits;
         };
 
     BTNexitgame.text = "EXIT";
@@ -92,28 +98,28 @@ void Title::RegisterButtons() {
         };
 
     options.BTNback.action = [this]() {
-        phase = Phase::YassyStory2;
+        phase = TitlePhase::YassyStory2;
         };
 
     BTNback.icon = Icons::Back;
     BTNback.action = [this]() {
-        phase = Phase::YassyStory2;
+        phase = TitlePhase::YassyStory2;
         };
 }
 
 void Title::ChangePhase() {
-    if (phase == Phase::Loading && timer > 0) {
-        phase = Phase::Logo1;
+    if (phase == TitlePhase::Loading && timer > 0) {
+        phase = TitlePhase::Logo1;
     }
-    else if (phase == Phase::Logo1 && timer > 3) {
-        phase = Phase::Logo2;
+    else if (phase == TitlePhase::Logo1 && timer > 3) {
+        phase = TitlePhase::Logo2;
         overlayP->FadeOut(1, { 0,0,0,255 });
     }
-    else if (phase == Phase::Logo2 && timer > 3.9) {
-        phase = Phase::Logo3;
+    else if (phase == TitlePhase::Logo2 && timer > 3.9) {
+        phase = TitlePhase::Logo3;
     }
-    else if (phase == Phase::Logo3 && timer > 5) {
-        phase = Phase::YassyStory1;
+    else if (phase == TitlePhase::Logo3 && timer > 5) {
+        phase = TitlePhase::YassyStory1;
         overlayP->FadeIn(1, { 0,0,0,255 });
         soundsP->PlayMusic("toilet3");
     }
@@ -126,7 +132,7 @@ void Title::Update() {
     timer += delta / 1000.0;
     ChangePhase();
 
-    if (!music && (phase == Phase::YassyStory1 || phase == Phase::YassyStory2)) {
+    if (!music && (phase == TitlePhase::YassyStory1 || phase == TitlePhase::YassyStory2)) {
         soundsP->PlayMusic("alpha");
         music = 1;
     }
@@ -136,7 +142,7 @@ void Title::Update() {
     SDL_Color white = { 255,255,255,255 };
     SDL_Color black = { 0,0,0,255 };
 
-    if (phase == Phase::Logo1 || phase == Phase::Logo2) {
+    if (phase == TitlePhase::Logo1 || phase == TitlePhase::Logo2) {
         SDL_SetRenderDrawColor(settings::renderer, 0, 0, 0, 255);
         SDL_RenderFillRect(settings::renderer, &refresh);
         SDL_Rect sy = texturesP->GetTexRect("studio_yassy");
@@ -146,36 +152,36 @@ void Title::Update() {
         sy.h = sy.h * 8;
         texturesP->DrawImageS("studio_yassy", sy, 0, {});
     }
-    if (phase == Phase::Logo3) {
+    if (phase == TitlePhase::Logo3) {
         SDL_SetRenderDrawColor(settings::renderer, 0,0,0, 255);
         SDL_RenderFillRect(settings::renderer, &refresh);
     }
-    if (phase == Phase::YassyStory1 || phase == Phase::YassyStory2 || phase == Phase::Options) {
+    if (phase == TitlePhase::YassyStory1 || phase == TitlePhase::YassyStory2 || phase == TitlePhase::Options) {
         SDL_SetRenderDrawColor(settings::renderer, 255,255,255, 255);
         SDL_RenderFillRect(settings::renderer, &refresh);
         
         
-        texturesP->DrawImageS("IMG_20260206_233135", fullScreen, 0, {});
-        if (phase == Phase::YassyStory2 || phase == Phase::Options) {
+        texturesP->DrawImageS("room", fullScreen, 0, {});
+        if (phase == TitlePhase::YassyStory2 || phase == TitlePhase::Options) {
             texturesP->DrawImageS("title", { settings::baseW / 2,settings::baseH * 3 / 4 , settings::baseW/2, settings::baseH/2}, 0, {});
         }
         else {
             texturesP->DrawImageS("title", fullScreen, 0, {});
         }
 
-        if (phase == Phase::YassyStory1) {
+        if (phase == TitlePhase::YassyStory1) {
             texturesP->DrawTexts("Press ENTER", white, black, { 960,120,1,1 }, 0, Anchor::Center);
         }
 
     }
 
-    if (phase == Phase::YassyStory1) {
+    if (phase == TitlePhase::YassyStory1) {
         if (inputP->event.RETURN) {
-            phase = Phase::YassyStory2;
+            phase = TitlePhase::YassyStory2;
         }
     }
 
-    if (phase == Phase::YassyStory2) {
+    if (phase == TitlePhase::YassyStory2) {
         BTNstart.visible = true;
         BTNoptions.visible = true;
         BTNcredits.visible = true;
@@ -193,7 +199,7 @@ void Title::Update() {
         BTNexitgame.visible = false;
     }
 
-    if (phase == Phase::Options) {
+    if (phase == TitlePhase::Options) {
         options.Update();
         options.Show();
     }
@@ -201,7 +207,7 @@ void Title::Update() {
         options.Hide();
     }
     
-    if (phase == Phase::Credits) {
+    if (phase == TitlePhase::Credits) {
         OBJRECT fullScreen = { settings::baseW / 2, settings::baseH / 2, settings::baseW,settings::baseH, 1 };
         texturesP->DrawImage("assy", fullScreen, 0, {});
         texturesP->DrawRect({255,255,255,200}, fullScreen, 0);

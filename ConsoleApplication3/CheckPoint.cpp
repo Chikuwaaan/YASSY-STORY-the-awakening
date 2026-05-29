@@ -43,13 +43,13 @@ void CheckPoint::Update() {
 }
 
 void CheckPoint::Touched() {
-    if (!used) {
-        platformer::CP = index;
-        used = 1;
-        soundsP->PlaySE("cp");
-        platformerP->AddObject("Particle", { x, y, "assy" });
-        saveP->WriteProgress(savedata::slot);
-    }
+    if (index == 0) return;
+    if (used) return;
+    platformer::CP = index;
+    used = 1;
+    soundsP->PlaySE("cp");
+    platformerP->AddObject("Particle", { x, y, "assy" });
+    saveP->WriteProgress(savedata::slot);
 }
 
 void CheckPoint::Stomped() {

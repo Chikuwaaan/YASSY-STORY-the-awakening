@@ -39,6 +39,8 @@ Options::Options() :
     Invert(800, settings::baseH / 2 - 200, 96, 96),
     Blur(800, settings::baseH / 2 - 300, 96, 96),
     Eye(800, settings::baseH / 2 - 400, 96, 96),
+    Une(1460, settings::baseH / 2 - 200, 96, 96),
+    Tomato(1460, settings::baseH / 2 - 300, 96, 96),
     BTNback(96,96,192,192)
 {
     SE.push_back(&SE0);
@@ -137,6 +139,22 @@ void Options::RegisterButtons() {
             savedata::Eye = 1;
         }
         };
+    Tomato.action = []() {
+        if (savedata::Tomato) {
+            savedata::Tomato = 0;
+        }
+        else {
+            savedata::Tomato = 1;
+        }
+        };
+    Une.action = []() {
+        if (savedata::une) {
+            savedata::une = 0;
+        }
+        else {
+            savedata::une = 1;
+        }
+        };
     BTNback.icon = Icons::Back;
 
     lineSE = {
@@ -187,7 +205,7 @@ void Options::RegisterButtons() {
             this->ui.currentButton = settings::BGM / 16;
         },
         [this]() {
-            this->ui.currentLine = &sita;
+            this->ui.currentLine = &sita2;
             this->ui.currentButton = 0;
         }
     };
@@ -195,11 +213,27 @@ void Options::RegisterButtons() {
         {&Invert, &Blur, &Eye},
         DIRECTION::V,
         nullptr,
-        nullptr,
+        &sita2,
         [](){},
         []() {},
         [this]() {
             this->ui.currentLine = &config1;
+            this->ui.currentButton = 3;
+        },
+        [this]() {
+            this->ui.currentLine = &back;
+            this->ui.currentButton = 0;
+        }
+    };
+    sita2 = {
+        {&Une,&Tomato},
+        DIRECTION::V,
+        &sita,
+        nullptr,
+        []() {},
+        []() {},
+        [this]() {
+            this->ui.currentLine = &config2;
             this->ui.currentButton = 3;
         },
         [this]() {
@@ -222,6 +256,7 @@ void Options::RegisterButtons() {
     ui.AddLine(&config1);
     ui.AddLine(&config2);
     ui.AddLine(&sita);
+    ui.AddLine(&sita2);
     ui.AddLine(&back);
     ui.currentLine = &lineSE;
 }
@@ -282,6 +317,8 @@ void Options::Update() {
     double Inverty = settings::baseH / 2 - 200;
     double Blury = settings::baseH / 2 - 300;
     double Eyey = settings::baseH / 2 - 400;
+    double Uney = settings::baseH / 2 - 200;
+    double Tomatoy = settings::baseH / 2 - 300;
     texturesP->DrawTexts("SE volume:", white, black, { 300, SEy, 1, 1 }, 0, Anchor::Left);
     texturesP->DrawTexts("BGM volume:", white, black, { 300, BGMy, 1, 1 }, 0, Anchor::Left);
     texturesP->DrawTexts("Up key:", white, black, { 300, Upy, 1, 1 }, 0, Anchor::Left);
@@ -295,6 +332,8 @@ void Options::Update() {
     texturesP->DrawTexts("Invert Dash:", white, black, { 300, Inverty, 1, 1 }, 0, Anchor::Left);
     texturesP->DrawTexts("Blur:", white, black, { 300, Blury, 1, 1 }, 0, Anchor::Left);
     texturesP->DrawTexts(u8"めだまシール:", white, black, { 300, Eyey, 1, 1 }, 0, Anchor::Left);
+    texturesP->DrawTexts(u8"※うね※:", white, black, { 960, Uney, 1, 1 }, 0, Anchor::Left);
+    texturesP->DrawTexts("Tomato:", white, black, { 960, Tomatoy, 1, 1 }, 0, Anchor::Left);
 
     Up.text = inputP->GetConfigName(Action::HoldUp);
     Down.text = inputP->GetConfigName(Action::HoldDown);
@@ -352,6 +391,20 @@ void Options::Update() {
     }
     else {
         Eye.icon = Icons::Off;
+    }
+    Tomato.state = State::Idle;
+    if (savedata::Tomato) {
+        Tomato.icon = Icons::On;
+    }
+    else {
+        Tomato.icon = Icons::Off;
+    }
+    Une.state = State::Idle;
+    if (savedata::une) {
+        Une.icon = Icons::On;
+    }
+    else {
+        Une.icon = Icons::Off;
     }
 
     BTNback.state = State::Idle;

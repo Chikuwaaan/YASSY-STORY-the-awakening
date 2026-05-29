@@ -607,12 +607,22 @@ void Player::MoveCameraRoom() {
 
 void Player::Die() {
     texName = "head_miss";
-    soundsP->PlaySE("die");
     platformer::death++;
     isDead = 1;
     dieTime = 3.0;
     dieAnim = 1;
     overlayP->PinHole(settings::baseW/2, settings::baseH/2, 2000, 1000, 1.1, {0,0,0,255});
+
+    if (savedata::Tomato == 1) {
+        for (int i = 0; i < 500; i++) {
+            platformerP->AddObject("Tomato", { x,y }); 
+        }
+        soundsP->PlaySE("splatter");
+    }
+    else {
+        soundsP->PlaySE("die");
+    }
+    
 }
 
 void Player::Spawn() {

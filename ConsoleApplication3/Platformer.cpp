@@ -26,6 +26,7 @@
 #include "Fishy.h"
 #include "Coco.h"
 #include "Fan.h"
+#include "Tomato.h"
 
 #include "Save.h"
 #include "Game.h"
@@ -240,6 +241,12 @@ GameObject* Platformer::AddObject(std::string objClass, std::vector<std::variant
             std::get<double>(args[2])
         );
     }
+    if (objClass == "Tomato") {
+        p = std::make_unique<Tomato>(
+            std::get<double>(args[0]),
+            std::get<double>(args[1])
+        );
+    }
     /*
     if (objClass == ) {
         p = std::make_unique<>(
@@ -381,20 +388,23 @@ void Platformer::Update() {
         platformer::time = timer.GetTime();
         if (!pause.on && !editorMode) scrollPos += settings::timeScale * autoScroll;
 
-        if (event.E) {
-            if (editorMode) {
-                editorMode = 0;
+        if (savedata::dev) {
+            if (event.E) {
+                if (editorMode) {
+                    editorMode = 0;
+                }
+                else {
+                    editorMode = 1;
+                }
             }
-            else {
-                editorMode = 1;
+            if (event.P) {
+                double x, y;
+                level.GetMouseC(&x, &y);
+                player.SetX(x);
+                player.SetY(y);
             }
         }
-        if (event.P) {
-            double x, y;
-            level.GetMouseC(&x, &y);
-            player.SetX(x);
-            player.SetY(y);
-        }
+        
 
         if (!pause.on) {
             if (inputP->GetEvent(Event::Back)) {

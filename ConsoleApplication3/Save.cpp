@@ -41,6 +41,9 @@ void Save::LoadOptions() {
             option >> savedata::InvertDash;
             option >> savedata::Blur;
             option >> savedata::Eye;
+            option >> savedata::Tomato;
+            option >> savedata::une;
+            option >> savedata::dev;
         }
     }
     option.close();
@@ -96,6 +99,9 @@ void Save::WriteOptions() {
         option << savedata::InvertDash << std::endl;
         option << savedata::Blur << std::endl;
         option << savedata::Eye << std::endl;
+        option << savedata::Tomato << std::endl;
+        option << savedata::une << std::endl;
+        option << savedata::dev << std::endl;
     }
     option.close();
 

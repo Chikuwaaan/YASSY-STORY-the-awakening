@@ -52,6 +52,10 @@ private:
     Button Blur;
     Button Eye;
 
+    LINE sita2;
+    Button Une;
+    Button Tomato;
+
     LINE back; 
 public:
     static Input* inputP;

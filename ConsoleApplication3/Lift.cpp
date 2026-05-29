@@ -47,8 +47,12 @@ void Lift::Update() {
 
     if (platformerP->autoScroll == 0.0 && h > w) dead = 1;
 }
-/*
+
 void Lift::Draw() {
+    if (h > w) {
+        texturesP->DrawRect({ 0,255,0,255 }, { x,y,w,h,1 }, 1);
+        return;
+    }
     int srcY = 64;
     double a = (length - 1) / 2.0;
     double xL = (x - a * h);
@@ -69,4 +73,3 @@ void Lift::Draw() {
         texturesP->DrawSprite(texName, dstM, { 16,srcY,16,16 }, 1);
     }
 }
-*/

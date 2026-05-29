@@ -43,6 +43,9 @@ namespace savedata {
     extern bool InvertDash;
     extern bool Blur;
     extern bool Eye;
+    extern bool Tomato;
+    extern bool une;
+    extern bool dev;
 
     extern std::vector<std::vector<int>> coin;
     extern std::vector<int> completedLevel;

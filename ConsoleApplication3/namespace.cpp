@@ -103,6 +103,9 @@ namespace savedata {
     bool InvertDash = 0;
     bool Blur = 0;
     bool Eye = 0;
+    bool Tomato = 0;
+    bool une = 0;
+    bool dev = 0;
 
     std::vector<std::vector<int>> coin = {
         {0,0,0},

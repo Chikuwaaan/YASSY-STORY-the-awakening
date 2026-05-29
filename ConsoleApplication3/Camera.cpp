@@ -75,7 +75,11 @@ void Camera::SetTargetY(double y) {
 }
 
 void Camera::Update() {
+    camera.x = camera.x + (camera.targetX - camera.x) * settings::timeScale * 8;
+    camera.y = camera.y + (camera.targetY - camera.y) * settings::timeScale * 4;
+
     //[DEBUG]move camera
+    if (!savedata::dev) return;
     const Uint8* keystate = inputP->keystate;
     if (keystate[SDL_SCANCODE_UP]) {
         camera.offsetY += 4 / camera.zoom;
@@ -99,11 +103,6 @@ void Camera::Update() {
         camera.offsetX = 0;
         camera.offsetY = 0;
     }
-
-    camera.x = camera.x + (camera.targetX - camera.x) * settings::timeScale * 8;
-    camera.y = camera.y + (camera.targetY - camera.y) * settings::timeScale * 4;
-    
-    //std::cout << camera.x << "," << camera.y << std::endl;
 }
 
 void Camera::Draw() {
