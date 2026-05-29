@@ -45,8 +45,8 @@ void Save::LoadOptions() {
             option >> savedata::une;
             option >> savedata::dev;
         }
+        option.close();
     }
-    option.close();
 
     /*
     std::ifstream progress("Save/progress.bin");
