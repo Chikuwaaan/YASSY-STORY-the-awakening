@@ -69,13 +69,11 @@ void Game::SceneChanging() {
         levelselect->phase = PhaseLevelSelect::SelectSlot;
         levelselect->GetPercent();
         levelselect->Init();
-        sounds->PlayMusic("the_snippet");
     }
 
     if (sceneReserve == Scene::LevelSelect) {
         levelselect = std::make_unique<LevelSelect>();
         levelselect->phase = PhaseLevelSelect::SelectLevel;
-        sounds->PlayMusic("the_snippet");
     }
 
     overlay->FadeIn(1.0, { 0,0,0,255 });
