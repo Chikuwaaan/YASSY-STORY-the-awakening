@@ -33,12 +33,8 @@ void Fan::Update() {
 
 void Fan::Touched() {
     if (direction == 1) {
-        playerP->AddVY(48);
-    }
-    else if (direction == 3) {
-        playerP->AddVY(-10);
-    }
-    
+        playerP->AddVY(2880 * settings::timeScale);
+    }    
 }
 
 void Fan::Stomped() {

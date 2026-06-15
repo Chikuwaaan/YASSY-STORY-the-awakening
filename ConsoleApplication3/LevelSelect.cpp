@@ -305,7 +305,7 @@ void LevelSelect::Init() {
     }
 
     bool six = 1;
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         if (savedata::completedLevel[i] != 2) six = 0;
         if (savedata::coin[i][0] != 1 || savedata::coin[i][1] != 1 || savedata::coin[i][2] != 1) six = 0;
     }

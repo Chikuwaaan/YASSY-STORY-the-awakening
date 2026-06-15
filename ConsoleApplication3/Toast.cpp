@@ -4,7 +4,7 @@
 Toast::Toast(std::u8string Text) {
     text = Text;
     x = 1920;
-    y = 96;
+    y = 984;
     w = 1920;
     h = 192;
     alwaysLoad = 1;
